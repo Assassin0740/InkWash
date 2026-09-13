@@ -149,6 +149,9 @@ namespace InkWash.Utils
             public int comboStep;
             public bool cancelWindow;
             public float motionSpeed;    // Animator 参数 MotionSpeed
+            // 当前状态的动画片段时长。用来把「播放倍率」换算成真正的**步频**：
+            // 步频 = 2 步/循环 ÷（片段时长 ÷ 播放倍率）。两段片段长度不同，只比倍率是错的。
+            public float clipLen;
             public float upperWeight;    // 第 1 层及以后的**附加层总权重**（本版设计应为 0）
             public float torsoLeanDeg;   // 躯干倾角：正 = 前倾，负 = 后仰（问题 1「仰着身子走」的量化指标）
             public float bladeSpeed;     // 刀刃（右手骨挂点）当前线速度 m/s
@@ -210,6 +213,8 @@ namespace InkWash.Utils
             public float motionSpeedAvg, motionSpeedMin = float.MaxValue, motionSpeedMax;
             public float impliedGroundSpeedAvg;
             public int impliedSpeedSamples;
+            // 真实步频（步/秒）：跨片段可比。走路约 2.1、慢跑 2.6~2.9、冲刺 4.0~4.4 是人类的范围。
+            public float stepsPerSecAvg;
 
             // 问题 1「仰着身子走」：躯干倾角（正前倾 / 负后仰）
             public float torsoLeanAvg, torsoLeanMin = float.MaxValue, torsoLeanMax = float.MinValue;
@@ -744,8 +749,23 @@ namespace InkWash.Utils
                     "反推片段速度 " + F(s.impliedGroundSpeedAvg) + " m/s（样本 " + s.impliedSpeedSamples + "）");
             }
             if (walk != null && runC != null)
-                check("疾跑步频明显快于步行", runC.motionSpeedAvg > walk.motionSpeedAvg * 1.15f,
-                    F(runC.motionSpeedAvg) + " vs " + F(walk.motionSpeedAvg) + " 倍");
+                // 必须比**步频**，不能比 playback 倍率：走路/跑步是两段不同长度的片段，
+                // 倍率之间没有可比性（走 1.42× 摊到 1.33s 上只有 2.1 步/秒，
+                // 跑 0.94× 摊到 0.60s 上却是 3.1 步/秒）。这正是本文件 152 行注释说的那件事。
+                check("疾跑步频明显快于步行",
+                    runC.stepsPerSecAvg > walk.stepsPerSecAvg * 1.15f,
+                    F(runC.stepsPerSecAvg) + " vs " + F(walk.stepsPerSecAvg) + " 步/秒");
+            // 上界：步频才是"腿看起来自然与否"的判据。没有上界的话，把 runSpeed/walkSpeed
+            // 往上调就会让腿再次"原地倒腾"，而这正是前两轮返工的原因。
+            // 真人数据：走路 ~2.0、慢跑 2.6~2.9、冲刺 4.0~4.4 步/秒。
+            if (walk != null)
+                check("[B 步行] 步频未冲出人走区间（≤ 3.0 步/秒）",
+                    walk.stepsPerSecAvg <= 3.0f,
+                    F(walk.stepsPerSecAvg) + " 步/秒");
+            if (runC != null)
+                check("[C 疾跑] 步频未冲出真人跑步区间（≤ 4.4 步/秒）",
+                    runC.stepsPerSecAvg <= 4.4f,
+                    F(runC.stepsPerSecAvg) + " 步/秒");
 
             sb.AppendLine();
             sb.AppendLine("-- 问题 1「走路仰着身子走」+ 问题 3「没有跑步动作」：换了正经的走路/跑步片段 --");
@@ -1194,6 +1214,48 @@ namespace InkWash.Utils
         /// <summary>演示：战斗段（紧凑版，专供单次 MP4 录制，总长约 13.7s &lt; 15s 上限）。</summary>
         public static IEnumerator DemoCombatCompact() { return DemoFlow(true, true); }
 
+        /// <summary>
+        /// 演示：只跑（诊断「跑步扭腰」专用）。
+        /// 后 3/4 机位是看髋/肩反向扭转最清楚的角度；正侧机位用来看腿的循环与躯干倾角。
+        /// 两段都是纯直线跑，不带转向，避免把转向混进去。
+        /// </summary>
+        public static IEnumerator DemoRunOnly()
+        {
+            var ctx = ResolveContext();
+            if (ctx == null) { Debug.LogError("[PlaytestHarness] DemoRunOnly: 场景上下文不完整"); yield break; }
+
+            var sink = new List<CombatResult>();
+            Vector3 startPos = ctx.playerGo.transform.position;
+            Quaternion startRot = ctx.playerGo.transform.rotation;
+            float startYaw = ctx.rig != null ? ctx.rig.yaw : 0f;
+            float startPitch = ctx.rig != null ? ctx.rig.pitch : 0f;
+            bool startLook = ctx.rig != null && ctx.rig.mouseLookEnabled;
+
+            ctx.ctl.BeginInputOverride();
+            if (ctx.rig != null)
+            {
+                ctx.rig.SetMouseLookEnabled(false);
+                ctx.rig.yaw = DEMO_CAM_YAW;
+                ctx.rig.pitch = DEMO_CAM_PITCH;
+                ctx.rig.SnapBehindTarget();
+            }
+
+            yield return RunCombatStage(sink, ctx, "演示 跑步(后3/4)", 3.2f, Vector2.up, true, null);
+            yield return RunCombatStage(sink, ctx, "演示 跑步(正侧)", 2.8f, Vector2.right, true, null);
+
+            ctx.ctl.EndInputOverride();
+            if (ctx.rig != null)
+            {
+                ctx.rig.yaw = startYaw;
+                ctx.rig.pitch = startPitch;
+                ctx.rig.SetMouseLookEnabled(startLook);
+            }
+            ctx.playerGo.transform.position = startPos;
+            ctx.playerGo.transform.rotation = startRot;
+
+            Debug.Log("[PlaytestHarness] 演示流程结束（只跑）");
+        }
+
         // ==================================================================
         // S1 单阶段执行
         // ==================================================================
@@ -1546,6 +1608,7 @@ namespace InkWash.Utils
                 comboStep = ctx.ctl.ComboStep,
                 cancelWindow = ctx.ctl.IsCancelWindowOpen,
                 motionSpeed = anim.GetFloat(HashMotionSpeed),
+                clipLen = CurrentClipLength(anim),
                 upperWeight = ExtraLayerWeight(anim),
                 torsoLeanDeg = TorsoLeanDeg(ctx),
                 bladeSpeed = ctx.vfx != null ? ctx.vfx.BladeSpeed : 0f,
@@ -1833,15 +1896,20 @@ namespace InkWash.Utils
             // ---- 步伐同步：稳态窗口内反推片段地面速度 ----
             int from = Mathf.FloorToInt(s.Count * 0.6f);
             float impSum = 0f; int impN = 0, msSumN = 0; float msSum = 0f;
+            float stepSum = 0f; int stepN = 0;
             for (int i = from; i < s.Count; i++)
             {
                 msSum += s[i].motionSpeed; msSumN++;
                 if (s[i].speed > 0.3f && s[i].motionSpeed > 0.1f)
                 { impSum += s[i].speed / s[i].motionSpeed; impN++; }
+                // 步频：循环里 2 步，循环时长 = 片段时长 / 播放倍率
+                if (s[i].clipLen > 0.05f && s[i].motionSpeed > 0.05f)
+                { stepSum += (2f / s[i].clipLen) * s[i].motionSpeed; stepN++; }
             }
             r.motionSpeedAvg = msSumN > 0 ? msSum / msSumN : 0f;
             r.impliedGroundSpeedAvg = impN > 0 ? impSum / impN : 0f;
             r.impliedSpeedSamples = impN;
+            r.stepsPerSecAvg = stepN > 0 ? stepSum / stepN : 0f;
 
             // ---- 特效增量 ----
             if (ctx.vfx != null)
@@ -2026,6 +2094,18 @@ namespace InkWash.Utils
             for (int i = 0; i < kBaseStateNames.Length; i++)
                 if (st.IsName(kBaseStateNames[i])) return kBaseStateNames[i];
             return "Other";
+        }
+
+        /// <summary>
+        /// 当前状态的动画片段时长（秒）。用来把「播放倍率」换算成**真实步频**：
+        /// 步频 = 2 步/循环 ÷（片段时长 ÷ 播放倍率）。
+        /// 两段片段长度不同（走路 1.33s / 跑步 0.67s），只比倍率会把结论带偏。
+        /// </summary>
+        private static float CurrentClipLength(Animator anim)
+        {
+            var info = anim.GetCurrentAnimatorClipInfo(0);
+            if (info == null || info.Length == 0 || info[0].clip == null) return 0f;
+            return info[0].clip.length;
         }
 
         private static StageResult Find(List<StageResult> list, string name)

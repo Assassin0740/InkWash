@@ -1,0 +1,10 @@
+[Walk] state=Walk frames=445
+  hip   yaw p-p =    9.5 deg
+  shldr yaw p-p =    5.6 deg
+  TWIST p-p     =   15.1 deg
+  root wobble   =  0.000 deg
+[Run] state=Run frames=422
+  hip   yaw p-p =   50.5 deg
+  shldr yaw p-p =   23.1 deg
+  TWIST p-p     =   73.6 deg
+  root wobble   =  0.000 deg

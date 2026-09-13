@@ -1,0 +1,35 @@
+已隐藏非角色 Renderer: 10 个
+
+=== 横比（控制器照常跑 / 同角色同 Avatar / 同机位）===
+
+1. Rig|Sprint_Loop   len=0.667s   state=Run   v=0.0 m/s   MotionSpeed=0.60
+     髋线偏航 p-p =   42.7 deg
+     肩线偏航 p-p =   18.4 deg
+     骨盆骨骼 p-p =   42.7 deg   <- 扭腰的主要来源
+     胸腔骨骼 p-p =   15.6 deg
+     扭转(髋+肩) =   61.1 deg
+
+  写出 1_Rig_Sprint_Loop_back.png
+  写出 1_Rig_Sprint_Loop_side.png
+
+2. Rig|Jog_Fwd_Loop   len=0.933s   state=Run   v=0.0 m/s   MotionSpeed=0.60
+     髋线偏航 p-p =   55.3 deg
+     肩线偏航 p-p =   30.6 deg
+     骨盆骨骼 p-p =   55.3 deg   <- 扭腰的主要来源
+     胸腔骨骼 p-p =   27.5 deg
+     扭转(髋+肩) =   85.9 deg
+
+  写出 2_Rig_Jog_Fwd_Loop_back.png
+  写出 2_Rig_Jog_Fwd_Loop_side.png
+
+3. Run01_Forward   len=0.600s   state=Run   v=0.0 m/s   MotionSpeed=0.60
+     髋线偏航 p-p =   50.5 deg
+     肩线偏航 p-p =   23.1 deg
+     骨盆骨骼 p-p =   50.5 deg   <- 扭腰的主要来源
+     胸腔骨骼 p-p =   16.7 deg
+     扭转(髋+肩) =   73.6 deg
+
+  写出 3_Run01_Forward_back.png
+  写出 3_Run01_Forward_side.png
+
+已复原：Run 片段 = Run01_Forward，Renderer 10 个已恢复

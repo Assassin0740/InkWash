@@ -1,0 +1,12 @@
+=== 终验（真实参数：runSpeed=4.20 runRefSpeed=4.49）===
+  state        = Run   frames=682
+  实际速度     = 4.20 m/s
+  MotionSpeed  = 0.935×   （期望 ≈ runSpeed/runRefSpeed）
+  步频         = 3.12 步/秒   （真人跑步 2.6~4.4）
+  髋线偏航 p-p = 50.5 deg
+  肩线偏航 p-p = 23.1 deg
+
+  写出 back.png
+  写出 side.png
+
+已复原：重力=-24.0，Renderer 10 个已恢复

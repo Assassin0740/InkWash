@@ -98,14 +98,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 2.2
-  runSpeed: 5.6
+  runSpeed: 4.2
   runAnimEnterSpeed: 3
   runAnimExitSpeed: 2.5
   acceleration: 26
   deceleration: 34
   turnSpeedDeg: 900
   walkRefSpeed: 1.55
-  runRefSpeed: 3.1
+  runRefSpeed: 4.49
   motionSpeedMin: 0.6
   motionSpeedMax: 2.2
   dashSpeed: 7.4
@@ -225,7 +225,7 @@ MonoBehaviour:
   - state: Walk
     y: -0.066
   - state: Run
-    y: -0.155
+    y: -0.046
   - state: Atk1
     y: -0.116
   - state: Atk2

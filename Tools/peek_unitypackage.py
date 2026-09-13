@@ -56,7 +56,11 @@ def main():
             if not m.isfile() or not m.name.endswith("/pathname"):
                 continue
             guid = m.name.split("/")[0]
-            data = tar.extractfile(m).read().decode("utf-8", errors="replace").strip()
+            # 部分 Unity 导出的包里 pathname 内容是 "<路径>\n00"（见
+            # extract_unitypackage.py 里的同款注释）。按第一个换行切掉，
+            # 否则清单里每条路径后面都会多出一行 "00"。
+            raw = tar.extractfile(m).read().decode("utf-8", errors="replace")
+            data = raw.split("\n")[0].strip()
             paths.append((guid, data))
 
     paths.sort(key=lambda x: x[1])

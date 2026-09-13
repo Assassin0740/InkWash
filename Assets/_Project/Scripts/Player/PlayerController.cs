@@ -41,8 +41,10 @@ namespace InkWash.Player
         [Tooltip("走路速度（米/秒）。对应动画 Walk（UAL1 Walk_Loop）")]
         public float walkSpeed = 2.2f;
 
-        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（UAL1 Jog_Fwd_Loop）")]
-        public float runSpeed = 5.6f;
+        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（Kevin Iglesias Run01_Forward）\n" +
+                 "默认值必须与预制体上的序列化值一致（4.2）。曾经默认写 5.6、预制体是 4.2，\n" +
+                 "两边不一致很容易让人误判\"实际生效的是哪个\"。")]
+        public float runSpeed = 4.2f;
 
         [Tooltip("走路 -> 跑步 的切换阈值（按期望速度）。动画状态机用它切 Walk/Run 状态")]
         public float runAnimEnterSpeed = 3.0f;
@@ -61,22 +63,34 @@ namespace InkWash.Player
 
         [Header("步伐同步（消除脚滑）")]
         // 上一版只有一段「抱物走」可当移动动画，走路和跑步都靠调它的播放速度硬撑
-        // （跑步要 3.79 倍），所以脚步永远对不上位移。
-        // 本版引入 UAL1 的真·走路/跑步片段后，两段各有自己的参考速度，
-        // 播放倍率落回 1.0~1.8 的健康区间。参考值由 Tools/cs/s2_probe_feet.cs 与
-        // 验收里的「支撑脚滑移率」实测标定，不是拍脑袋。
-        [Tooltip("走路片段（Walk_Loop）自身的地面速度参考值（米/秒）。播放速度 = 实际速度 / 本值")]
+        // （跑步要 3.79 倍），所以脚步永远对不上位移。本版两段各配自己的片段与参考速度。
+        //
+        // 注意「播放倍率落在 1.0~1.8 是健康的」这个旧结论是错的：倍率只说明片段被拉伸多少，
+        // 真正的观感指标是**步频**（2 步 / 片段时长 × 倍率）。1.8 倍摊到一段 0.93s 的慢跑上
+        // 就是 3.9 步/秒，已经超过真人冲刺；腿看起来自然与否看的是这个数，
+        // 验收里的「疾跑步频」断言现在就是这么算的。
+        // 参考值用 Tools/cs/s2_probe_refspeed.cs 实测标定：锁住接触点，只取「竖直速度≈0」
+        // （真正踩在地上）的帧，量它相对角色根节点的水平后移速度。
+        // 该方法在 Walk_Loop 上做了交叉验证：算出 1.15 m/s、单步 0.77m，与真人走路一致。
+        //
+        // 注意：Walk_Loop 实测原生只有 1.15 m/s，而 walkSpeed = 2.2 m/s 本身就超出素材设计范围。
+        // 这里**故意保留 1.55**：宁可让脚有一点滑步，也不让腿的周期被压得太短
+        // （取 1.15 的话步频会变成 1.91×）。要根治只能降 walkSpeed，见 Docs 待办。
+        [Tooltip("走路片段（Walk_Loop）自身的地面速度参考值（米/秒）。实测 1.15，这里按 1.55 保守取")]
         public float walkRefSpeed = 1.55f;
 
-        [Tooltip("跑步片段（Jog_Fwd_Loop）自身的地面速度参考值（米/秒）")]
-        public float runRefSpeed = 3.10f;
+        [Tooltip("跑步片段（Kevin Iglesias Run01_Forward）自身的地面速度参考值（米/秒）。\n" +
+                 "换片段后必须重量：Tools/cs/s2_probe_refspeed_ki.cs 实测 4.49（单步 1.35m、200 步/分）。\n" +
+                 "取这个值 → 倍率 4.2/4.49 = 0.94×，脚不再打滑，步频 3.1 步/秒落在正常跑步区间。\n" +
+                 "（旧值 3.70 是给 Quaternius Sprint_Loop 标的，套在新片段上会让脚后滑 ≈0.9 m/s。）")]
+        public float runRefSpeed = 4.49f;
 
         [Tooltip("播放速度下限，防止慢走时腿部僵住")]
         public float motionSpeedMin = 0.6f;
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
                  "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
-                 "当前：走路 2.2/1.55 = 1.42，跑步 5.6/3.1 = 1.81，上限取 2.2 留足余量。")]
+                 "当前：走路 2.2/1.55 = 1.42，跑步 4.2/4.49 = 0.94，上限取 2.2 留足余量。")]
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]

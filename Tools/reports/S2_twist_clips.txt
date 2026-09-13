@@ -1,0 +1,14 @@
+原 Run 片段: Rig|Sprint_Loop
+Sprint_Loop      clipLen=0.667s  state=Run    frames=587
+    hip   yaw p-p =   42.7 deg
+    shldr yaw p-p =   18.4 deg
+    TWIST p-p     =   61.1 deg
+Jog_Fwd_Loop     clipLen=0.933s  state=Run    frames=556
+    hip   yaw p-p =   55.3 deg
+    shldr yaw p-p =   30.6 deg
+    TWIST p-p     =   85.9 deg
+Walk_Loop        clipLen=1.333s  state=Run    frames=559
+    hip   yaw p-p =    9.5 deg
+    shldr yaw p-p =    5.6 deg
+    TWIST p-p     =   15.1 deg
+已还原 Run 片段: Rig|Sprint_Loop

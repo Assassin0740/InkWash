@@ -41,20 +41,29 @@ var pc = root.GetComponent<InkWash.Player.PlayerController>();
 if (pc == null) sb.AppendLine("[1b] !! 预制体上没有 PlayerController");
 else
 {
-    // 走路 / 跑步分开：上一版 walk=4.5（其实是慢跑速度）跑=7.2，两档都挤在"跑步"体感上，
-    // 而且都用同一段"抱物走"动画硬撑。现在走路 2.2、跑步 5.6，各配自己的动画片段。
+    // 走路 / 跑步分开，且各自配自己的动画片段。
+    // runSpeed 从 5.6 降到 4.2：UAL1 最快的 Sprint_Loop 实测原生只有 ≈3.7 m/s，
+    // 5.6 会把播放倍率顶到 1.51×、步频顶到 4.5 步/秒（超真人冲刺），腿会"原地倒腾"。
+    // 4.2 → 1.14×、3.4 步/秒，落在人类跑步步频区间内。
+    // walkSpeed 暂保持 2.2（用户决定先不动走路）。
     pc.walkSpeed = 2.2f;
-    pc.runSpeed = 5.6f;
+    pc.runSpeed = 4.2f;
     pc.runAnimEnterSpeed = 3.0f;
     pc.runAnimExitSpeed = 2.5f;
     pc.acceleration = 26f;
     pc.deceleration = 34f;
     pc.turnSpeedDeg = 900f;
 
+    // 步伐同步参考值：用 Tools/cs/s2_probe_refspeed_ki.cs 实测（锁接触点 + 只取竖直速度≈0 的帧）。
+    // 实测原生地面速度：Walk_Loop 1.15 m/s、KI Run01_Forward 4.49 m/s（单步 1.35m、200 步/分）。
+    // walkRefSpeed 这里**故意不取实测值**：walkSpeed=2.2 本身就超出素材设计范围，
+    // 取 1.15 会让步频变成 1.91×，宁可留一点滑步也不让腿的周期被压太短。根治要降 walkSpeed。
+    // runRefSpeed 必须取实测值 4.49：跑步用的是 Kevin Iglesias 的 Run01_Forward，
+    // 拿 Quaternius Sprint_Loop 的 3.70 去套，脚会以 ≈0.9 m/s 往后滑。
     pc.walkRefSpeed = 1.55f;
-    pc.runRefSpeed = 3.10f;
+    pc.runRefSpeed = 4.49f;
     pc.motionSpeedMin = 0.6f;
-    // 上限必须 ≥ max(2.2/1.55, 5.6/3.1) = max(1.42, 1.81)，取 2.2 留余量
+    // 上限必须 ≥ max(2.2/1.55, 4.2/4.49) = max(1.42, 0.94)，取 2.2 留余量
     pc.motionSpeedMax = 2.2f;
 
     pc.dashSpeed = 7.4f;
@@ -116,7 +125,10 @@ footIk.stateOffsets = new InkWash.Player.FootIK.StateYOffset[]
 {
     new InkWash.Player.FootIK.StateYOffset { state = "Idle",     y = -0.092f },
     new InkWash.Player.FootIK.StateYOffset { state = "Walk",     y = -0.066f },
-    new InkWash.Player.FootIK.StateYOffset { state = "Run",      y = -0.155f },
+    // ⚠ Run 这一条与**跑步片段绑定**：换成 Kevin Iglesias Run01_Forward 之后，
+    //   Run 状态的「无 IK 最低」从 +0.155 变成 +0.049（见 Tools/reports/S2_pose_latest.txt），
+    //   偏移不跟着改就会穿地 10.6cm。留 3mm 余量取 -0.046，让脚底落在 +0.003 附近。
+    new InkWash.Player.FootIK.StateYOffset { state = "Run",      y = -0.046f },
     new InkWash.Player.FootIK.StateYOffset { state = "Atk1",     y = -0.116f },
     new InkWash.Player.FootIK.StateYOffset { state = "Atk2",     y = -0.123f },
     new InkWash.Player.FootIK.StateYOffset { state = "Atk1Rec",  y =  0.000f },

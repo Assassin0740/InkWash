@@ -26,6 +26,9 @@ var sb = new System.Text.StringBuilder();
 const string CtrlPath = "Assets/_Project/Animations/Player.controller";
 const string FbxUAL2 = "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx";
 const string FbxUAL1 = "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx";
+// Kevin Iglesias《Human Soldier Animations FREE》(Unity 商店免费资源) —— 跑步改用它的 Run01_Forward。
+// 见下方 clipRun 处的说明：Quaternius 的跑/慢跑片段骨盆甩幅过大，观感是"扭腰"。
+const string FbxKIRun = "Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Run/HumanM@Run01_Forward.fbx";
 
 // 冲刺时长：必须与 PlayerController.dashDuration 一致（验收会核对）
 const float DashDuration = 0.72f;
@@ -56,12 +59,16 @@ System.Action<string, System.Collections.Generic.Dictionary<string, UnityEngine.
         if (!dict.ContainsKey(key)) dict[key] = c;
     }
     sb.AppendLine("  载入 " + dict.Count + " 个片段 <- " + path);
+    // 打印键名，便于排查"片段名对不上"（换素材时经常撞上）
+    foreach (var k in dict.Keys) sb.AppendLine("      · " + k);
 };
 
 var ual2 = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
 var ual1 = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
+var ki = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
 load(FbxUAL2, ual2);
 load(FbxUAL1, ual1);
+load(FbxKIRun, ki);
 
 System.Func<System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>, string,
     UnityEngine.AnimationClip> pick = (dict, name) =>
@@ -74,7 +81,31 @@ System.Func<System.Collections.Generic.Dictionary<string, UnityEngine.AnimationC
 
 var clipIdle = pick(ual1, "Sword_Idle");          // 持剑待机（比抱臂待机贴合战斗角色）
 var clipWalk = pick(ual1, "Walk_Loop");           // 正经走路
-var clipRun = pick(ual1, "Jog_Fwd_Loop");         // 跑步
+// 跑步：改用 Kevin Iglesias《Human Soldier Animations FREE》的 HumanM@Run01_Forward。
+//
+// 为什么不继续用 Quaternius 的跑片段（Jog_Fwd_Loop / Sprint_Loop）：
+//   用 Tools/cs/s2_probe_runtwist.cs 量化过「躯干扭转角 = 肩线偏航 - 髋线偏航」，
+//   同一条件下（runSpeed 4.2、同一角色、同一 Avatar）：
+//       Walk_Loop        髋 9.5°  肩 5.6°  扭转 15.1°   ← 正常
+//       Sprint_Loop      髋 42.7° 肩 18.4° 扭转 61.1°   ← 骨盆甩得离谱
+//       Jog_Fwd_Loop     髋 55.3° 肩 30.6° 扭转 85.9°   ← 更离谱
+//   并且 s2_probe_muscle.cs 读原始肌肉曲线证实这是**烘焙在片段里**的
+//   （UpperChest Twist 峰峰：Walk 0.377 / Jog 3.236 / Sprint 2.382），
+//   不是重定向放出来的 —— 走路干净、跑步拧麻花，所以只能换片段。
+//   真人跑步躯干扭转一般 ≤20°，Quaternius 那两段是它的 3~4 倍，观感就是"扭腰"。
+//
+// 授权：Kevin Iglesias 的 Human Soldier Animations FREE 是 Unity 商店免费资源，
+//       本机 Asset Store 缓存里已有（Human Soldier Animations FREE.unitypackage），
+//       按 Unity 商店标准 EULA 可用于本项目。
+// 片段名注意：FBX 文件名是 "HumanM@Run01_Forward"，但 Unity 把 "@" 前那截
+// 当成**模型名前缀**剥掉了，实际片段名只有 "Run01_Forward"（实测踩过）。
+var clipRun = pick(ki, "Run01_Forward");   // 跑步
+if (clipRun == null && ki.Count > 0)
+{
+    // 兜底：换素材时名字对不上是常事，这个 FBX 只含一个片段就直接拿它。
+    foreach (var kv in ki) { clipRun = kv.Value; break; }
+    sb.AppendLine("  [i] 按名字没命中，改用包内唯一片段: " + clipRun.name);
+}
 var clipDash = pick(ual1, "Roll");                // 翻滚（非 _RM 版本）
 var clipAtkA = pick(ual2, "Sword_Regular_A");
 var clipAtkARec = pick(ual2, "Sword_Regular_A_Rec");

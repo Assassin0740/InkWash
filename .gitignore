@@ -79,6 +79,9 @@ sysinfo.txt
 # ---------- 工程内部数据 ----------
 .workbuddy/
 
+# 诊断脚本的 scratch 目录。产物请落到 Tools/reports/（文本）或 Tools/screenshots/（图/视频）。
+/Tools/tmp/
+
 # ---------- 操作系统杂项 ----------
 .DS_Store
 Thumbs.db
