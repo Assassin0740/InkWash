@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "cn.tuanjie.codely.bridge": "1.0.81",
+    "com.kyrylokuzyk.primetween": "1.4.11",
     "com.unity.ai.navigation": "1.1.7",
     "com.unity.cinemachine": "2.10.7",
     "com.unity.collab-proxy": "2.12.4",
@@ -45,5 +46,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "npm",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.kyrylokuzyk"
+      ]
+    }
+  ]
 }

@@ -3,13 +3,29 @@
 var sb = new System.Text.StringBuilder();
 string[] paths = new string[]
 {
+    // 本轮新建 / 改写的自有脚本
     "Assets/_Project/Scripts/Player/PlayerController.cs",
+    "Assets/_Project/Scripts/Camera/ThirdPersonCamera.cs",
+    "Assets/_Project/Scripts/Effects/SwordVfx.cs",
     "Assets/_Project/Scripts/Utils/PlaytestHarness.cs",
+    "Assets/_Project/Scripts/Core/GameAudio.cs",
+    "Assets/_Project/Scripts/Core/AudioDirector.cs",
+    "Assets/_Project/Scripts/Core/AudioKitBootstrap.cs",
+    // 修正过 YAML 的第三方预制体，需要强制重导入才会重新解析
+    "Assets/ThirdParty/QFramework/Toolkits/UIKit/Scripts/Resources/UIRoot.prefab",
+    // 自研水墨刀光 Shader
+    "Assets/_Project/Shaders/InkSlash.shader",
 };
 
 sb.AppendLine("导入前 isCompiling = " + UnityEditor.EditorApplication.isCompiling);
 foreach (string p in paths)
 {
+    if (UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(p) == null
+        && !System.IO.File.Exists(p))
+    {
+        sb.AppendLine("[跳过] 不存在: " + p);
+        continue;
+    }
     UnityEditor.AssetDatabase.ImportAsset(p,
         UnityEditor.ImportAssetOptions.ForceUpdate
         | UnityEditor.ImportAssetOptions.ForceSynchronousImport);

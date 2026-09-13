@@ -10,6 +10,13 @@
       },
       "url": "https://packages.unity.cn"
     },
+    "com.kyrylokuzyk.primetween": {
+      "version": "1.4.11",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://registry.npmjs.org"
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.7",
       "depth": 0,

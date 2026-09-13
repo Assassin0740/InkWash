@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 626554547}
   - component: {fileID: 626554546}
   - component: {fileID: 626554550}
+  - component: {fileID: 626554551}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -437,11 +438,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 300
-  field of view: 45
+  near clip plane: 0.12
+  far clip plane: 5000
+  field of view: 48
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -465,8 +466,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626554545}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27563736, y: 0, z: 0, w: 0.9612617}
-  m_LocalPosition: {x: 0, y: 9, z: -13}
+  m_LocalRotation: {x: 0.31640247, y: 0.00000006321642, z: -0.000000021085071, w: 0.9486251}
+  m_LocalPosition: {x: 0, y: 10.5, z: -14.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -479,7 +480,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626554545}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
@@ -506,6 +507,41 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &626554551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626554545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff35c58a50d5c6145b67d2e211275c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 5938311609134222277}
+  pivotOffset: {x: 0, y: 1.42, z: 0}
+  distance: 4.3
+  yaw: 0
+  pitch: 14
+  pitchMin: -22
+  pitchMax: 55
+  mouseLookEnabled: 1
+  yawSensitivity: 3.2
+  pitchSensitivity: 2
+  lockCursorOnStart: 1
+  followDamp: 0.1
+  leadCompensation: 0.1
+  baseFov: 48
+  fovSpeedGain: 8
+  fovSpeedMax: 12
+  fovDamp: 0.15
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 3072
+  collisionRadius: 0.28
+  minDistance: 1.2
+  collisionDamp: 0.05
 --- !u!1 &666819299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,7 +1465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1191526305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,7 +1513,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191526304}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3502074, y: 0, z: 0, w: 0.9366722}
+  m_LocalRotation: {x: 0.31640244, y: 0.0000000632164, z: -0.000000021085064, w: 0.9486251}
   m_LocalPosition: {x: 0, y: 10.5, z: -14.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

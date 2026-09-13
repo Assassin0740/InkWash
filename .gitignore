@@ -60,13 +60,21 @@ sysinfo.txt
 # 各平台的冗余导出格式（GLB/glTF/blend/Unreal 法线），已移出 Assets
 /_RawDownloads/
 
+# QFramework 的生成目录：由 CodeGenKit 在运行时/编辑器里产出，
+# 且产出它的 QFramework 本身就在 /Assets/ThirdParty/ 里（不入库）。
+# 放进版本控制只会造成"克隆下来有个空壳目录"的困惑。
+/Assets/QFrameworkData/
+/Assets/QFrameworkData.meta
+
 # 第三方音频（BGM 等）虽在自有资源目录下，但许可同样禁止"以独立文件再分发"。
 # Pixabay Content License：可免费商用、免署名，但不得将素材本身作为独立文件再分发。
-# 若仓库是私有(private)可删掉下面两行；公开仓库请保留。
-/Assets/_Project/Audio/BGM/*.mp3
-/Assets/_Project/Audio/BGM/*.mp3.meta
-/Assets/_Project/Audio/BGM/*.wav
-/Assets/_Project/Audio/BGM/*.wav.meta
+# 若仓库是私有(private)可删掉下面这段；公开仓库请保留。
+# 注意：BGM 现已移到 Resources 下（AudioKit 靠 Resources.Load 取曲目），
+# 因此全新克隆会缺 BGM，需按 Docs/素材来源与授权清单.md 的链接重新下载。
+/Assets/_Project/Audio/**/BGM/*.mp3
+/Assets/_Project/Audio/**/BGM/*.mp3.meta
+/Assets/_Project/Audio/**/BGM/*.wav
+/Assets/_Project/Audio/**/BGM/*.wav.meta
 
 # ---------- 工程内部数据 ----------
 .workbuddy/

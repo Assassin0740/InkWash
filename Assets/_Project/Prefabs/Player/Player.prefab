@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4525460533489108174}
   - component: {fileID: 356976962332371829}
   - component: {fileID: 4259422993641270396}
+  - component: {fileID: 2483706807998641495}
+  - component: {fileID: 4642661093928065823}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -94,19 +96,99 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a468c70d8de050d43a205de31ce96178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5.5
-  runSpeed: 9
+  walkSpeed: 4.5
+  runSpeed: 7.2
   acceleration: 26
   deceleration: 34
   turnSpeedDeg: 900
-  dashSpeed: 18
-  dashDuration: 0.22
-  dashCooldown: 0.7
-  dashInvincibleWindow: 0.16
+  footSyncReferenceSpeed: 1.9
+  motionSpeedMin: 0.7
+  motionSpeedMax: 4.2
+  dashSpeed: 14
+  dashDuration: 0.32
+  dashCooldown: 0.55
+  dashInvincibleWindow: 0.2
+  comboLungeDistance:
+  - 1.2
+  - 1.5
+  - 2.6
+  comboLungeDuration:
+  - 0.22
+  - 0.24
+  - 0.42
+  comboSwingDuration:
+  - 0.43
+  - 0.53
+  - 1.43
+  comboHitTime:
+  - 0.15
+  - 0.18
+  - 0.4
+  comboRecCancelStart:
+  - 0.3
+  - 0.3
+  - 0.45
+  attackInputBuffer: 0.25
+  attackTurnScale: 0.25
   gravity: -24
   groundedStick: -3
   cameraTransform: {fileID: 0}
   animator: {fileID: 4525460533489108174}
+  cameraRig: {fileID: 0}
+--- !u!114 &2483706807998641495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18817eb143e51440bcd2c35b1270820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4259422993641270396}
+  bladeAnchor: {fileID: 0}
+  inkShader: {fileID: 4800000, guid: 6feba9f04ac3067488d382171e669422, type: 3}
+  flyingWhite: 0.35
+  bladeLocalOffset: {x: 0, y: 0.62, z: 0}
+  trailTime: 0.16
+  trailStartWidth: 0.34
+  trailEndWidth: 0.02
+  inkColor: {r: 0.06, g: 0.06, b: 0.08, a: 0.92}
+  inkFadeColor: {r: 0.06, g: 0.06, b: 0.08, a: 0}
+  enableArc: 1
+  arcRadius: 1.45
+  arcThickness: 0.85
+  arcSweepDeg: 130
+  arcLifetime: 0.26
+  arcTiltDeg: -28
+  arcHeight: 1.15
+  placeholderBlade: 1
+  bladeLength: 1.05
+  bladeWidth: 0.075
+  enableShake: 1
+  shakeAmplitude: 0.075
+  shakeDuration: 0.13
+--- !u!114 &4642661093928065823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5bcc8e163bd586448d9db0ac1dd3921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4259422993641270396}
+  playMusicOnStart: 1
+  musicClip: BGM/et11lx-chinese-ancient-style-music-love-etlx-247345
+  musicVolume: 0.45
+  enableSwingSfx: 1
+  swingVolume: 0.65
+  dashVolume: 0.55
 --- !u!1001 &5172333502793858178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -520,7 +602,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: b67d2a4786b38fa4d85de42c34566bea, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -90,6 +90,14 @@ def main():
 
     inner = (res or {}).get("data", {}) or {}
     payload = inner.get("data", inner) or {}
+
+    # 失败时必须显式报出来。否则桥只回一个 "无返回值"，
+    # 真正的原因（比如 CS1061 编译错）藏在 error 字段里，很容易看漏。
+    if not inner.get("success", True) or inner.get("error"):
+        print("\n--- 执行失败 ---")
+        print(inner.get("error") or inner.get("message") or "(无详情)")
+        return 1
+
     print("\n--- result ---")
     print(payload.get("result", "(无返回值)"))
     for line in payload.get("logs", []) or []:
