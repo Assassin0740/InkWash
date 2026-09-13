@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 """读 Unity Console，按「报错优先」的方式打印。
 
-桥返回的 JSON 嵌套层数不稳定（有时 data.data.logs，有时直接是数组），
-这里递归地把所有字符串日志项都挖出来，避免每次手写路径都写错。
+⚠ 重要：**Console 干净 ≠ 编译成功**。
+域重载（脚本重新编译）会把 Console 整个清空，编译错误也随之被冲掉 ——
+本机踩过一次：.cs 里有编译错误，编译失败，但本脚本报"控制台干净"，
+验收跑的还是上一次编译出来的程序集，报告里新加的字段一个都没出现。
+所以本脚本在读 Console 之后**额外查一次真正的编译状态**
+（EditorUtility.scriptCompilationFailed），失败会显著报出来。
 
 用法:
     python read_console.py [条数] [--all]
@@ -16,6 +20,31 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from unity_bridge import send_tcp_command  # noqa: E402
+
+# 查询真实编译状态。不要用 Console 判断编译成功与否（见文件头）。
+_COMPILE_PROBE = (
+    'var sb = new System.Text.StringBuilder();'
+    'sb.AppendLine("isCompiling=" + UnityEditor.EditorApplication.isCompiling);'
+    'sb.AppendLine("compilationFailed=" + UnityEditor.EditorUtility.scriptCompilationFailed);'
+    'return sb.ToString();'
+)
+
+
+def query_compile_status():
+    """返回 (是否编译失败, 原始文本)。桥不通时返回 (None, 原因)。"""
+    try:
+        res = send_tcp_command({"type": "execute_csharp_script",
+                                "params": {"script": _COMPILE_PROBE}}, timeout=20)
+    except Exception as e:  # noqa: BLE001
+        return None, "查询失败: %s" % e
+    texts = []
+    dig_logs(res, texts)
+    blob = " ".join(texts)
+    if "compilationFailed=True" in blob:
+        return True, blob
+    if "compilationFailed=False" in blob:
+        return False, blob
+    return None, blob or "(无返回)"
 
 
 def dig_logs(node, out):
@@ -92,6 +121,18 @@ def main():
         print("\n--- 其他 ---")
         for l in info[-20:]:
             print(l)
+
+    # Console 干净 ≠ 编译成功（域重载会清空 Console）。这里独立查一次真实状态。
+    failed, detail = query_compile_status()
+    print()
+    if failed is True:
+        print("!!! 脚本编译失败（scriptCompilationFailed=True）——"
+              " 当前跑的是上一次成功编译的程序集，改动不会生效 !!!")
+        print("    去 Editor.log 里找 'error CS'，或直接看 Unity 的 Console 面板。")
+    elif failed is False:
+        print("编译状态：正常（scriptCompilationFailed=False）")
+    else:
+        print("编译状态：查不到（%s）" % detail)
 
 
 if __name__ == "__main__":

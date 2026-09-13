@@ -1,0 +1,40 @@
+========== A. Run 落地相细扫（121 点）==========
+
+[Idle] 无IK  bodyPosition=(0.0000, 1.0341, -3.0000)
+  细扫最低 0.1159 出现在 nt=0.000
+  每 0.1nt 剖面: 0.00:0.116  0.08:0.117  0.17:0.118  0.25:0.120  0.33:0.121  0.42:0.122  0.50:0.123  0.58:0.122  0.67:0.121  0.75:0.119  0.83:0.118  0.92:0.116  1.00:0.116
+  贴地后最低 0.0030 出现在 nt=0.000   (FootIK bodyPosition=(0.0000, 0.9212, -3.0000))
+
+[Run] 无IK  bodyPosition=(0.0000, 1.0983, -3.0000)
+  细扫最低 0.1626 出现在 nt=0.058
+  每 0.1nt 剖面: 0.00:0.188  0.08:0.173  0.17:0.218  0.25:0.227  0.33:0.219  0.42:0.202  0.50:0.187  0.58:0.172  0.67:0.218  0.75:0.227  0.83:0.226  0.92:0.201  1.00:0.188
+  贴地后最低 0.0933 出现在 nt=0.058   (FootIK bodyPosition=(0.0000, 1.0290, -3.0000))
+
+[Walk] 无IK  bodyPosition=(0.0000, 1.0221, -3.0000)
+  细扫最低 0.0798 出现在 nt=0.450
+  每 0.1nt 剖面: 0.00:0.089  0.08:0.126  0.17:0.138  0.25:0.099  0.33:0.092  0.42:0.096  0.50:0.089  0.58:0.126  0.67:0.138  0.75:0.099  0.83:0.092  0.92:0.096  1.00:0.089
+  贴地后最低 0.0065 出现在 nt=0.450   (FootIK bodyPosition=(0.0000, 0.9488, -3.0000))
+
+========== B. 三段连击打点（每 0.1s 补按一次攻击）==========
+  t= 0.000  片段=Idle_A                             nt=0.007  段位=0 窗口=关 阶段=Locomotion
+  t= 0.004  片段=Idle_A                             nt=0.011  段位=1 窗口=关 阶段=Attack
+  t= 0.064  片段=Melee_1H_Attack_Slice_Diagonal     nt=0.060  段位=1 窗口=关 阶段=Attack
+  t= 0.935  片段=Slice_Diagonal_Rec                 nt=0.269  段位=1 窗口=关 阶段=Attack
+  t= 0.951  片段=Slice_Diagonal_Rec                 nt=0.321  段位=1 窗口=开 阶段=Attack
+  t= 0.954  片段=Slice_Diagonal_Rec                 nt=0.334  段位=2 窗口=关 阶段=Attack
+  t= 1.271  片段=Idle_A                             nt=0.152  段位=2 窗口=关 阶段=Attack
+  t= 1.275  片段=Idle_A                             nt=0.155  段位=0 窗口=关 阶段=Locomotion
+  t= 1.281  片段=Idle_A                             nt=0.161  段位=1 窗口=关 阶段=Attack
+  t= 1.341  片段=Melee_1H_Attack_Slice_Diagonal     nt=0.061  段位=1 窗口=关 阶段=Attack
+  t= 2.211  片段=Slice_Diagonal_Rec                 nt=0.269  段位=1 窗口=关 阶段=Attack
+  t= 2.228  片段=Slice_Diagonal_Rec                 nt=0.326  段位=1 窗口=开 阶段=Attack
+  t= 2.232  片段=Slice_Diagonal_Rec                 nt=0.339  段位=2 窗口=关 阶段=Attack
+  t= 2.284  片段=Melee_1H_Attack_Slice_Horizontal   nt=0.046  段位=2 窗口=关 阶段=Attack
+  t= 3.466  片段=Slice_Horizontal_Rec               nt=0.203  段位=2 窗口=关 阶段=Attack
+  t= 3.510  片段=Slice_Horizontal_Rec               nt=0.311  段位=2 窗口=开 阶段=Attack
+  t= 3.514  片段=Slice_Horizontal_Rec               nt=0.322  段位=3 窗口=关 阶段=Attack
+  t= 3.893  片段=Idle_A                             nt=0.152  段位=3 窗口=关 阶段=Attack
+  t= 3.897  片段=Idle_A                             nt=0.156  段位=0 窗口=关 阶段=Locomotion
+  t= 3.902  片段=Idle_A                             nt=0.160  段位=1 窗口=关 阶段=Attack
+  t= 3.963  片段=Melee_1H_Attack_Slice_Diagonal     nt=0.061  段位=1 窗口=关 阶段=Attack
+  最终段位 = 1

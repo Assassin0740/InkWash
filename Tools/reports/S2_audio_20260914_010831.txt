@@ -1,5 +1,5 @@
 ﻿Sprint 2 音频链路冒烟测试
-生成时间: 2026-09-14 01:17:26
+生成时间: 2026-09-14 01:08:30
 判据: 验证 AudioKit 的运行时产物（AudioSource / clip / isPlaying），而不是「没报错」。
 
 -- 1) 资源可加载（Resources.Load，与 AudioKit 默认加载器同路径） --
@@ -11,7 +11,7 @@
 
 -- 3) 音量 / 静音开关 --
   [通过] SfxVolume=1 时 AudioSource.volume ≈ 1   volume 1.000，pitch 1.000
-  [通过] SfxEnabled=false 时不产生播放   静音前后在播数量 1 → 1
+  [通过] SfxEnabled=false 时不产生播放   静音前后在播数量 0 → 0
 
 -- 4) BGM --
   [通过] BGM 在循环播放   clip et11lx-chinese-ancient-style-music-love-etlx-247345 loop=True

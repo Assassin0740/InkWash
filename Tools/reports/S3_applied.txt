@@ -1,0 +1,24 @@
+=== 场景实例实际生效值 ===
+walkSpeed    = 1
+runSpeed     = 4
+walkRefSpeed = 0.69
+runRefSpeed  = 3.03
+dashDuration = 0.4
+comboSwingDuration = [1, 1.367, 1.6]
+Visual.localPosition = (0.0000, 0.0880, 0.0000)
+Animator.avatar = Rogue_HoodedAvatar   isHuman=True
+
+FootIK.stateOffsets:
+  Idle       -0.1129
+  Walk       -0.0733
+  Run        -0.1600
+  Dash       -0.0908
+  Atk1       -0.1069
+  Atk1Rec    -0.1122
+  Atk2       -0.0927
+  Atk2Rec    -0.1117
+  Atk3       -0.1049
+FootIK.noGroundFixStates = [Dash]
+
+当前 layer0 状态：
+  shortNameHash = 2081823275  length = 1.067s

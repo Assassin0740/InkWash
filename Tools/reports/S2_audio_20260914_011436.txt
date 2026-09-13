@@ -1,5 +1,5 @@
 ﻿Sprint 2 音频链路冒烟测试
-生成时间: 2026-09-14 01:17:26
+生成时间: 2026-09-14 01:14:36
 判据: 验证 AudioKit 的运行时产物（AudioSource / clip / isPlaying），而不是「没报错」。
 
 -- 1) 资源可加载（Resources.Load，与 AudioKit 默认加载器同路径） --

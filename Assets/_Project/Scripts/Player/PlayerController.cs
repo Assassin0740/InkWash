@@ -38,13 +38,16 @@ namespace InkWash.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("移动")]
-        [Tooltip("走路速度（米/秒）。对应动画 Walk（UAL1 Walk_Loop）")]
-        public float walkSpeed = 2.2f;
+        [Tooltip("走路速度（米/秒）。对应动画 Walk（KayKit Walking_A）\n" +
+                 "Walking_A 原生地面速度只有 0.69 m/s，取 1.0 已经是 1.45× —— 再快腿就倒腾得不像走路了。\n" +
+                 "上限由验收的步频断言把关（≤ 3.0 步/秒）。")]
+        public float walkSpeed = 1.0f;
 
-        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（Kevin Iglesias Run01_Forward）\n" +
-                 "默认值必须与预制体上的序列化值一致（4.2）。曾经默认写 5.6、预制体是 4.2，\n" +
+        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（KayKit Running_A）\n" +
+                 "Running_A 原生 3.03 m/s，取 4.0 → 1.32× → 步频 3.30 步/秒，落在真人跑步区间。\n" +
+                 "默认值必须与预制体上的序列化值一致（4.0）。曾经默认 5.6、预制体 4.2，\n" +
                  "两边不一致很容易让人误判\"实际生效的是哪个\"。")]
-        public float runSpeed = 4.2f;
+        public float runSpeed = 4.0f;
 
         [Tooltip("走路 -> 跑步 的切换阈值（按期望速度）。动画状态机用它切 Walk/Run 状态")]
         public float runAnimEnterSpeed = 3.0f;
@@ -62,44 +65,46 @@ namespace InkWash.Player
         public float turnSpeedDeg = 900f;
 
         [Header("步伐同步（消除脚滑）")]
-        // 上一版只有一段「抱物走」可当移动动画，走路和跑步都靠调它的播放速度硬撑
-        // （跑步要 3.79 倍），所以脚步永远对不上位移。本版两段各配自己的片段与参考速度。
+        // 此前三套来源（UAL1 移动 / UAL2 攻击 / KiAnim 跑步）靠 Humanoid 重定向黏合，
+        // 髋高基准天然不一致、步子长度也对不上，只能靠改播放倍率硬凑，怎么调都有一处滑步。
+        // 现在模型与动画出自 KayKit 的**同一套 Rig_Medium 骨架**，重定向是恒等变换，
+        // 参考速度可以直接取素材的原生地面速度，倍率贴着 1.0 就能对上。
         //
         // 注意「播放倍率落在 1.0~1.8 是健康的」这个旧结论是错的：倍率只说明片段被拉伸多少，
         // 真正的观感指标是**步频**（2 步 / 片段时长 × 倍率）。1.8 倍摊到一段 0.93s 的慢跑上
         // 就是 3.9 步/秒，已经超过真人冲刺；腿看起来自然与否看的是这个数，
         // 验收里的「疾跑步频」断言现在就是这么算的。
-        // 参考值用 Tools/cs/s2_probe_refspeed.cs 实测标定：锁住接触点，只取「竖直速度≈0」
+        // 参考值用 Tools/cs/s3_probe_refspeed_kaykit.cs 实测标定：锁住接触点，只取「竖直速度≈0」
         // （真正踩在地上）的帧，量它相对角色根节点的水平后移速度。
-        // 该方法在 Walk_Loop 上做了交叉验证：算出 1.15 m/s、单步 0.77m，与真人走路一致。
+        // 实测：Walking_A 0.69 m/s（步频 1.88）、Running_A 3.03 m/s（步频 2.50）。
         //
-        // 注意：Walk_Loop 实测原生只有 1.15 m/s，而 walkSpeed = 2.2 m/s 本身就超出素材设计范围。
-        // 这里**故意保留 1.55**：宁可让脚有一点滑步，也不让腿的周期被压得太短
-        // （取 1.15 的话步频会变成 1.91×）。要根治只能降 walkSpeed，见 Docs 待办。
-        [Tooltip("走路片段（Walk_Loop）自身的地面速度参考值（米/秒）。实测 1.15，这里按 1.55 保守取")]
-        public float walkRefSpeed = 1.55f;
+        // 关键：参考速度是**片段自身的属性**，换片段必须重量。旧值 1.55 / 4.49 是给
+        // UAL1 Walk_Loop 与 Kevin Iglesias Run01_Forward 标的，套在 KayKit 上会让脚后滑。
+        [Tooltip("走路片段（KayKit Walking_A）自身的地面速度参考值（米/秒）。实测 0.69")]
+        public float walkRefSpeed = 0.69f;
 
-        [Tooltip("跑步片段（Kevin Iglesias Run01_Forward）自身的地面速度参考值（米/秒）。\n" +
-                 "换片段后必须重量：Tools/cs/s2_probe_refspeed_ki.cs 实测 4.49（单步 1.35m、200 步/分）。\n" +
-                 "取这个值 → 倍率 4.2/4.49 = 0.94×，脚不再打滑，步频 3.1 步/秒落在正常跑步区间。\n" +
-                 "（旧值 3.70 是给 Quaternius Sprint_Loop 标的，套在新片段上会让脚后滑 ≈0.9 m/s。）")]
-        public float runRefSpeed = 4.49f;
+        [Tooltip("跑步片段（KayKit Running_A）自身的地面速度参考值（米/秒）。\n" +
+                 "Tools/cs/s3_probe_refspeed_kaykit.cs 实测 3.03（单步 1.21m、150 步/分）。\n" +
+                 "取这个值 → 倍率 4.0/3.03 = 1.32×，脚不再打滑，步频 3.30 步/秒落在正常跑步区间。")]
+        public float runRefSpeed = 3.03f;
 
         [Tooltip("播放速度下限，防止慢走时腿部僵住")]
         public float motionSpeedMin = 0.6f;
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
                  "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
-                 "当前：走路 2.2/1.55 = 1.42，跑步 4.2/4.49 = 0.94，上限取 2.2 留足余量。")]
+                 "当前：走路 1.0/0.69 = 1.45，跑步 4.0/3.03 = 1.32，上限取 2.2 留足余量。")]
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
         public float dashSpeed = 7.4f;
 
-        [Tooltip("冲刺持续时间。必须与 Dash 动画（UAL1 Roll，1.47s）对齐：\n" +
-                 "状态机里 Dash 状态的播放速度就是按 Roll.length / 本值 算出来的，\n" +
-                 "改这里要同步改 Tools/cs/s2_build_animator.cs 的 DashDuration，验收会核对。")]
-        public float dashDuration = 0.72f;
+        [Tooltip("冲刺持续时间。必须与 Dash 动画（KayKit Dodge_Forward，0.40s）对齐：\n" +
+                 "状态机里 Dash 状态的播放速度就是按 Dodge_Forward.length / 本值 算出来的，\n" +
+                 "取 0.40 时倍率正好 1.0×（动作按原速播）。改这里要同步改 " +
+                 "Tools/cs/s3_build_animator_kaykit.cs 的 DashDuration，验收会核对。\n" +
+                 "位移 ≈ 7.4 × 0.40 × 0.85 ≈ 2.5m，仍满足「冲刺产生显著位移（> 2m）」的断言。")]
+        public float dashDuration = 0.40f;
 
         public float dashCooldown = 0.55f;
 
@@ -113,8 +118,10 @@ namespace InkWash.Player
         [Tooltip("各段位移持续时长（秒）")]
         public float[] comboLungeDuration = { 0.22f, 0.24f, 0.42f };
 
-        [Tooltip("各段挥砍动作总时长（秒），与 Player.controller 里的状态时长一致")]
-        public float[] comboSwingDuration = { 0.43f, 0.53f, 1.43f };
+        [Tooltip("各段挥砍动作总时长（秒），与 Player.controller 里的状态时长一致。\n" +
+                 "KayKit 的单手攻击是自包含片段（起手+挥砍+收招一体），这里取片段原长：\n" +
+                 "Slice_Diagonal 1.000 / Slice_Horizontal 1.367 / Stab 1.600")]
+        public float[] comboSwingDuration = { 1.0f, 1.367f, 1.6f };
 
         [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏")]
         public float[] comboHitTime = { 0.15f, 0.18f, 0.4f };

@@ -270,8 +270,15 @@ namespace InkWash.Utils
             public SwordVfx vfx;
             public GameObject playerGo;
             public int upperLayerIndex = 1;
-            /// <summary>躯干倾角用的两根骨骼（髋、胸）。没有它们就没法量化「仰着身子走」。</summary>
+            /// <summary>躯干倾角用的两根骨骼（髋、胸/头）。没有它们就没法量化「仰着身子走」。</summary>
             public Transform hips, chest;
+            /// <summary>
+            /// 躯干倾角**测量可用**。骨头解析失败时 TorsoLeanDeg 只能返回 0，
+            /// 而断言是「&gt; -8°」—— 0 会无条件通过，于是测量死了却依然报"通过"。
+            /// 换了 KayKit 骨架后就踩到过这个坑（Rig_Medium 没有 chest 骨），
+            /// 所以断言必须一并看这个标志位，不可用就判失败而不是假通过。
+            /// </summary>
+            public bool torsoLeanAvailable;
         }
 
         // ==================================================================
@@ -772,8 +779,9 @@ namespace InkWash.Utils
             if (walk != null)
             {
                 check("[B 步行] 躯干不后仰（倾角 > -8°，正=前倾 / 负=后仰）",
-                    walk.torsoLeanAvg > -8f,
-                    "平均 " + F(walk.torsoLeanAvg) + "°  区间["
+                    ctx.torsoLeanAvailable && walk.torsoLeanAvg > -8f,
+                    (ctx.torsoLeanAvailable ? "" : "[测量不可用：髋/胸骨未解析到] ")
+                    + "平均 " + F(walk.torsoLeanAvg) + "°  区间["
                     + F(walk.torsoLeanMin) + "~" + F(walk.torsoLeanMax) + "]°");
                 check("[B 步行] 走的是 Walk 状态（不再拿「抱物走 Move」当走路）",
                     walk.animStateSet.Contains("Walk"),
@@ -785,8 +793,9 @@ namespace InkWash.Utils
                     runC.animStateSet.Contains("Run"),
                     "本阶段动画状态集合: " + (runC.animStateSet.Length > 0 ? runC.animStateSet : "(空)"));
                 check("[C 疾跑] 躯干不后仰（倾角 > -8°）",
-                    runC.torsoLeanAvg > -8f,
-                    "平均 " + F(runC.torsoLeanAvg) + "°  区间["
+                    ctx.torsoLeanAvailable && runC.torsoLeanAvg > -8f,
+                    (ctx.torsoLeanAvailable ? "" : "[测量不可用：髋/胸骨未解析到] ")
+                    + "平均 " + F(runC.torsoLeanAvg) + "°  区间["
                     + F(runC.torsoLeanMin) + "~" + F(runC.torsoLeanMax) + "]°");
             }
             if (combo != null)
@@ -1497,12 +1506,16 @@ namespace InkWash.Utils
 
             var w = FindPose(rows, "Walk");
             if (w != null)
-                chk("问题 1 走路片段躯干不后仰（平均倾角 > -8°）", w.leanAvg > -8f,
-                    "Walk 平均 " + F(w.leanAvg) + "°  区间[" + F(w.leanMin) + "~" + F(w.leanMax) + "]°");
+                chk("问题 1 走路片段躯干不后仰（平均倾角 > -8°）",
+                    ctx.torsoLeanAvailable && w.leanAvg > -8f,
+                    (ctx.torsoLeanAvailable ? "" : "[测量不可用：髋/胸骨未解析到] ")
+                    + "Walk 平均 " + F(w.leanAvg) + "°  区间[" + F(w.leanMin) + "~" + F(w.leanMax) + "]°");
             var rr = FindPose(rows, "Run");
             if (rr != null)
-                chk("问题 1/3 跑步片段躯干不后仰（平均倾角 > -8°）", rr.leanAvg > -8f,
-                    "Run 平均 " + F(rr.leanAvg) + "°  区间[" + F(rr.leanMin) + "~" + F(rr.leanMax) + "]°");
+                chk("问题 1/3 跑步片段躯干不后仰（平均倾角 > -8°）",
+                    ctx.torsoLeanAvailable && rr.leanAvg > -8f,
+                    (ctx.torsoLeanAvailable ? "" : "[测量不可用：髋/胸骨未解析到] ")
+                    + "Run 平均 " + F(rr.leanAvg) + "°  区间[" + F(rr.leanMin) + "~" + F(rr.leanMax) + "]°");
 
             foreach (var r in rows)
                 if (r.state.StartsWith("Atk"))
@@ -2021,7 +2034,14 @@ namespace InkWash.Utils
             if (ctx.anim.isHuman)
             {
                 ctx.hips = ctx.anim.GetBoneTransform(HumanBodyBones.Hips);
+                // 降级链：KayKit 的 Rig_Medium 只有 hips/spine/head，**没有 chest**。
+                // 直接取 Chest 会拿到 null，TorsoLeanDeg 便恒返回 0（断言假通过）。
+                // 依次降到 UpperChest / Neck / Head —— 只要有一根在髋上方就能量躯干朝向。
                 ctx.chest = ctx.anim.GetBoneTransform(HumanBodyBones.Chest);
+                if (ctx.chest == null) ctx.chest = ctx.anim.GetBoneTransform(HumanBodyBones.UpperChest);
+                if (ctx.chest == null) ctx.chest = ctx.anim.GetBoneTransform(HumanBodyBones.Neck);
+                if (ctx.chest == null) ctx.chest = ctx.anim.GetBoneTransform(HumanBodyBones.Head);
+                ctx.torsoLeanAvailable = ctx.hips != null && ctx.chest != null;
             }
             return ctx;
         }
