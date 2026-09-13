@@ -1,0 +1,59 @@
+# ---------- Unity 生成目录（体积巨大，必须排除） ----------
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Uu]serSettings/
+
+# ---------- 资产元数据：只在对应资产被忽略时才忽略 meta ----------
+!/[Aa]ssets/**/*.meta
+
+# ---------- IDE / 编辑器工程文件 ----------
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity 生成的 meta
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# 崩溃日志
+sysinfo.txt
+
+# ---------- 构建产物 ----------
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Addressables 打包产物
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ---------- 工程内部数据 ----------
+.workbuddy/
+
+# ---------- 操作系统杂项 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
