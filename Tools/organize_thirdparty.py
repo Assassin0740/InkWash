@@ -51,6 +51,47 @@ MOVE_OUT = [
      "Quaternius/UniversalAnimationLibrary2/_GodotUnreal"),
     ("Universal Animation Library 2[Standard]/Female Mannequin/Unreal-Godot",
      "Quaternius/UniversalAnimationLibrary2/_GodotUnreal_Mannequin"),
+
+    # ---- 第二批：Stylized Nature MegaKit ----
+    # 该包**没有包名外壳**（解压后直接是 FBX/ OBJ/ glTF/ Textures/），已在解压时补壳。
+    # glTF：47.5 MB，含 .bin/.gltf，Unity 不原生认
+    ("Stylized Nature MegaKit[Standard]/glTF",
+     "Quaternius/StylizedNatureMegaKit/_GodotUnreal-glTF"),
+    # OBJ：13.0 MB，与 FBX 重复（Unity 用 FBX 更稳），且含 .mtl
+    ("Stylized Nature MegaKit[Standard]/OBJ",
+     "Quaternius/StylizedNatureMegaKit/_OBJ"),
+    # 裸 FBX：与 `FBX (Unity)` 同名同数（68 个），后者才是对齐 Unity 轴/单位的版本
+    ("Stylized Nature MegaKit[Standard]/FBX",
+     "Quaternius/StylizedNatureMegaKit/_FBX-plain"),
+]
+
+# ---- 第二批之二：Ultimate Monsters / Universal Base Characters ----
+# Ultimate Monsters 结构重复度高（Big|Blob|Flying × Blends|glTF|OBJ），用循环生成，
+# 避免手写 9 条同类项出错。注意 Blends/ 里有 50 个 .blend，本机无 Blender，留在 Assets 会持续报错。
+for _grp in ("Big", "Blob", "Flying"):
+    for _fmt in ("Blends", "glTF", "OBJ"):
+        MOVE_OUT.append((f"Ultimate Monsters/{_grp}/{_fmt}",
+                         f"Quaternius/UltimateMonsters/_{_fmt}_{_grp}"))
+
+MOVE_OUT += [
+    # UBC：glTF 目录（含 .bin，且整份复制了贴图）Unity 不原生认
+    ("Universal Base Characters[Standard]/Base Characters/Godot - UE",
+     "Quaternius/UniversalBaseCharacters/_GodotUE"),
+    # UBC 发型：Unreal 版 FBX（轴向不同）+ 两套 glTF
+    ("Universal Base Characters[Standard]/Hairstyles/Origin at 0/FBX (Unreal Engine)",
+     "Quaternius/UniversalBaseCharacters/_Hair_UnrealFBX"),
+    ("Universal Base Characters[Standard]/Hairstyles/Origin at 0/glTF (Godot)",
+     "Quaternius/UniversalBaseCharacters/_Hair_glTF_OriginAt0"),
+    ("Universal Base Characters[Standard]/Hairstyles/Rigged to Head Bone/glTF (Godot -Unreal)",
+     "Quaternius/UniversalBaseCharacters/_Hair_glTF_Rigged"),
+]
+
+# ---------- Phase 1b：原始压缩包移出 Assets（Unity 用不到，且体积大）----------
+ZIP_OUT = [
+    ("Stylized Nature MegaKit[Standard].zip", "Zips/Stylized Nature MegaKit[Standard].zip"),
+    ("kenney_impact-sounds.zip", "Zips/kenney_impact-sounds.zip"),
+    ("Ultimate Monsters.zip", "Zips/Ultimate Monsters.zip"),
+    ("Universal Base Characters[Standard].zip", "Zips/Universal Base Characters[Standard].zip"),
 ]
 
 # 单个文件移出（会带上同名 .meta）
@@ -59,9 +100,16 @@ FILE_OUT = [
      "Quaternius/UniversalAnimationLibrary2/Mannequin_F.blend"),
 ]
 
-# ---------- Phase 2：字体进自有资源区 ----------
+# ---------- Phase 2：字体与自有音频进自有资源区 ----------
 FONT_MOVES = [
     ("MaShanZheng-Regular.ttf", os.path.join(ASSETS, "_Project", "Art", "Fonts", "MaShanZheng-Regular.ttf")),
+]
+
+# BGM 等自有音频：进 _Project/Audio/BGM。
+# 保留原始文件名 —— Pixabay 的下载名里带曲目 ID（-247345），是授权溯源的关键线索。
+AUDIO_MOVES = [
+    ("et11lx-chinese-ancient-style-music-love-etlx-247345.mp3",
+     os.path.join(ASSETS, "_Project", "Audio", "BGM", "et11lx-chinese-ancient-style-music-love-etlx-247345.mp3")),
 ]
 
 # ---------- Phase 3：整包进 ThirdParty ----------
@@ -69,8 +117,12 @@ PACK_MOVES = [
     ("Bestiary - Dungeon Monsters Kit[Standard]", "ThirdParty/Quaternius/Bestiary-DungeonMonsters"),
     ("Universal Animation Library 2[Standard]", "ThirdParty/Quaternius/UniversalAnimationLibrary2"),
     ("Modular Character Outfits - Fantasy[Standard]", "ThirdParty/Quaternius/ModularCharacterOutfits-Fantasy"),
+    ("Stylized Nature MegaKit[Standard]", "ThirdParty/Quaternius/StylizedNatureMegaKit"),
+    ("Ultimate Monsters", "ThirdParty/Quaternius/UltimateMonsters"),
+    ("Universal Base Characters[Standard]", "ThirdParty/Quaternius/UniversalBaseCharacters"),
     ("kenney_rpg-audio", "ThirdParty/Kenney/RPG-Audio"),
     ("kenney_ui-audio", "ThirdParty/Kenney/UI-Audio"),
+    ("kenney_impact-sounds", "ThirdParty/Kenney/Impact-Sounds"),
 ]
 
 # ---------- Phase 4：授权/预览复制到 Docs 留证 ----------
@@ -126,9 +178,18 @@ def main():
 
     log.append("")
     log.append("=" * 78)
-    log.append("Phase 2 · 字体归入自有资源区")
+    log.append("Phase 1b · 原始压缩包移出 Assets（Unity 用不到）")
+    log.append("=" * 78)
+    for s, d in ZIP_OUT:
+        total_out += move(os.path.join(SRC, s), os.path.join(RAW, d), apply, log)
+
+    log.append("")
+    log.append("=" * 78)
+    log.append("Phase 2 · 字体 / 自有音频归入自有资源区")
     log.append("=" * 78)
     for s, d in FONT_MOVES:
+        move(os.path.join(SRC, s), d, apply, log)
+    for s, d in AUDIO_MOVES:
         move(os.path.join(SRC, s), d, apply, log)
 
     log.append("")

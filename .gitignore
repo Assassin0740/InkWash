@@ -60,6 +60,14 @@ sysinfo.txt
 # 各平台的冗余导出格式（GLB/glTF/blend/Unreal 法线），已移出 Assets
 /_RawDownloads/
 
+# 第三方音频（BGM 等）虽在自有资源目录下，但许可同样禁止"以独立文件再分发"。
+# Pixabay Content License：可免费商用、免署名，但不得将素材本身作为独立文件再分发。
+# 若仓库是私有(private)可删掉下面两行；公开仓库请保留。
+/Assets/_Project/Audio/BGM/*.mp3
+/Assets/_Project/Audio/BGM/*.mp3.meta
+/Assets/_Project/Audio/BGM/*.wav
+/Assets/_Project/Audio/BGM/*.wav.meta
+
 # ---------- 工程内部数据 ----------
 .workbuddy/
 
