@@ -39,8 +39,10 @@ else
         + (pc.animator.runtimeAnimatorController != null ? pc.animator.runtimeAnimatorController.name : "null") + ")" : "null"));
     sb.AppendLine("  cameraRig   : " + (pc.cameraRig != null ? pc.cameraRig.gameObject.name : "null"));
     sb.AppendLine("  cameraXform : " + (pc.cameraTransform != null ? pc.cameraTransform.gameObject.name : "null"));
-    sb.AppendLine("  walkSpeed   : " + pc.walkSpeed + "   runSpeed: " + pc.runSpeed);
-    sb.AppendLine("  footSyncRef : " + pc.footSyncReferenceSpeed);
+    sb.AppendLine("  walkSpeed   : " + pc.walkSpeed + "   runSpeed: " + pc.runSpeed
+        + "   Walk<->Run 阈值: " + pc.runAnimExitSpeed + "~" + pc.runAnimEnterSpeed);
+    sb.AppendLine("  refSpeed    : 走 " + pc.walkRefSpeed + "  跑 " + pc.runRefSpeed
+        + "  播放速度上限 " + pc.motionSpeedMax);
     sb.AppendLine("  dashSpeed   : " + pc.dashSpeed + "  dashDuration: " + pc.dashDuration);
 }
 sb.AppendLine();

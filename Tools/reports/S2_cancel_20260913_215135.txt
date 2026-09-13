@@ -1,0 +1,18 @@
+﻿======================================================================
+取消窗口诊断（单次攻击 -> 后摇）
+生成时间 2026-09-13 21:51:32
+======================================================================
+comboRecCancelStart = 0.300, 0.300, 0.450
+attackInputBuffer   = 0.250 s
+Atk1/Atk2/Atk3 片段时长 = 0.430, 0.530, 1.430 s（逻辑侧）
+
+t= 0.000  状态=Idle     nt= 0.007  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+t= 0.008  状态=Idle     nt= 0.011  取消窗口=False  段位=1  阶段=Attack  AttackStateSeen=False
+t= 0.167  状态=Walk     nt= 0.163  取消窗口=False  段位=1  阶段=Attack  AttackStateSeen=False
+t= 0.318  状态=Run      nt= 0.167  取消窗口=False  段位=1  阶段=Attack  AttackStateSeen=False
+t= 0.353  状态=Run      nt= 0.197  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+t= 0.509  状态=Walk     nt= 0.096  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+t= 0.576  状态=Atk1     nt= 0.147  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+t= 0.963  状态=Atk1Rec  nt= 0.237  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+t= 1.335  状态=Idle     nt= 0.096  取消窗口=False  段位=0  阶段=Locomotion  AttackStateSeen=False
+(观察 2.601 s / 622 帧)

@@ -1,112 +1,140 @@
-// 重建 Player.controller：双图层 + 剑系攻击状态 + 步伐同步。
+// 重建 Player.controller（S2.1 修正版）。
 //
-// 设计要点（对应问题 1/2/5）：
-//  - 问题1「抱空气」：UAL2 没有普通走路循环，只能用 Walk_Carry_Loop（抱物走路的腿）。
-//    解法是加一层 UpperBody 用 AvatarMask 把上半身覆盖为 Idle_FoldArms_Loop —— 腿走路的、上半身是站姿。
-//  - 问题5「脚跟不上」：给 Move 状态启用 speedParameter = MotionSpeed，
-//    播放速度由代码按「实际速度 / 参考速度」推算，使步频与位移匹配。
-//  - 问题2「后摇长」：攻击拆成 挥砍(短) + 后摇(Rec) 两段，
-//    后摇段从 30% 处就开放取消窗口（可接下一段连击 / 冲刺 / 移动）。
+// 本轮要解决的 6 个问题里，有 4 个是**动画选型**造成的：
 //
-// ⚠ 本脚本会删除并重建 Player.controller，运行前请确认没有手工改动需要保留。
+//   问题1「走路仰着身子」+ 问题3「没有跑步动作」
+//       上一版用 UAL2 的 Walk_Carry_Loop 当走路（那是**抱重物**的走法：躯干后仰抵住重心），
+//       还拿它加速当跑步。UAL2 里根本没有正经走路循环，也没有任何跑步片段。
+//       本版改用 UAL1（CC0）的 Walk_Loop（走路）/ Jog_Fwd_Loop（跑步），并新增 Run 状态。
+//
+//   问题2「攻击第一下姿势很怪」
+//       上一版为了盖住「抱物」的上半身，加了一个 UpperBody 遮罩层，但那一层只有一个
+//       Idle_FoldArms 状态、**没有任何连线** —— 也就是任何时候上半身都被强制抱臂待机。
+//       攻击时基底层在打剑招、上半身却锁在抱臂姿势，于是出现拧麻花一样的怪姿势。
+//       本版**整个删掉这一层**：既然走路换成正经走路，就不需要遮罩了。
+//
+//   问题4「右键动作很奇怪」
+//       上一版 Dash 用的是 UAL2 Slide_Start（滑铲），还被压进 0.32s 播完，
+//       看起来像抽搐。本版改用 UAL1 的 Roll（翻滚），并把冲刺时长对齐到片段本身。
+//
+// 攻击仍用 UAL2 的 Sword_Regular_A/B/C（剑招是它的强项）。
+// 两套库同作者、同套「通用人形骨架」，Unity 走 Humanoid 重定向即可混用。
+//
+// ⚠ 本脚本会原地重建 Player.controller（保住 GUID，预制体引用不断）。
 var sb = new System.Text.StringBuilder();
 
 const string CtrlPath = "Assets/_Project/Animations/Player.controller";
-const string Fbx = "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx";
-const string MaskPath = "Assets/_Project/Animations/Mask_UpperBody.mask";
+const string FbxUAL2 = "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx";
+const string FbxUAL1 = "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx";
+
+// 冲刺时长：必须与 PlayerController.dashDuration 一致（验收会核对）
+const float DashDuration = 0.72f;
+// 走路 <-> 跑步的切换阈值（带迟滞，避免在阈值附近来回抖）
+const float RunEnterSpeed = 3.0f;
+const float RunExitSpeed = 2.5f;
+const float MoveEnterSpeed = 0.15f;
 
 // ------------------------------------------------------------------
-// 0. 取片段
+// 0. 载入两套库的片段（按 '|' 之后的名字建索引）
 // ------------------------------------------------------------------
-var clips = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
-foreach (var o in UnityEditor.AssetDatabase.LoadAllAssetsAtPath(Fbx))
+System.Action<string, System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>> load =
+    (path, dict) =>
 {
-    var c = o as UnityEngine.AnimationClip;
-    if (c == null || c.name.StartsWith("__preview__")) continue;
-    if (!clips.ContainsKey(c.name)) clips[c.name] = c;
-}
+    var assets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(path);
+    if (assets == null || assets.Length == 0)
+    {
+        sb.AppendLine("  [!] 载入失败（可能还在导入）：" + path);
+        return;
+    }
+    foreach (var o in assets)
+    {
+        var c = o as UnityEngine.AnimationClip;
+        if (c == null || c.name.StartsWith("__preview__")) continue;
+        string key = c.name;
+        int bar = key.LastIndexOf('|');
+        if (bar >= 0 && bar + 1 < key.Length) key = key.Substring(bar + 1);
+        if (!dict.ContainsKey(key)) dict[key] = c;
+    }
+    sb.AppendLine("  载入 " + dict.Count + " 个片段 <- " + path);
+};
 
-System.Func<string, UnityEngine.AnimationClip> C = name =>
+var ual2 = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
+var ual1 = new System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>();
+load(FbxUAL2, ual2);
+load(FbxUAL1, ual1);
+
+System.Func<System.Collections.Generic.Dictionary<string, UnityEngine.AnimationClip>, string,
+    UnityEngine.AnimationClip> pick = (dict, name) =>
 {
     UnityEngine.AnimationClip c;
-    if (clips.TryGetValue(name, out c)) return c;
+    if (dict.TryGetValue(name, out c)) return c;
     sb.AppendLine("  [!] 缺片段: " + name);
     return null;
 };
 
-var clipIdle = C("Armature|Idle_FoldArms_Loop");
-var clipWalk = C("Armature|Walk_Carry_Loop");
-var clipDash = C("Armature|Slide_Start");
-var clipAtkA = C("Armature|Sword_Regular_A");
-var clipAtkARec = C("Armature|Sword_Regular_A_Rec");
-var clipAtkB = C("Armature|Sword_Regular_B");
-var clipAtkBRec = C("Armature|Sword_Regular_B_Rec");
-var clipAtkC = C("Armature|Sword_Regular_C");
+var clipIdle = pick(ual1, "Sword_Idle");          // 持剑待机（比抱臂待机贴合战斗角色）
+var clipWalk = pick(ual1, "Walk_Loop");           // 正经走路
+var clipRun = pick(ual1, "Jog_Fwd_Loop");         // 跑步
+var clipDash = pick(ual1, "Roll");                // 翻滚（非 _RM 版本）
+var clipAtkA = pick(ual2, "Sword_Regular_A");
+var clipAtkARec = pick(ual2, "Sword_Regular_A_Rec");
+var clipAtkB = pick(ual2, "Sword_Regular_B");
+var clipAtkBRec = pick(ual2, "Sword_Regular_B_Rec");
+var clipAtkC = pick(ual2, "Sword_Regular_C");
 
-if (clipIdle == null || clipWalk == null || clipAtkA == null)
+if (clipIdle == null || clipWalk == null || clipRun == null || clipAtkA == null)
 {
-    sb.AppendLine("关键片段缺失，中止");
+    sb.AppendLine("关键片段缺失，中止（不修改现有控制器）");
     return sb.ToString();
 }
-sb.AppendLine("片段就位：Idle/Walk/Dash(" + (clipDash != null ? clipDash.name : "无") + ")/AtkA/AtkARec/AtkB/AtkBRec/AtkC");
 
 // ------------------------------------------------------------------
-// 1. 上半身遮罩：开启 躯干/头/双臂/手指，关闭 双腿/双脚/根
+// 1. 让 UAL1 的循环片段真的循环
+//    UAL1 的 FBX 里所有片段的 loopTime 都是关的（实测 isLooping=False），
+//    不打开的话走路会走一步就停在最后一帧。
 // ------------------------------------------------------------------
-var mask = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.AvatarMask>(MaskPath);
-if (mask == null)
+var imp1 = UnityEditor.AssetImporter.GetAtPath(FbxUAL1) as UnityEditor.ModelImporter;
+if (imp1 != null)
 {
-    mask = new UnityEngine.AvatarMask();
-    UnityEditor.AssetDatabase.CreateAsset(mask, MaskPath);
+    var defs = imp1.defaultClipAnimations;
+    int looped = 0;
+    foreach (var d in defs)
+    {
+        bool want = d.name.EndsWith("_Loop");
+        if (want && !d.loopTime) { d.loopTime = true; looped++; }
+    }
+    if (looped > 0)
+    {
+        imp1.clipAnimations = defs;
+        imp1.SaveAndReimport();
+        sb.AppendLine("已为 " + looped + " 个 UAL1 循环片段打开 loopTime 并重新导入");
+    }
+    else sb.AppendLine("UAL1 循环片段的 loopTime 已是开着的（或无需修改）");
 }
-for (int i = 0; i < (int)UnityEngine.AvatarMaskBodyPart.LastBodyPart; i++)
-    mask.SetHumanoidBodyPartActive((UnityEngine.AvatarMaskBodyPart)i, false);
-
-// 需要上半身来盖住「抱物」姿态的部件
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.Body, true);        // 髋/脊柱/胸/颈/肩
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.Head, true);
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.LeftArm, true);
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.RightArm, true);
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.LeftFingers, true);
-mask.SetHumanoidBodyPartActive(UnityEngine.AvatarMaskBodyPart.RightFingers, true);
-// 关闭：Root / LeftLeg / RightLeg / LeftFootIK / RightFootIK —— 腿留给下层走路用
-UnityEditor.EditorUtility.SetDirty(mask);
-sb.AppendLine("上半身遮罩: " + MaskPath + "（开 Body/Head/双臂/手指，关 双腿/双脚/Root）");
 
 // ------------------------------------------------------------------
-// 2. 建控制器（原地重建，保住 GUID —— 删了重建会让 Player 预制体的引用断掉）
+// 2. 原地重建控制器（保 GUID）
 // ------------------------------------------------------------------
 var ac = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(CtrlPath);
-if (ac == null)
-{
-    ac = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(CtrlPath);
-    sb.AppendLine("新建 Player.controller");
-}
-else
-{
-    string oldGuid = UnityEditor.AssetDatabase.AssetPathToGUID(CtrlPath);
+if (ac == null) return "[ERR] 找不到 " + CtrlPath;
 
-    // 清空转移与状态（顺序：先转移后状态，否则 RemoveState 可能失败）
-    for (int li = 0; li < ac.layers.Length; li++)
-    {
-        var smOld = ac.layers[li].stateMachine;
-        foreach (var cs in smOld.states)
-            foreach (var t in cs.state.transitions)
-                cs.state.RemoveTransition(t);
-        foreach (var t in smOld.anyStateTransitions)
-            smOld.RemoveAnyStateTransition(t);
-        foreach (var t in smOld.entryTransitions)
-            smOld.RemoveEntryTransition(t);
-        foreach (var cs in smOld.states)
-            smOld.RemoveState(cs.state);
-    }
-    // 删掉第 1 层及以后
-    for (int i = ac.layers.Length - 1; i >= 1; i--) ac.RemoveLayer(i);
-    // 清空参数
-    foreach (var p in ac.parameters) ac.RemoveParameter(p);
+string oldGuid = UnityEditor.AssetDatabase.AssetPathToGUID(CtrlPath);
 
-    sb.AppendLine("原地重建 Player.controller，GUID 保持 " + oldGuid);
+for (int li = 0; li < ac.layers.Length; li++)
+{
+    var smOld = ac.layers[li].stateMachine;
+    foreach (var cs in smOld.states)
+        foreach (var t in cs.state.transitions)
+            cs.state.RemoveTransition(t);
+    foreach (var t in smOld.anyStateTransitions) smOld.RemoveAnyStateTransition(t);
+    foreach (var t in smOld.entryTransitions) smOld.RemoveEntryTransition(t);
+    foreach (var cs in smOld.states) smOld.RemoveState(cs.state);
 }
+// 删掉第 1 层及以后 —— 本次重点：把 UpperBody 遮罩层彻底删掉
+int removedLayers = 0;
+for (int i = ac.layers.Length - 1; i >= 1; i--) { ac.RemoveLayer(i); removedLayers++; }
+foreach (var p in ac.parameters) ac.RemoveParameter(p);
+sb.AppendLine("原地重建 Player.controller（GUID " + oldGuid + "），删除附加层 " + removedLayers + " 个");
 
 // ---- 参数 ----
 ac.AddParameter("Speed", UnityEngine.AnimatorControllerParameterType.Float);
@@ -131,11 +159,16 @@ System.Func<string, UnityEngine.AnimationClip, float, UnityEditor.Animations.Ani
 };
 
 var stIdle = add("Idle", clipIdle, 1f);
-var stMove = add("Move", clipWalk, 1f);
-// 步伐同步：播放速度 = MotionSpeed（由 PlayerController 按实际速度推算）
-stMove.speedParameterActive = true;
-stMove.speedParameter = "MotionSpeed";
-var stDash = add("Dash", clipDash != null ? clipDash : clipIdle, 2.6f);
+var stWalk = add("Walk", clipWalk, 1f);
+stWalk.speedParameterActive = true;      // 步伐同步：播放速度 = MotionSpeed
+stWalk.speedParameter = "MotionSpeed";
+var stRun = add("Run", clipRun, 1f);
+stRun.speedParameterActive = true;
+stRun.speedParameter = "MotionSpeed";
+var stDash = add("Dash", clipDash != null ? clipDash : clipIdle, 1f);
+// 冲刺动画按「片段长度 / 冲刺时长」定速，播完正好等于冲刺结束 —— 不会再「挥着剑滑行」
+// 注意：AnimatorState.motion 的静态类型是 Motion（没有 length），要用 AnimationClip 变量取
+stDash.speed = clipDash != null ? Mathf.Max(0.01f, clipDash.length / DashDuration) : 1f;
 var stA1 = add("Atk1", clipAtkA, 1f);
 var stA1R = add("Atk1Rec", clipAtkARec != null ? clipAtkARec : clipAtkA, 2.8f);
 var stA2 = add("Atk2", clipAtkB != null ? clipAtkB : clipAtkA, 1f);
@@ -157,71 +190,66 @@ System.Func<UnityEditor.Animations.AnimatorState, UnityEditor.Animations.Animato
     return t;
 };
 
-System.Action<UnityEditor.Animations.AnimatorStateTransition, string, UnityEditor.Animations.AnimatorConditionMode, float> cond =
+System.Action<UnityEditor.Animations.AnimatorStateTransition, string,
+    UnityEditor.Animations.AnimatorConditionMode, float> cond =
     (t, p, mode, v) => { t.AddCondition(mode, v, p); };
 
-// 待机 <-> 移动
-var t1 = link(stIdle, stMove, false, 0f, 0.15f); cond(t1, "Speed", UnityEditor.Animations.AnimatorConditionMode.Greater, 0.15f);
-var t2 = link(stMove, stIdle, false, 0f, 0.20f); cond(t2, "Speed", UnityEditor.Animations.AnimatorConditionMode.Less, 0.15f);
+// —— 移动：Idle <-> Walk <-> Run（带迟滞）——
+UnityEditor.Animations.AnimatorConditionMode GT = UnityEditor.Animations.AnimatorConditionMode.Greater;
+UnityEditor.Animations.AnimatorConditionMode LT = UnityEditor.Animations.AnimatorConditionMode.Less;
+UnityEditor.Animations.AnimatorConditionMode IF = UnityEditor.Animations.AnimatorConditionMode.If;
 
-// 冲刺
-var t3 = link(stIdle, stDash, false, 0f, 0.08f); cond(t3, "Dash", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t4 = link(stMove, stDash, false, 0f, 0.08f); cond(t4, "Dash", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t5 = link(stDash, stIdle, true, 0.90f, 0.16f);
+var tIdleWalk = link(stIdle, stWalk, false, 0f, 0.15f); cond(tIdleWalk, "Speed", GT, MoveEnterSpeed);
+var tIdleRun = link(stIdle, stRun, false, 0f, 0.15f); cond(tIdleRun, "Speed", GT, RunEnterSpeed);
+var tWalkIdle = link(stWalk, stIdle, false, 0f, 0.20f); cond(tWalkIdle, "Speed", LT, MoveEnterSpeed);
+var tWalkRun = link(stWalk, stRun, false, 0f, 0.14f); cond(tWalkRun, "Speed", GT, RunEnterSpeed);
+var tRunWalk = link(stRun, stWalk, false, 0f, 0.18f); cond(tRunWalk, "Speed", LT, RunExitSpeed);
+var tRunIdle = link(stRun, stIdle, false, 0f, 0.22f); cond(tRunIdle, "Speed", LT, MoveEnterSpeed);
 
-// 起手攻击（从待机 / 移动 / 冲刺 都能接）
-var t6 = link(stIdle, stA1, false, 0f, 0.06f); cond(t6, "Attack1", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t7 = link(stMove, stA1, false, 0f, 0.06f); cond(t7, "Attack1", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t8 = link(stDash, stA1, true, 0.55f, 0.08f); cond(t8, "Attack1", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
+// —— 冲刺：Idle / Walk / Run 都能起 ——
+var tDash1 = link(stIdle, stDash, false, 0f, 0.08f); cond(tDash1, "Dash", IF, 0f);
+var tDash2 = link(stWalk, stDash, false, 0f, 0.08f); cond(tDash2, "Dash", IF, 0f);
+var tDash3 = link(stRun, stDash, false, 0f, 0.08f); cond(tDash3, "Dash", IF, 0f);
+var tDashOut = link(stDash, stIdle, true, 0.92f, 0.14f);
 
-// 第 1 段 -> 后摇
-var t9 = link(stA1, stA1R, true, 0.85f, 0.08f);
-// 后摇：开放取消窗口（30% 起可接下一段 / 冲刺；55% 起可接移动；85% 自然回待机）
-var t10 = link(stA1R, stA2, true, 0.30f, 0.06f); cond(t10, "Attack2", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t11 = link(stA1R, stIdle, true, 0.85f, 0.16f);
-var t12 = link(stA1R, stMove, true, 0.55f, 0.16f); cond(t12, "Speed", UnityEditor.Animations.AnimatorConditionMode.Greater, 0.15f);
-var t13 = link(stA1R, stDash, true, 0.30f, 0.08f); cond(t13, "Dash", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
+// —— 起手攻击（Idle / Walk / Run / 冲刺末段 都能接）——
+System.Action<UnityEditor.Animations.AnimatorState, float> toAtk1 =
+    (from, blend) => { var t = link(from, stA1, from == stDash, from == stDash ? 0.60f : 0f, blend); cond(t, "Attack1", IF, 0f); };
+toAtk1(stIdle, 0.06f);
+toAtk1(stWalk, 0.06f);
+toAtk1(stRun, 0.06f);
+toAtk1(stDash, 0.08f);
 
-// 第 2 段
-var t14 = link(stA2, stA2R, true, 0.85f, 0.08f);
-var t15 = link(stA2R, stA3, true, 0.30f, 0.06f); cond(t15, "Attack3", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
-var t16 = link(stA2R, stIdle, true, 0.85f, 0.16f);
-var t17 = link(stA2R, stMove, true, 0.55f, 0.16f); cond(t17, "Speed", UnityEditor.Animations.AnimatorConditionMode.Greater, 0.15f);
-var t18 = link(stA2R, stDash, true, 0.30f, 0.08f); cond(t18, "Dash", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
+// —— 第 1 段 -> 后摇；后摇开取消窗口 ——
+link(stA1, stA1R, true, 0.85f, 0.08f);
+var t10 = link(stA1R, stA2, true, 0.30f, 0.06f); cond(t10, "Attack2", IF, 0f);
+link(stA1R, stIdle, true, 0.85f, 0.16f);
+{ var t = link(stA1R, stWalk, true, 0.55f, 0.16f); cond(t, "Speed", GT, MoveEnterSpeed); }
+{ var t = link(stA1R, stRun, true, 0.55f, 0.16f); cond(t, "Speed", GT, RunEnterSpeed); }
+{ var t = link(stA1R, stDash, true, 0.30f, 0.08f); cond(t, "Dash", IF, 0f); }
 
-// 第 3 段（收招）：45% 起可闪避取消，70% 起可接移动，否则回待机
-var t19 = link(stA3, stIdle, true, 0.72f, 0.20f);
-var t20 = link(stA3, stMove, true, 0.70f, 0.20f); cond(t20, "Speed", UnityEditor.Animations.AnimatorConditionMode.Greater, 0.15f);
-var t21 = link(stA3, stDash, true, 0.45f, 0.10f); cond(t21, "Dash", UnityEditor.Animations.AnimatorConditionMode.If, 0f);
+// —— 第 2 段 ——
+link(stA2, stA2R, true, 0.85f, 0.08f);
+var t15 = link(stA2R, stA3, true, 0.30f, 0.06f); cond(t15, "Attack3", IF, 0f);
+link(stA2R, stIdle, true, 0.85f, 0.16f);
+{ var t = link(stA2R, stWalk, true, 0.55f, 0.16f); cond(t, "Speed", GT, MoveEnterSpeed); }
+{ var t = link(stA2R, stRun, true, 0.55f, 0.16f); cond(t, "Speed", GT, RunEnterSpeed); }
+{ var t = link(stA2R, stDash, true, 0.30f, 0.08f); cond(t, "Dash", IF, 0f); }
 
-// ---- 第 1 层：上半身覆盖（消除「抱空气」）----
-// 注意：AnimatorController.layers 是「结构体数组的副本」，改完必须写回，否则不生效。
-ac.AddLayer("UpperBody");
+// —— 第 3 段（收招）——
+link(stA3, stIdle, true, 0.72f, 0.20f);
+{ var t = link(stA3, stWalk, true, 0.70f, 0.20f); cond(t, "Speed", GT, MoveEnterSpeed); }
+{ var t = link(stA3, stRun, true, 0.70f, 0.20f); cond(t, "Speed", GT, RunEnterSpeed); }
+{ var t = link(stA3, stDash, true, 0.45f, 0.10f); cond(t, "Dash", IF, 0f); }
+
+// ---- 第 0 层开 IK Pass（FootIK 组件靠它拿到 OnAnimatorIK 回调）----
 var layersBuf = ac.layers;
-int upperIdx = layersBuf.Length - 1;
-
-var upper = layersBuf[upperIdx];
-upper.name = "UpperBody";
-upper.avatarMask = mask;
-upper.defaultWeight = 1f;
-upper.iKPass = false;
-// blendingMode 不显式设置：新增层默认即 Override，避免枚举命名空间踩坑；稍后复核打印确认。
-layersBuf[upperIdx] = upper;
-
-// 基础层权重务必为 1（旧控制器被误设为 0）
 var baseLayer = layersBuf[0];
 baseLayer.avatarMask = null;
 baseLayer.defaultWeight = 1f;
+baseLayer.iKPass = true;
 layersBuf[0] = baseLayer;
-
-ac.layers = layersBuf;   // 写回
-
-var smU = ac.layers[upperIdx].stateMachine;
-var stUpper = smU.AddState("UpperIdle");
-stUpper.motion = clipIdle;
-stUpper.speed = 1f;
-smU.defaultState = stUpper;
-sb.AppendLine("已建第 1 层 UpperBody（遮罩覆盖上半身）");
+ac.layers = layersBuf;
 
 UnityEditor.EditorUtility.SetDirty(ac);
 UnityEditor.AssetDatabase.SaveAssets();
@@ -231,31 +259,34 @@ UnityEditor.AssetDatabase.SaveAssets();
 // ------------------------------------------------------------------
 sb.AppendLine();
 sb.AppendLine("=== 复核 Player.controller ===");
-sb.AppendLine("控制层数: " + ac.layers.Length);
+sb.AppendLine("图层数: " + ac.layers.Length + "（本次设计只需要 1 层全身动作，遮罩层已删除）");
 foreach (var L in ac.layers)
-    sb.AppendLine("  " + L.name + "  权重=" + L.defaultWeight + "  遮罩=" + (L.avatarMask == null ? "(无)" : L.avatarMask.name)
-        + "  模式=" + L.blendingMode);
+    sb.AppendLine("  " + L.name + "  权重=" + L.defaultWeight
+        + "  遮罩=" + (L.avatarMask == null ? "(无)" : L.avatarMask.name)
+        + "  模式=" + L.blendingMode + "  IKPass=" + L.iKPass);
 sb.AppendLine("参数: " + string.Join(", ", System.Array.ConvertAll(ac.parameters, p => p.name + ":" + p.type)));
-sb.AppendLine("状态与时长（秒）:");
+sb.AppendLine();
+sb.AppendLine("状态（片段 / 速度 / 实际时长）:");
 foreach (var s in ac.layers[0].stateMachine.states)
 {
-    float len = 0f;
-    if (s.state.motion is UnityEngine.AnimationClip c) len = c.length / Mathf.Max(s.state.speed, 0.001f);
-    sb.AppendLine(string.Format("  {0,-9} 片段={1,-32} 速度倍率={2,-5} 实际时长≈{3:F2}s",
-        s.state.name,
-        (s.state.motion == null ? "(无)" : s.state.motion.name),
-        s.state.speedParameterActive ? ("参数:" + s.state.speedParameter) : s.state.speed.ToString("F2"),
-        s.state.speedParameterActive ? 0f : len));
+    var m = s.state.motion as UnityEngine.AnimationClip;
+    float spd = s.state.speedParameterActive ? -1f : s.state.speed;
+    float len = m == null ? 0f : (s.state.speedParameterActive ? 0f : m.length / Mathf.Max(spd, 0.001f));
+    sb.AppendLine(string.Format("  {0,-9} 片段={1,-34} 速度={2,-16} 时长≈{3}",
+        s.state.name, m == null ? "(无)" : m.name,
+        s.state.speedParameterActive ? ("参数:" + s.state.speedParameter) : spd.ToString("F2"),
+        s.state.speedParameterActive ? "由 MotionSpeed 决定" : (len.ToString("F2") + "s")));
 }
-sb.AppendLine("连线数: " + ac.layers[0].stateMachine.states.Length + " 状态 / 见下方明细");
+sb.AppendLine();
+sb.AppendLine("连线:");
 foreach (var s in ac.layers[0].stateMachine.states)
     foreach (var t in s.state.transitions)
     {
         var cs = new System.Collections.Generic.List<string>();
         foreach (var c in t.conditions) cs.Add(c.parameter + " " + c.mode + " " + c.threshold);
-        sb.AppendLine("   " + s.state.name + " -> " + t.destinationState.name
+        sb.AppendLine("  " + s.state.name + " -> " + t.destinationState.name
             + "  exitTime=" + (t.hasExitTime ? t.exitTime.ToString("F2") : "无")
-            + "  混合=" + t.duration + "  [" + string.Join(";", cs.ToArray()) + "]");
+            + "  [" + string.Join(";", cs.ToArray()) + "]");
     }
 
 return sb.ToString();

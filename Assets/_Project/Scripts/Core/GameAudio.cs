@@ -75,13 +75,14 @@ namespace InkWash.Core
         public static void PlayMusic(string clipName, bool loop = true, float volume = 1f)
         {
             if (string.IsNullOrEmpty(clipName)) return;
+            if (ReadySettings() == null) return;      // 音频没就绪 → 安静跳过，绝不抛异常
             AudioKitBootstrap.EnsureResourcesLoader();
             AudioKit.PlayMusic(clipName, loop, null, null, Mathf.Clamp01(volume));
         }
 
-        public static void StopMusic() => AudioKit.StopMusic();
-        public static void PauseMusic() => AudioKit.PauseMusic();
-        public static void ResumeMusic() => AudioKit.ResumeMusic();
+        public static void StopMusic() { if (ReadySettings() == null) return; AudioKit.StopMusic(); }
+        public static void PauseMusic() { if (ReadySettings() == null) return; AudioKit.PauseMusic(); }
+        public static void ResumeMusic() { if (ReadySettings() == null) return; AudioKit.ResumeMusic(); }
 
         // ------------------------------------------------------------------
         // 音效
@@ -96,7 +97,7 @@ namespace InkWash.Core
             AudioKit.PlaySound(clipName, false, null, Mathf.Clamp01(volume), Mathf.Max(0.01f, pitch));
         }
 
-        public static void StopAllSfx() => AudioKit.StopAllSound();
+        public static void StopAllSfx() { if (ReadySettings() == null) return; AudioKit.StopAllSound(); }
 
         /// <summary>
         /// 带随机音高的音效，避免连续同一段连击听起来像复读机。
@@ -113,26 +114,71 @@ namespace InkWash.Core
 
         public static float MusicVolume
         {
-            get => AudioKit.Settings.MusicVolume.Value;
-            set => AudioKit.Settings.MusicVolume.Value = Mathf.Clamp01(value);
+            get { var s = ReadySettings(); return s == null ? 0f : s.MusicVolume.Value; }
+            set { var s = ReadySettings(); if (s != null) s.MusicVolume.Value = Mathf.Clamp01(value); }
         }
 
         public static float SfxVolume
         {
-            get => AudioKit.Settings.SoundVolume.Value;
-            set => AudioKit.Settings.SoundVolume.Value = Mathf.Clamp01(value);
+            get { var s = ReadySettings(); return s == null ? 0f : s.SoundVolume.Value; }
+            set { var s = ReadySettings(); if (s != null) s.SoundVolume.Value = Mathf.Clamp01(value); }
         }
 
         public static bool MusicEnabled
         {
-            get => AudioKit.Settings.IsMusicOn.Value;
-            set => AudioKit.Settings.IsMusicOn.Value = value;
+            get { var s = ReadySettings(); return s != null && s.IsMusicOn.Value; }
+            set { var s = ReadySettings(); if (s != null) s.IsMusicOn.Value = value; }
         }
 
+        /// <summary>
+        /// 音效总开关。**注意**：拿不到设置时返回 false（静默降级），而不是抛异常 ——
+        /// 见 <see cref="ReadySettings"/> 里的说明：这个 getter 会在
+        /// `PlayerController.SwingStarted` 的多播里被调用，抛异常会把后面的
+        /// 刀光订阅者一起打断。
+        /// </summary>
         public static bool SfxEnabled
         {
-            get => AudioKit.Settings.IsSoundOn.Value;
-            set => AudioKit.Settings.IsSoundOn.Value = value;
+            get { var s = ReadySettings(); return s != null && s.IsSoundOn.Value; }
+            set { var s = ReadySettings(); if (s != null) s.IsSoundOn.Value = value; }
+        }
+
+        // ------------------------------------------------------------------
+        // 设置模型的安全访问
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// 取一个**已初始化**的设置模型；拿不到就返回 null，调用方静默降级。
+        ///
+        /// 为什么需要这层保护（真实踩过的坑）：
+        ///   `AudioKit` 的 `Architecture` 只在
+        ///   `[RuntimeInitializeOnLoadMethod(BeforeSceneLoad)]` 里初始化一次。
+        ///   编辑器里 Play 会话如果跨了脚本重载，静态字段会被重建成
+        ///   「对象在、但 `OnInit` 没跑」的半初始化状态 —— 实测
+        ///   `AudioKit.Settings.IsSoundOn == null`。此时直接读 `.Value`
+        ///   会抛 NullReferenceException，而它是在 `PlayerController.SwingStarted`
+        ///   **多播**里抛的：C# 多播遇到异常就中断，排在后面的订阅者
+        ///   （`SwordVfx` 的刀光 / 拖尾）**一次都收不到事件**，
+        ///   现象就是"攻击完全没有刀光"，而日志里只有一条和刀光无关的音频报错。
+        ///   音频是表现层，不该有权把玩法链路带崩，所以这里：
+        ///     ① 检测到未初始化就补跑一次 `OnInit`（幂等，重复调用只会重建几个
+        ///        PlayerPrefs 属性，不会重复注册监听）；
+        ///     ② 补不上就返回 null，让音频安静地不播。
+        /// </summary>
+        private static AudioKitSettingsModel ReadySettings()
+        {
+            AudioKitSettingsModel s;
+            try { s = AudioKit.Settings; }
+            catch (System.Exception) { return null; }   // Architecture 未初始化时连取都可能炸
+
+            if (s == null) return null;
+
+            if (s.IsSoundOn == null)
+            {
+                // 半初始化：OnInit 没跑。ICanInit 是 AbstractModel 显式实现的，要转接口调。
+                if (s is ICanInit init) init.Init();
+                if (s.IsSoundOn == null) return null;
+            }
+            return s;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using InkWash.Player;
 using InkWash.CameraRig;
@@ -77,6 +76,20 @@ namespace InkWash.Effects
         public float bladeLength = 1.05f;
         public float bladeWidth = 0.075f;
 
+        [Header("拖尾发射门控")]
+        // 问题：挥砍事件一到就开拖尾，可这时候刀还在抬手准备、几乎没速度，
+        // 于是"刀还没动，光先出来了"，看着像一条凭空出现又消失的黑线。
+        // 解法：按**刀刃线速度**门控 —— 抬刀阶段速度不够就不发射，等真正抡起来才出光；
+        // 收招速度掉下来就停，尾巴自然由 TrailRenderer.time 淡出。
+        [Tooltip("刀刃线速度超过本值才开始拖尾（米/秒）")]
+        public float trailMinSpeed = 3.0f;
+
+        [Tooltip("挥砍开始后的强制静默期（秒），跳过起手准备动作")]
+        public float trailStartDelay = 0.05f;
+
+        [Tooltip("已经在发射时，速度低于本值就停止（比进入阈值低，形成迟滞）")]
+        public float trailHoldMinSpeed = 1.6f;
+
         [Header("震屏")]
         public bool enableShake = true;
         public float shakeAmplitude = 0.075f;
@@ -110,16 +123,32 @@ namespace InkWash.Effects
         /// <summary>右手骨骼是否解析成功（拖尾挂点）。</summary>
         public bool HasBladeAnchor => bladeAnchor != null;
 
+        /// <summary>刀刃当前线速度（米/秒）。拖尾门控的输入量，也用于验收判定"出光时刀已经动了"。</summary>
+        public float BladeSpeed { get; private set; }
+
+        /// <summary>本段挥砍里，拖尾**第一次**真正开始发射时的刀刃速度。要求 ≥ trailMinSpeed。</summary>
+        public float EmitStartBladeSpeed { get; private set; } = -1f;
+
+        /// <summary>拖尾发射窗口被真正点亮的次数。</summary>
+        public int TrailEmitStartCount { get; private set; }
+
         // ---------------- 内部 ----------------
         private TrailRenderer _trail;
         private Material _inkMat;
         private Material _bladeMat;
         private Mesh _arcMesh;
         private Mesh _bladeMesh;
-        private Coroutine _emitRoutine;
         private ThirdPersonCamera _cam;
 
-        // 各段挥砍的拖尾发射时长（秒），与连击时长对应
+        // 拖尾发射窗口（由 Update 逐帧按刀刃速度开关，不再用协程定时）
+        private bool _emitWindowActive;
+        private float _emitWindowStart;
+        private float _emitWindowEnd;
+        private bool _emissionStartedThisSwing;
+        private Vector3 _lastBladePos;
+        private bool _hasLastBladePos;
+
+        // 各段挥砍的拖尾发射窗口时长（秒），与连击时长对应
         private static readonly float[] kEmitDuration = { 0.34f, 0.42f, 0.95f };
 
         /// <summary>
@@ -347,9 +376,12 @@ namespace InkWash.Effects
             SwingCount++;
             if (_trail == null) return;
 
-            if (_emitRoutine != null) StopCoroutine(_emitRoutine);
             float dur = kEmitDuration[Mathf.Clamp(step - 1, 0, kEmitDuration.Length - 1)];
-            _emitRoutine = StartCoroutine(EmitFor(dur));
+            _emitWindowActive = true;
+            _emitWindowStart = Time.time + Mathf.Max(0f, trailStartDelay);
+            _emitWindowEnd = Time.time + dur;
+            _emissionStartedThisSwing = false;
+            EmitStartBladeSpeed = -1f;
 
             if (enableArc && _arcMesh != null && _inkMat != null) SpawnArc(step);
         }
@@ -365,13 +397,65 @@ namespace InkWash.Effects
             }
         }
 
-        private IEnumerator EmitFor(float seconds)
+        /// <summary>
+        /// 逐帧测刀刃线速度 + 按速度门控拖尾开关。
+        /// 用 Update 而不是协程定时，是因为门控判据依赖"这一帧刀动得多快"，
+        /// 协程里的 WaitForSeconds 拿不到这个量，只能盲开盲关。
+        /// </summary>
+        private void Update()
         {
-            _trail.Clear();
-            _trail.emitting = true;
-            yield return new WaitForSeconds(seconds);
-            _trail.emitting = false;
-            _emitRoutine = null;
+            UpdateBladeSpeed();
+            UpdateTrailGate();
+        }
+
+        private void UpdateBladeSpeed()
+        {
+            if (_trail == null) { BladeSpeed = 0f; return; }
+
+            Vector3 p = _trail.transform.position;
+            float dt = Mathf.Max(Time.deltaTime, 1e-5f);
+            BladeSpeed = _hasLastBladePos ? Vector3.Distance(p, _lastBladePos) / dt : 0f;
+            _lastBladePos = p;
+            _hasLastBladePos = true;
+        }
+
+        private void UpdateTrailGate()
+        {
+            if (!_emitWindowActive) return;
+
+            if (_trail == null) { _emitWindowActive = false; return; }
+
+            // 窗口结束：关掉发射，剩下的顶点交给 TrailRenderer.time 自然淡出
+            if (Time.time > _emitWindowEnd)
+            {
+                _emitWindowActive = false;
+                _trail.emitting = false;
+                return;
+            }
+
+            // 起手静默期：抬手准备阶段一律不出光
+            if (Time.time < _emitWindowStart)
+            {
+                _trail.emitting = false;
+                return;
+            }
+
+            // 迟滞：进入要 trailMinSpeed，已在发射只需维持 trailHoldMinSpeed
+            float need = _trail.emitting ? trailHoldMinSpeed : trailMinSpeed;
+            bool want = BladeSpeed >= need;
+
+            if (want && !_trail.emitting)
+            {
+                // 清掉窗口开始前残留的旧顶点，否则会从上一段的位置连一条线过来
+                _trail.Clear();
+                if (!_emissionStartedThisSwing)
+                {
+                    _emissionStartedThisSwing = true;
+                    EmitStartBladeSpeed = BladeSpeed;
+                    TrailEmitStartCount++;
+                }
+            }
+            _trail.emitting = want;
         }
 
         // ------------------------------------------------------------------

@@ -11,10 +11,13 @@ string[] paths = new string[]
     "Assets/_Project/Scripts/Core/GameAudio.cs",
     "Assets/_Project/Scripts/Core/AudioDirector.cs",
     "Assets/_Project/Scripts/Core/AudioKitBootstrap.cs",
+    "Assets/_Project/Scripts/Player/FootIK.cs",
     // 修正过 YAML 的第三方预制体，需要强制重导入才会重新解析
     "Assets/ThirdParty/QFramework/Toolkits/UIKit/Scripts/Resources/UIRoot.prefab",
     // 自研水墨刀光 Shader
     "Assets/_Project/Shaders/InkSlash.shader",
+    // 新引入的 UAL1 动画库（Humanoid 重定向）
+    "Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx",
 };
 
 sb.AppendLine("导入前 isCompiling = " + UnityEditor.EditorApplication.isCompiling);

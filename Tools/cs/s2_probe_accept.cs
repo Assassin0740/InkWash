@@ -60,10 +60,10 @@ if (playerGo != null)
     var pc = playerGo.GetComponent<InkWash.Player.PlayerController>();
     sb.AppendLine("  PlayerController: " + (pc != null ? "已挂" : "缺失"));
     if (pc != null)
-        sb.AppendLine(string.Format("    walk={0} run={1} accel={2} decel={3} | footSync={4} 播放速度[{5}~{6}]"
-            + " | dash={7}/{8}s 冷却={9} | 连击位移=[{10}] 时长=[{11}] 取消起点=[{12}]",
+        sb.AppendLine(string.Format("    walk={0} run={1} accel={2} decel={3} | 参考速度 走={4} 跑={5} 播放速度[{6}~{7}]"
+            + " | dash={8}/{9}s 冷却={10} | 连击位移=[{11}] 时长=[{12}] 取消起点=[{13}]",
             pc.walkSpeed, pc.runSpeed, pc.acceleration, pc.deceleration,
-            pc.footSyncReferenceSpeed, pc.motionSpeedMin, pc.motionSpeedMax,
+            pc.walkRefSpeed, pc.runRefSpeed, pc.motionSpeedMin, pc.motionSpeedMax,
             pc.dashSpeed, pc.dashDuration, pc.dashCooldown,
             string.Join(",", System.Array.ConvertAll(pc.comboLungeDistance, v => v.ToString("0.##"))),
             string.Join(",", System.Array.ConvertAll(pc.comboLungeDuration, v => v.ToString("0.##"))),

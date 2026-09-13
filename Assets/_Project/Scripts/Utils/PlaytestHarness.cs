@@ -70,7 +70,9 @@ namespace InkWash.Utils
 
         private static readonly string[] kBaseStateNames =
         {
-            "Idle", "Move", "Run", "Dash",
+            // 顺序即优先级。S2.1 起走路状态改名为 Walk（旧名 Move / Run 保留兼容，方便读历史报告）。
+            // 漏掉新名字会让所有"走的是哪个状态"的断言看到 Other —— 那是最容易被误读成"功能坏了"的假失败。
+            "Idle", "Walk", "Run", "Move", "Dash",
             "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3"
         };
 
@@ -147,7 +149,10 @@ namespace InkWash.Utils
             public int comboStep;
             public bool cancelWindow;
             public float motionSpeed;    // Animator 参数 MotionSpeed
-            public float upperWeight;    // 第 1 层（UpperBody）实际权重
+            public float upperWeight;    // 第 1 层及以后的**附加层总权重**（本版设计应为 0）
+            public float torsoLeanDeg;   // 躯干倾角：正 = 前倾，负 = 后仰（问题 1「仰着身子走」的量化指标）
+            public float bladeSpeed;     // 刀刃（右手骨挂点）当前线速度 m/s
+            public float emitStartSpeed; // 本段挥砍里拖尾首次开始发射时的刀刃速度（-1 = 尚未发射）
             public int arcActive;        // 同屏存活的弧光实例数
             public int trailVerts;       // 拖尾顶点数
             public bool trailEmitting;
@@ -206,6 +211,15 @@ namespace InkWash.Utils
             public float impliedGroundSpeedAvg;
             public int impliedSpeedSamples;
 
+            // 问题 1「仰着身子走」：躯干倾角（正前倾 / 负后仰）
+            public float torsoLeanAvg, torsoLeanMin = float.MaxValue, torsoLeanMax = float.MinValue;
+            // 问题 5「刀没速度就出刀光」：刀刃速度峰值 + 拖尾首次发射时的刀刃速度（取各次挥砍里的最小值）
+            public float bladeSpeedPeak;
+            public float emitStartSpeedMin = float.MaxValue;
+            public int emitStartSamples;
+            // 问题 3「没有跑步动作」：本阶段实际出现过的动画状态集合
+            public string animStateSet = "";
+
             public int comboStepMax;
             public bool sawCancelWindow;
             public float cancelWindowFirstT = -1f;
@@ -251,6 +265,8 @@ namespace InkWash.Utils
             public SwordVfx vfx;
             public GameObject playerGo;
             public int upperLayerIndex = 1;
+            /// <summary>躯干倾角用的两根骨骼（髋、胸）。没有它们就没法量化「仰着身子走」。</summary>
+            public Transform hips, chest;
         }
 
         // ==================================================================
@@ -263,6 +279,80 @@ namespace InkWash.Utils
             yield return S2CombatFlow();
             yield return AudioSmokeCheck();
             Debug.Log("[PlaytestHarness] 全部验收流程结束");
+        }
+
+        /// <summary>只跑姿态体检（问题 1「仰着身子」/ 问题 6「脚穿地」的快速回归）。</summary>
+        public static IEnumerator PoseScanFlow()
+        {
+            var ctx = ResolveContext();
+            if (ctx == null) { WriteReport("S2_pose", "<错误> 场景里找不到 Player / Animator / Main Camera"); yield break; }
+            yield return PoseAndGroundScan(ctx);
+        }
+
+        /// <summary>
+        /// 取消窗口诊断：单次攻击后逐帧记录「动画状态 / normalizedTime / 取消窗口 / 段位 / 阶段」。
+        /// 断言只说"窗口没开"，不给原因；这个把状态机的归一化时间直接摊开，
+        /// 一眼能看出是没进后摇状态、还是进去了但时间没走到窗口阈值。
+        /// </summary>
+        public static IEnumerator CancelWindowDiag()
+        {
+            var sb = new StringBuilder();
+            var ctx = ResolveContext();
+            if (ctx == null) { WriteReport("S2_cancel", "<错误> 场景里找不到 Player"); yield break; }
+
+            var ctl = ctx.ctl;
+            var anim = ctx.anim;
+            string[] names = { "Idle", "Walk", "Run", "Move", "Dash", "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3" };
+
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("取消窗口诊断（单次攻击 -> 后摇）");
+            sb.AppendLine("生成时间 " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("comboRecCancelStart = " + Join(ctl.comboRecCancelStart));
+            sb.AppendLine("attackInputBuffer   = " + F(ctl.attackInputBuffer) + " s");
+            sb.AppendLine("Atk1/Atk2/Atk3 片段时长 = " + Join(ctl.comboSwingDuration) + " s（逻辑侧）");
+            sb.AppendLine();
+
+            ResetPlayer(ctx.playerGo, ctl);
+            // 关键：输入注入全部由 _overrideActive 门控（ReadInput 里 if (_overrideActive) 才读 _overrideMove/_overrideAttack）。
+            // 不先 BeginInputOverride 的话，SetInjectedMove / RequestInjectedAttack 都会被 ReadInput 直接忽略，
+            // 表现就是"攻击压根没触发、全程 Idle"。
+            ctl.BeginInputOverride();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            yield return null;
+            yield return null;   // 让复位沉一帧，避免攻击触发和复位同帧相互打断
+
+            ctl.RequestInjectedAttack();
+            float t0 = Time.time;
+            string lastKey = "";
+            int frames = 0;
+            while (Time.time - t0 < 2.6f)
+            {
+                frames++;
+                var st = anim.GetCurrentAnimatorStateInfo(0);
+                string nm = CurrentState(anim);
+                string key = nm + "|" + ctl.IsCancelWindowOpen + "|" + ctl.ComboStep + "|" + ctl.Phase;
+                if (key != lastKey)
+                {
+                    lastKey = key;
+                    sb.AppendLine(string.Format("t={0,6:F3}  状态={1,-8} nt={2,6:F3}  取消窗口={3,-5}  段位={4}  阶段={5}  AttackStateSeen={6}",
+                        Time.time - t0, nm, st.normalizedTime, ctl.IsCancelWindowOpen, ctl.ComboStep, ctl.Phase, ctl.AttackStateSeen));
+                }
+                yield return null;
+            }
+            sb.AppendLine("(观察 " + F(Time.time - t0) + " s / " + frames + " 帧)");
+
+            WriteReport("S2_cancel", sb.ToString());
+            ctl.EndInputOverride();
+            ResetPlayer(ctx.playerGo, ctl);
+        }
+
+        private static string Join(float[] a)
+        {
+            if (a == null) return "(null)";
+            var parts = new string[a.Length];
+            for (int i = 0; i < a.Length; i++) parts[i] = F(a[i]);
+            return string.Join(", ", parts);
         }
 
         // ==================================================================
@@ -323,7 +413,7 @@ namespace InkWash.Utils
                 + "  acceleration=" + N(ctl.acceleration) + "  deceleration=" + N(ctl.deceleration));
             sb.AppendLine("   dashSpeed=" + N(ctl.dashSpeed) + "  dashDuration=" + N(ctl.dashDuration)
                 + "  dashCooldown=" + N(ctl.dashCooldown));
-            sb.AppendLine("   步伐同步: 参考速度=" + N(ctl.footSyncReferenceSpeed)
+            sb.AppendLine("   步伐同步: 参考速度 走=" + N(ctl.walkRefSpeed) + " 跑=" + N(ctl.runRefSpeed)
                 + "  播放速度上限=" + N(ctl.motionSpeedMax));
             sb.AppendLine();
 
@@ -448,9 +538,11 @@ namespace InkWash.Utils
             if (idle != null)
                 check("待机播放 Idle 状态", idle.animStates.Contains("Idle"), idle.animStates);
             if (walk != null)
-                // S2 重建控制器的同时把移动状态从 Run 改名成 Move（与"移动"语义一致），两者都接受
-                check("步行切到 Move 状态（S1 期名为 Run）",
-                    walk.animStates.Contains("Move") || walk.animStates.Contains("Run"), walk.animStates);
+                // 状态名换过两轮：S1 期叫 Run，S2 期叫 Move，S2.1 起换成正经走路动画 Walk。
+                // 三个名字都接受 —— 断言要证的是"步行时进的是移动状态"，不是"状态恰好叫什么"。
+                check("步行切到移动状态（Walk；历史名 Move / Run）",
+                    walk.animStates.Contains("Walk") || walk.animStates.Contains("Move")
+                    || walk.animStates.Contains("Run"), walk.animStates);
             if (dash != null)
                 check("冲刺切到 Dash 状态", dash.sawDash, dash.animStates);
             if (back2idle != null)
@@ -494,10 +586,19 @@ namespace InkWash.Utils
             ctx.ctl.BeginInputOverride();
             if (ctx.rig != null) ctx.rig.SetMouseLookEnabled(false);
 
-            // ---- 移动 / 步伐同步 / 上半身遮罩 ----
+            // ---- 姿态体检（问题 1 躯干后仰 / 问题 6 攻击时脚穿地）----
+            // 必须放在所有战斗阶段之前：它会把角色"冻结"到每个动画状态的各个时刻去量，
+            // 之后 ResetPlayer 复位，不影响后续采样。
+            yield return PoseAndGroundScan(ctx);
+
+            // ---- 移动 / 步伐同步 / 上下半身 ----
             yield return RunCombatStage(stages, ctx, "A 待机基线", 1.2f, Vector2.zero, false, null);
             yield return RunCombatStage(stages, ctx, "B 步行(前)", 2.5f, Vector2.up, false, null);
             yield return RunCombatStage(stages, ctx, "C 疾跑(前)", 2.5f, Vector2.up, true, null);
+
+            // ---- 冲刺（翻滚）：问题 4 的专用段，顺带验证冲刺不再"挥着剑滑行" ----
+            yield return RunCombatStage(stages, ctx, "I 冲刺(翻滚)", 1.6f, Vector2.up, true,
+                (c, t, f, w) => { if (f == 1) w.dash = true; });
 
             // ---- 单段挥砍：特效 / 震屏 / 后摇 ----
             yield return RunCombatStage(stages, ctx, "D 单段挥砍", 1.6f, Vector2.zero, false,
@@ -566,11 +667,12 @@ namespace InkWash.Utils
             var ctl = ctx.ctl;
             sb.AppendLine("PlayerController 设定值:");
             sb.AppendLine("   移动: walk=" + N(ctl.walkSpeed) + " run=" + N(ctl.runSpeed)
-                + " accel=" + N(ctl.acceleration) + " decel=" + N(ctl.deceleration));
-            sb.AppendLine("   步伐同步: 参考速度=" + N(ctl.footSyncReferenceSpeed)
+                + " accel=" + N(ctl.acceleration) + " decel=" + N(ctl.deceleration)
+                + "  Walk<->Run 阈值 " + N(ctl.runAnimExitSpeed) + "~" + N(ctl.runAnimEnterSpeed));
+            sb.AppendLine("   步伐同步: 参考速度 走=" + N(ctl.walkRefSpeed) + " 跑=" + N(ctl.runRefSpeed)
                 + " 播放速度区间=[" + N(ctl.motionSpeedMin) + "~" + N(ctl.motionSpeedMax) + "]"
-                + "   → 步行需 " + N(ctl.walkSpeed / ctl.footSyncReferenceSpeed)
-                + " 倍，疾跑需 " + N(ctl.runSpeed / ctl.footSyncReferenceSpeed) + " 倍");
+                + "   → 步行需 " + N(ctl.walkSpeed / ctl.walkRefSpeed)
+                + " 倍，跑步需 " + N(ctl.runSpeed / ctl.runRefSpeed) + " 倍");
             sb.AppendLine("   冲刺: " + N(ctl.dashSpeed) + " m/s / " + N(ctl.dashDuration)
                 + "s，无敌 " + N(ctl.dashInvincibleWindow) + "s，冷却 " + N(ctl.dashCooldown) + "s");
             sb.AppendLine("   三段连击位移 : [" + JoinFloats(ctl.comboLungeDistance) + "] m");
@@ -610,6 +712,7 @@ namespace InkWash.Utils
             var recancel = FindC(stages, "F 后摇取消(延迟再按)");
             var dashcancel = FindC(stages, "G 后摇取消(冲刺)");
             var settle = FindC(stages, "H 收招静止");
+            var dashStage = FindC(stages, "I 冲刺(翻滚)");
 
             int pass = 0, fail = 0;
             System.Action<string, bool, string> check = (label, ok, detail) =>
@@ -618,8 +721,6 @@ namespace InkWash.Utils
                 sb.AppendLine("  " + (ok ? "[通过] " : "[未通过] ") + label + "   " + detail);
             };
 
-            float refSpeed = Mathf.Max(ctl.footSyncReferenceSpeed, 1e-3f);
-
             sb.AppendLine("-- 问题 5「移动没跟上脚步动画」：步伐同步 --");
             if (walk != null)
                 check("[B 步行] 播放速度随实际速度变化，不是固定值",
@@ -627,10 +728,13 @@ namespace InkWash.Utils
                     "播放速度跨度 " + F(walk.motionSpeedMin) + "~" + F(walk.motionSpeedMax));
             var locoNames = new string[] { "B 步行", "C 疾跑" };
             var locoResults = new CombatResult[] { walk, runC };
+            // 走路 / 跑步是两段不同的片段、各自的地面速度不同，参考值必须分开核对。
+            var locoRefs = new float[] { ctl.walkRefSpeed, ctl.runRefSpeed };
             for (int li = 0; li < locoNames.Length; li++)
             {
                 var s = locoResults[li];
                 if (s == null) continue;
+                float refSpeed = Mathf.Max(locoRefs[li], 1e-3f);
                 string tag = "[" + locoNames[li] + "]";
                 check(tag + " 播放速度未被上限截断（截断 = 残余滑步）",
                     s.motionSpeedMax < ctl.motionSpeedMax * 0.98f,
@@ -644,18 +748,58 @@ namespace InkWash.Utils
                     F(runC.motionSpeedAvg) + " vs " + F(walk.motionSpeedAvg) + " 倍");
 
             sb.AppendLine();
-            sb.AppendLine("-- 问题 1「走路像抱着空气」：上半身遮罩覆盖 --");
+            sb.AppendLine("-- 问题 1「走路仰着身子走」+ 问题 3「没有跑步动作」：换了正经的走路/跑步片段 --");
             if (walk != null)
-                check("[B 步行] 上半身覆盖层权重 = 1（手臂被 Idle_FoldArms_Loop 盖住）",
-                    walk.upperWeightMin > 0.95f,
-                    "权重区间 " + F(walk.upperWeightMin) + "~" + F(walk.upperWeightMax));
+            {
+                check("[B 步行] 躯干不后仰（倾角 > -8°，正=前倾 / 负=后仰）",
+                    walk.torsoLeanAvg > -8f,
+                    "平均 " + F(walk.torsoLeanAvg) + "°  区间["
+                    + F(walk.torsoLeanMin) + "~" + F(walk.torsoLeanMax) + "]°");
+                check("[B 步行] 走的是 Walk 状态（不再拿「抱物走 Move」当走路）",
+                    walk.animStateSet.Contains("Walk"),
+                    "本阶段动画状态集合: " + (walk.animStateSet.Length > 0 ? walk.animStateSet : "(空)"));
+            }
             if (runC != null)
-                check("[C 疾跑] 上半身覆盖层权重 = 1", runC.upperWeightMin > 0.95f,
-                    "权重区间 " + F(runC.upperWeightMin) + "~" + F(runC.upperWeightMax));
-            if (one != null)
-                check("[D 挥砍] 攻击时上半身权重归 0（交回全身动画）",
-                    one.upperWeightMin < 0.02f,
-                    "权重区间 " + F(one.upperWeightMin) + "~" + F(one.upperWeightMax));
+            {
+                check("[C 疾跑] 跑的是独立的 Run 状态（此前根本没有跑步片段）",
+                    runC.animStateSet.Contains("Run"),
+                    "本阶段动画状态集合: " + (runC.animStateSet.Length > 0 ? runC.animStateSet : "(空)"));
+                check("[C 疾跑] 躯干不后仰（倾角 > -8°）",
+                    runC.torsoLeanAvg > -8f,
+                    "平均 " + F(runC.torsoLeanAvg) + "°  区间["
+                    + F(runC.torsoLeanMin) + "~" + F(runC.torsoLeanMax) + "]°");
+            }
+            if (combo != null)
+                check("[E 连击] 连打期间没有附加层在改姿势（问题 2 的根因已移除）",
+                    combo.upperWeightMax < 0.001f,
+                    "最大附加层权重 " + F(combo.upperWeightMax) + "（图层数应为 1）");
+
+            sb.AppendLine();
+            sb.AppendLine("-- 问题 4「右键动作很奇怪」：冲刺换成翻滚，且与冲刺时长对齐 --");
+            if (dashStage != null)
+            {
+                check("[I 冲刺] 冲刺期间动画状态是 Dash",
+                    dashStage.animStateSet.Contains("Dash"),
+                    "本阶段动画状态集合: " + (dashStage.animStateSet.Length > 0 ? dashStage.animStateSet : "(空)"));
+                check("[I 冲刺] 冲刺阶段含位移且无瞬移",
+                    dashStage.distance > 1.5f && dashStage.teleportFrames == 0,
+                    "位移 " + F(dashStage.distance) + "m，瞬移帧 " + dashStage.teleportFrames);
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("-- 问题 5「刀还没速度就出刀光」：拖尾按刀刃速度门控 --");
+            if (ctx.vfx != null)
+            {
+                check("拖尾门控阈值已配置（> 0 m/s）", ctx.vfx.trailMinSpeed > 0f,
+                    "进入 " + N(ctx.vfx.trailMinSpeed) + " m/s，维持 " + N(ctx.vfx.trailHoldMinSpeed) + " m/s");
+                if (one != null)
+                    check("[D 单段挥砍] 拖尾开始发射时刀刃**已经有速度** (≥ 阈值 90%)",
+                        one.emitStartSamples > 0 && one.emitStartSpeedMin >= ctx.vfx.trailMinSpeed * 0.9f,
+                        one.emitStartSamples > 0
+                            ? "起播刀刃速度 " + F(one.emitStartSpeedMin) + " m/s / 阈值 " + N(ctx.vfx.trailMinSpeed)
+                              + "（刀刃峰值 " + F(one.bladeSpeedPeak) + " m/s）"
+                            : "本阶段没有观测到拖尾发射");
+            }
 
             sb.AppendLine();
             sb.AppendLine("-- 问题 3「摄像机离人太远」：镜头距离与构图 --");
@@ -774,9 +918,12 @@ namespace InkWash.Utils
 
             sb.AppendLine();
             sb.AppendLine("----------------------------------------------------------------------");
-            sb.AppendLine("结果: 通过 " + pass + " 项 / 未通过 " + fail + " 项");
-            sb.AppendLine(fail == 0
-                ? ">>> M2 达成：连击有反馈、后摇可取消、镜头贴近、无滑步"
+            sb.AppendLine("本报告（战斗/移动手感）: 通过 " + pass + " 项 / 未通过 " + fail + " 项");
+            sb.AppendLine("姿态体检（S2_pose_latest.txt）: 通过 " + PoseScanPass + " 项 / 未通过 " + PoseScanFail + " 项");
+            int totalFail = fail + PoseScanFail;
+            sb.AppendLine("合计未通过 " + totalFail + " 项");
+            sb.AppendLine(totalFail == 0
+                ? ">>> M2 达成：连击有反馈、后摇可取消、镜头贴近、无滑步，且走路/跑步/攻击姿态与贴地全部达标"
                 : ">>> 存在未通过项，需处理");
             sb.AppendLine("----------------------------------------------------------------------");
 
@@ -1093,6 +1240,242 @@ namespace InkWash.Utils
         }
 
         // ==================================================================
+        // 姿态体检：把每个动画状态冻结在各归一化时刻，量化「躯干倾角」与「脚是否穿地」
+        // ==================================================================
+
+        private class PoseScanRow
+        {
+            public string state;
+            public float lowest = float.MaxValue;   // 贴地后 网格最低点相对地面的最小值（负 = 穿地）
+            public float lowestNoIk = float.MaxValue; // 关掉 FootIK 时同一状态的最低点（看动画本体的高度）
+            public float highestNoIk = float.MinValue; // 关掉 FootIK 时同一状态的最高点（判断"整体偏移"还是"真动态"）
+            public float lowestAt;
+            public float soleY = float.MaxValue;    // 最低那一刻的绝对世界高度（用来区分穿地 / 浮空）
+            public float leanAvg;
+            public float leanMin = float.MaxValue;
+            public float leanMax = float.MinValue;
+        }
+
+        /// <summary>姿态体检的通过 / 未通过计数（供总汇总使用）。</summary>
+        public static int PoseScanPass, PoseScanFail;
+
+        /// <summary>
+        /// 姿态体检（问题 1「走路仰着身子」/ 问题 6「攻击时脚陷进地面」）。
+        ///
+        /// 为什么单独做一次"冻结扫描"而不是在实时战斗里采样：
+        ///  · 要判"脚有没有陷进地面"，骨骼关节点没用 —— 踝关节离脚底还有十几厘米，
+        ///    必须用 <see cref="SkinnedMeshRenderer.BakeMesh"/> 取**当前姿势的真实网格最低点**；
+        ///    BakeMesh 比较贵，每帧做会污染报告里的帧率指标。
+        ///  · 要判"躯干后仰"，必须把同一段动画的各个时刻都看一眼 —— 战斗采样只会撞到
+        ///    其中随机几帧，测不出"整段都后仰"。
+        /// 冻结扫描期间会把 PlayerController 关掉，免得它一边推参数一边把状态机拽走；
+        /// 结束后复位角色，后续阶段不受影响。
+        /// </summary>
+        private static IEnumerator PoseAndGroundScan(CombatContext ctx)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("姿态体检（问题 1「仰着身子」/ 问题 6「攻击时脚陷进地面」）");
+            sb.AppendLine("生成时间 " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            sb.AppendLine("======================================================================");
+
+            var anim = ctx.anim;
+            var go = ctx.playerGo;
+            var smrs = go.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            var bake = new Mesh();
+
+            bool ctlWasEnabled = ctx.ctl.enabled;
+            ctx.ctl.enabled = false;    // 体检期间不让 PlayerController 抢动画
+
+            // 体检期间让 FootIK 的抬升**瞬时到位**。
+            // 它的指数平滑是为游戏内观感服务的（liftSmooth≈14 → 每帧只走 21%），
+            // 而冻结扫描是"跳着"采样各个归一化时刻的，平滑会让抬升量永远追不上目标，
+            // 量出来的穿地深度会明显偏大（实测偏大约 0.08m）。
+            var footIk = go.GetComponent<FootIK>();
+            float savedSmooth = footIk != null ? footIk.liftSmooth : 0f;
+            bool savedIkEnabled = footIk != null && footIk.enableIk;
+            if (footIk != null) footIk.liftSmooth = 1e6f;
+
+            yield return null;
+
+            var rows = new List<PoseScanRow>();
+            string[] states = { "Idle", "Walk", "Run", "Dash", "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3" };
+
+            // 两轮扫描：
+            //   第 1 轮 关掉 FootIK —— 量「动画本体」把脚底放到了哪儿（区分是动画自带浮空还是 IK 推的）
+            //   第 2 轮 打开 FootIK —— 量贴地修正后的结果
+            // 只扫一遍的话，看到浮空根本无法判断该改动画还是改 IK 参数。
+            for (int round = 0; round < 2; round++)
+            {
+                bool ikOn = round == 1;
+                if (footIk != null) footIk.enableIk = ikOn;
+                yield return null;
+
+                foreach (var name in states)
+                {
+                    int hash = Animator.StringToHash(name);
+                    if (!anim.HasState(0, hash)) continue;
+
+                    PoseScanRow row;
+                    if (ikOn)
+                    {
+                        row = FindPose(rows, name);
+                        if (row == null) continue;
+                    }
+                    else
+                    {
+                        row = new PoseScanRow { state = name };
+                    }
+
+                    float leanSum = 0f; int leanN = 0;
+                    const int steps = 20;
+
+                    for (int i = 0; i <= steps; i++)
+                    {
+                        float nt = i / (float)steps;
+                        anim.Play(hash, 0, nt);
+                        anim.Update(1f / 60f);   // dt 必须 > 0，否则 FootIK 的平滑不会真正执行
+
+                        float groundY = GroundYUnder(go.transform.position, go.transform);
+                        float low = float.MaxValue;
+                        for (int k = 0; k < smrs.Length; k++)
+                        {
+                            smrs[k].BakeMesh(bake);
+                            var m = smrs[k].transform.localToWorldMatrix;
+                            // 必须**逐顶点**取最低，不能拿 bake.bounds 的 8 个角点去变换：
+                            // 渲染器变换带旋转/缩放时，包围盒角点变换后会"鼓"到真实网格之外，
+                            // 量出的最低点比实际低 0.09m 量级（SuperHero_Male 实测 0.324 vs 0.415），
+                            // 会把"其实浮空"误判成"穿地"。这是本体检早期版本最大的一个假数据来源。
+                            var verts = bake.vertices;
+                            for (int vi = 0; vi < verts.Length; vi++)
+                                low = Mathf.Min(low, m.MultiplyPoint3x4(verts[vi]).y - groundY);
+                        }
+
+                        if (ikOn)
+                        {
+                            if (low < row.lowest) { row.lowest = low; row.lowestAt = nt; row.soleY = low + groundY; }
+
+                            float lean = TorsoLeanDeg(ctx);
+                            if (nt > 0.02f && nt < 0.98f) { leanSum += lean; leanN++; }
+                            row.leanMin = Mathf.Min(row.leanMin, lean);
+                            row.leanMax = Mathf.Max(row.leanMax, lean);
+                        }
+                        else
+                        {
+                            row.lowestNoIk = Mathf.Min(row.lowestNoIk, low);
+                            row.highestNoIk = Mathf.Max(row.highestNoIk, low);
+                        }
+                    }
+
+                    if (!ikOn)
+                    {
+                        if (row.lowestNoIk == float.MaxValue) row.lowestNoIk = 0f;
+                        rows.Add(row);
+                    }
+                    else
+                    {
+                        row.leanAvg = leanN > 0 ? leanSum / leanN : 0f;
+                        if (row.lowest == float.MaxValue) row.lowest = 0f;
+                    }
+
+                    // 每个状态让出一帧：BakeMesh 很贵，一口气做完会卡出一帧超长帧
+                    yield return null;
+                }
+            }
+
+            // ---- 复位 ----
+            anim.Play(Animator.StringToHash("Idle"), 0, 0f);
+            anim.Update(1f / 60f);
+            UnityEngine.Object.Destroy(bake);
+            if (footIk != null) { footIk.liftSmooth = savedSmooth; footIk.enableIk = savedIkEnabled; }
+            ctx.ctl.enabled = ctlWasEnabled;
+            ResetPlayer(go, ctx.ctl);
+
+            // ---- 数据表 ----
+            sb.AppendLine();
+            sb.AppendLine("逐状态数据（网格最低点相对真实地面；负值 = 穿地，正值 = 浮空）");
+            sb.AppendLine("----------------------------------------------------------------------");
+            sb.AppendLine("  状态       无IK最低   无IK最高   贴地后最低点   绝对Y     最深时刻   躯干倾角平均   区间");
+            foreach (var r in rows)
+                sb.AppendLine(string.Format("  {0,-9} {1,8:F3} m {2,8:F3} m {3,11:F3} m {4,9:F3}    nt={5:F2}     {6,7:F1}°    [{7:F1}~{8:F1}]°",
+                    r.state, r.lowestNoIk, r.highestNoIk, r.lowest, r.soleY, r.lowestAt, r.leanAvg, r.leanMin, r.leanMax));
+            sb.AppendLine("  说明：无IK最低/最高 = 动画本体脚底的高度。两者都为正 → 整段动画被整体抬高；跨越 0 → 真有落地动作。");
+
+            // ---- 判定 ----
+            sb.AppendLine();
+            sb.AppendLine("判定");
+            sb.AppendLine("----------------------------------------------------------------------");
+            int pass = 0, fail = 0;
+            System.Action<string, bool, string> chk = (label, ok, detail) =>
+            {
+                if (ok) pass++; else fail++;
+                sb.AppendLine("  " + (ok ? "[通过] " : "[未通过] ") + label + "   " + detail);
+            };
+
+            float worst = 0f; string worstState = "";
+            foreach (var r in rows) { if (r.state == "Dash") continue; if (r.lowest < worst) { worst = r.lowest; worstState = r.state; } }
+            chk("问题 6 落脚状态脚不穿地（最低点 ≥ -0.02m）", worst >= -0.02f,
+                "最差 " + (worstState.Length > 0 ? worstState : "-") + " " + F(worst) + " m（FootIK 抬升补偿后应贴近 0）");
+
+            // 反向的毛病同样要拦：脚踩不到地、整个人飘在半空。
+            // 冲刺（翻滚）豁免 —— 那是腾空动作；Run 不能豁免，它整段的最低点也该触地（跑步有腾空相，但落地相必须落地）。
+            float worstFloat = float.MinValue; string worstFloatState = "";
+            foreach (var r in rows)
+            {
+                if (r.state == "Dash") continue;
+                if (r.lowest > worstFloat) { worstFloat = r.lowest; worstFloatState = r.state; }
+            }
+            chk("问题 6b 落脚状态不浮空（最低点 ≤ +0.05m）", worstFloat <= 0.05f,
+                "最飘 " + (worstFloatState.Length > 0 ? worstFloatState : "-") + " " + F(worstFloat) + " m");
+
+            var dashRow = FindPose(rows, "Dash");
+            if (dashRow != null)
+                sb.AppendLine("  [参考] Dash(翻滚) 最低点 " + F(dashRow.lowest) + " m —— 单独判定：该状态" +
+                    "豁免帧内贴地（脚本来就在空中），只靠静态基准偏移把它抬到不铲地，不进上面的断言");
+
+            var w = FindPose(rows, "Walk");
+            if (w != null)
+                chk("问题 1 走路片段躯干不后仰（平均倾角 > -8°）", w.leanAvg > -8f,
+                    "Walk 平均 " + F(w.leanAvg) + "°  区间[" + F(w.leanMin) + "~" + F(w.leanMax) + "]°");
+            var rr = FindPose(rows, "Run");
+            if (rr != null)
+                chk("问题 1/3 跑步片段躯干不后仰（平均倾角 > -8°）", rr.leanAvg > -8f,
+                    "Run 平均 " + F(rr.leanAvg) + "°  区间[" + F(rr.leanMin) + "~" + F(rr.leanMax) + "]°");
+
+            foreach (var r in rows)
+                if (r.state.StartsWith("Atk"))
+                    sb.AppendLine("  [参考] " + r.state + " 躯干倾角平均 " + F(r.leanAvg) + "°（前冲挥砍本来就会前倾）");
+
+            sb.AppendLine();
+            sb.AppendLine("结果: " + pass + " 通过 / " + fail + " 未通过");
+            PoseScanPass = pass; PoseScanFail = fail;
+            WriteReport("S2_pose", sb.ToString());
+        }
+
+        private static PoseScanRow FindPose(List<PoseScanRow> rows, string state)
+        {
+            foreach (var r in rows) if (r.state == state) return r;
+            return null;
+        }
+
+        /// <summary>角色正下方的地面高度（剔掉角色自己的碰撞体，并忽略 Trigger）。</summary>
+        private static float GroundYUnder(Vector3 worldPos, Transform selfRoot)
+        {
+            // QueryTriggerInteraction.Ignore 不能省：默认会命中触发器碰撞体（攻击判定框一类），
+            // 那些东西悬在半空，一旦被当成"地面"，穿地判定就整体失真。
+            var hits = Physics.RaycastAll(worldPos + Vector3.up * 3f, Vector3.down, 10f, ~0,
+                QueryTriggerInteraction.Ignore);
+            float best = float.MinValue;
+            for (int i = 0; i < hits.Length; i++)
+            {
+                var tr = hits[i].collider.transform;
+                if (selfRoot != null && (tr == selfRoot || tr.IsChildOf(selfRoot))) continue;
+                if (hits[i].point.y > best) best = hits[i].point.y;
+            }
+            return best > float.MinValue ? best : worldPos.y;
+        }
+
+        // ==================================================================
         // S2 单阶段执行
         // ==================================================================
 
@@ -1163,7 +1546,10 @@ namespace InkWash.Utils
                 comboStep = ctx.ctl.ComboStep,
                 cancelWindow = ctx.ctl.IsCancelWindowOpen,
                 motionSpeed = anim.GetFloat(HashMotionSpeed),
-                upperWeight = anim.GetLayerWeight(ctx.upperLayerIndex),
+                upperWeight = ExtraLayerWeight(anim),
+                torsoLeanDeg = TorsoLeanDeg(ctx),
+                bladeSpeed = ctx.vfx != null ? ctx.vfx.BladeSpeed : 0f,
+                emitStartSpeed = ctx.vfx != null ? ctx.vfx.EmitStartBladeSpeed : -1f,
                 arcActive = SwordVfx.ActiveArcCount,
                 trailVerts = ctx.vfx != null ? ctx.vfx.TrailPositionCount : 0,
                 trailEmitting = ctx.vfx != null && ctx.vfx.IsTrailEmitting,
@@ -1362,6 +1748,17 @@ namespace InkWash.Utils
                 r.motionSpeedMin = Mathf.Min(r.motionSpeedMin, x.motionSpeed);
                 r.motionSpeedMax = Mathf.Max(r.motionSpeedMax, x.motionSpeed);
 
+                // 躯干倾角（问题 1）与刀刃速度（问题 5）
+                r.torsoLeanAvg += x.torsoLeanDeg;
+                r.torsoLeanMin = Mathf.Min(r.torsoLeanMin, x.torsoLeanDeg);
+                r.torsoLeanMax = Mathf.Max(r.torsoLeanMax, x.torsoLeanDeg);
+                r.bladeSpeedPeak = Mathf.Max(r.bladeSpeedPeak, x.bladeSpeed);
+                if (x.emitStartSpeed >= 0f)
+                {
+                    r.emitStartSpeedMin = Mathf.Min(r.emitStartSpeedMin, x.emitStartSpeed);
+                    r.emitStartSamples++;
+                }
+
                 r.arcActivePeak = Mathf.Max(r.arcActivePeak, x.arcActive);
                 r.trailVertexPeak = Mathf.Max(r.trailVertexPeak, x.trailVerts);
                 if (x.trailEmitting) r.trailActiveFrames++;
@@ -1379,10 +1776,13 @@ namespace InkWash.Utils
             r.groundedRatio = (float)groundedN / s.Count;
             r.netDisplacement = s[s.Count - 1].pos - s[0].pos;
             r.animStates = string.Join(" -> ", states.ToArray());
+            states.Sort(System.StringComparer.Ordinal);
+            r.animStateSet = string.Join(",", states.ToArray());
             r.animTimeline = string.Join("  ", timeline.ToArray());
             r.screenHeightSamples = screenN;
             r.screenHeightAvg = screenN > 0 ? screenSum / screenN : 0f;
             r.upperWeightAvg /= s.Count;
+            r.torsoLeanAvg /= s.Count;
             r.camDistanceAvg /= s.Count;
             r.camFovAvg /= s.Count;
 
@@ -1550,7 +1950,45 @@ namespace InkWash.Utils
             };
             if (ctx.ctl == null || ctx.anim == null || cam == null) return null;
             ctx.upperLayerIndex = FindLayerIndex(ctx.anim, "UpperBody");
+            if (ctx.anim.isHuman)
+            {
+                ctx.hips = ctx.anim.GetBoneTransform(HumanBodyBones.Hips);
+                ctx.chest = ctx.anim.GetBoneTransform(HumanBodyBones.Chest);
+            }
             return ctx;
+        }
+
+        /// <summary>
+        /// 第 1 层及以后的**附加层总权重**。
+        /// 本版把 UpperBody 遮罩层整个删掉了（它会把攻击的上半身锁死在抱臂待机），
+        /// 所以这个值应该恒为 0 —— 验收用它证明"不再有层在偷偷改姿势"。
+        /// </summary>
+        private static float ExtraLayerWeight(Animator anim)
+        {
+            float w = 0f;
+            for (int i = 1; i < anim.layerCount; i++) w += anim.GetLayerWeight(i);
+            return w;
+        }
+
+        /// <summary>
+        /// 躯干倾角（度）：正 = 前倾，负 = 后仰。
+        /// 取「髋 → 胸」方向的竖直夹角，绕角色右轴符号化 ——
+        /// 这是「仰着身子走」唯一可靠的量化方式，光看骨骼位置是看不出来的。
+        /// </summary>
+        private static float TorsoLeanDeg(CombatContext ctx)
+        {
+            if (ctx.hips == null || ctx.chest == null) return 0f;
+
+            Vector3 fwd = ctx.playerGo.transform.forward;
+            fwd.y = 0f;
+            if (fwd.sqrMagnitude < 1e-4f) fwd = Vector3.forward;
+            fwd.Normalize();
+
+            Vector3 spineFull = ctx.chest.position - ctx.hips.position;
+            float alongFwd = Vector3.Dot(spineFull, fwd);
+            float alongUp = spineFull.y;
+            // atan2(前向分量, 竖直分量)：正 = 前倾，负 = 后仰
+            return Mathf.Atan2(alongFwd, Mathf.Max(Mathf.Abs(alongUp), 1e-4f)) * Mathf.Rad2Deg;
         }
 
         /// <summary>
@@ -1639,10 +2077,17 @@ namespace InkWash.Utils
                 + "  偏航波动 " + F(s.camYawRange) + "° 俯仰波动 " + F(s.camPitchRange) + "°");
             sb.AppendLine("   步伐同步 : MotionSpeed 区间 " + F(s.motionSpeedMin) + "~" + F(s.motionSpeedMax)
                 + "  稳态平均 " + F(s.motionSpeedAvg)
-                + "  反推片段速度 " + F(s.impliedGroundSpeedAvg) + " m/s（应为 "
-                + N(ctl.footSyncReferenceSpeed) + "）");
-            sb.AppendLine("   上半身层 : 权重 平均 " + F(s.upperWeightAvg)
-                + " 区间[" + F(s.upperWeightMin) + "~" + F(s.upperWeightMax) + "]");
+                + "  反推片段速度 " + F(s.impliedGroundSpeedAvg) + " m/s（样本 "
+                + s.impliedSpeedSamples + "，应等于该状态自己的参考速度）");
+            sb.AppendLine("   躯干倾角 : 平均 " + F(s.torsoLeanAvg) + "°  区间["
+                + F(s.torsoLeanMin) + "~" + F(s.torsoLeanMax) + "]°  (正=前倾 / 负=后仰)");
+            sb.AppendLine("   刀刃速度 : 峰值 " + F(s.bladeSpeedPeak) + " m/s"
+                + (s.emitStartSamples > 0
+                    ? "  拖尾起播速度 " + F(s.emitStartSpeedMin) + " m/s（" + s.emitStartSamples + " 帧有值）"
+                    : "  本阶段无拖尾发射"));
+            sb.AppendLine("   动画状态 : " + (s.animStateSet.Length > 0 ? s.animStateSet : "(未识别)"));
+            sb.AppendLine("   附加层   : 权重 平均 " + F(s.upperWeightAvg)
+                + " 区间[" + F(s.upperWeightMin) + "~" + F(s.upperWeightMax) + "]（本版无附加层，应为 0）");
             sb.AppendLine("   连击     : 最高段位 " + s.comboStepMax
                 + "  取消窗口 " + (s.sawCancelWindow ? "已开启(首开 t=" + F(s.cancelWindowFirstT) + "s)" : "未开启")
                 + "  阶段 " + (s.sawAttack ? "含攻击" : "无攻击") + (s.sawDash ? " / 含冲刺" : ""));

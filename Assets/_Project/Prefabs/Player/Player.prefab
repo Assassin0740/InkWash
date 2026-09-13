@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4259422993641270396}
   - component: {fileID: 2483706807998641495}
   - component: {fileID: 4642661093928065823}
+  - component: {fileID: 4669033096784831669}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -96,16 +97,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a468c70d8de050d43a205de31ce96178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 4.5
-  runSpeed: 7.2
+  walkSpeed: 2.2
+  runSpeed: 5.6
+  runAnimEnterSpeed: 3
+  runAnimExitSpeed: 2.5
   acceleration: 26
   deceleration: 34
   turnSpeedDeg: 900
-  footSyncReferenceSpeed: 1.9
-  motionSpeedMin: 0.7
-  motionSpeedMax: 4.2
-  dashSpeed: 14
-  dashDuration: 0.32
+  walkRefSpeed: 1.55
+  runRefSpeed: 3.1
+  motionSpeedMin: 0.6
+  motionSpeedMax: 2.2
+  dashSpeed: 7.4
+  dashDuration: 0.72
   dashCooldown: 0.55
   dashInvincibleWindow: 0.2
   comboLungeDistance:
@@ -167,6 +171,9 @@ MonoBehaviour:
   placeholderBlade: 1
   bladeLength: 1.05
   bladeWidth: 0.075
+  trailMinSpeed: 3
+  trailStartDelay: 0.05
+  trailHoldMinSpeed: 1.6
   enableShake: 1
   shakeAmplitude: 0.075
   shakeDuration: 0.13
@@ -189,6 +196,48 @@ MonoBehaviour:
   enableSwingSfx: 1
   swingVolume: 0.65
   dashVolume: 0.55
+--- !u!114 &4669033096784831669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58eb736e02d84f4d8283e65ec018953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableIk: 1
+  noGroundFixStates:
+  - Dash
+  groundClearance: 0.005
+  probeUp: 0.5
+  probeDown: 1.5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 3072
+  liftSmooth: 14
+  maxLift: 0.8
+  stateOffsets:
+  - state: Idle
+    y: -0.092
+  - state: Walk
+    y: -0.066
+  - state: Run
+    y: -0.155
+  - state: Atk1
+    y: -0.116
+  - state: Atk2
+    y: -0.123
+  - state: Atk1Rec
+    y: 0
+  - state: Atk2Rec
+    y: 0
+  - state: Atk3
+    y: 0
+  - state: Dash
+    y: 0.22
 --- !u!1001 &5172333502793858178
 PrefabInstance:
   m_ObjectHideFlags: 0

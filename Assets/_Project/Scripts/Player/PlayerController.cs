@@ -38,11 +38,17 @@ namespace InkWash.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("移动")]
-        [Tooltip("常规移动速度（米/秒）")]
-        public float walkSpeed = 4.5f;
+        [Tooltip("走路速度（米/秒）。对应动画 Walk（UAL1 Walk_Loop）")]
+        public float walkSpeed = 2.2f;
 
-        [Tooltip("按住疾跑键时的速度")]
-        public float runSpeed = 7.2f;
+        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（UAL1 Jog_Fwd_Loop）")]
+        public float runSpeed = 5.6f;
+
+        [Tooltip("走路 -> 跑步 的切换阈值（按期望速度）。动画状态机用它切 Walk/Run 状态")]
+        public float runAnimEnterSpeed = 3.0f;
+
+        [Tooltip("跑步 -> 走路 的切换阈值。必须小于上面的进入阈值，形成迟滞，否则在阈值附近会来回抖")]
+        public float runAnimExitSpeed = 2.5f;
 
         [Tooltip("起步加速度：越大越跟手")]
         public float acceleration = 26f;
@@ -54,26 +60,32 @@ namespace InkWash.Player
         public float turnSpeedDeg = 900f;
 
         [Header("步伐同步（消除脚滑）")]
-        // 资源约束（已实测）：UAL2 里唯一的循环行走片段是 Walk_Carry_Loop（2.0s），
-        // 没有正经的 Walk / Run 循环。所以"消除脚滑"只能靠调播放速度，而不是换一段更快的动画。
-        // 走路 4.5/1.9 = 2.37 倍，跑步 7.2/1.9 = 3.79 倍 —— 后者约合 0.53s 一个步态周期，
-        // 观感是慢跑，不抽帧。等有了正式角色动画（含独立 Run）再换片段。
-        [Tooltip("动画片段自身的「地面速度」参考值（米/秒）。播放速度 = 实际速度 / 本值")]
-        public float footSyncReferenceSpeed = 1.9f;
+        // 上一版只有一段「抱物走」可当移动动画，走路和跑步都靠调它的播放速度硬撑
+        // （跑步要 3.79 倍），所以脚步永远对不上位移。
+        // 本版引入 UAL1 的真·走路/跑步片段后，两段各有自己的参考速度，
+        // 播放倍率落回 1.0~1.8 的健康区间。参考值由 Tools/cs/s2_probe_feet.cs 与
+        // 验收里的「支撑脚滑移率」实测标定，不是拍脑袋。
+        [Tooltip("走路片段（Walk_Loop）自身的地面速度参考值（米/秒）。播放速度 = 实际速度 / 本值")]
+        public float walkRefSpeed = 1.55f;
+
+        [Tooltip("跑步片段（Jog_Fwd_Loop）自身的地面速度参考值（米/秒）")]
+        public float runRefSpeed = 3.10f;
 
         [Tooltip("播放速度下限，防止慢走时腿部僵住")]
-        public float motionSpeedMin = 0.7f;
+        public float motionSpeedMin = 0.6f;
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
-                 "取值必须 ≥ runSpeed/footSyncReferenceSpeed，否则跑起来会被截断而产生残余滑步：\n" +
-                 "跑步 7.2/1.9 = 3.79，所以上限取 4.2 才不会削弱步伐同步。")]
-        public float motionSpeedMax = 4.2f;
+                 "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
+                 "当前：走路 2.2/1.55 = 1.42，跑步 5.6/3.1 = 1.81，上限取 2.2 留足余量。")]
+        public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
-        public float dashSpeed = 14f;
+        public float dashSpeed = 7.4f;
 
-        [Tooltip("冲刺持续时间。必须与 Dash 动画时长对齐（否则会出现「挥着剑滑行」）")]
-        public float dashDuration = 0.32f;
+        [Tooltip("冲刺持续时间。必须与 Dash 动画（UAL1 Roll，1.47s）对齐：\n" +
+                 "状态机里 Dash 状态的播放速度就是按 Roll.length / 本值 算出来的，\n" +
+                 "改这里要同步改 Tools/cs/s2_build_animator.cs 的 DashDuration，验收会核对。")]
+        public float dashDuration = 0.72f;
 
         public float dashCooldown = 0.55f;
 
@@ -151,6 +163,15 @@ namespace InkWash.Player
         /// <summary>本段攻击是否已确认进入过攻击动画状态（诊断用）。</summary>
         public bool AttackStateSeen => _attackStateSeen;
 
+        /// <summary>
+        /// 本帧步伐同步所用的片段参考速度（走路用的 walkRefSpeed 还是跑步用的 runRefSpeed）。
+        /// 验收靠它把「实际速度 / MotionSpeed」反推回片段速度，核对是否等于所选的参考值。
+        /// </summary>
+        public float CurrentRefSpeed { get; private set; }
+
+        /// <summary>当前是否应该跑（用于核对状态机的 Walk/Run 选择与代码判据一致）。</summary>
+        public bool WantsRunAnimation => CurrentSpeed >= runAnimExitSpeed;
+
         // ---------------- 事件（供 VFX / 音频 / 震屏订阅） ----------------
 
         /// <summary>某一段挥砍开始。参数为连击段序号 1..3。</summary>
@@ -181,6 +202,24 @@ namespace InkWash.Player
         private bool _hitFiredThisStep;
         /// <summary>本段攻击是否**确实**见到过攻击动画状态。见 TickAttack 末尾的说明。</summary>
         private bool _attackStateSeen;
+
+        /// <summary>
+        /// 交给动画混合树的「移动意图速度」（m/s）。**不等于** <see cref="DesiredSpeed"/>。
+        ///
+        /// 为什么要单独分出一个量（真实踩过的坑）：
+        ///   状态机的 Idle→Walk(Speed>0.15) / Walk→Run(Speed>3.0) 这些转移是**按列表顺序**
+        ///   求值的，而攻击的起手转移（Attack1 触发器）排在它们后面。原先直接把
+        ///   `DesiredSpeed`（= `_velocity.magnitude`）灌进 `Speed` 参数，可攻击的**前冲**
+        ///   本身就是往 `_velocity` 里赋值（峰值 ~11 m/s），于是：
+        ///     发起攻击的那一帧 → 速度参数瞬间冲过 3.0 → 排在前面、条件成立的
+        ///     Idle→Walk→Run 抢先成立 → 动画被拽去走路/跑步，攻击触发器一直没能落地；
+        ///     再过 `kAttackEntryTimeout`(0.35s) → 逻辑判定"没进攻击态"直接退回移动 →
+        ///     取消窗口永远打不开、连击推不到第 3 段。
+        ///   所以这里按「意图」而不是「速度积分结果」来驱动混合树：
+        ///     移动阶段 = 输入决定的目标速度；攻击 / 冲刺阶段 = 0（位移是动作自带的，不算移动）；
+        ///     只有后摇取消窗口里玩家**真的**按了方向才把意图速度交回去（保留"后摇可移动取消"）。
+        /// </summary>
+        private float _blendSpeed;
 
         // 输入注入（自动化验收 / 演示录屏）
         private bool _overrideActive;
@@ -287,6 +326,9 @@ namespace InkWash.Player
 
             _velocity.x = planar.x;
             _velocity.z = planar.z;
+
+            // 移动阶段：混合树按"输入意图"跑 Idle/Walk/Run（见 _blendSpeed 的说明）
+            _blendSpeed = targetSpeed;
         }
 
         private void TickDash(float dt)
@@ -299,6 +341,9 @@ namespace InkWash.Player
             planar = Vector3.MoveTowards(planar, _actionDir * speed, 200f * dt);
             _velocity.x = planar.x;
             _velocity.z = planar.z;
+
+            // 冲刺位移同样不是"移动意图"：不给它，否则冲刺前段会被混合树拽去跑步
+            _blendSpeed = 0f;
 
             if (_phaseTimer >= dashDuration) EnterLocomotion(1.2f);
         }
@@ -341,6 +386,9 @@ namespace InkWash.Player
             IsCancelWindowOpen = EvaluateCancelWindow();
 
             // ---- 窗口内允许移动取消 ----
+            // 意图速度默认给 0：攻击的位移是动作自带的，不该被混合树当成"我在走路"。
+            // 只有在窗口内**真的按了方向**时才交回意图速度 —— 否则后摇里接移动会先慢半拍。
+            float intent = 0f;
             if (IsCancelWindowOpen)
             {
                 Vector3 dir = ResolveMoveDirection();
@@ -350,8 +398,10 @@ namespace InkWash.Player
                     float target = (_runHeld ? runSpeed : walkSpeed);
                     _velocity.x = Mathf.Lerp(_velocity.x, dir.x * target, 8f * dt);
                     _velocity.z = Mathf.Lerp(_velocity.z, dir.z * target, 8f * dt);
+                    intent = target;
                 }
             }
+            _blendSpeed = intent;
 
             // ---- 攻击输入缓冲：过期作废 ----
             if (_attackQueued && Time.time - _attackQueuedAt > attackInputBuffer)
@@ -459,6 +509,7 @@ namespace InkWash.Player
             _attackQueued = false;
             _attackStateSeen = false;
             IsCancelWindowOpen = false;
+            _blendSpeed = 0f;   // 交给下一帧的 TickLocomotion 按输入重新决定
             BrakePlanar(Time.deltaTime, brakeRate * 25f);
         }
 
@@ -576,21 +627,26 @@ namespace InkWash.Player
         {
             if (animator == null) return;
 
-            // Speed 用「期望速度」而非实际速度：攻击中移动被锁定，期望速度自然趋零，
-            // 不会因为打击位移把状态机误推到 Move。
-            animator.SetFloat(HashSpeed, DesiredSpeed, 0.10f, Time.deltaTime);
+            // Speed 用「移动意图」而不是实际速度：攻击/冲刺的位移是动作自带的，
+            // 若把它当成移动速度，会瞬间冲过 Run 的门槛，把还没落地的攻击起手转移挤掉
+            // （Idle→Walk→Run 在状态机列表里排在攻击转移前面）。详见 _blendSpeed 的说明。
+            animator.SetFloat(HashSpeed, _blendSpeed, 0.10f, Time.deltaTime);
 
-            // 步伐同步：播放速度 = 实际速度 / 片段参考速度
-            float motion = Mathf.Clamp(CurrentSpeed / Mathf.Max(footSyncReferenceSpeed, 0.01f),
+            // 步伐同步：播放速度 = 实际速度 / 本状态的片段参考速度。
+            // 走路与跑步是两段不同的动画、各自的地面速度也不同，所以参考值要按当前状态取。
+            // 迟滞下沿（runAnimExitSpeed）作为判据，与状态机的 Run->Walk 门槛一致，
+            // 避免"参考速度用跑步的、状态却是走路"这种错配。
+            bool runState = CurrentSpeed >= runAnimExitSpeed;
+            float refSpeed = runState ? runRefSpeed : walkRefSpeed;
+            CurrentRefSpeed = refSpeed;
+            float motion = Mathf.Clamp(CurrentSpeed / Mathf.Max(refSpeed, 0.01f),
                 motionSpeedMin, motionSpeedMax);
             animator.SetFloat(HashMotionSpeed, motion, 0.10f, Time.deltaTime);
 
             animator.SetBool(HashGrounded, _cc.isGrounded);
 
-            // 上半身覆盖层权重：只在移动/待机时生效（攻击、冲刺交给全身动画）
-            float wantUpper = _phase == ActionPhase.Locomotion ? 1f : 0f;
-            float cur = animator.GetLayerWeight(1);
-            animator.SetLayerWeight(1, Mathf.MoveTowards(cur, wantUpper, 4f * Time.deltaTime));
+            // 不再有上半身遮罩层：走路换成正经走路动画后，遮罩层既没必要，
+            // 又会把攻击动作的上半身锁死在待机姿势（问题 2「攻击第一下很怪」的根源）。
         }
 
         // ==================================================================
@@ -650,7 +706,8 @@ namespace InkWash.Player
                     animator.Play(HashIdle, 0, 0f);
                     animator.Update(0f);
                 }
-                animator.SetLayerWeight(1, 1f);
+                // 注：S2.1 起 Animator 只有 layer 0（上半身遮罩层已删除，它会让攻击锁在抱臂待机），
+                // 所以这里不再有 SetLayerWeight(1, 1f) —— 那会刷 "Invalid Layer Index '1'" 警告。
             }
         }
 
