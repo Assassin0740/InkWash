@@ -50,6 +50,16 @@ sysinfo.txt
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# ---------- 第三方素材 ----------
+# 不纳入版本控制，两个原因：
+# 1) 授权：Quaternius Bestiary 包用的是 QAL v1.0，明确禁止"把素材本身再分发"。
+#    仓库一旦公开（GitHub 等）就构成再分发 → 违反授权。授权凭证已另存 Docs/素材授权/（受控）。
+# 2) 体积：188 MB 二进制，且是可重新下载的只读素材，版本控制无收益。
+# 注意：本目录仍需保留在磁盘上，Unity 要用。
+/Assets/ThirdParty/
+# 各平台的冗余导出格式（GLB/glTF/blend/Unreal 法线），已移出 Assets
+/_RawDownloads/
+
 # ---------- 工程内部数据 ----------
 .workbuddy/
 
