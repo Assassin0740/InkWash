@@ -11,7 +11,7 @@ IEnumerator Body()
 {
     var sb = new System.Text.StringBuilder();
     string projRoot = System.IO.Path.GetDirectoryName(Application.dataPath);
-    string imgDir = System.IO.Path.Combine(projRoot, "Tools/screenshots/feng2");
+    string imgDir = System.IO.Path.Combine(projRoot, "Tools/screenshots/blade_v2");
     System.IO.Directory.CreateDirectory(imgDir);
 
     // 等 Start()（SwordVfx 建刀身）跑完
@@ -40,8 +40,21 @@ IEnumerator Body()
     else
     {
         var mr = blade.GetComponent<MeshRenderer>();
+        var mf = blade.GetComponent<MeshFilter>();
         sb.AppendLine("刀身 = " + FullPath(blade, go.transform) + "  worldScale=" + blade.lossyScale.ToString("F4"));
         sb.AppendLine("  世界包围盒 size = " + (mr != null ? mr.bounds.size.ToString("F4") : "-") + "  center = " + (mr != null ? mr.bounds.center.ToString("F4") : "-"));
+        if (mf != null && mf.sharedMesh != null)
+        {
+            var lb = mf.sharedMesh.bounds;
+            var ls = blade.lossyScale;
+            sb.AppendLine("  网格本地尺寸 = " + lb.size.ToString("F4")
+                + "   顶点数=" + mf.sharedMesh.vertexCount + "  三角形=" + (mf.sharedMesh.triangles.Length / 3)
+                + "  法线数=" + mf.sharedMesh.normals.Length);
+            sb.AppendLine("  → 世界尺寸 ≈ (" + (lb.size.x * ls.x).ToString("F4") + ", "
+                + (lb.size.y * ls.y).ToString("F4") + ", " + (lb.size.z * ls.z).ToString("F4") + ")"
+                + "   即长 " + (lb.size.y * ls.y * 100f).ToString("F1") + " cm × 宽 "
+                + (lb.size.x * ls.x * 100f).ToString("F1") + " cm（期望 ≈ 105 × 7.5）");
+        }
         var hand = anim.GetBoneTransform(HumanBodyBones.RightHand);
         if (hand != null)
             sb.AppendLine("  右手骨 worldPos = " + hand.position.ToString("F4") + "  手骨 +Y 世界方向 = " + hand.TransformDirection(Vector3.up).ToString("F3"));
@@ -83,7 +96,18 @@ IEnumerator Body()
     Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
     Vector3 dir45 = (fwd * 0.6f + right * 0.8f).normalized;
 
+    // 第 4 个字段是机位方向：F=正面 / S=侧面 / 缺省=45°。
+    // 正面/侧面那两张专门用来验"剑身宽不宽、有没有厚度" —— 之前"像平板"就是正面露的馅。
+    //
+    // ⚠ 两条硬约束（都踩过）：
+    //   1. 攻击段必须**升序**（Atk1 → Atk2 → Atk3）。倒序回跳没有反向转移，会拍到 bind pose。
+    //   2. **同一个状态不要连拍两张**（例如 Atk2 的 45° 与正面）。
+    //      对已在播的状态重复 Play() 时 Animator 不会重新 seek，实测拍到 bind pose
+    //      （两个胳膊平举、手上没剑）—— 加 Idle 复位也救不回来。
+    //      所以需要正面照就挑 Idle 拍，别对攻击状态连拍两个机位。
     string[] shots = {
+        "Idle|0.30|play_idle_front|F",
+        "Idle|0.30|play_idle_side|S",
         "Idle|0.30|play_idle",
         "Walk|0.10|play_walk",
         "Run|0.10|play_run",
@@ -96,6 +120,15 @@ IEnumerator Body()
     {
         var parts = spec.Split('|');
         string state = parts[0]; float nt = float.Parse(parts[1]); string name = parts[2];
+        string view = parts.Length > 3 ? parts[3] : "45";
+        Vector3 viewDir = view == "F" ? fwd : view == "S" ? right : dir45;
+
+        // ⚠ 复位：先落回 Idle 脱离当前状态，再 seek 到目标。
+        //   直接对**同一个状态**连续 Play()（例如先拍 Atk2 的 45°、再拍 Atk2 的正面）时，
+        //   Animator 不会重新 seek，结果拍到过渡帧甚至 bind pose —— 本脚本踩过，
+        //   表现为"正面那张两个胳膊平举、手上还没剑"。
+        anim.Play("Idle", 0, 0f);
+        anim.Update(1f / 60f);
 
         anim.Play(state, 0, nt);
         anim.Update(1f / 60f);
@@ -104,7 +137,7 @@ IEnumerator Body()
         var b = bounds();
         Vector3 center = new Vector3(go.transform.position.x, (b[0] + b[1]) * 0.5f, go.transform.position.z);
         float h = b[1] - b[0];
-        Vector3 camPos = center + dir45 * (h * 1.55f);
+        Vector3 camPos = center + viewDir * (h * 1.55f);
         tcam.transform.position = camPos;
         tcam.transform.rotation = Quaternion.LookRotation(center - camPos, Vector3.up);
 

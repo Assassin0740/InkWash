@@ -70,10 +70,17 @@ namespace InkWash.Effects
 
         [Header("占位刀身")]
         [Tooltip("角色手上目前没有武器模型，是空手挥刀，动作读不出来。\n" +
-                 "打开后挂一把程序化生成的深色直刀做占位，等有正式武器模型再关掉。")]
+                 "打开后挂一把程序化生成的三维直剑做占位，等有正式武器模型再关掉\n" +
+                 "（正式模型可直接挂到 bladeAnchor（右手骨）下）。")]
         public bool placeholderBlade = true;
 
+        [Tooltip("剑身长度。⚠ 单位是**模型容器空间**（即 Visual.localScale 生效前的空间），\n" +
+                 "换模型改了 Visual.localScale 必须同步按 1/缩放 折算，否则长短宽窄全错。")]
         public float bladeLength = 1.05f;
+
+        [Tooltip("剑身宽度。同上，**模型容器空间**。\n" +
+                 "⚠ 本项目换 Feng 时漏折算了这一项，世界宽被撑到 0.166 m（1 m 长的剑宽 16.6 cm）\n" +
+                 "→ 剑看起来是块平板。折算是 0.075 / 2.213 = 0.03389。")]
         public float bladeWidth = 0.075f;
 
         [Header("拖尾发射门控")]
@@ -269,9 +276,8 @@ namespace InkWash.Effects
 
         /// <summary>
         /// 手上没有武器模型，挥砍动作会读不出来（看着像空手摆姿势）。
-        /// 这里挂一把程序化生成的深色直刀做占位：两片互相垂直的锥形面片，
-        /// 从任何角度看都有体积感，只需 8 个三角形。
-        /// 有正式武器模型后把 placeholderBlade 关掉，或直接把模型挂到 hand_r 下。
+        /// 这里挂一把程序化生成的**三维**直剑做占位（菱形截面剑身 + 剑格，见 BuildBladeMesh）。
+        /// 有正式武器模型后把 placeholderBlade 关掉，或直接把模型挂到 bladeAnchor（右手骨）下。
         /// </summary>
         private void BuildPlaceholderBlade()
         {
@@ -285,7 +291,9 @@ namespace InkWash.Effects
             var go = new GameObject("PlaceholderBlade");
             go.transform.SetParent(bladeAnchor, false);
             go.transform.localPosition = Vector3.zero;
-            // 骨骼沿自身 +Y 延伸，刀身也沿 +Y；绕 Y 转 45° 让两片刀面斜对镜头
+            // 骨骼沿自身 +Y 延伸，剑身也沿 +Y。
+            // 绕 Y 转 45°：剑身是"左右宽、前后薄"的菱形截面，转 45° 让刃面和剑脊都不正对镜头，
+            // 从正面、侧面看都能读出厚度（不转的话正对镜头时只剩一条线）。
             go.transform.localRotation = Quaternion.Euler(0f, 45f, 0f);
 
             var mf = go.AddComponent<MeshFilter>();
@@ -318,53 +326,161 @@ namespace InkWash.Effects
             return m;
         }
 
-        /// <summary>两片十字交叉的锥形面片（沿 +Y 从刀镡到刀尖）。</summary>
+        /// <summary>
+        /// 程序化占位剑：**真三维**剑身（菱形截面，左右为刃、前后为脊）+ 剑格。
+        /// 从任何角度看都有体积感，约 90 个三角形。
+        ///
+        /// ⚠ 三个踩过的坑，改这里前先读：
+        ///
+        /// 1. **必须有法线**（`RecalculateNormals()`）。最早那版只调了 `RecalculateBounds()`，
+        ///    网格没有法线 → URP/Lit 拿不到光照方向 → 整个剑身永远是同一个颜色，
+        ///    再好的三维形状也读不出来，看上去就是一块平板。这是"像平板"的**主因之一**。
+        ///
+        /// 2. **宽度必须跟着模型缩放走**。长度宽度都是**模型容器空间**的量，
+        ///    换模型改了 `Visual.localScale` 就必须同步折算，漏一个比例就崩
+        ///    （本项目换 Feng 时就漏了 `bladeWidth`：世界宽被撑到 0.166 m，
+        ///    一把 1 m 长的剑宽 16.6 cm，直接成船桨 —— 这是"像平板"的**另一半原因**）。
+        ///
+        /// 3. 尺寸全部**由 length / width 推导**，不新增序列化字段 ——
+        ///    序列化字段加了就得改预制体，多一个漏折算的机会。
+        /// </summary>
         private static Mesh BuildBladeMesh(float length, float width)
         {
-            var mesh = new Mesh { name = "PlaceholderBladeMesh" };
-            float half = Mathf.Max(width, 0.01f) * 0.5f;
-            float tipT = 0.82f;                  // 从这个比例开始收尖
-            int segs = 6;
+            length = Mathf.Max(length, 0.05f);
+            width = Mathf.Max(width, 0.004f);
+
+            // ---- 由剑身尺寸推导各部件（比例按"1 m 长的剑"手调过）----
+            float halfW = width * 0.5f;                  // 剑身半宽（左右到刃）
+            float ridge = halfW * 0.30f;                 // 剑脊半厚（前后）
+            float guardH = length * 0.048f;              // 剑格半展（左右）
+            // ⚠ 剑格的前后厚度必须绑**剑脊厚度**，不能绑剑身宽度。
+            //   绑宽度会得到 0.088（局部）= 0.195 m 世界，剑格变成前后鼓 19.5 cm 的十字架。
+            //   实测踩过：第一版写成 halfW * 2.6f，网格 Z 向尺寸直接 0.0881。
+            float guardD = ridge * 1.6f;                 // 剑格前后厚度（薄）
+            float guardT = length * 0.012f;              // 剑格沿 Y 的厚度
+            float bladeFrom = guardT;                    // 剑身从剑格上沿起
+            float bladeTo = guardT + length;
 
             var verts = new System.Collections.Generic.List<Vector3>();
-            var colors = new System.Collections.Generic.List<Color>();
             var tris = new System.Collections.Generic.List<int>();
 
-            Color body = new Color(1f, 1f, 1f, 1f);
-
-            // 两片正交的面片：绕 Y 轴 0° 与 90°
-            for (int plane = 0; plane < 2; plane++)
+            // ---- 剑格：矩形截面短管，两端封口 ----
+            var guardSec = new[]
             {
-                float ang = plane * Mathf.PI * 0.5f;
-                Vector3 side = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
+                new Vector2(guardH, guardD), new Vector2(-guardH, guardD),
+                new Vector2(-guardH, -guardD), new Vector2(guardH, -guardD),
+            };
+            AppendTube(verts, tris, guardSec,
+                       new[] { -guardT, guardT }, new[] { 1f, 1f },
+                       capStart: true, capEnd: true);
 
-                int baseIdx = verts.Count;
-                for (int i = 0; i <= segs; i++)
+            // ---- 剑身：菱形截面，前 78% 等宽，之后线性收窄，最后聚成剑尖 ----
+            // 截面顺序必须是 +X → +Z → -X → -Z，否则面片朝里（见 AppendTube 注释）
+            var bladeSec = new[]
+            {
+                new Vector2(halfW, 0f), new Vector2(0f, ridge),
+                new Vector2(-halfW, 0f), new Vector2(0f, -ridge),
+            };
+            const int segs = 12;
+            const float tipStart = 0.78f;
+            var ys = new float[segs + 1];
+            var sc = new float[segs + 1];
+            for (int i = 0; i <= segs; i++)
+            {
+                float t = i / (float)segs;
+                ys[i] = Mathf.Lerp(bladeFrom, bladeTo, t);
+                sc[i] = t <= tipStart
+                    ? 1f
+                    : Mathf.Max(0.10f, 1f - (t - tipStart) / (1f - tipStart));
+            }
+            int lastRing = AppendTube(verts, tris, bladeSec, ys, sc,
+                                      capStart: true, capEnd: false);
+
+            // 剑尖：把最后一环聚到一个顶点，收成真正的尖而不是齐头
+            int apex = verts.Count;
+            verts.Add(new Vector3(0f, bladeTo, 0f));
+            for (int i = 0; i < bladeSec.Length; i++)
+            {
+                int j = (i + 1) % bladeSec.Length;
+                tris.Add(lastRing + i); tris.Add(apex); tris.Add(lastRing + j);
+            }
+
+            var mesh = new Mesh { name = "PlaceholderBladeMesh" };
+            mesh.SetVertices(verts);
+            mesh.SetTriangles(tris, 0);
+            // ⚠ 坑 1：没有法线 → 光照失效 → 三维形状读不出来。不能删。
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        /// <summary>
+        /// 把一个横截面沿 +Y 拉伸成管，逐环可缩放（用来做收尖）。
+        /// 返回**最后一环的起始顶点号**（调用方要拿它聚尖或封口）。
+        ///
+        /// ⚠ 横截面顶点必须按 <c>+X → +Z → -X → -Z</c> 的顺序给（俯视逆时针），
+        ///   否则生成的面片法线朝里，模型会内外翻转、背面剔除后直接看不见。
+        /// </summary>
+        private static int AppendTube(System.Collections.Generic.List<Vector3> v,
+                                      System.Collections.Generic.List<int> t,
+                                      Vector2[] sec, float[] ys, float[] scales,
+                                      bool capStart, bool capEnd)
+        {
+            int n = sec.Length;
+            int rings = ys.Length;
+            int baseIdx = v.Count;
+
+            for (int r = 0; r < rings; r++)
+            {
+                float s = scales[r];
+                float y = ys[r];
+                for (int i = 0; i < n; i++)
+                    v.Add(new Vector3(sec[i].x * s, y, sec[i].y * s));
+            }
+
+            // 侧壁：环 r 与 r+1 之间连一圈四边形
+            for (int r = 0; r < rings - 1; r++)
+            {
+                int a = baseIdx + r * n;
+                int b = baseIdx + (r + 1) * n;
+                for (int i = 0; i < n; i++)
                 {
-                    float t = i / (float)segs;
-                    float y = t * length;
-                    float w = half * (t <= tipT ? 1f : Mathf.Max(0.06f, 1f - (t - tipT) / (1f - tipT)));
-
-                    // 左缘 / 右缘
-                    verts.Add(side * -w + Vector3.up * y);
-                    verts.Add(side * w + Vector3.up * y);
-                    colors.Add(body);
-                    colors.Add(body);
-
-                    if (i < segs)
-                    {
-                        int o = baseIdx + i * 2;
-                        tris.Add(o + 0); tris.Add(o + 1); tris.Add(o + 3);
-                        tris.Add(o + 0); tris.Add(o + 3); tris.Add(o + 2);
-                    }
+                    int j = (i + 1) % n;
+                    t.Add(a + i); t.Add(b + i); t.Add(b + j);
+                    t.Add(a + i); t.Add(b + j); t.Add(a + j);
                 }
             }
 
-            mesh.SetVertices(verts);
-            mesh.SetColors(colors);
-            mesh.SetTriangles(tris, 0);
-            mesh.RecalculateBounds();
-            return mesh;
+            if (capStart) AppendFan(v, t, baseIdx, n, ys[0], false);
+            if (capEnd) AppendFan(v, t, baseIdx + (rings - 1) * n, n, ys[rings - 1], true);
+
+            return baseIdx + (rings - 1) * n;
+        }
+
+        /// <summary>给一环截面封口：加一个中心顶点，扇形连到环上。up=true 朝 +Y，false 朝 -Y。</summary>
+        private static void AppendFan(System.Collections.Generic.List<Vector3> v,
+                                      System.Collections.Generic.List<int> t,
+                                      int ringStart, int n, float y, bool up)
+        {
+            // 求该环的中心（按环上顶点均值，避免依赖外部再传一次参数）
+            Vector3 c = Vector3.zero;
+            for (int i = 0; i < n; i++) c += v[ringStart + i];
+            c /= n;
+            int center = v.Count;
+            v.Add(new Vector3(c.x, y, c.z));
+
+            for (int i = 0; i < n; i++)
+            {
+                int j = (i + 1) % n;
+                if (up)
+                {
+                    t.Add(ringStart + i); t.Add(center); t.Add(ringStart + j);
+                }
+                else
+                {
+                    t.Add(ringStart + i); t.Add(ringStart + j); t.Add(center);
+                }
+            }
         }
 
         // ------------------------------------------------------------------

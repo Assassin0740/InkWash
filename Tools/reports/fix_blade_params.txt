@@ -1,0 +1,19 @@
+预制体：Assets/_Project/Prefabs/Player/Player.prefab
+Visual.localScale = 2.213   → 折算因子 S = 2.213
+
+=== 修改前（模型空间 → 世界 = 值 × S）===
+  bladeLength      0.474469 → 世界 1.0500 m   （期望 1.0500）
+  bladeWidth       0.075000 → 世界 0.1660 m   （期望 0.0750）  ← 缺口
+  trailStartWidth  0.153638 → 世界 0.3400 m   （期望 0.3400）
+  trailEndWidth    0.020000 → 世界 0.0443 m   （期望 0.0200）  ← 缺口
+  bladeLocalOffset.y 0.280163 → 世界 0.6200 m （期望 0.6200）
+
+=== 修改后（重新读盘复核）===
+  S = 2.213
+  bladeLength      0.474469 → 世界 1.0500 m
+  bladeWidth       0.033891 → 世界 0.0750 m
+  trailStartWidth  0.153638 → 世界 0.3400 m
+  trailEndWidth    0.009038 → 世界 0.0200 m
+  bladeLocalOffset.y 0.280163 → 世界 0.6200 m
+
+  剑身长宽比 = 14.0 : 1 （1 m 剑宽 7.5 cm）

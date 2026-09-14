@@ -158,7 +158,7 @@ MonoBehaviour:
   bladeLocalOffset: {x: 0, y: 0.28016266, z: 0}
   trailTime: 0.16
   trailStartWidth: 0.15363759
-  trailEndWidth: 0.02
+  trailEndWidth: 0.009037505
   inkColor: {r: 0.06, g: 0.06, b: 0.08, a: 0.92}
   inkFadeColor: {r: 0.06, g: 0.06, b: 0.08, a: 0}
   enableArc: 1
@@ -170,7 +170,7 @@ MonoBehaviour:
   arcHeight: 1.15
   placeholderBlade: 1
   bladeLength: 0.474469
-  bladeWidth: 0.075
+  bladeWidth: 0.033890646
   trailMinSpeed: 3
   trailStartDelay: 0.05
   trailHoldMinSpeed: 1.6
@@ -211,6 +211,7 @@ MonoBehaviour:
   enableIk: 1
   noGroundFixStates:
   - Dash
+  bodyOffsetTarget: {fileID: 0}
   groundClearance: 0.005
   probeUp: 0.5
   probeDown: 1.5
