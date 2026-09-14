@@ -7,21 +7,27 @@ namespace InkWash.Player
     /// 全身贴地夹紧（问题 6「攻击时脚陷进地面」）。
     ///
     /// 为什么需要它 —— 实测数据（逐顶点 BakeMesh 取真实网格最低点，基准为角色正下方的
-    /// 真实地面；角色 = KayKit Rogue_Hooded）：
+    /// 真实地面；当前角色 = Char_Feng，模型原点就在脚底，Visual.localScale = 2.213）：
     ///
     ///   状态      无IK最低   采用 stateOffsets.y
-    ///   Idle       +0.1159     -0.1129
-    ///   Walk       +0.0798     -0.0733
-    ///   Run        +0.1626     -0.1600
-    ///   Dash       +0.0980     -0.0908
-    ///   Atk1       +0.1070     -0.1069
-    ///   Atk1Rec    +0.1160     -0.1122
-    ///   Atk2       +0.1040     -0.0927
-    ///   Atk2Rec    +0.1150     -0.1117
-    ///   Atk3       +0.1080     -0.1049
+    ///   Idle       +0.0033     -0.0003
+    ///   Walk       -0.0539     +0.0569
+    ///   Run        +0.2324     -0.2294
+    ///   Dash       +0.0071     -0.0041
+    ///   Atk1       -0.0416     +0.0446
+    ///   Atk1Rec    +0.0060     -0.0030
+    ///   Atk2       -0.0464     +0.0494
+    ///   Atk2Rec    +0.0008     +0.0022
+    ///   Atk3       -0.0099     +0.0129
     ///
-    /// 表里**全为正**：这套动画的骨盆基准整体比角色原点高 8~16cm，不修就是整段浮空。
-    /// 哪一段偏高多少，是每段动画自己的属性 —— 换动画包必须整表重测。
+    /// 有正有负：Walk/攻击段髋压得低、脚顺着 FK 沉进地面（要抬），Run 整段被动画抬高（要压）。
+    /// 哪一段偏多少，是"每段动画 × 当前骨架"的属性 —— 换模型或换动画包必须整表重测。
+    ///
+    /// ⚠ 单位：本表是**世界米**，照着填即可，不必按模型缩放手工折算 ——
+    ///   输出通道是**模型容器（Animator 的直系子节点，本工程 = `Visual`）的 localPosition.y**，
+    ///   其父节点（角色根）无缩放，所以 local Y 与世界米 1:1，天然与模型缩放解耦。
+    ///   ⚠ 反例（本组件踩过）：不要改用 `anim.bodyPosition` —— 那是 Animator 局部空间，
+    ///   模型带整体缩放 `s` 时世界效果是 `x · s²`（Feng 的 Visual.localScale=2.213 → 实测放大 4.90 倍）。
     ///
     /// 怎么量（踩过的坑）：**按归一化时间扫**，不要按"真实帧数"扫。
     ///   最早那版标定脚本 `anim.Play(state,0,0)` 之后数帧采样、并且硬性截断在 90 帧；
@@ -29,23 +35,24 @@ namespace InkWash.Player
     ///   整段被跳过，量出 0.0723 —— 比真值小 9cm，照它落地的偏移会让跑步整段沉进地里。
     ///   改成 nt=0..1 均匀取 121 点后，量与姿态体检的 0.1626 完全一致。
     ///
-    /// ⚠ 这些偏移**绑死在片段上**：换成 KayKit 之前（UAL1 走跑 + UAL2 攻击 + KiAnim 跑步
-    ///   三套拼装），Run 的无 IK 最低点是 +0.049，偏移是 -0.046；换成 KayKit Running_A 后
-    ///   变成 +0.1626，偏移必须跟着改到 -0.160。忘改 → 脚穿地或浮空，
-    ///   姿态体检里「落脚状态脚不穿地 / 不浮空」两条断言会直接判未通过。
-    ///   重测流程：Tools/cs/s3_diag.cs（A 段细扫）→ Tools/cs/s3_apply_prefab_calib.cs（写入）。
+    /// ⚠ 这些偏移**绑死在"片段 × 骨架"上**：换过三次都得重测 ——
+    ///   UAL1/UAL2/KiAnim 拼装时 Run 是 +0.049（偏移 -0.046）；换 KayKit Running_A 后
+    ///   变 +0.1626（偏移 -0.160）；再换成 Char_Feng 后变 +0.2324（偏移 -0.2294）。
+    ///   忘改 → 脚穿地或浮空，姿态体检里「落脚状态脚不穿地 / 不浮空」两条断言直接判未通过。
+    ///   重测流程：Tools/cs/f_calib_footik.cs（按归一化时间扫）→ Tools/cs/f_apply_footik.cs（写入）。
     ///
-    /// 两类毛病方向相反，分别治：
+    /// 两类毛病方向相反，分别治 —— 注意**两级补偿各管一段，不可重叠**：
     ///
-    /// 1. **整段偏移**（值全为正）—— 动画把骨盆摆在角色原点上方一定高度，这才是常态：
-    ///    角色根在脚底，动画的髋部自然要抬到腿长的高度。偏的是"抬多少"这段常数，
-    ///    解法就是给每段动画一个**竖直基准偏移**（<see cref="stateOffsets"/>，
-    ///    由 Tools/cs/s3_apply_prefab_calib.cs 推送）把脚底压回地面。
-    ///    另：KayKit 模型的原点还在脚底上方 0.122m，已由预制体里
-    ///    Visual.localPosition.y = 0.088 先抵消掉一部分，剩下的残差归本表处理。
+    /// 1. **整段偏移** → <see cref="stateOffsets"/>（静态，每段一个常数）
+    ///    动画把骨盆摆在角色原点上方（或下方）一定高度，偏的是"摆多少"这段常数，
+    ///    解法就是给每段动画一个竖直基准偏移把它压回/抬回地面。
+    ///    另：静态竖直抵消由预制体里的 Visual.localPosition.y 承担 —— 该值取"模型原点相对脚底的位置"。
+    ///    KayKit Rogue_Hooded 的原点在脚底上方 0.122m（取 0.088）；Char_Feng 的原点就在脚底（取 0）。
+    ///    换模型时这个值必须一起重定，剩下的残差才归本表处理。
     ///
-    /// 2. **帧内穿地**（最低点为负）—— 后摇/收招这类"髋压低"的片段，脚顺着 FK 一起沉下去。
-    ///    解法见下面"为什么量网格而不是量骨骼"。
+    /// 2. **帧内穿地** → BodyLift（动态，只抬不压）
+    ///    后摇/收招这类"髋压低"的片段，脚顺着 FK 一起沉下去，靠帧内抬升救。
+    ///    ⚠ 它只补**静态偏移之后的残差**（need 里必须减掉 BodyBase）—— 这一条踩过坑，见 ApplyBodyOffset。
     ///
     /// 为什么量**真实网格最低点**，而不是脚踝/脚趾骨骼
     /// ------------------------------------------------
@@ -86,6 +93,12 @@ namespace InkWash.Player
                  "注意基准偏移(stateOffsets)在这些状态下**依然生效**")]
         public string[] noGroundFixStates = { "Dash" };
 
+        [Tooltip("竖直偏移的输出节点。留空则自动取 Animator 下最靠上的蒙皮网格祖先（模型容器，本工程 = Visual）。\n" +
+                 "⚠ 不要改成用 anim.bodyPosition 写偏移：那是 Animator 局部空间，模型带整体缩放时\n" +
+                 "世界效果会变成**缩放倍率的平方**（Feng 的 Visual.localScale=2.213 实测放大 4.90 倍），\n" +
+                 "标定值直接失真、帧内抬升的反馈环增益也跟着 ×4.9 而震荡 —— 这个坑本组件已经踩过一次。")]
+        public Transform bodyOffsetTarget;
+
         [Header("贴地")]
         [Tooltip("网格最低点与地面的目标间隙（米）。0 = 正好落在踏面上")]
         public float groundClearance = 0.005f;
@@ -107,9 +120,10 @@ namespace InkWash.Player
         public float maxLift = 0.8f;
 
         [Header("每段动画的竖直基准偏移")]
-        [Tooltip("由 Tools/cs/s3_calib_footik.cs 量、Tools/cs/s3_apply_prefab_calib.cs 推送。\n" +
-                 "值为『该段动画无 IK 时网格最低点相对地面』取负 —— 让最低点正好落到地面。\n" +
-                 "换动画包（片段）后必须整表重测，否则脚会穿地或浮空。")]
+        [Tooltip("由 Tools/cs/f_calib_footik.cs 量、Tools/cs/f_apply_footik.cs 推送。\n" +
+                 "值为『该段动画无 IK 时网格最低点相对地面』取负（**世界米**）—— 让最低点正好落到地面。\n" +
+                 "直接按世界米填即可，不必手工折算模型缩放（输出通道是模型容器的 localPosition.y，1:1）。\n" +
+                 "换模型/换动画包（片段）后必须整表重测，否则脚会穿地或浮空。")]
         public StateYOffset[] stateOffsets;
 
         // ---------------- 只读探针（自动化验收用，勿删） ----------------
@@ -126,11 +140,17 @@ namespace InkWash.Player
         /// <summary>本帧网格最低点的世界 Y（还没加 BodyLift）。</summary>
         public float LowestMeshY { get; private set; }
 
-        /// <summary>本帧探测到的穿地深度（米，未平滑）。0 = 没有穿地。</summary>
+        /// <summary>本帧探测到的**残差**穿地深度（米，已扣掉静态基准偏移、未平滑）。0 = 没有穿地。</summary>
         public float RawPenetration { get; private set; }
 
         /// <summary>本帧是否拿到了有效的地面信息。</summary>
         public bool HasGroundInfo { get; private set; }
+
+        /// <summary>当前实际写入模型容器的竖直偏移（**世界米**）。</summary>
+        public float AppliedBodyOffset => _appliedOffset;
+
+        /// <summary>竖直偏移的输出节点（诊断用）。</summary>
+        public Transform OffsetTarget => _offsetTarget;
 
         // ---------------- 内部 ----------------
         private Animator _anim;
@@ -142,6 +162,12 @@ namespace InkWash.Player
         private readonly List<Vector3> _vbuf = new List<Vector3>(16384);
         private Vector3 _lowestWorld;
 
+        // 竖直偏移的输出通道（见 <see cref="ApplyBodyOffset"/>）
+        private Transform _offsetTarget;         // 模型容器节点（Animator 的直系子节点，例如 Visual）
+        private Vector3 _baseLocalPos;           // 该节点在预制体里的原始 localPosition
+        private float _offsetParentScale = 1f;   // 其父节点的 lossyScale.y（通常为 1）
+        private float _appliedOffset;            // 上一帧实际写入的偏移（世界米）
+
         private void Awake()
         {
             _anim = GetComponent<Animator>();
@@ -152,8 +178,34 @@ namespace InkWash.Player
             _bakeMesh = new Mesh { name = "FootIK_Bake" };
             _bakeMesh.MarkDynamic();
 
+            ResolveOffsetTarget();
+
             if (_anim != null && !_anim.isHuman)
                 Debug.LogWarning("[FootIK] 只支持 Humanoid；当前 Avatar 不是 Humanoid，贴地不会生效");
+        }
+
+        /// <summary>
+        /// 选竖直偏移的输出节点：Animator 下**最靠上**的那个"蒙皮网格祖先"，
+        /// 也就是模型容器（本工程是 Visual）。它必须是 Animator 的直系子节点，
+        /// 这样它的 localPosition.y 的父节点无缩放 —— 世界效果 1:1。
+        /// </summary>
+        private void ResolveOffsetTarget()
+        {
+            if (bodyOffsetTarget != null) { _offsetTarget = bodyOffsetTarget; }
+            else if (_smrs != null && _smrs.Length > 0 && _smrs[0] != null)
+            {
+                var t = _smrs[0].transform;
+                while (t.parent != null && t.parent != transform) t = t.parent;
+                if (t.parent == transform) _offsetTarget = t;
+            }
+            if (_offsetTarget == null)
+            {
+                Debug.LogWarning("[FootIK] 找不到竖直偏移的输出节点，贴地不会生效");
+                return;
+            }
+            _baseLocalPos = _offsetTarget.localPosition;
+            _offsetParentScale = _offsetTarget.parent != null && _offsetTarget.parent.lossyScale.y > 1e-4f
+                ? _offsetTarget.parent.lossyScale.y : 1f;
         }
 
         private void OnDestroy()
@@ -164,6 +216,8 @@ namespace InkWash.Player
         private void OnDisable()
         {
             BodyLift = 0f;
+            _appliedOffset = 0f;
+            if (_offsetTarget != null) _offsetTarget.localPosition = _baseLocalPos;
         }
 
         /// <summary>layer0 当前状态名。AnimatorStateInfo 不给名字，只能拿 shortNameHash 去表里反查。</summary>
@@ -260,6 +314,12 @@ namespace InkWash.Player
 
             float k = 1f - Mathf.Exp(-liftSmooth * Mathf.Max(Time.deltaTime, 1e-4f));
 
+            // 量到的是"含上一帧偏移"的姿势（偏移写在模型容器上、会一直保留到本帧），
+            // 剥掉上一帧写入的量才是动画本体的最低点 —— 语义与旧版 LowestMeshY 一致。
+            Vector3 low = MeasureLowestMeshPoint();
+            low.y -= _appliedOffset;
+            LowestMeshY = low.y;
+
             // 翻滚/腾空类状态：只保留基准偏移，不做帧内夹地
             if (IsNoGroundFix(CurrentState))
             {
@@ -269,10 +329,6 @@ namespace InkWash.Player
                 ApplyBodyOffset();
                 return;
             }
-
-            // 量的是**还没加 BodyLift** 的姿势 —— ApplyBodyOffset 在本函数末尾才执行，
-            // 而 bodyPosition 的写入只对当次评估生效、下一次评估会被动画本身重置，所以不会累积。
-            Vector3 low = MeasureLowestMeshPoint();
 
             float groundY;
             if (!ProbeGround(low, out groundY))
@@ -285,24 +341,40 @@ namespace InkWash.Player
             }
 
             HasGroundInfo = true;
-            float need = (groundY + groundClearance) - low.y;
+            // ⚠ 必须扣掉已施加的 BodyBase —— BodyLift 只负责补"静态偏移之后的残差"。
+            //   踩过的坑（2026-09-14 换 Feng 后暴露）：不留神就用原始姿态算 need，
+            //   于是 BodyBase 抬一次、BodyLift 又按同一个穿地量再抬一次，重复补偿 → 整段浮空。
+            //   旧模型（KayKit）之所以没暴露，是因为它 9 段偏移全为负、原始最低点恒为正，
+            //   need 恒 ≤ 0、BodyLift 始终为 0，重复补偿这一路根本没被走到。
+            float need = (groundY + groundClearance) - low.y - BodyBase;
             RawPenetration = Mathf.Max(0f, need);
 
-            float target = Mathf.Clamp(need, 0f, maxLift);
             // 指数收敛：帧率无关，且不会像 Lerp(固定系数) 那样在高帧率下变慢
-            BodyLift = Mathf.Lerp(BodyLift, target, k);
+            BodyLift = Mathf.Lerp(BodyLift, Mathf.Clamp(need, 0f, maxLift), k);
 
             ApplyBodyOffset();
         }
 
-        /// <summary>把「状态基准偏移 + 帧内抬升」加到动画的身体位置上（整体竖直平移，不动骨骼姿态）。</summary>
+        /// <summary>
+        /// 把「状态基准偏移 + 帧内抬升」作为**整体竖直平移**写到模型容器上（不动骨骼姿态）。
+        ///
+        /// 为什么写 <see cref="bodyOffsetTarget"/> 的 localPosition，而不是 anim.bodyPosition
+        /// --------------------------------------------------------------------------
+        /// 踩过的坑（2026-09-14 换主角成 Char_Feng 时暴露，代价是两轮"体检全红"）：
+        ///   `anim.bodyPosition` 是 **Animator 局部空间**的量，模型带整体缩放时世界效果不等于名义值。
+        ///   实测（Feng，Visual.localScale = 2.213）：写入 0.0257 实际抬起 0.1260 —— 放大 **4.90 倍**，
+        ///   正好是 2.213²。同一通道上的 BodyLift 反馈增益也被放大 4.9 倍，于是必然过冲：
+        ///     Walk 名义抬 0.057 结果飘 +0.134；Run 名义压 0.229 结果沉 -0.274。
+        ///   而模型容器是 Animator 的**直系子节点**，父节点无缩放 → 它的 localPosition.y 就是世界米，
+        ///   1:1、与模型缩放彻底解耦。标定表也因此可以直接按世界米填，不需要任何手工折算。
+        /// </summary>
         private void ApplyBodyOffset()
         {
-            float y = BodyBase + BodyLift;
-            if (Mathf.Abs(y) < 1e-5f) return;
-            Vector3 bp = _anim.bodyPosition;
-            bp.y += y;
-            _anim.bodyPosition = bp;
+            if (_offsetTarget == null) return;
+            _appliedOffset = BodyBase + BodyLift;
+            var p = _baseLocalPos;
+            p.y += _appliedOffset / _offsetParentScale;
+            _offsetTarget.localPosition = p;
         }
     }
 }

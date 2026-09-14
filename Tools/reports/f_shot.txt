@@ -1,0 +1,6 @@
+Player.prefab = OK
+Feng 身高 = 1.0244  (y -0.0404..0.9839)
+Feng Animator = 有，avatar=FengAvatar
+采样 Idle@0.65s 后身高 = 1.0746
+Player 身高 = 2.3506  (y -0.0917..2.2590)   需要放大倍数 = 2.2947
+Player/Visual localScale=(1.000, 1.000, 1.000) localPos=(0.0000, 0.0880, 0.0000)

@@ -1,0 +1,24 @@
+Feng Avatar = FengAvatar valid=True human=True
+清掉的旧子节点 9 个：Rig_Medium, RogueHooded_ArmLeft, RogueHooded_ArmRight, RogueHooded_Body, RogueHooded_Cape, RogueHooded_Head, RogueHooded_LegLeft, RogueHooded_LegRight, RogueHooded_Mask
+删掉 Feng 自带的 Animator（在 Feng 上）
+Animator.avatar: Rogue_HoodedAvatar  ->  FengAvatar
+Visual 旧值 localPosition=(0.0000, 0.0880, 0.0000) localScale=(1.0000, 1.0000, 1.0000)
+Visual 新值 localPosition=(0.0000, 0.0000, 0.0000) localScale=(2.2130, 2.2130, 2.2130)
+刀身参数同除 S：bladeLength 1.0500->0.4745   bladeLocalOffset.y 0.6200->0.2802   trailStartWidth 0.3400->0.1536
+已保存 Assets/_Project/Prefabs/Player/Player.prefab
+
+================ 复核（新结构实测） ================
+蒙皮网格 1 个：Mesh(28790) 
+新 Visual 子树：高 2.1730  (y -0.0002..2.1728)   宽 2.0370
+目标身高 2.1730（现主角）—— 偏差 0.0000
+
+================ 新层级（深度 4） ================
+    Visual  []
+      Feng  []
+        Mesh  [SkinnedMeshRenderer]
+        root  []
+          CC_Base_Hip  []
+            CC_Base_Pelvis  []
+              ... (2 子节点)
+            CC_Base_Waist  []
+              ... (1 子节点)

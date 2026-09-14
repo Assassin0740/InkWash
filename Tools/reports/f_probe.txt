@@ -1,0 +1,36 @@
+========== Char_Feng 素材体检 ==========
+FBX 子资源数 = 215
+  GameObject=True Mesh=1 Avatar=1 Material=1 内嵌Clip=4
+  Mesh 'Mesh': 顶点 28790 三角面 46606 子网格 1 包围盒高 0.2125 约束=False
+合计：顶点 28790 三角面 46606
+  Material 'Material_Pbr' shader=Universal Render Pipeline/Lit
+  Avatar 'FengAvatar' isValid=True isHuman=True 已映射骨=52 skeleton=103
+  [FBX内嵌] '__preview__0_T-Pose' 长度 1.000s 循环 False isHumanMotion=True 曲线 600
+  [FBX内嵌] '__preview__0_T-Pose(0)' 长度 1.000s 循环 False isHumanMotion=True 曲线 600
+  [FBX内嵌] '0_T-Pose' 长度 0.017s 循环 False isHumanMotion=True 曲线 130
+  [FBX内嵌] '0_T-Pose(0)' 长度 0.017s 循环 False isHumanMotion=True 曲线 130
+---------- Animation/ 下 .anim ----------
+  BoxingL      长度   0.467s 循环 False  isHumanMotion=True   曲线 130
+  BoxingR      长度   0.467s 循环 False  isHumanMotion=True   曲线 130
+  Chest        长度   0.333s 循环 False  isHumanMotion=True   曲线 137
+  Dance        长度   1.000s 循环 False  isHumanMotion=True   曲线 137
+  Death        长度   2.400s 循环 False  isHumanMotion=True   曲线 137
+  Idle         长度   2.500s 循环 False  isHumanMotion=True   曲线 130
+  PickUp       长度   2.767s 循环 False  isHumanMotion=True   曲线 130
+  Release      长度   2.100s 循环 False  isHumanMotion=True   曲线 137
+  Roll         长度   1.467s 循环 False  isHumanMotion=True   曲线 137
+  Walk         长度   1.333s 循环 False  isHumanMotion=True   曲线 137
+  贴图 Material_Pbr_Diffuse.jpg 2048x2048 sRGB=True 类型=Default mipmap=True maxSize=2048
+---------- 实际世界尺寸（实例化测量）----------
+  渲染器数=1
+  世界包围盒：y -0.0404..0.9839  身高 1.0244
+              x -0.4603..0.4603  宽 0.9207
+              z -0.1229..0.1420  厚 0.2649
+  root/localScale = (1.0000, 1.0000, 1.0000)
+  顶层 '__FengProbe' localScale=(1.0000, 1.0000, 1.0000) localPos=(0.0000, 0.0000, 0.0000)
+    'Mesh' 层级深度=1 localScale=(1.0000, 1.0000, 1.0000) localPos=(0.0000, 0.0000, 0.0000)
+    'root' 层级深度=1 localScale=(1.0000, 1.0000, 1.0000) localPos=(0.0000, 0.0000, 0.0000)
+    'CC_Base_Hip' 层级深度=2 localScale=(1.0000, 1.0000, 1.0000) localPos=(0.0000, 0.0000, 0.4441)
+    'CC_Base_Head' 层级深度=8 localScale=(1.0000, 1.0000, 1.0000) localPos=(0.0000, 0.0263, 0.0000)
+  Hips 世界 y=0.4441   Head 世界 y=0.8750   Chest 世界 y=0.6414
+  LFoot 世界 y=0.0470  RFoot 世界 y=0.0470  LHand 世界 y=0.7846

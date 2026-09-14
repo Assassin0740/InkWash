@@ -1,0 +1,22 @@
+删掉残留的 TmpShotCam
+Player root.position = (0.0000, 0.0000, -3.0000)
+
+================ 场景里所有带碰撞体的物体 ================
+  Pillar_2                       layer=11 (Wall)  type=CapsuleCollider  包围盒 y 0.0000..6.0000  x -14.400..-13.600  z 13.600..14.400  isTrigger=False
+  Wall_S                         layer=11 (Wall)  type=BoxCollider  包围盒 y 0.0000..4.0000  x -22.300..22.300  z -22.300..-21.700  isTrigger=False
+  Pillar_1                       layer=11 (Wall)  type=CapsuleCollider  包围盒 y 0.0000..6.0000  x 13.600..14.400  z -14.400..-13.600  isTrigger=False
+  Pillar_0                       layer=11 (Wall)  type=CapsuleCollider  包围盒 y 0.0000..6.0000  x 13.600..14.400  z 13.600..14.400  isTrigger=False
+  Arena                          layer=10 (Ground)  type=BoxCollider  包围盒 y 0.0000..0.3000  x -5.000..5.000  z -5.000..5.000  isTrigger=False
+  Pillar_3                       layer=11 (Wall)  type=CapsuleCollider  包围盒 y 0.0000..6.0000  x -14.400..-13.600  z -14.400..-13.600  isTrigger=False
+  Wall_E                         layer=11 (Wall)  type=BoxCollider  包围盒 y 0.0000..4.0000  x 21.700..22.300  z -22.300..22.300  isTrigger=False
+  Ground                         layer=10 (Ground)  type=BoxCollider  包围盒 y -0.5000..0.0000  x -22.000..22.000  z -22.000..22.000  isTrigger=False
+  Wall_N                         layer=11 (Wall)  type=BoxCollider  包围盒 y 0.0000..4.0000  x -22.300..22.300  z 21.700..22.300  isTrigger=False
+  Wall_W                         layer=11 (Wall)  type=BoxCollider  包围盒 y 0.0000..4.0000  x -22.300..-21.700  z -22.300..22.300  isTrigger=False
+
+================ 玩家正下方逐条 raycast（从 y+3 向下 10m，含 Trigger）================ 
+  命中 y=1.7280  Player                       (Player)  collider=CharacterController
+  命中 y=0.3000  Arena                        (Ground)  collider=BoxCollider
+  命中 y=0.0000  Ground                       (Ground)  collider=BoxCollider
+
+================ 地面/地板候选对象 ================
+  Ground  pos=(0.0000, -0.2500, 0.0000)  scale=(44.000, 0.500, 44.000)  renderer.bounds.y -0.5000..0.0000  collider.bounds.y -0.5000..0.0000

@@ -1,0 +1,42 @@
+================ Player.prefab 根组件 ================
+  Transform
+  Animator
+  CharacterController
+  PlayerController
+  SwordVfx
+  AudioDirector
+  FootIK
+  Animator.avatar = Rogue_HoodedAvatar  valid=True human=True
+  avatar 资产路径 = Assets/ThirdParty/KayKit/Adventurers/Characters/Rogue_Hooded.fbx
+  applyRootMotion = False
+  cullingMode     = AlwaysAnimate
+  updateMode      = Normal
+  runtimeController = Player
+
+================ Visual 子树（深度 3） ================
+  Visual localPosition=(0.0000, 0.0880, 0.0000) localScale=(1.0000, 1.0000, 1.0000)
+    Visual  []
+      Rig_Medium  []
+        root  []
+          hips  []
+            ... (3 子节点)
+      RogueHooded_ArmLeft  [SkinnedMeshRenderer]
+      RogueHooded_ArmRight  [SkinnedMeshRenderer]
+      RogueHooded_Body  [SkinnedMeshRenderer]
+      RogueHooded_Cape  [SkinnedMeshRenderer]
+      RogueHooded_Head  [SkinnedMeshRenderer]
+      RogueHooded_LegLeft  [SkinnedMeshRenderer]
+      RogueHooded_LegRight  [SkinnedMeshRenderer]
+      RogueHooded_Mask  [SkinnedMeshRenderer]
+
+================ 全层次里的 Renderer / Animator / 非骨骼名 ================
+  Player  [Animator,CharacterController,PlayerController,SwordVfx,AudioDirector,FootIK]
+  Visual/Rig_Medium/root  []
+  Visual/RogueHooded_ArmLeft  [SkinnedMeshRenderer]
+  Visual/RogueHooded_ArmRight  [SkinnedMeshRenderer]
+  Visual/RogueHooded_Body  [SkinnedMeshRenderer]
+  Visual/RogueHooded_Cape  [SkinnedMeshRenderer]
+  Visual/RogueHooded_Head  [SkinnedMeshRenderer]
+  Visual/RogueHooded_LegLeft  [SkinnedMeshRenderer]
+  Visual/RogueHooded_LegRight  [SkinnedMeshRenderer]
+  Visual/RogueHooded_Mask  [SkinnedMeshRenderer]

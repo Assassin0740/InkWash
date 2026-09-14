@@ -60,6 +60,12 @@ sysinfo.txt
 # 各平台的冗余导出格式（GLB/glTF/blend/Unreal 法线），已移出 Assets
 /_RawDownloads/
 
+# 主角模型「武侠风格角色-锋」（Unity 中国资源商店，作者：冰橙，免费但不可再分发）。
+# 授权：Unity 商店授权 + 作者另注「禁止二次贩卖」→ 与 ThirdParty 同理，入库即构成再分发。
+# 复原方式：Tools/install_feng.py（从本机 Asset Store 缓存的 .unitypackage 解包，保 GUID）。
+/Assets/Char_Feng/
+/Assets/Char_Feng.meta
+
 # QFramework 的生成目录：由 CodeGenKit 在运行时/编辑器里产出，
 # 且产出它的 QFramework 本身就在 /Assets/ThirdParty/ 里（不入库）。
 # 放进版本控制只会造成"克隆下来有个空壳目录"的困惑。
