@@ -181,9 +181,25 @@ namespace InkWash.CameraRig
             transform.rotation = orbit;
 
             // ---- 震屏 ----
-            if (_shakeTimer > 0f)
+            // ★ 两个坑都在这一小段里，改之前先读完：
+            //
+            //  坑 1（用户实测到的那条）：**递减必须用 unscaledDeltaTime**。
+            //    升级奖励界面会把 `Time.timeScale` 设成 0，于是 `Time.deltaTime == 0`。
+            //    用 scaled 递减的话 `_shakeTimer` 永远减不到 0 ——
+            //    表现就是"在攻击期间弹出技能选择后，摄像机一直震个不停"。
+            //    注意震动是**直接写 transform**（不走 SmoothDamp），所以即使 dt=0 也照样每帧抖。
+            //
+            //  坑 2：暂停时画面上任何东西都不该动。哪怕用 unscaled 让它自然衰减，
+            //    玩家在选技能的那半秒里仍会看到画面在抖 —— 那是在"UI 上震"。
+            //    所以 timeScale <= 0 时直接把震动结清（不是暂停，是结束）。
+            if (Time.timeScale <= 0f)
             {
-                _shakeTimer -= dt;
+                _shakeTimer = 0f;
+                _shakeAmplitude = 0f;
+            }
+            else if (_shakeTimer > 0f)
+            {
+                _shakeTimer -= Mathf.Max(Time.unscaledDeltaTime, 1e-5f);
                 float falloff = _shakeDuration > 0f ? Mathf.Clamp01(_shakeTimer / _shakeDuration) : 0f;
                 float amp = _shakeAmplitude * falloff * falloff;
                 transform.position += Random.insideUnitSphere * amp;
@@ -238,6 +254,22 @@ namespace InkWash.CameraRig
             _shakeAmplitude = amplitude;
             _shakeDuration = Mathf.Max(duration, 1e-4f);
             _shakeTimer = _shakeDuration;
+        }
+
+        /// <summary>
+        /// 立刻结束震屏（幅度一并清零）。
+        ///
+        /// 进奖励 / 结算这类**接管 timeScale** 的场合应当显式调用。
+        /// 虽然 <see cref="LateUpdate"/> 里已经有 `timeScale &lt;= 0 → 结清` 的兜底，
+        /// 但那是"靠全局状态兜"，而 <see cref="HitStop"/> 与奖励暂停都会短暂地在 0 与非 0 之间切换；
+        /// 主动调用一次，语义就是明确的"这一局的表现已经结束了"。<br/>
+        /// 幅度必须一起清零：只清 timer 的话，残留的大幅度会把下一个较弱的小震动挡掉
+        /// （见 <see cref="Shake"/> 第一行的"更强的不打断"判据）。
+        /// </summary>
+        public void StopShake()
+        {
+            _shakeTimer = 0f;
+            _shakeAmplitude = 0f;
         }
 
         /// <summary>把相机瞬移到目标背后（切换视角 / 重生时用）。</summary>

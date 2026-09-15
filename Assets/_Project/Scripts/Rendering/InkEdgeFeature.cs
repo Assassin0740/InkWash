@@ -23,8 +23,17 @@ namespace InkWash.Rendering
             public bool enabled = true;
             public Color edgeColor = new Color(0.04f, 0.045f, 0.06f, 1f);
             [Range(0.1f, 60f)] public float depthSensitivity = 22f;
-            /// <summary>深度死区：把"掠射角地面"这种平缓深度斜坡压掉（见 shader 头注 b）。</summary>
-            [Range(0f, 1f)] public float depthBias = 0.30f;
+            /// <summary>
+            /// 深度死区：把"掠射角墙面 / 地面"的**假线**压掉。
+            ///
+            /// ⚠ 上限必须放到 6，不能是 1。原因见 shader 里「注释与实现不符」那一大段：
+            ///   深度项的判据 `|dL − dR|` 其实是**一阶**差分，在斜率 s 的斜坡上等于 2·s·h，
+            ///   正比于斜率。透视下墙与地面的斜率很大，0.30 的死区远远不够 ——
+            ///   实测表现是画面上出现一道道贯穿并指向灭点的斜线（像工程图的三角剖分）。
+            ///   本场景的物体边界几乎都有法线差（走 nEdge）、天空剪影有 sEdge，
+            ///   深度项只兜"同一物体自遮挡"，所以干脆取大值把它压掉。
+            /// </summary>
+            [Range(0f, 6f)] public float depthBias = 2.0f;
             [Range(0.1f, 4f)] public float normalSensitivity = 0.9f;
             [Range(0f, 1f)] public float normalBias = 0.06f;
             [Range(0.5f, 4f)] public float lineThickness = 1f;

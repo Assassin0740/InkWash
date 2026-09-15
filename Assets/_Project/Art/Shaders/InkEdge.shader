@@ -25,7 +25,7 @@ Shader "Hidden/InkWash/InkEdge"
     {
         _EdgeColor ("墨线颜色", Color) = (0.04, 0.045, 0.06, 1)
         _DepthSensitivity ("深度灵敏度", Range(0.1, 60)) = 22
-        _DepthBias ("深度死区（压掉掠射角地面）", Range(0, 1)) = 0.30
+        _DepthBias ("深度死区（压掉掠射角面上的假线，取大值优先）", Range(0, 6)) = 2.0
         _NormalSensitivity ("法线灵敏度", Range(0.1, 4)) = 0.9
         _NormalBias ("法线死区", Range(0, 1)) = 0.06
         _LineThickness ("线宽（像素采样步长）", Range(0.5, 4)) = 1.0
@@ -119,10 +119,25 @@ Shader "Hidden/InkWash/InkEdge"
                 float dU = EyeDepth(uv + float2(0,  texel.y));
                 float dD = EyeDepth(uv + float2(0, -texel.y));
 
-                // ---- ① 深度"断崖"：用**二阶**差分（Roberts 式 |dL−dR|），不是一阶 ----
-                // 一阶差分 |dL−dC| 在掠射角地面上**恒为正值** —— 地面本身就是一条深度斜坡，
-                // 于是整片地面都被判成"轮廓"，再叠上飞白噪声就成了"地上长出一片纸纹"。
-                // 二阶差分把平缓斜坡减掉：只有真正跨过物体边界，两侧深度才会拉开。
+                // ---- ① 深度"断崖" ----
+                //
+                // ★★ 这里有一个**注释与实现不符**的老 bug，改之前务必读完 ★★
+                //
+                // 原注释声称 `|dL − dR|` 是"Roberts 式二阶差分，能把掠射角地面的斜坡减掉"。
+                // **它是错的**：`|dL − dR|` 是**一阶**中心差分。
+                //   在斜率 s 的线性斜坡上，dL = dC − s·h、dR = dC + s·h，
+                //   于是 `|dL − dR| = 2·s·h` —— **正比于斜率，一点也不为零**。
+                //   只有在"平坦平台"（s ≈ 0）上才为 0。
+                // 后果（用户实测到的那条）：透视下斜率很大的**掠射角墙面与地面**
+                //   整片被算成"轮廓"，画面上出现一道道**贯穿并指向灭点的斜线**
+                //   —— 看着像工程图的三角剖分线。实测对照：把深度项置零，斜线全部消失
+                //   （证据已归档到 Tools/screenshots/s6/：S6_edge_depth_on.png ↔ S6_edge_depth_off.png）。
+                //
+                // 处置：不改成真正的二阶差分 `|dL + dR − 2·dC|` —— 拉普拉斯在**阶跃边缘的中心处过零**，
+                //   会把每条边画成**双线**（这是它的经典缺陷，靠飞白噪声遮不住）。
+                //   改为**大幅抬高死区**：本场景里"物体 vs 物体"的边界几乎都有法线差（走 nEdge），
+                //   "物体 vs 天空"有 sEdge，深度项本来只是兜"同一物体自遮挡"这一小块，
+                //   为这点收益换来满屏斜线不值得。
                 float invD = 1.0 / max(dC, 0.05);
                 float depthJump = (abs(dL - dR) + abs(dU - dD)) * invD;
                 half dEdge = saturate(depthJump * _DepthSensitivity - _DepthBias);

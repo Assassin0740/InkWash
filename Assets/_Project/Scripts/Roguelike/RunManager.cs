@@ -50,6 +50,9 @@ namespace InkWash.Roguelike
         public LevelSystem level;
         public SkillChoicePanel choicePanel;
 
+        [Tooltip("主相机（震屏要在接管 timeScale 之前停掉）。留空自动找。")]
+        public InkWash.CameraRig.ThirdPersonCamera cameraRig;
+
         [Header("技能池（全部可抽取的技能资产）")]
         public List<SkillData> skillPool = new List<SkillData>();
 
@@ -220,6 +223,25 @@ namespace InkWash.Roguelike
             }
         }
 
+        /// <summary>
+        /// 接管 <c>Time.timeScale</c> 之前必须做的两件清理。**每个"要暂停/结算"的地方都要先调它。**
+        ///
+        /// ① <c>HitStop.ForceEnd()</c>：顿帧保存了进入时的 timeScale，倒计时结束会把它写回。
+        ///    若在它活跃的 0.08 s 里外部把 timeScale 设成 0，顿帧一结束就把暂停**无声解除**。
+        ///
+        /// ② <c>StopShake()</c>：震屏直接写 <c>transform</c>，而它的倒计时此前用的是
+        ///    <c>Time.deltaTime</c> —— timeScale = 0 时 `deltaTime == 0`，倒计时永远走不完。
+        ///    表现就是**在攻击命中（顿帧+震屏）的同时弹出技能选择，画面会一直震**。
+        ///    （相机侧已改成按 unscaled 递减并加 `timeScale &lt;= 0` 兜底，这里是显式再补一刀 ——
+        ///    语义上"这一局的表现反馈已经结束了"，比依赖全局状态推断清楚。）
+        /// </summary>
+        private void TakeOverTimeScale()
+        {
+            InkWash.Combat.HitStop.ForceEnd();
+            if (cameraRig == null) cameraRig = UnityEngine.Object.FindObjectOfType<InkWash.CameraRig.ThirdPersonCamera>();
+            if (cameraRig != null) cameraRig.StopShake();
+        }
+
         private void EnterReward()
         {
             if (choicePanel == null || skillPool == null || skillPool.Count == 0)
@@ -231,8 +253,9 @@ namespace InkWash.Roguelike
                 return;
             }
 
-            // ★ 先把顿帧结清再暂停（否则顿帧恢复时会把 timeScale 写回 1，暂停被无声解除）
-            InkWash.Combat.HitStop.ForceEnd();
+            // ★ 先把顿帧与震屏结清再暂停（否则顿帧恢复时会把 timeScale 写回 1，暂停被无声解除；
+            //   震屏则因为倒计时吃 scaled deltaTime 而永远走不完 —— 见 TakeOverTimeScale）
+            TakeOverTimeScale();
 
             var res = SkillPool.Draw(skillPool, inventory, choicePanel.optionCount, _rng);
             _lastDrawnCount = res.picked.Count;
@@ -267,8 +290,8 @@ namespace InkWash.Roguelike
             // 主菜单里死掉不算一局结束（实测踩到：MainMenu → GameOver 是非法迁移，
             // 会被迁移表拒掉并在 Console 里刷一条警告）。它只可能来自"还没开局就有东西能伤人"。
             if (_state == RunState.MainMenu) return;
+            TakeOverTimeScale();
             Time.timeScale = 1f;
-            InkWash.Combat.HitStop.ForceEnd();
             SetState(RunState.GameOver);
         }
 
@@ -312,8 +335,8 @@ namespace InkWash.Roguelike
         /// </summary>
         public void ResetForTest()
         {
+            TakeOverTimeScale();
             Time.timeScale = 1f;
-            InkWash.Combat.HitStop.ForceEnd();
             if (choicePanel != null) choicePanel.Hide();
             _state = RunState.MainMenu;
             _stateEnterTime = Time.unscaledTime;

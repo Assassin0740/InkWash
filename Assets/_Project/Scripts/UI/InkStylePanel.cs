@@ -260,7 +260,7 @@ namespace InkWash.UI
                 InkStyleRegistry.EdgeOn = GUILayout.Toggle(InkStyleRegistry.EdgeEnabled, " 启用墨线");
                 C("墨线颜色", () => es.edgeColor, v => { es.edgeColor = v; _dirty = true; });
                 Sl("深度灵敏度", 0.1f, 60f, () => es.depthSensitivity, v => { es.depthSensitivity = v; _dirty = true; });
-                Sl("深度死区", 0f, 1f, () => es.depthBias, v => { es.depthBias = v; _dirty = true; });
+                Sl("深度死区", 0f, 6f, () => es.depthBias, v => { es.depthBias = v; _dirty = true; });
                 Sl("法线灵敏度", 0.1f, 4f, () => es.normalSensitivity, v => { es.normalSensitivity = v; _dirty = true; });
                 Sl("法线死区", 0f, 1f, () => es.normalBias, v => { es.normalBias = v; _dirty = true; });
                 Sl("线宽", 0.5f, 4f, () => es.lineThickness, v => { es.lineThickness = v; _dirty = true; });

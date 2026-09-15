@@ -1,0 +1,60 @@
+控制器 = Assets/_Project/Animations/Player.controller   参数：7   层：1
+  param Speed : Float  default=False/0/0
+  param MotionSpeed : Float  default=False/0/0
+  param Grounded : Bool  default=False/0/0
+  param Dash : Trigger  default=False/0/0
+  param Attack1 : Trigger  default=False/0/0
+  param Attack2 : Trigger  default=False/0/0
+  param Attack3 : Trigger  default=False/0/0
+
+=== 层 0 "Base Layer"  权重=1  blending=Override ===
+  状态机 "Base Layer"  默认状态 = Idle
+    [状态] Idle   motion=Feng_Idle_Loop(AnimationClip) speed=1  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Walk   motion=Feng_Walk_Loop(AnimationClip) speed=1  speedParam=MotionSpeed  writeDefaults=True  mirror=False
+    [状态] Run   motion=Run04_KI_Carry(AnimationClip) speed=1  speedParam=MotionSpeed  writeDefaults=True  mirror=False
+    [状态] Dash   motion=Dodge_Forward(AnimationClip) speed=1  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Atk1   motion=Armature|Sword_Regular_A(AnimationClip) speed=1.25  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Atk1Rec   motion=Armature|Sword_Regular_A_Rec(AnimationClip) speed=1.7  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Atk2   motion=Armature|Sword_Regular_B(AnimationClip) speed=1.25  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Atk2Rec   motion=Armature|Sword_Regular_B_Rec(AnimationClip) speed=1.7  speedParam=-  writeDefaults=True  mirror=False
+    [状态] Atk3   motion=Armature|Sword_Regular_C(AnimationClip) speed=1.25  speedParam=-  writeDefaults=True  mirror=False
+    -- AnyState 转移 --
+    -- "Idle" 的出边 --
+      → 状态"Walk"   hasExitTime=False  exitTime=0  时长=0.15  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 0.35
+      → 状态"Run"   hasExitTime=False  exitTime=0  时长=0.15  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 3
+      → 状态"Dash"   hasExitTime=False  exitTime=0  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true
+      → 状态"Atk1"   hasExitTime=False  exitTime=0  时长=0.06  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack1 == true
+    -- "Walk" 的出边 --
+      → 状态"Idle"   hasExitTime=False  exitTime=0  时长=0.2  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed < 0.35
+      → 状态"Run"   hasExitTime=False  exitTime=0  时长=0.14  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 3
+      → 状态"Dash"   hasExitTime=False  exitTime=0  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true
+      → 状态"Atk1"   hasExitTime=False  exitTime=0  时长=0.06  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack1 == true
+    -- "Run" 的出边 --
+      → 状态"Walk"   hasExitTime=False  exitTime=0  时长=0.18  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed < 2.5
+      → 状态"Idle"   hasExitTime=False  exitTime=0  时长=0.22  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed < 0.35
+      → 状态"Dash"   hasExitTime=False  exitTime=0  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true
+      → 状态"Atk1"   hasExitTime=False  exitTime=0  时长=0.06  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack1 == true
+    -- "Dash" 的出边 --
+      → 状态"Idle"   hasExitTime=True  exitTime=0.92  时长=0.14  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+      → 状态"Atk1"   hasExitTime=True  exitTime=0.6  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack1 == true
+    -- "Atk1" 的出边 --
+      → 状态"Atk1Rec"   hasExitTime=True  exitTime=0.95  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+    -- "Atk1Rec" 的出边 --
+      → 状态"Atk2"   hasExitTime=False  exitTime=0  时长=0.06  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack2 == true
+      → 状态"Idle"   hasExitTime=True  exitTime=0.85  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+      → 状态"Walk"   hasExitTime=True  exitTime=0.55  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 0.35
+      → 状态"Run"   hasExitTime=True  exitTime=0.55  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 3
+      → 状态"Dash"   hasExitTime=True  exitTime=0.3  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true
+    -- "Atk2" 的出边 --
+      → 状态"Atk2Rec"   hasExitTime=True  exitTime=0.95  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+    -- "Atk2Rec" 的出边 --
+      → 状态"Atk3"   hasExitTime=False  exitTime=0  时长=0.06  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Attack3 == true
+      → 状态"Idle"   hasExitTime=True  exitTime=0.85  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+      → 状态"Walk"   hasExitTime=True  exitTime=0.55  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 0.35
+      → 状态"Run"   hasExitTime=True  exitTime=0.55  时长=0.16  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 3
+      → 状态"Dash"   hasExitTime=True  exitTime=0.3  时长=0.08  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true
+    -- "Atk3" 的出边 --
+      → 状态"Idle"   hasExitTime=True  exitTime=0.72  时长=0.2  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[0]=(无)
+      → 状态"Walk"   hasExitTime=True  exitTime=0.7  时长=0.2  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 0.35
+      → 状态"Run"   hasExitTime=True  exitTime=0.7  时长=0.2  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Speed > 3
+      → 状态"Dash"   hasExitTime=True  exitTime=0.45  时长=0.1  offset=0  interrupt=None  有序中断=True  可自转移=True  mute=False  solo=False  条件[1]=Dash == true

@@ -1,0 +1,7 @@
+玩家初始位置 (1.097, 0.33, 4.587)  朝向 (0, 157.882, 0)
+角色身上 Renderer 数 = 3
+
+===== 不透明纯红弧光 =====
+R1_red_char → 抓图； 角色可见=True  网格 tris=108  BaseColor=(1, 0, 0, 1)  queue=3900
+R2_red_nochar → 抓图； 角色可见=False  网格 tris=108  BaseColor=(1, 0, 0, 1)  queue=3900
+R3_red_nochar_200 → 抓图； 角色可见=False  网格 tris=796  BaseColor=(1, 0, 0, 1)  queue=3900

@@ -1,0 +1,45 @@
+场景 = Main
+===== 画面质感修复（白盒 → 水墨 / 提亮 / 挥墨） =====
+
+InkWash/InkSurface 找到 = True
+飞白噪声贴图 = T_InkBrushNoise
+
+---- ① 场景材质换成 InkWash/InkSurface ----
+  M_Whitebox_Wall  Universal Render Pipeline/Lit → InkWash/InkSurface  纸白(0.952, 0.947, 0.928) 淡墨(0.47, 0.492, 0.53) 阶3 飞白0.52
+  M_Whitebox_Ground  Universal Render Pipeline/Lit → InkWash/InkSurface  纸白(0.925, 0.919, 0.899) 淡墨(0.52, 0.535, 0.56) 阶3 飞白0.46
+  M_Whitebox_Pillar  Universal Render Pipeline/Lit → InkWash/InkSurface  纸白(0.905, 0.9, 0.88) 淡墨(0.44, 0.46, 0.5) 阶4 飞白0.55
+  M_Whitebox_Platform  Universal Render Pipeline/Lit → InkWash/InkSurface  纸白(0.958, 0.953, 0.934) 淡墨(0.5, 0.518, 0.552) 阶3 飞白0.48
+
+---- ② 环境光 / 补光 ----
+  before: sky=(0.62, 0.63, 0.62)  equator=(0.5, 0.5, 0.49)  ground=(0.3, 0.3, 0.3)  intensity=1
+  after : sky=(0.885, 0.892, 0.885)  equator=(0.815, 0.822, 0.825)  ground=(0.64, 0.645, 0.65)
+  Directional Light (Sun) 强度 1.15 → 1.30
+  Fill Light (Sky) 强度 0.28 → 0.45
+
+---- ③ 角色/敌人材质 ----
+  M_Character_Ink.mat  _PaperColor (0.847, 0.812, 0.741) → (0.96, 0.951, 0.925)
+  M_Ink_Enemy_MoOu_0.mat  _PaperColor (0.847, 0.812, 0.741) → (0.96, 0.951, 0.925)
+  M_Ink_Enemy_MoTu_0.mat  _PaperColor (0.847, 0.812, 0.741) → (0.96, 0.951, 0.925)
+  M_Ink_Enemy_MoYan_0.mat  _PaperColor (0.847, 0.812, 0.741) → (0.96, 0.951, 0.925)
+
+---- ④ 宣纸底纹（InkPaper） ----
+  URP-HighFidelity-Renderer.asset → Ink Paper 宣纸底纹
+    paperStrength 0.45 → 0.26　（纸纹相乘会整体压暗，降一半）
+    vignette      0.32 → 0.14　（原 0.32 把画面四周压灰）
+    tintStrength  0.3 → 0.12　（米黄着染会显脏）
+    paperTint     (0.949, 0.925, 0.867) → (0.98, 0.972, 0.95)
+    grainStrength 0.18 → 0.15
+    inkDeepen     0.25 → 0.20　（暗部保持沉，对比才立得住）
+  URP-Balanced-Renderer.asset → Ink Paper 宣纸底纹
+    paperStrength 0.45 → 0.26　（纸纹相乘会整体压暗，降一半）
+    vignette      0.32 → 0.14　（原 0.32 把画面四周压灰）
+    tintStrength  0.3 → 0.12　（米黄着染会显脏）
+    paperTint     (0.949, 0.925, 0.867) → (0.98, 0.972, 0.95)
+    grainStrength 0.18 → 0.15
+    inkDeepen     0.25 → 0.20　（暗部保持沉，对比才立得住）
+
+---- ⑤ 刀光 / 拖尾（SwordVfx） ----
+  before: 弧 r=1.45 厚=0.85 角=130 命=0.26 | 拖尾 时=0.16 起宽=0.154
+  after : 弧 r=2.1 厚=1.25 角=155 命=0.34 | 拖尾 时=0.24 起宽=0.52
+
+场景保存 = True

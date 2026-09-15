@@ -1,0 +1,82 @@
+Trigger 参数 = Dash, Attack1, Attack2, Attack3
+
+Idle：
+  原顺序 = Walk → Run → Dash → Atk1
+  目标   = Dash → Atk1 → Walk → Run
+  · 已重排
+Walk：
+  原顺序 = Idle → Run → Dash → Atk1
+  目标   = Dash → Atk1 → Idle → Run
+  · 已重排
+Run：
+  原顺序 = Walk → Idle → Dash → Atk1
+  目标   = Dash → Atk1 → Walk → Idle
+  · 已重排
+Dash：
+  原顺序 = Idle → Atk1
+  目标   = Atk1 → Idle
+  · 已重排
+Atk1：
+  原顺序 = Atk1Rec
+  目标   = Atk1Rec
+  = 已符合，跳过
+Atk1Rec：
+  原顺序 = Atk2 → Idle → Walk → Run → Dash
+  目标   = Atk2 → Dash → Idle → Walk → Run
+  · 已重排
+Atk2：
+  原顺序 = Atk2Rec
+  目标   = Atk2Rec
+  = 已符合，跳过
+Atk2Rec：
+  原顺序 = Atk3 → Idle → Walk → Run → Dash
+  目标   = Atk3 → Dash → Idle → Walk → Run
+  · 已重排
+Atk3：
+  原顺序 = Idle → Walk → Run → Dash
+  目标   = Dash → Idle → Walk → Run
+  · 已重排
+
+重排的状态数 = 7
+已保存 Player.controller。
+
+复核：
+  Idle：
+    → Dash  exitTime=-  dur=0.08  interrupt=Source  自转移=True  条件=Dash If 0
+    → Atk1  exitTime=-  dur=0.06  interrupt=None  自转移=True  条件=Attack1 If 0
+    → Walk  exitTime=-  dur=0.15  interrupt=Source  自转移=True  条件=Speed Greater 0.35
+    → Run  exitTime=-  dur=0.15  interrupt=Source  自转移=True  条件=Speed Greater 3
+  Walk：
+    → Dash  exitTime=-  dur=0.08  interrupt=Source  自转移=True  条件=Dash If 0
+    → Atk1  exitTime=-  dur=0.06  interrupt=None  自转移=True  条件=Attack1 If 0
+    → Idle  exitTime=-  dur=0.2  interrupt=Source  自转移=True  条件=Speed Less 0.35
+    → Run  exitTime=-  dur=0.14  interrupt=Source  自转移=True  条件=Speed Greater 3
+  Run：
+    → Dash  exitTime=-  dur=0.08  interrupt=Source  自转移=True  条件=Dash If 0
+    → Atk1  exitTime=-  dur=0.06  interrupt=None  自转移=True  条件=Attack1 If 0
+    → Walk  exitTime=-  dur=0.18  interrupt=Source  自转移=True  条件=Speed Less 2.5
+    → Idle  exitTime=-  dur=0.22  interrupt=Source  自转移=True  条件=Speed Less 0.35
+  Dash：
+    → Atk1  exitTime=0.6  dur=0.08  interrupt=None  自转移=True  条件=Attack1 If 0
+    → Idle  exitTime=0.92  dur=0.14  interrupt=Source  自转移=True  条件=(无)
+  Atk1：
+    → Atk1Rec  exitTime=0.95  dur=0.08  interrupt=None  自转移=True  条件=(无)
+  Atk1Rec：
+    → Atk2  exitTime=-  dur=0.06  interrupt=None  自转移=True  条件=Attack2 If 0
+    → Dash  exitTime=0.3  dur=0.08  interrupt=Source  自转移=True  条件=Dash If 0
+    → Idle  exitTime=0.85  dur=0.16  interrupt=Source  自转移=True  条件=(无)
+    → Walk  exitTime=0.55  dur=0.16  interrupt=Source  自转移=True  条件=Speed Greater 0.35
+    → Run  exitTime=0.55  dur=0.16  interrupt=Source  自转移=True  条件=Speed Greater 3
+  Atk2：
+    → Atk2Rec  exitTime=0.95  dur=0.08  interrupt=None  自转移=True  条件=(无)
+  Atk2Rec：
+    → Atk3  exitTime=-  dur=0.06  interrupt=None  自转移=True  条件=Attack3 If 0
+    → Dash  exitTime=0.3  dur=0.08  interrupt=Source  自转移=True  条件=Dash If 0
+    → Idle  exitTime=0.85  dur=0.16  interrupt=Source  自转移=True  条件=(无)
+    → Walk  exitTime=0.55  dur=0.16  interrupt=Source  自转移=True  条件=Speed Greater 0.35
+    → Run  exitTime=0.55  dur=0.16  interrupt=Source  自转移=True  条件=Speed Greater 3
+  Atk3：
+    → Dash  exitTime=0.45  dur=0.1  interrupt=Source  自转移=True  条件=Dash If 0
+    → Idle  exitTime=0.72  dur=0.2  interrupt=Source  自转移=True  条件=(无)
+    → Walk  exitTime=0.7  dur=0.2  interrupt=Source  自转移=True  条件=Speed Greater 0.35
+    → Run  exitTime=0.7  dur=0.2  interrupt=Source  自转移=True  条件=Speed Greater 3

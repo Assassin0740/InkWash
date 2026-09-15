@@ -1,0 +1,51 @@
+Assembly-CSharp = 已加载
+  InkWash.CameraRig.ThirdPersonCamera.StopShake() → OK（新代码已在 DLL 里）
+  InkWash.Roguelike.RunManager.TakeOverTimeScale() → OK（新代码已在 DLL 里）
+  InkWash.Effects.SwordVfx.OnSwingStarted() → OK（新代码已在 DLL 里）
+  InkWash.Player.PlayerController.IsLeavingAttack() → OK（新代码已在 DLL 里）
+  InkWash.Player.PlayerController.IsAttackStateName() → OK（新代码已在 DLL 里）
+  InkWash.Roguelike.RunManager.cameraRig → OK（新代码已在 DLL 里）
+  InkWash.Effects.SwordVfx._trail → OK（新代码已在 DLL 里）
+  InkWash.Player.PlayerController._restartQueued → OK（新代码已在 DLL 里）
+
+>> 全部为 OK ⇒ 本轮（含攻击连招修复）的代码已在运行的程序集里。
+
+PlayerController 与攻击时序相关的成员：
+  [字段] Single _atkSpeed
+  [字段] Boolean _attackQueued
+  [字段] Single _attackQueuedAt
+  [字段] Boolean _attackStateSeen
+  [字段] Int32 _comboStep
+  [字段] Boolean _overrideAttack
+  [字段] ActionPhase _phase
+  [字段] Single _phaseTimer
+  [字段] Boolean _restartQueued
+  [字段] ActionPhase <Phase>k__BackingField
+  [字段] Single attackInputBuffer
+  [字段] Single attackTurnScale
+  [字段] Single[] comboHitTime
+  [字段] Single[] comboLungeDistance
+  [字段] Single[] comboLungeDuration
+  [字段] Single[] comboRecCancelStart
+  [字段] Single[] comboSwingDuration
+  [字段] Int32 HashAttack1
+  [字段] Int32 HashAttack2
+  [字段] Int32 HashAttack3
+  [字段] Single kAttackEntryTimeout
+  [字段] Action`1 SwingStarted
+  [方法] add_SwingStarted
+  [方法] AdvanceCombo
+  [方法] get_AttackStateSeen
+  [方法] get_ComboStep
+  [方法] get_CurrentAttackSpeed
+  [方法] get_Phase
+  [方法] get_PhaseTime
+  [方法] IsAttackStateName
+  [方法] IsInAttackState
+  [方法] IsLeavingAttack
+  [方法] remove_SwingStarted
+  [方法] RequestInjectedAttack
+  [方法] ResolveAttackDir
+  [方法] set_Phase
+  [方法] TickAttack
+  [方法] TryAttack

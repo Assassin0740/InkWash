@@ -1,0 +1,20 @@
+===== 画面诊断 =====
+SwordVfx 找到 = True
+  武器        = W_Sword
+  右手骨骼    = True
+  inkShader   = InkWash/InkSlash
+相机        = Main Camera
+三层状态    = 墨线 开　宣纸 开　墨晕 关
+Edge/Paper/Bloom 对象 = True/True/True
+Shader.Find("InkWash/InkSlash") = InkWash/InkSlash
+  isSupported = True  passCount = 1
+
+---- 挥砍实测 ----
+  SwingCount    0 → 1
+  ArcSpawnCount 0 → 1
+  ActiveArcCount 0 → 0
+  TrailEmitStartCount = 1   IsTrailEmitting = False   TrailPositionCount = 28
+  BladeSpeed = 2.979   EmitStartBladeSpeed = 11.681
+  找到 SlashArc 实例 = False
+
+---- 逐层关闭 ----

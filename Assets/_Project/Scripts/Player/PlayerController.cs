@@ -39,17 +39,22 @@ namespace InkWash.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("移动")]
-        [Tooltip("走路速度（米/秒）。对应动画 Walk（Feng 自带 Walk 的循环副本 Feng_Walk_Loop）。\n" +
+        [Tooltip("【慢走档】按住 Shift 时使用。对应动画 Walk（Feng 自带 Walk 的循环副本 Feng_Walk_Loop）。\n" +
                  "取 1.25 → 1.25/0.91 = 1.37× → 步频 2.06 步/秒（124 步/分，快走偏上但可控）。\n" +
                  "★ 曾经取 1.4（1.54×）→ 步频 2.31 步/秒 = 竞走级，观感是「小碎步快走」。\n" +
                  "★ 也试过换 KI Walk01_Forward（原生 1.80，取 1.4 只要 0.78×，步频更漂亮）——\n" +
                  "  但实测它的最低点跨度 0.327m（Feng 只有 0.166），侧视图里腿抬得像跨步/跑步，\n" +
                  "  不像走路，已回退。选片段不能只看步频，要看「脚位波动」。\n" +
+                 "⚠ 本档是**修饰键档**（默认档是 runSpeed）。走档原生只有 0.91 m/s，\n" +
+                 "  物理速度上限约 1.5 m/s，承担不了常用移动 —— 详见 ReadInput 里的说明。\n" +
                  "上限由验收的步频断言把关。")]
         public float walkSpeed = 1.25f;
 
-        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（Kevin Iglesias Run01_Forward）。\n" +
+        [Tooltip("【默认档】不按修饰键时的移动速度，也是按住 Shift 之外的常态速度。\n" +
+                 "对应动画 Run（Kevin Iglesias Run01_Forward）。\n" +
                  "Run01_Forward 原生 4.12 m/s（脚踝法实测），取 4.0 → 0.97× → 步频 3.23 步/秒，落在真人跑步区间。\n" +
+                 "★ 它才是默认档：走档（walkSpeed）原生只有 0.91 m/s，撑不起「平时移动」，\n" +
+                 "  按 Shift 慢走、不按就跑 —— 见 ReadInput 里的完整理由。\n" +
                  "默认值必须与预制体上的序列化值一致（4.0）。曾经默认 5.6、预制体 4.2，\n" +
                  "两边不一致很容易让人误判\"实际生效的是哪个\"。")]
         public float runSpeed = 4.0f;
@@ -254,6 +259,18 @@ namespace InkWash.Player
         private bool _attackStateSeen;
 
         /// <summary>
+        /// 「这一招收完就**重新起手**」的意图。与 <see cref="_attackQueued"/> 是两件事，
+        /// 这是本轮（攻击收招期间再按攻击会失效）踩出来的区分：
+        ///   · <see cref="_attackQueued"/> = 「我还想接**下一段**连击」，只在取消窗口
+        ///     打开之前有意义，窗口一开就消费；有效期只有 <see cref="attackInputBuffer"/>(0.25s)。
+        ///   · 本字段 = 「这一段已经接不上下一段了（后摇已过 / 第 3 段按设计不可取消），
+        ///     我只想**再打一遍**」，从按下一直保留到阶段回到移动态再消费。
+        /// 所以**不能**复用 _attackQueued：它的 0.25s 有效期撑不过
+        /// 「第 3 段收招 + 后摇混合」（实测 0.5s 以上），复用会让玩家这一次按键静默消失。
+        /// </summary>
+        private bool _restartQueued;
+
+        /// <summary>
         /// 交给动画混合树的「移动意图速度」（m/s）。**不等于** <see cref="DesiredSpeed"/>。
         ///
         /// 为什么要单独分出一个量（真实踩过的坑）：
@@ -338,6 +355,8 @@ namespace InkWash.Player
             {
                 _input = _overrideMove;
                 if (_input.sqrMagnitude > 1f) _input.Normalize();
+                // 注入路径**不做 Shift 反转**：runHeld 直接就是"用跑档 / 用走档"，
+                // 与 SetInjectedMove 的参数一一对应（验收脚本按字面理解即可）。
                 _runHeld = _overrideRun;
                 if (_overrideDash) { _overrideDash = false; TryStartDash(); }
                 if (_overrideAttack) { _overrideAttack = false; TryAttack(); }
@@ -353,7 +372,22 @@ namespace InkWash.Player
             _input = new Vector2(x, y);
             if (_input.sqrMagnitude > 1f) _input.Normalize();
 
-            _runHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            // ★ Shift 的语义：**按住 = 慢走，不按 = 跑**。
+            //
+            // 为什么要把默认档从"走"换成"跑"（原先是不按 Shift 走、按 Shift 跑）：
+            //   · Feng 的 Walk 片段原生只有 **0.91 m/s**（脚踝法实测）。要让它看着自然，
+            //     播放倍率必须留在 1.0~1.6 ⇒ 物理速度上限约 1.5 m/s。
+            //     在 44 m 见方的场地里，从中心走到外墙要 **15 秒** —— 用户实测反馈
+            //     「平时走路有点太慢了」，指的就是这个。
+            //   · 而 Run 片段原生 4.12 m/s，取 4.0 的播放倍率是 **0.97** —— 它本来就该是默认档。
+            //   · 曾试着直接把 walkSpeed 提到 1.4（倍率 1.54），得到的是**竞走级的小碎步**
+            //     （步频 2.31 步/秒），只好回退。**问题不在速度数值，在于走档压根撑不起常用移动。**
+            //   · 现在两个档位都落在各自片段的舒适区：默认 4.0（倍率 0.97，步频 3.23）、
+            //     按住 Shift 1.25（倍率 1.37，步频 2.06）。没有任何滑步或碎步。
+            //
+            // Shift = 慢走也符合多数玩家的肌肉记忆（潜行 / 精细走位）。
+            bool slowWalkHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            _runHeld = !slowWalkHeld;
 
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) TryStartDash();
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.J)) TryAttack();
@@ -483,6 +517,15 @@ namespace InkWash.Player
                 return;
             }
 
+            // 缓冲没能被消费、而状态机已经开始离开这一段 → 转成「重新起手」。
+            // 顺序很讲究：必须排在上面那次 AdvanceCombo 之后 —— 反过来的话，
+            // 后摇退出期间按钮会去"重新起手"而不是接第二段，连击会被砍掉一段。
+            if (_attackQueued && IsLeavingAttack())
+            {
+                _attackQueued = false;
+                _restartQueued = true;
+            }
+
             // 动画若已自行回到待机/移动，说明这一段（含后摇）走完了。
             //
             // 关键：必须「**先见过**攻击状态」才允许退出。
@@ -533,10 +576,23 @@ namespace InkWash.Player
         {
             if (_phase == ActionPhase.Attack)
             {
-                if (_comboStep >= 3) return false;
-                if (IsCancelWindowOpen) { AdvanceCombo(); return true; }
-                _attackQueued = true;
-                _attackQueuedAt = Time.time;
+                // 1) 取消窗口开着且还有下一段 → 立刻接（连击的正常路径）
+                if (_comboStep < 3 && IsCancelWindowOpen) { AdvanceCombo(); return true; }
+
+                // 2) 还有下一段，只是窗口没开（挥砍前段按早了）→ 进输入缓冲，
+                //    窗口一开由 TickAttack 自动接上。这是连打能推满三段的基础。
+                if (_comboStep < 3 && !IsLeavingAttack())
+                {
+                    _attackQueued = true;
+                    _attackQueuedAt = Time.time;
+                    return true;
+                }
+
+                // 3) 接不了下一段了：第 3 段正收招（按设计不可取消），或本段后摇的状态机
+                //    已经开始退出。**这时绝不能 return false 把玩家的输入丢掉** ——
+                //    用户报的「攻击结束后立刻再攻击，招式不出来」就是这里。
+                //    记成「收完重新起手」，EnterLocomotion 会立刻兑现。
+                _restartQueued = true;
                 return true;
             }
 
@@ -576,18 +632,40 @@ namespace InkWash.Player
         private void EnterLocomotion(float brakeRate)
         {
             if (_phase == ActionPhase.Locomotion) return;
+            bool restartWanted = _restartQueued;
             _phase = ActionPhase.Locomotion;
             Phase = ActionPhase.Locomotion;
             _phaseTimer = 0f;
             _comboStep = 0;
             _attackQueued = false;
             _attackStateSeen = false;
+            _restartQueued = false;
             IsCancelWindowOpen = false;
             _blendSpeed = 0f;   // 交给下一帧的 TickLocomotion 按输入重新决定
             _atkSpeed = 1f;
             // 动画速率必须恢复 —— 它是**全局**的，忘了恢复会让之后的走路/待机一直加速
-            if (animator != null) animator.speed = 1f;
+            if (animator != null)
+            {
+                animator.speed = 1f;
+                // ★ 退出攻击时必须把三个攻击触发器一起清掉。
+                //   理由（本轮实测到的**真实故障**）：Attk1Rec 往 Idle 混合的那条出边
+                //   原本 interruptionSource = None，已经开始就无法被 Attk1Rec→Attk2 打断。
+                //   逻辑那边判「取消窗口还开着」于是 AdvanceCombo → SetTrigger(Attack2)，
+                //   而状态机压根消费不到这个触发器 —— 它就一直**挂着**。
+                //   危害不在当下，而在**下一次**攻击：那一刀播到 Atk1Rec 的瞬间，
+                //   残留的 Attack2 触发器突然生效，动画从半途直接跳进第二段。
+                //   用户看到的就是「卡在中间一个奇怪的动作」。
+                //   现在出边已改为可打断（见 a_fix_fsm.cs），这里是第二道保险：
+                //   只要回到移动态，连击相关的触发器一律清零，绝不把状态带出去。
+                animator.ResetTrigger(HashAttack1);
+                animator.ResetTrigger(HashAttack2);
+                animator.ResetTrigger(HashAttack3);
+            }
             BrakePlanar(Time.deltaTime, brakeRate * 25f);
+
+            // 收招期间按下的攻击在这里兑现：直接重新起手第 1 段。
+            // 放在最后是因为它会再次把阶段切成 Attack，前面几步的复位必须先做完。
+            if (restartWanted && animator != null) TryAttack();
         }
 
         private void BrakePlanar(float dt, float rate)
@@ -628,7 +706,30 @@ namespace InkWash.Player
         private bool IsInAttackState()
         {
             if (animator == null) return false;
-            var st = animator.GetCurrentAnimatorStateInfo(0);
+            return IsAttackStateName(animator.GetCurrentAnimatorStateInfo(0));
+        }
+
+        /// <summary>
+        /// 状态机**是否已经在离开这一段连击** —— 即当前处于一次过渡中，且过渡目标
+        /// 不再是攻击状态（典型就是 Atk1Rec→Idle 的后摇退出混合）。
+        ///
+        /// 为什么必须单独判这个（本轮实测故障）：
+        ///   `GetCurrentAnimatorStateInfo` 在一次过渡**完成之前**一直返回**源状态**，
+        ///   所以「当前是 Atk1Rec」这句话在整个退出混合期间（0.16 归一化 ≈ 0.2s）都成立。
+        ///   而取消窗口判据是 `Atk1Rec && normalizedTime >= 0.3`，于是窗口在退出混合期间
+        ///   仍报"开"—— 逻辑以为能接第二段，实际上状态机已经在往外走了。
+        ///   对照实验（Tools/reports/a_retrigger2.txt 变体C）：
+        ///     第 103 帧按下 → 段位涨到 2，但动画 18 帧内一直是 Atk1Rec，最终掉回 Idle，
+        ///     整段第二刀**完全没有出现**。用户原话：「没有立刻继续执行攻击动作」。
+        /// </summary>
+        private bool IsLeavingAttack()
+        {
+            if (animator == null || !animator.IsInTransition(0)) return false;
+            return !IsAttackStateName(animator.GetNextAnimatorStateInfo(0));
+        }
+
+        private static bool IsAttackStateName(AnimatorStateInfo st)
+        {
             return st.IsName("Atk1") || st.IsName("Atk1Rec")
                 || st.IsName("Atk2") || st.IsName("Atk2Rec")
                 || st.IsName("Atk3");

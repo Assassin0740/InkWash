@@ -1,0 +1,60 @@
+interruptionSource 真实类型 = UnityEditor.Animations.TransitionInterruptionSource
+当前值 = None
+
+  · 修正 Idle → Walk   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Idle → Run   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Idle → Dash   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Walk → Idle   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Walk → Run   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Walk → Dash   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Run → Walk   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Run → Idle   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Run → Dash   interruptionSource: None → Source  (hasExitTime=False exitTime=0)
+  · 修正 Dash → Idle   interruptionSource: None → Source  (hasExitTime=True exitTime=0.92)
+  · 修正 Atk1Rec → Idle   interruptionSource: None → Source  (hasExitTime=True exitTime=0.85)
+  · 修正 Atk1Rec → Walk   interruptionSource: None → Source  (hasExitTime=True exitTime=0.55)
+  · 修正 Atk1Rec → Run   interruptionSource: None → Source  (hasExitTime=True exitTime=0.55)
+  · 修正 Atk1Rec → Dash   interruptionSource: None → Source  (hasExitTime=True exitTime=0.3)
+  · 修正 Atk2Rec → Idle   interruptionSource: None → Source  (hasExitTime=True exitTime=0.85)
+  · 修正 Atk2Rec → Walk   interruptionSource: None → Source  (hasExitTime=True exitTime=0.55)
+  · 修正 Atk2Rec → Run   interruptionSource: None → Source  (hasExitTime=True exitTime=0.55)
+  · 修正 Atk2Rec → Dash   interruptionSource: None → Source  (hasExitTime=True exitTime=0.3)
+  · 修正 Atk3 → Idle   interruptionSource: None → Source  (hasExitTime=True exitTime=0.72)
+  · 修正 Atk3 → Walk   interruptionSource: None → Source  (hasExitTime=True exitTime=0.7)
+  · 修正 Atk3 → Run   interruptionSource: None → Source  (hasExitTime=True exitTime=0.7)
+  · 修正 Atk3 → Dash   interruptionSource: None → Source  (hasExitTime=True exitTime=0.45)
+
+扫描出边 28 条，本次改动 22 条。
+已保存 Player.controller。
+
+复核（全部出边）：
+  Idle → Walk   interrupt=Source
+  Idle → Run   interrupt=Source
+  Idle → Dash   interrupt=Source
+  Idle → Atk1   interrupt=None
+  Walk → Idle   interrupt=Source
+  Walk → Run   interrupt=Source
+  Walk → Dash   interrupt=Source
+  Walk → Atk1   interrupt=None
+  Run → Walk   interrupt=Source
+  Run → Idle   interrupt=Source
+  Run → Dash   interrupt=Source
+  Run → Atk1   interrupt=None
+  Dash → Idle   interrupt=Source
+  Dash → Atk1   interrupt=None
+  Atk1 → Atk1Rec   interrupt=None
+  Atk1Rec → Atk2   interrupt=None
+  Atk1Rec → Idle   interrupt=Source
+  Atk1Rec → Walk   interrupt=Source
+  Atk1Rec → Run   interrupt=Source
+  Atk1Rec → Dash   interrupt=Source
+  Atk2 → Atk2Rec   interrupt=None
+  Atk2Rec → Atk3   interrupt=None
+  Atk2Rec → Idle   interrupt=Source
+  Atk2Rec → Walk   interrupt=Source
+  Atk2Rec → Run   interrupt=Source
+  Atk2Rec → Dash   interrupt=Source
+  Atk3 → Idle   interrupt=Source
+  Atk3 → Walk   interrupt=Source
+  Atk3 → Run   interrupt=Source
+  Atk3 → Dash   interrupt=Source

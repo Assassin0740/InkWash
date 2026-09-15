@@ -1,7 +1,7 @@
 Assembly-CSharp = 已加载
 scriptCompilationFailed = False
-DLL   写入 = 17:36:00
-最新源   = 17:35:51   PlaytestHarness.cs
+DLL   写入 = 18:44:55
+最新源   = 18:44:52   SwordVfx.cs
 编译结果 = 最新
   InkWash.Combat.Faction → OK
   InkWash.Combat.DamageInfo → OK
@@ -62,6 +62,9 @@ DLL   写入 = 17:36:00
   InkWash.Effects.InkLandingBloom.BloomCount → OK
 着色器：
   InkWash/InkCharacter → OK  pass=3
+  InkWash/InkSurface → OK  pass=3
+  InkWash/InkSky → OK  pass=1
+  InkWash/InkSlash → OK  pass=1
   Hidden/InkWash/InkEdge → OK  pass=1
   Hidden/InkWash/InkPaper → OK  pass=1
   Hidden/InkWash/InkBloom → OK  pass=1

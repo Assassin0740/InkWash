@@ -99,7 +99,12 @@ IEnumerator Body()
 
     // ---- 着色器是否真的编译通过（Shader.Find 只找得到「编译成功」的 shader）----
     sb.AppendLine("着色器：");
-    foreach (var sn in new[] { "InkWash/InkCharacter", "Hidden/InkWash/InkEdge", "Hidden/InkWash/InkPaper",
+    // ★ 这份清单本身就是一条"防回归"：`InkWash/InkSlash` 曾经**从来不存在**，
+    //   于是刀光静默退回 URP/Unlit（不支持顶点色）→ 弧面变成硬边色块。
+    //   把实际用到的 shader 名字全列进来，缺失就当场暴露，而不是靠肉眼看出画面不对。
+    foreach (var sn in new[] { "InkWash/InkCharacter", "InkWash/InkSurface", "InkWash/InkSky",
+                               "InkWash/InkSlash",
+                               "Hidden/InkWash/InkEdge", "Hidden/InkWash/InkPaper",
                                "Hidden/InkWash/InkBloom", "InkWash/InkSplash" })
     {
         var sh = Shader.Find(sn);

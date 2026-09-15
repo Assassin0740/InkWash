@@ -42,14 +42,14 @@ MonoBehaviour:
     enabled: 1
     paperTex: {fileID: 2800000, guid: 65672027f37e20744a0641f8555a810b, type: 3}
     paperTiling: 2
-    paperStrength: 0.45
-    paperContrast: 1.15
-    grainStrength: 0.18
-    paperTint: {r: 0.949, g: 0.925, b: 0.867, a: 1}
-    tintStrength: 0.3
-    vignette: 0.32
+    paperStrength: 0.26
+    paperContrast: 1.1
+    grainStrength: 0.15
+    paperTint: {r: 0.98, g: 0.972, b: 0.95, a: 1}
+    tintStrength: 0.12
+    vignette: 0.14
     vignetteSharp: 2.4
-    inkDeepen: 0.25
+    inkDeepen: 0.2
   paperOn: 1
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
@@ -173,7 +173,7 @@ MonoBehaviour:
     enabled: 1
     edgeColor: {r: 0.04, g: 0.045, b: 0.06, a: 1}
     depthSensitivity: 16
-    depthBias: 0.3
+    depthBias: 2
     normalSensitivity: 0.9
     normalBias: 0.06
     lineThickness: 1

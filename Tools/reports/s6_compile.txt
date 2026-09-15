@@ -1,0 +1,14 @@
+[forcecompile] 已请求重编
+scriptCompilationFailed = True
+isCompiling = False
+DLL   写入 = 18:34:57
+最新源   = 18:40:41   SwordVfx.cs
+判定     = **过期（DLL 比源旧 ⇒ 类型可见性不可信）**
+着色器：
+  InkWash/InkCharacter → OK  pass=3
+  InkWash/InkSurface → OK  pass=3
+  InkWash/InkSky → OK  pass=1
+  Hidden/InkWash/InkEdge → OK  pass=1
+  Hidden/InkWash/InkPaper → OK  pass=1
+  Hidden/InkWash/InkBloom → OK  pass=1
+  InkWash/InkSplash → OK  pass=1

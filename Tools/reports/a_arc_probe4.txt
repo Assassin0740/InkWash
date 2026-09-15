@@ -1,0 +1,10 @@
+角色根节点 = Player
+收集到 Renderer 3 个：
+    SkinnedMeshRenderer  Mesh
+    TrailRenderer  BladeTrail_Anchor
+    MeshRenderer  W_Sword
+
+===== 纯红弧光 =====
+R1_red → 抓图； 角色可见=True  tris=108  isVisible=True  距离相机=4.28  屏幕z=4.28  scale=(0.902, 0.902, 0.902)
+R2_red_nochar → 抓图； 角色可见=False  tris=108  isVisible=True  距离相机=4.29  屏幕z=4.28  scale=(0.901, 0.901, 0.901)
+R3_red_nochar_200 → 抓图； 角色可见=False  tris=796  isVisible=True  距离相机=4.29  屏幕z=4.28  scale=(0.902, 0.902, 0.902)

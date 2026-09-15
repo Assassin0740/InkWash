@@ -95,6 +95,19 @@ sysinfo.txt
 # 诊断脚本的 scratch 目录。产物请落到 Tools/reports/（文本）或 Tools/screenshots/（图/视频）。
 /Tools/tmp/
 
+# 探针的 scratch 截图目录：诊断中间产物，探针重跑即可再生成，不入库。
+# 约定：**结论性证据**要另存到 Tools/screenshots/ 下的**具名目录**（s3/s4/s5/s6/look/demo_* 等），
+# 那些才是随提交一起归档的。下面这些名字是历轮探针用惯的临时目录名。
+/Tools/screenshots/diag/
+/Tools/screenshots/arcdiag/
+/Tools/screenshots/arcmesh/
+/Tools/screenshots/arcmesh2/
+/Tools/screenshots/arcprobe/
+/Tools/screenshots/arcprobe4/
+/Tools/screenshots/arcverify/
+/Tools/screenshots/edge/
+/Tools/screenshots/fx/
+
 # ---------- 操作系统杂项 ----------
 .DS_Store
 Thumbs.db

@@ -1,0 +1,5 @@
+===== 弧光锯齿：绕序 / 分带 =====
+A_orig28 → 抓图； tris=108  绕序分布 逆时针=54 顺时针=54  name=SlashArcMesh
+E_28_ccw → 抓图； tris=108  绕序分布 逆时针=108 顺时针=0  name=Probe2_1
+F_28_innerband → 抓图； tris=54  绕序分布 逆时针=54 顺时针=0  name=Probe2_2
+G_28_outerband → 抓图； tris=54  绕序分布 逆时针=54 顺时针=0  name=Probe2_3

@@ -1,0 +1,16 @@
+  帧00  Arc=1  TrailEmit=False  TrailVerts=3  BladeSpeed=9.6
+  帧01  Arc=1  TrailEmit=True  TrailVerts=5  BladeSpeed=1.17
+  帧02  Arc=0  TrailEmit=True  TrailVerts=7  BladeSpeed=1.87
+  帧03  Arc=0  TrailEmit=False  TrailVerts=6  BladeSpeed=0.25
+  帧04  Arc=0  TrailEmit=False  TrailVerts=6  BladeSpeed=0.59
+  帧05  Arc=0  TrailEmit=False  TrailVerts=6  BladeSpeed=0.34
+  帧06  Arc=0  TrailEmit=False  TrailVerts=6  BladeSpeed=0.09
+  帧07  Arc=0  TrailEmit=False  TrailVerts=6  BladeSpeed=0.15
+  帧08  Arc=0  TrailEmit=False  TrailVerts=4  BladeSpeed=0
+  帧09  Arc=0  TrailEmit=False  TrailVerts=3  BladeSpeed=0
+  帧10  Arc=0  TrailEmit=False  TrailVerts=3  BladeSpeed=0.01
+  帧11  Arc=0  TrailEmit=False  TrailVerts=4  BladeSpeed=0
+  帧12  Arc=0  TrailEmit=False  TrailVerts=3  BladeSpeed=0
+  帧13  Arc=0  TrailEmit=False  TrailVerts=3  BladeSpeed=0
+有弧光的帧数 = 2 / 14
+拖尾发射中的帧数 = 2 / 14

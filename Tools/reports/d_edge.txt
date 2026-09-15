@@ -1,0 +1,2 @@
+===== 墨线误报定位 =====
+基线参数：depthSens=16  depthBias=0.3  normalSens=0.9  normalBias=0.06  lineStrength=1.3  distanceFade=46

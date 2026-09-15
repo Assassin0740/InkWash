@@ -1,0 +1,41 @@
+===== 弧光锯齿归因 =====
+三层状态 = 墨线 开　宣纸 开　墨晕 关
+
+---- 逐配置抓图 ----
+00_all
+    EdgeOn/PaperOn/BloomOn 设置 = 默认/默认/默认   实生效 = True/True/True
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.832)   _FlyingWhite = 0.22
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0, 1.58, -3)   localScale (0.9, 0.9, 0.9)   朝向 (0, 0, 350)
+01_noedge
+    EdgeOn/PaperOn/BloomOn 设置 = off/on/on   实生效 = False/True/True
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.833)   _FlyingWhite = 0.22
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0, 1.58, -2.114)   localScale (0.899, 0.899, 0.899)   朝向 (0, 0, 350)
+02_nopaper
+    EdgeOn/PaperOn/BloomOn 设置 = on/off/on   实生效 = True/False/True
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.84)   _FlyingWhite = 0.22
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0, 1.58, -1.262)   localScale (0.896, 0.896, 0.896)   朝向 (0, 0, 350)
+03_nobloom
+    EdgeOn/PaperOn/BloomOn 设置 = on/on/off   实生效 = True/True/False
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.848)   _FlyingWhite = 0.22
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0, 1.58, -0.373)   localScale (0.893, 0.893, 0.893)   朝向 (0, 0, 350)
+04_nopost
+    EdgeOn/PaperOn/BloomOn 设置 = off/off/off   实生效 = False/False/False
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.851)   _FlyingWhite = 0.22
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0, 1.58, 0.17)   localScale (0.891, 0.891, 0.891)   朝向 (0, 0, 350)
+05_flat_nonoise
+    EdgeOn/PaperOn/BloomOn 设置 = 默认/默认/默认   实生效 = True/True/True
+    已把 _FlyingWhite 压到 0
+    材质 Shader = InkWash/InkSlash   渲染队列 = 3000   passes = 1
+    _BaseColor = (0.045, 0.05, 0.068, 0.826)   _FlyingWhite = 0
+    网格 verts=84  colors=84  tris=108  subMeshes=1  bounds=(0.948, 2.003, 0)
+    世界坐标 (0.302, 1.58, 0.601)   localScale (0.902, 0.902, 0.902)   朝向 (0, 0, 350)

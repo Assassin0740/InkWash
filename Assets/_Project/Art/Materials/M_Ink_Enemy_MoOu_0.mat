@@ -39,14 +39,14 @@ Material:
     - _BrushStrength: 0.6
     - _BrushUvFromWorld: 1
     - _InkDensity: 0.75
-    - _RimPower: 3.2
-    - _RimStrength: 0.85
+    - _RimPower: 3
+    - _RimStrength: 0.95
     - _SpecBands: 2
     - _SpecSize: 48
     - _SpecStrength: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _InkColor: {r: 0.055, g: 0.063, b: 0.086, a: 1}
-    - _PaperColor: {r: 0.847, g: 0.812, b: 0.741, a: 1}
+    - _InkColor: {r: 0.058, g: 0.068, b: 0.094, a: 1}
+    - _PaperColor: {r: 0.96, g: 0.951, b: 0.925, a: 1}
     - _RimColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
   m_BuildTextureStacks: []

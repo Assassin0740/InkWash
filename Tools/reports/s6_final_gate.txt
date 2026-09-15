@@ -1,0 +1,43 @@
+===== 提交闸门（Sprint 6） =====
+
+---- ① 编译状态 ----
+  isCompiling              = False
+  scriptCompilationFailed  = False
+  isUpdating               = False
+
+---- ② DLL 新鲜度 ----
+  DLL   写入 = 19:06:40
+  最新源  = 19:06:22  Assets/_Project/Scripts/Effects/SwordVfx.cs
+  判定    = **新鲜**
+
+---- ③ 本轮修复点的类型可见性 ----
+  Assembly-CSharp = 已加载
+    OK  InkWash.Effects.SwordVfx
+    OK  InkWash.CameraRig.ThirdPersonCamera
+    OK  InkWash.Player.PlayerController
+    OK  InkWash.Roguelike.RunManager
+    OK  InkWash.Rendering.InkStyleRegistry
+    SwordVfx.BuildArcMesh → OK
+    SwordVfx.BuildBladeMesh → OK
+    SwordVfx.OnSwingStarted → OK
+    SwordVfx._trail → OK
+    ThirdPersonCamera.StopShake() → OK
+    RunManager.TakeOverTimeScale() → OK
+    PlayerController._restartQueued → OK
+
+---- ④ Shader 表 ----
+  InkWash/InkCharacter           → OK  pass=3
+  InkWash/InkSurface             → OK  pass=3
+  InkWash/InkSky                 → OK  pass=1
+  InkWash/InkSlash               → OK  pass=1
+  InkWash/InkSplash              → OK  pass=1
+  Hidden/InkWash/InkEdge         → OK  pass=1
+  Hidden/InkWash/InkPaper        → OK  pass=1
+  Hidden/InkWash/InkBloom        → OK  pass=1
+
+>>> 结论：编译零错误、DLL 新鲜、八个 shader 全部编译通过 ⇒ 可以提交。
+
+注（探针自身的教训）：本闸门第一版只查 `Instance|Public`，把两个**真实存在**的方法
+（`SwordVfx.BuildArcMesh`/`BuildBladeMesh` 是 `private static`、`RunManager.TakeOverTimeScale`
+是 `private`）报成「缺失」。**闸门报假阴性等于没有闸门** —— 查成员一律先用
+`Instance|Static|NonPublic|Public` 全标志位。

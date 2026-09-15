@@ -1,0 +1,45 @@
+场景 = Main   isDirty=False   根对象=11
+
+===== RenderSettings（环境光） =====
+  ambientMode        = Trilight
+  ambientIntensity   = 1
+  ambientSkyColor    = (0.62, 0.63, 0.62, 1)
+  ambientEquatorColor= (0.5, 0.5, 0.49, 1)
+  ambientGroundColor = (0.3, 0.3, 0.3, 1)
+  fog                = True  color=(0.9, 0.9, 0.88, 1) mode=ExponentialSquared
+  skybox             = Default-Skybox
+  reflectionIntensity= 1
+
+===== 灯光 =====
+  数量 = 2
+  · [Directional] Lighting/Directional Light (Sun)  color=(1, 0.97, 0.92, 1)  intensity=1.15  bounce=1  shadows=Soft  shadowStrength=0.55  lightmapping=Realtime  euler=(48, 325, 0)  active=True
+  · [Directional] Lighting/Fill Light (Sky)  color=(0.75, 0.8, 0.92, 1)  intensity=0.28  bounce=1  shadows=None  shadowStrength=1  lightmapping=Realtime  euler=(22, 150, 0)  active=True
+
+===== 场景渲染器使用的材质 =====
+     1 × M_Whitebox_Ground  <Universal Render Pipeline/Lit>
+     4 × M_Whitebox_Pillar  <Universal Render Pipeline/Lit>
+     1 × M_Whitebox_Platform  <Universal Render Pipeline/Lit>
+     8 × M_Whitebox_Wall  <Universal Render Pipeline/Lit>
+     1 × Material_Pbr  <Universal Render Pipeline/Lit>
+
+===== 白盒材质明细（BaseColor） =====
+  M_Whitebox_Ground.mat  shader=Universal Render Pipeline/Lit  base=(0.72, 0.71, 0.68, 1)  队列=2000  关键字=
+  M_Whitebox_Pillar.mat  shader=Universal Render Pipeline/Lit  base=(0.55, 0.53, 0.5, 1)  队列=2000  关键字=
+  M_Whitebox_Platform.mat  shader=Universal Render Pipeline/Lit  base=(0.8, 0.79, 0.76, 1)  队列=2000  关键字=
+  M_Whitebox_Wall.mat  shader=Universal Render Pipeline/Lit  base=(0.6, 0.58, 0.55, 1)  队列=2000  关键字=
+
+===== 用了白盒材质的对象（最多 40 个） =====
+  Gates/Gate_W  边界中心=(-10, 1.55, 0)  尺寸=(0.45, 2.5, 20.9)  → M_Whitebox_Wall 
+  Gates/Gate_E  边界中心=(10, 1.55, 0)  尺寸=(0.45, 2.5, 20.9)  → M_Whitebox_Wall 
+  Gates/Gate_S  边界中心=(0, 1.55, -10)  尺寸=(20.9, 2.5, 0.45)  → M_Whitebox_Wall 
+  Gates/Gate_N  边界中心=(0, 1.55, 10)  尺寸=(20.9, 2.5, 0.45)  → M_Whitebox_Wall 
+  Environment/Pillars/Pillar_2  边界中心=(-14, 3, 14)  尺寸=(0.8, 6, 0.8)  → M_Whitebox_Pillar 
+  Environment/Wall_S  边界中心=(0, 2, -22)  尺寸=(44.6, 4, 0.6)  → M_Whitebox_Wall 
+  Environment/Pillars/Pillar_1  边界中心=(14, 3, -14)  尺寸=(0.8, 6, 0.8)  → M_Whitebox_Pillar 
+  Environment/Pillars/Pillar_0  边界中心=(14, 3, 14)  尺寸=(0.8, 6, 0.8)  → M_Whitebox_Pillar 
+  Environment/Arena  边界中心=(0, 0.15, 0)  尺寸=(10, 0.3, 10)  → M_Whitebox_Platform 
+  Environment/Pillars/Pillar_3  边界中心=(-14, 3, -14)  尺寸=(0.8, 6, 0.8)  → M_Whitebox_Pillar 
+  Environment/Wall_E  边界中心=(22, 2, 0)  尺寸=(0.6, 4, 44.6)  → M_Whitebox_Wall 
+  Environment/Ground  边界中心=(0, -0.25, 0)  尺寸=(44, 0.5, 44)  → M_Whitebox_Ground 
+  Environment/Wall_N  边界中心=(0, 2, 22)  尺寸=(44.6, 4, 0.6)  → M_Whitebox_Wall 
+  Environment/Wall_W  边界中心=(-22, 2, 0)  尺寸=(0.6, 4, 44.6)  → M_Whitebox_Wall 

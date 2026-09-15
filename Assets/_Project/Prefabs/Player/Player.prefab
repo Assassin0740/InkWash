@@ -292,28 +292,28 @@ MonoBehaviour:
   player: {fileID: 4259422993641270396}
   bladeAnchor: {fileID: 0}
   inkShader: {fileID: 4800000, guid: 6feba9f04ac3067488d382171e669422, type: 3}
-  flyingWhite: 0.35
-  bladeLocalOffset: {x: -0.0054918, y: 0.06228616, z: 0.2997596}
-  trailTime: 0.16
-  trailStartWidth: 0.15363759
-  trailEndWidth: 0.009037505
-  inkColor: {r: 0.06, g: 0.06, b: 0.08, a: 0.92}
+  flyingWhite: 0.22
+  bladeLocalOffset: {x: -0.0055, y: 0.0623, z: 0.2998}
+  trailTime: 0.34
+  trailStartWidth: 0.118
+  trailEndWidth: 0.015
+  inkColor: {r: 0.045, g: 0.05, b: 0.068, a: 0.96}
   inkFadeColor: {r: 0.06, g: 0.06, b: 0.08, a: 0}
   enableArc: 1
-  arcRadius: 1.45
-  arcThickness: 0.85
-  arcSweepDeg: 130
-  arcLifetime: 0.26
-  arcTiltDeg: -28
-  arcHeight: 1.15
+  arcRadius: 1.3
+  arcThickness: 0.46
+  arcSweepDeg: 128
+  arcLifetime: 0.24
+  arcTiltDeg: -10
+  arcHeight: 1.25
   placeholderBlade: 0
   bladeLength: 0.474469
   bladeWidth: 0.033890646
   weaponPrefab: {fileID: 461136590825770978, guid: 61ab47f461cd03c48bae03518ebf2e6c,
     type: 3}
-  trailMinSpeed: 3
-  trailStartDelay: 0.05
-  trailHoldMinSpeed: 1.6
+  trailMinSpeed: 0.15
+  trailStartDelay: 0.04
+  trailHoldMinSpeed: 0.05
   enableShake: 1
   shakeAmplitude: 0.075
   shakeDuration: 0.13

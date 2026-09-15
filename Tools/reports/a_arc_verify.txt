@@ -1,0 +1,12 @@
+===== 弧光三角剖分修复后验收（全后处理开启、角色可见）=====
+三层状态 = 墨线 开　宣纸 开　墨晕 关
+
+第 1 刀：
+  网格 verts=140 tris=216 绕序 逆时针=0 顺时针=216
+  材质 InkWash/InkSlash _BaseColor.a=0.911
+  已抓 arc1_t0/t1/t2.png
+
+第 2 刀：
+  网格 verts=140 tris=216 绕序 逆时针=0 顺时针=216
+  材质 InkWash/InkSlash _BaseColor.a=0.928
+  已抓 arc2_t0/t1/t2.png
