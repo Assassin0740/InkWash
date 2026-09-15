@@ -55,6 +55,14 @@ IEnumerator Body()
         "InkWash.Rendering.InkEdgeFeature", "InkWash.Rendering.InkPaperFeature",
         "InkWash.Rendering.InkFullScreenPass", "InkWash.Rendering.InkStyleRegistry",
         "InkWash.UI.InkStylePanel", "InkWash.UI.InkMaterialSwap",
+        // Sprint 5 Roguelike 循环 + 水墨特效
+        "InkWash.Roguelike.StatKind", "InkWash.Roguelike.PlayerStats",
+        "InkWash.Roguelike.SkillData", "InkWash.Roguelike.SkillPool",
+        "InkWash.Roguelike.SkillInventory", "InkWash.Roguelike.LevelSystem",
+        "InkWash.Roguelike.RunState", "InkWash.Roguelike.RunManager",
+        "InkWash.UI.SkillChoicePanel",
+        "InkWash.Rendering.InkBloomFeature",
+        "InkWash.Effects.InkHitVfx", "InkWash.Effects.InkLandingBloom",
     };
     if (asm != null)
         foreach (var tn in types)
@@ -71,10 +79,28 @@ IEnumerator Body()
     Check(sb, asm, "InkWash.Player.PlayerHealth", "ClearInvincibility");
     Check(sb, asm, "InkWash.Utils.PlaytestHarness", "S3EnemyFlow");
     Check(sb, asm, "InkWash.Utils.PlaytestHarness", "S4InkFlow");
+    // Sprint 5
+    Check(sb, asm, "InkWash.Utils.PlaytestHarness", "S5RoguelikeFlow");
+    Check(sb, asm, "InkWash.Combat.HitStop", "ForceEnd");
+    Check(sb, asm, "InkWash.Roguelike.PlayerStats", "RollDamage");
+    Check(sb, asm, "InkWash.Roguelike.PlayerStats", "Add");
+    Check(sb, asm, "InkWash.Roguelike.SkillPool", "Draw");
+    Check(sb, asm, "InkWash.Roguelike.SkillInventory", "Acquire");
+    Check(sb, asm, "InkWash.Roguelike.LevelSystem", "GrantXp");
+    Check(sb, asm, "InkWash.Roguelike.RunManager", "StartRun");
+    Check(sb, asm, "InkWash.Roguelike.RunManager", "SetState");
+    Check(sb, asm, "InkWash.UI.SkillChoicePanel", "InjectChoice");
+    Check(sb, asm, "InkWash.Enemies.EnemyBase", "AnyDied");
+    Check(sb, asm, "InkWash.Enemies.EnemyBase", "xpReward");
+    Check(sb, asm, "InkWash.Player.PlayerController", "CurrentAttackSpeed");
+    Check(sb, asm, "InkWash.Rendering.InkStyleRegistry", "AllRegistered");
+    Check(sb, asm, "InkWash.Effects.InkHitVfx", "Spawn");
+    Check(sb, asm, "InkWash.Effects.InkLandingBloom", "BloomCount");
 
     // ---- 着色器是否真的编译通过（Shader.Find 只找得到「编译成功」的 shader）----
     sb.AppendLine("着色器：");
-    foreach (var sn in new[] { "InkWash/InkCharacter", "Hidden/InkWash/InkEdge", "Hidden/InkWash/InkPaper" })
+    foreach (var sn in new[] { "InkWash/InkCharacter", "Hidden/InkWash/InkEdge", "Hidden/InkWash/InkPaper",
+                               "Hidden/InkWash/InkBloom", "InkWash/InkSplash" })
     {
         var sh = Shader.Find(sn);
         sb.AppendLine("  " + sn + " → " + (sh != null ? "OK  pass=" + sh.passCount : "**找不到（没编译出来？）**"));

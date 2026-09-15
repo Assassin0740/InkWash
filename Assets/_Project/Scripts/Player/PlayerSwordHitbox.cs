@@ -1,5 +1,6 @@
 using InkWash.Combat;
 using InkWash.Effects;
+using InkWash.Roguelike;
 using UnityEngine;
 
 namespace InkWash.Player
@@ -37,17 +38,48 @@ namespace InkWash.Player
         [Tooltip("窗口时长。只覆盖挥砍瞬间，避免站桩时误伤")]
         public float window = 0.14f;
 
+        [Header("属性加成（Roguelike，留空自动取同物体）")]
+        [Tooltip("伤害倍率 / 暴击 / 击退 / 吸血都从这里读。为 null 时行为与 Sprint 4 完全一致（全部倍率 = 1）")]
+        public PlayerStats stats;
+        [Tooltip("生命组件（吸血要回血）")]
+        public InkWash.Player.PlayerHealth health;
+
         [Header("诊断（只读）")]
         [SerializeField] private int _hitMomentCount;
         [SerializeField] private float _lastBladeLength;
+        [SerializeField] private float _lastDamage;
+        [SerializeField] private int _critCount;
+        [SerializeField] private int _newHitsLastFrame;
+        [SerializeField] private float _totalHealed;
+        [SerializeField] private float _maxNominalDamage;
 
         public int HitMomentCount => _hitMomentCount;
         public float LastBladeLength => _lastBladeLength;
+        /// <summary>上一刀实际写入判定体的伤害（已含倍率与暴击）。验收用它算实测倍率。</summary>
+        public float LastDamage => _lastDamage;
+        public int CritCount => _critCount;
+        /// <summary>上一帧新增的命中数（吸血按它结算）。</summary>
+        public int NewHitsLastFrame => _newHitsLastFrame;
+        public float TotalHealed => _totalHealed;
+        /// <summary>不出暴击时的名义伤害（= 表值 × 伤害倍率），与 <see cref="LastDamage"/> 相除即实测暴击倍率。</summary>
+        public float MaxNominalDamage => _maxNominalDamage;
 
         private Hitbox _hitbox;
         private float _windowTimer;
+        private int _lastHitCount;
 
-        public void ResetDiagnostics() { _hitMomentCount = 0; if (_hitbox != null) _hitbox.ResetDiagnostics(); }
+
+        public void ResetDiagnostics()
+        {
+            _hitMomentCount = 0;
+            _lastDamage = 0f;
+            _critCount = 0;
+            _newHitsLastFrame = 0;
+            _totalHealed = 0f;
+            _maxNominalDamage = 0f;
+            _lastHitCount = 0;
+            if (_hitbox != null) _hitbox.ResetDiagnostics();
+        }
 
         private void Awake()
         {
@@ -56,6 +88,13 @@ namespace InkWash.Player
             _hitbox.owner = player != null ? player.gameObject : gameObject;
             _hitbox.radius = radius;
             _hitbox.oncePerTargetInWindow = true;
+
+            // 属性池留空就自己找 —— 面板/预制体上少一个「忘了拉引用」的静默失败点
+            if (stats == null) stats = GetComponentInParent<PlayerStats>();
+            if (stats == null) stats = GetComponent<PlayerStats>();
+            if (health == null) health = GetComponentInParent<InkWash.Player.PlayerHealth>();
+            if (health == null) health = GetComponent<InkWash.Player.PlayerHealth>();
+
             DeactivateNow();
         }
 
@@ -75,8 +114,20 @@ namespace InkWash.Player
             _hitMomentCount++;
 
             int i = Mathf.Clamp(step - 1, 0, damage.Length - 1);
-            _hitbox.damage = damage[i];
-            _hitbox.knockback = knockback[i];
+
+            // ★ 属性加成在这里消费（这是"越打越强"真正生效的那一行）。
+            //   之所以在**每次挥砍时按当前属性重算**、而不是订阅 StatsChanged 缓存一份：
+            //   挥砍期间玩家也可能升级（连击打断帧），缓存会落后；重算是幂等的，代价只有两次乘法。
+            float dmg = damage[i];
+            bool crit = false;
+            if (stats != null) dmg = stats.RollDamage(damage[i], out crit);
+            if (crit) _critCount++;
+            _lastDamage = dmg;
+            // 暴击倍数不方便反推时（没装暴击），名义伤害就是这一刀；验收用它算「实测/理论」比值
+            if (!crit) _maxNominalDamage = dmg;
+
+            _hitbox.damage = dmg;
+            _hitbox.knockback = knockback[i] * (stats != null ? stats.KnockbackMultiplier : 1f);
             _hitbox.hitStun = hitStun[i];
             _hitbox.hitStop = hitStopDuration;
             _hitbox.radius = radius;
@@ -101,6 +152,23 @@ namespace InkWash.Player
         /// </summary>
         private void Update()
         {
+            // 吸血结算：靠判定体的命中计数**增量**触发，而不是在 OnHitMoment 里猜
+            // —— 这一刀到底打中没有，只有 Hitbox 知道（它拿 ClosestPoint 做过实际判定）。
+            if (_hitbox != null)
+            {
+                int hits = _hitbox.HitCount;
+                _newHitsLastFrame = hits - _lastHitCount;
+                _lastHitCount = hits;
+
+                if (_newHitsLastFrame > 0 && stats != null && stats.Lifesteal > 0f && health != null)
+                {
+                    // 按**名义伤害**回血，不看敌人的减伤倍率：精英的弹反减伤语义是"它扛住了"，
+                    // 不是"你没打中"。按实际掉血回血会让吸血在精英身上几乎失效，手感上是反直觉的。
+                    float heal = _lastDamage * _newHitsLastFrame * stats.Lifesteal;
+                    if (heal > 0f) { health.Heal(heal); _totalHealed += heal; }
+                }
+            }
+
             if (_windowTimer <= 0f) return;
             _windowTimer -= Time.deltaTime;
             AlignToBlade();

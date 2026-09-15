@@ -73,6 +73,10 @@ namespace InkWash.Enemies
         [Tooltip("死亡后停留多久销毁（0 = 不销毁）")]
         public float destroyAfterDeath = 2.4f;
 
+        [Header("奖励（Roguelike 经验）")]
+        [Tooltip("击杀给多少经验。精英应当显著高于杂兵 —— 否则「打精英不划算」会让玩家绕开设计好的战斗")]
+        public int xpReward = 10;
+
         [Header("诊断（只读）")]
         [SerializeField] protected EnemyState _state = EnemyState.Spawning;
         [SerializeField] protected float _stateTime;
@@ -86,8 +90,24 @@ namespace InkWash.Enemies
         public static int TotalKills;
         public static int TotalSpawned;
 
+        /// <summary>
+        /// 任何一个敌人死亡时抛一次（静态，因为敌人是**运行时生成**的）。
+        ///
+        /// 为什么需要它、而不复用实例事件 <see cref="DiedEvent"/>：
+        /// 实例事件要求订阅者**在敌人出生时就拿到引用** —— 那只有在 WaveSpawner 的生成回调里挂钩子，
+        /// 还得在敌人自毁时清理，多一处生命周期就多一处泄漏。经验结算这类"全局收听"的需求
+        /// 用静态事件一句话就能表达。代价是**必须在 SubsystemRegistration 复位**（下方已做），
+        /// 否则 Play 会话结束后旧委托会指向已销毁的对象（本项目在 PlaytestHarness 上踩过同类问题）。
+        /// </summary>
+        public static event Action<EnemyBase> AnyDied;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() { AliveCount = 0; TotalKills = 0; TotalSpawned = 0; }
+        private static void ResetStatics()
+        {
+            AliveCount = 0; TotalKills = 0; TotalSpawned = 0;
+            // 必须清空：静态事件在「禁用域重载」的播放模式下会跨会话存活，指向已销毁对象
+            AnyDied = null;
+        }
 
         // ---- 只读接口 ----
         public EnemyState State => _state;
@@ -113,6 +133,14 @@ namespace InkWash.Enemies
             _health = Mathf.Max(0f, _health - Mathf.Max(0f, info.amount) * mult);
             _damageTakenCount++;
             OnDamaged(info);
+
+            // ★ 命中溅墨（论文 E5）。为什么由**受击方**生成而不是施害者：
+            //   只有受击方知道**实际命中点** —— info.hitPoint 是 Hitbox 拿 ClosestPoint
+            //   在受击者身上算出来的；施害者手上只有"我挥了一刀"，没有落点。
+            //   强度按"这一下占它最大生命的比例"给，于是轻击是几点墨、重击是一大摊。
+            //   表现层不得带崩玩法链路：InkHitVfx.Spawn 内部不抛异常、池满只计数。
+            InkWash.Effects.InkHitVfx.Spawn(info.hitPoint, info.hitDirection,
+                Mathf.Lerp(0.7f, 1.6f, Mathf.Clamp01(info.amount / Mathf.Max(1f, maxHealth))));
 
             if (_health <= 0f) { Die(); return true; }
 
@@ -383,15 +411,31 @@ namespace InkWash.Enemies
 
         private void FireDied()
         {
+            // ★ 注意：这里**不能**用 `if (e == null) return;` 提前退出 ——
+            //   实例事件没有订阅者是完全正常的（单独测一只敌人时就是），
+            //   但后面静态的 AnyDied 可能有人听。提前 return 会让"经验永远不结算"，
+            //   而且**零报错**：表现为"杀了几十只怪，经验一直是 0"。
             var e = DiedEvent;
-            if (e == null) return;
-            // 逐个 try：一个订阅者抛异常不该让后面的收不到（本项目踩过这个坑）
-            foreach (var d in e.GetInvocationList())
+            if (e != null)
             {
-                try { ((Action<EnemyBase>)d).Invoke(this); }
-                catch (Exception ex) { Debug.LogError("[EnemyBase] 死亡订阅者抛异常（已隔离）：" + ex); }
+                // 逐个 try：一个订阅者抛异常不该让后面的收不到（本项目踩过这个坑）
+                foreach (var d in e.GetInvocationList())
+                {
+                    try { ((Action<EnemyBase>)d).Invoke(this); }
+                    catch (Exception ex) { Debug.LogError("[EnemyBase] 死亡订阅者抛异常（已隔离）：" + ex); }
+                }
+                DiedEvent = null;
             }
-            DiedEvent = null;
+
+            var any = AnyDied;
+            if (any != null)
+            {
+                foreach (var d in any.GetInvocationList())
+                {
+                    try { ((Action<EnemyBase>)d).Invoke(this); }
+                    catch (Exception ex) { Debug.LogError("[EnemyBase] AnyDied 订阅者抛异常（已隔离）：" + ex); }
+                }
+            }
         }
 
         // ---------------- 工具 ----------------

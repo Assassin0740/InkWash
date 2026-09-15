@@ -31,6 +31,21 @@ namespace InkWash.Combat
         public static bool IsActive => _runner != null && _runner.IsActive;
         public static int RequestCount => _runner != null ? _runner.Count : 0;
 
+        /// <summary>
+        /// 立刻结束顿帧并把 timeScale 恢复成「请求顿帧之前的值」。
+        ///
+        /// 为什么需要这个入口（不是可有可无的清理函数）：
+        /// 顿帧保存了进入时的 timeScale，倒计时结束会把它**写回**。若在这段窗口里
+        /// 外部把 timeScale 改成别的值（例如升级奖励界面暂停设成 0），
+        /// 顿帧结束时就会把那个值**覆盖成旧值** —— 表现为"暂停被无声解除"，
+        /// 玩家能一边选技能一边被砍。所以任何"外部要接管 timeScale"的场合
+        /// （进奖励、结算、复位）都必须先调这里把顿帧结清。
+        /// </summary>
+        public static void ForceEnd()
+        {
+            if (_runner != null) _runner.ForceEnd();
+        }
+
         public static void ResetDiagnostics()
         {
             if (_runner != null) _runner.ResetCount();
@@ -82,5 +97,12 @@ namespace InkWash.Combat
 
         private void OnDisable() { if (IsActive) Restore(); }
         private void OnDestroy() { if (IsActive) Restore(); }
+
+        /// <summary>把顿帧立刻结清（见 <see cref="HitStop.ForceEnd"/> 里说明的覆盖风险）。</summary>
+        public void ForceEnd()
+        {
+            if (IsActive) Restore();
+            _timer = 0f;
+        }
     }
 }

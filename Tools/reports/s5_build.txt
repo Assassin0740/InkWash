@@ -1,0 +1,32 @@
+场景 = Main
+===== S5 Roguelike 循环 + 水墨特效 资产落地 =====
+
+---- ① 技能资产 ----
+  技能资产 10 条（新建 10 / 更新 0）→ Assets/_Project/Data/Skills
+    · skill_damage  墨锋  普通  w=1.2  上限5  DamageBonus +0.15
+    · skill_speed  踏雪  普通  w=1  上限5  MoveSpeedBonus +0.12
+    · skill_health  铁骨  普通  w=0.8  上限5  MaxHealthBonus +18
+    · skill_atkspd  疾风  普通  w=0.7  上限4  AttackSpeedBonus +0.15
+    · skill_crit  点睛  稀有  w=1  上限5  CritChance +0.08
+    · skill_leech  饮月  稀有  w=1  上限4  Lifesteal +0.05
+    · skill_dash  缩地  稀有  w=1  上限4  DashCooldownCut +0.12
+    · skill_critdmg  破军  史诗  w=1  上限3  CritDamage +0.35
+    · skill_killheal  回春  史诗  w=1  上限3  KillHeal +6
+    · skill_knock  倒海  史诗  w=1  上限3  KnockbackBonus +0.4
+
+---- ② Player 预制体组件 ----
+  PlayerStats=True  SkillInventory=True  LevelSystem=True  InkLandingBloom=True
+  接引用：Controller=True  Health=True  SwordHitbox=True
+  已保存 Assets/_Project/Prefabs/Player/Player.prefab
+
+---- ③ 场景对象 ----
+  [Systems] RunManager 技能池=10  面板=True  PlayerHealth=True  Room=True  Spawner=True  Inventory=True  Level=True
+  [InkVfx] InkHitVfx 池=40
+
+---- ④ 装配 InkBloomFeature ----
+  URP-HighFidelity-Renderer.asset ← 追加 InkBloomFeature
+  URP-HighFidelity-Renderer.asset 现有 Feature 4 个 / map 4  [一致]
+  URP-Balanced-Renderer.asset ← 追加 InkBloomFeature
+  URP-Balanced-Renderer.asset 现有 Feature 4 个 / map 4  [一致]
+
+场景保存 = True

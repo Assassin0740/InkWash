@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe7c1d4c9168a743965af594cb366b1, type: 3}
+  m_Name: Skill_skill_knock
+  m_EditorClassIdentifier: 
+  id: skill_knock
+  displayName: "\u5012\u6D77"
+  description: "\u529B\u53EF\u5012\u6D77\uFF0C\u51FB\u9000\u8DDD\u79BB\u63D0\u5347
+    {v}\uFF08\u53E0\u6EE1\u5171 {t}\uFF09"
+  rarity: 2
+  weight: 1
+  maxStacks: 3
+  stat: 9
+  valuePerStack: 0.4
+  showAsPercent: 1
+  tags:
+  - "\u653B"

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using InkWash.CameraRig;
+using InkWash.Roguelike;
 
 namespace InkWash.Player
 {
@@ -152,6 +153,10 @@ namespace InkWash.Player
         public Animator animator;
         public ThirdPersonCamera cameraRig;
 
+        [Header("属性加成（Roguelike，留空自动取同物体）")]
+        [Tooltip("移速 / 攻速 / 冲刺冷却从这里读。为 null 时全部倍率 = 1，行为与 Sprint 4 逐位一致")]
+        public PlayerStats stats;
+
         // ---------------- 对外只读状态（战斗 / AI / HUD 读取） ----------------
 
         /// <summary>水平面**实际**速度（y 恒 0）。</summary>
@@ -225,6 +230,22 @@ namespace InkWash.Player
         private float _dashCooldownTimer;
         private Vector3 _actionDir;         // 冲刺 / 突击方向
 
+        /// <summary>
+        /// 本次攻击的攻速倍率（进入攻击阶段时从 <see cref="stats"/> **快照一次**）。
+        ///
+        /// 为什么快照而不是每次现读 stats：攻速同时影响三处 —— Animator 播放速率、
+        /// 代码侧命中时刻 <c>comboHitTime</c>、前冲时长 <c>comboLungeDuration</c>。
+        /// 若三处各自读一次 stats，而玩家在挥砍中途升级，就会出现"动画已提速、
+        /// 命中时刻却还按旧速度算"的错位 —— 表现是那一刀明明挥出去却打空。
+        /// 一次挥砍内锁死同一个倍率，三处保证一致。
+        /// </summary>
+        private float _atkSpeed = 1f;
+
+        /// <summary>只读诊断：本次攻击的攻速倍率。</summary>
+        public float CurrentAttackSpeed => _atkSpeed;
+        /// <summary>只读诊断：当前移速倍率。</summary>
+        public float CurrentMoveSpeedScale => stats != null ? stats.MoveSpeedMultiplier : 1f;
+
         private int _comboStep;
         private bool _attackQueued;
         private float _attackQueuedAt = -99f;
@@ -279,6 +300,7 @@ namespace InkWash.Player
             if (cameraRig == null) cameraRig = FindObjectOfType<ThirdPersonCamera>();
             if (cameraTransform == null && cameraRig != null) cameraTransform = cameraRig.transform;
             if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;
+            if (stats == null) stats = GetComponent<PlayerStats>();
         }
 
         private void Update()
@@ -346,7 +368,13 @@ namespace InkWash.Player
             Vector3 dir = ResolveMoveDirection();
             MoveDirection = dir;
 
-            float targetSpeed = dir.sqrMagnitude > 1e-4f ? (_runHeld ? runSpeed : walkSpeed) : 0f;
+            // 移速加成在这里消费 —— 乘在**目标速度**上，而不是乘在最终位移上。
+            // 乘在位移上会把加速阶段一起放大（表现成"起步瞬间到顶"），
+            // 也会让 Walk→Run 的切换点漂移（那是按速度绝对值判的）。
+            float speedScale = stats != null ? stats.MoveSpeedMultiplier : 1f;
+            float targetSpeed = dir.sqrMagnitude > 1e-4f
+                ? (_runHeld ? runSpeed : walkSpeed) * speedScale
+                : 0f;
             Vector3 targetVel = dir * targetSpeed;
             Vector3 planar = new Vector3(_velocity.x, 0f, _velocity.z);
 
@@ -386,13 +414,22 @@ namespace InkWash.Player
         {
             int idx = Mathf.Clamp(_comboStep - 1, 0, comboLungeDistance.Length - 1);
 
+            // 攻击动画按攻速加速；但**取消窗口一开就恢复正常速度** —— 窗口内允许移动取消，
+            // 那时若还保持加速，走路动画会被一起加速（脚步与位移脱节，看起来像滑步）。
+            if (animator != null)
+            {
+                float want = (!IsCancelWindowOpen && _atkSpeed != 1f) ? _atkSpeed : 1f;
+                if (!Mathf.Approximately(animator.speed, want)) animator.speed = want;
+            }
+
             // ---- 前冲位移：按速度曲线施加 ----
             // 曲线 v(t) = 2·D·(1 - t/T) / T 对 t 的积分恰好等于设定距离 D
             // （∫₀ᵀ v dt = D），所以这里必须**赋值**给 _velocity，而不是把 v·dt 累加进去。
             // 曾经写成 `_velocity += dir * (v * dt)`：那样 _velocity 只是慢慢涨到 ≈ D，
             // 真实位移变成 ∫_velocity dt（第二次积分），比设定值小一个量级 ——
             // 表现是"挥砍几乎不前进"。三段连击的位移学判定就是被这个吃掉的。
-            float lungeDur = Mathf.Max(comboLungeDuration[idx], 1e-3f);
+            // 攻速缩短前冲时长。不除的话"动画加速了、滑行却没跟上"，看起来像脚下打滑。
+            float lungeDur = Mathf.Max(comboLungeDuration[idx] / _atkSpeed, 1e-3f);
             if (_phaseTimer < lungeDur)
             {
                 float nd = _phaseTimer / lungeDur;
@@ -405,7 +442,10 @@ namespace InkWash.Player
             else BrakePlanar(dt, deceleration * 1.6f);
 
             // ---- 命中时刻：抛事件（刀光 / 震屏 / 顿帧） ----
-            if (!_hitFiredThisStep && _phaseTimer >= comboHitTime[idx])
+            // ★ 必须除以攻速：comboHitTime 是**真实秒**，而动画已被 _atkSpeed 加速。
+            //   不除的话，加速 1.5 倍时视觉上剑早已扫过目标、判定却还在等 ——
+            //   表现是"刀挥过去了才掉血"，而且只在装了攻速技能后复现，很难查。
+            if (!_hitFiredThisStep && _phaseTimer >= comboHitTime[idx] / _atkSpeed)
             {
                 _hitFiredThisStep = true;
                 if (HitMoment != null) HitMoment(_comboStep);
@@ -468,7 +508,9 @@ namespace InkWash.Player
             _attackQueued = false;
             _attackStateSeen = false;
             IsCancelWindowOpen = false;
-            _dashCooldownTimer = dashCooldown + dashDuration;
+            // 冲刺冷却缩放在这里消费（只缩冷却，不缩冲刺本身的时长 ——
+            // 缩短冲刺时长会连带缩短无敌帧，那是"变强"而不是"更灵活"，与技能描述不符）
+            _dashCooldownTimer = dashCooldown * (stats != null ? stats.DashCooldownScale : 1f) + dashDuration;
 
             Vector3 dir = ResolveMoveDirection();
             _actionDir = dir.sqrMagnitude > 1e-4f ? dir : transform.forward;
@@ -510,6 +552,9 @@ namespace InkWash.Player
             IsCancelWindowOpen = false;
             _actionDir = ResolveAttackDir();
 
+            // 攻速快照（一次挥砍内锁死，见 _atkSpeed 的说明）
+            _atkSpeed = stats != null ? Mathf.Max(0.2f, stats.AttackSpeedMultiplier) : 1f;
+
             animator.SetTrigger(HashAttack1);
             if (SwingStarted != null) SwingStarted(1);
             return true;
@@ -539,6 +584,9 @@ namespace InkWash.Player
             _attackStateSeen = false;
             IsCancelWindowOpen = false;
             _blendSpeed = 0f;   // 交给下一帧的 TickLocomotion 按输入重新决定
+            _atkSpeed = 1f;
+            // 动画速率必须恢复 —— 它是**全局**的，忘了恢复会让之后的走路/待机一直加速
+            if (animator != null) animator.speed = 1f;
             BrakePlanar(Time.deltaTime, brakeRate * 25f);
         }
 

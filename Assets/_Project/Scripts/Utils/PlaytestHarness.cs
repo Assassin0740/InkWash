@@ -10,6 +10,7 @@ using InkWash.Effects;
 using InkWash.Core;
 using InkWash.Combat;
 using InkWash.Enemies;
+using InkWash.Roguelike;
 using InkWash.Rendering;
 using InkWash.UI;
 
@@ -3169,6 +3170,679 @@ namespace InkWash.Utils
                 : ">>> M4 未达成");
             WriteReport("S4", sb.ToString());
             Debug.Log("[PlaytestHarness] S4 结束：通过 " + _m4Pass + " / 未通过 " + _m4Fail);
+        }
+
+        // ==================================================================
+        //  Sprint 5 · 完整 Roguelike 循环 + 水墨特效（M5）
+        // ==================================================================
+
+        private static int _m5Pass, _m5Fail;
+
+        private static void M5(StringBuilder sb, bool ok, string label, string detail)
+        {
+            if (ok) _m5Pass++; else _m5Fail++;
+            sb.AppendLine("[" + (ok ? "通过" : "未通过") + "] " + label
+                          + (string.IsNullOrEmpty(detail) ? "" : "    " + detail));
+        }
+
+        /// <summary>
+        /// 按**未缩放**时间等待。
+        /// 奖励界面（Reward）会把 Time.timeScale 置 0，那时用 Time.time 计时**永远等不到** ——
+        /// 表现为验收脚本原地挂死，而且不报错（它只是"一直在等"）。
+        /// 凡是可能跨越 Reward 状态的等待都必须走这个。
+        /// </summary>
+        private static IEnumerator WaitUnscaled(float seconds)
+        {
+            float t = Time.unscaledTime;
+            while (Time.unscaledTime - t < seconds) yield return null;
+        }
+
+        private static string DescribeList(IReadOnlyList<SkillData> list)
+        {
+            if (list == null || list.Count == 0) return "（空）";
+            var sb = new StringBuilder();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (i > 0) sb.Append("、");
+                if (list[i] != null) sb.Append(list[i].displayName);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 反射逐字段比对两个同类型对象。用途：把「Clone 漏拷字段」变成**会失败的断言**。
+        /// 这类漏拷的症状是"面板一调参数，某个看不出关联的字段就悄悄回默认值"，
+        /// 靠 review 抓不到 —— 本项目已经因为漏拷 depthBias/normalBias 复发过一次假纸纹。
+        /// </summary>
+        private static int ComparePublicFields(object a, object b, StringBuilder diffs)
+        {
+            if (a == null || b == null) return -1;
+            var ta = a.GetType();
+            if (ta != b.GetType()) return -1;
+            int bad = 0;
+            foreach (var f in ta.GetFields(System.Reflection.BindingFlags.Public
+                                           | System.Reflection.BindingFlags.Instance))
+            {
+                object va = f.GetValue(a);
+                object vb = f.GetValue(b);
+                bool same = (va == null || vb == null) ? ReferenceEquals(va, vb) : va.Equals(vb);
+                if (!same)
+                {
+                    bad++;
+                    if (diffs != null) diffs.AppendLine("      · " + f.Name + "：" + va + " → " + vb);
+                }
+            }
+            return bad;
+        }
+
+        public static IEnumerator S5RoguelikeFlow()
+        {
+            var sb = new StringBuilder();
+            _m5Pass = 0; _m5Fail = 0;
+
+            var ctx = ResolveContext();
+            if (ctx == null) { WriteReport("S5", "<错误> 场景里找不到 Player / PlayerController / Main Camera"); yield break; }
+
+            var go = ctx.playerGo;
+            var ctl = ctx.ctl;
+            var cam = ctx.cam;
+            var stance = go.GetComponentInChildren<CombatStance>(true);
+            var stats = go.GetComponent<PlayerStats>();
+            var inv = go.GetComponent<SkillInventory>();
+            var level = go.GetComponent<LevelSystem>();
+            var health = go.GetComponent<PlayerHealth>();
+            var hitbox = go.GetComponentInChildren<PlayerSwordHitbox>(true);
+            var landing = go.GetComponent<InkLandingBloom>();
+            var run = UnityEngine.Object.FindObjectOfType<RunManager>();
+            var choice = UnityEngine.Object.FindObjectOfType<SkillChoicePanel>();
+            var inkv = UnityEngine.Object.FindObjectOfType<InkHitVfx>();
+            var panel = UnityEngine.Object.FindObjectOfType<InkStylePanel>();
+            var spawner = UnityEngine.Object.FindObjectOfType<WaveSpawner>();
+            var room = UnityEngine.Object.FindObjectOfType<RoomController>();
+
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("Sprint 5 验收 —— 完整 Roguelike 循环 + 水墨特效（M5：能完整跑完一局）");
+            sb.AppendLine("生成时间 " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            sb.AppendLine("======================================================================");
+
+            var missing = new List<string>();
+            if (stats == null) missing.Add("PlayerStats");
+            if (inv == null) missing.Add("SkillInventory");
+            if (level == null) missing.Add("LevelSystem");
+            if (hitbox == null) missing.Add("PlayerSwordHitbox");
+            if (run == null) missing.Add("RunManager");
+            if (choice == null) missing.Add("SkillChoicePanel");
+            if (inkv == null) missing.Add("InkHitVfx");
+            if (landing == null) missing.Add("InkLandingBloom");
+            if (spawner == null) missing.Add("WaveSpawner");
+            if (missing.Count > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("** 缺少组件：" + string.Join("、", missing.ToArray()));
+                WriteReport("S5", sb.ToString());
+                Debug.LogError("[PlaytestHarness] S5 缺件：" + string.Join("、", missing.ToArray()));
+                yield break;
+            }
+
+            bool oldHitStop = HitStop.Enabled;
+            HitStop.Enabled = false;                 // 顿帧会让所有时长失真
+
+            if (stance != null) stance.combatExitDelay = 99999f;
+            ctl.BeginInputOverride();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            bool savedPanelVisible = panel != null && panel.visible;
+            if (panel != null) panel.visible = false;
+
+            // 验收期间把波次节奏调快（**只改运行时内存**，Play 退出后场景不会被保存）
+            float savedInterval = spawner.spawnInterval;
+            float savedNextRoom = run.nextRoomDelay;
+            float[] savedDelays = null;
+            spawner.spawnInterval = 0.06f;
+            run.nextRoomDelay = 0.35f;
+            if (spawner.waves != null)
+            {
+                savedDelays = new float[spawner.waves.Length];
+                for (int i = 0; i < spawner.waves.Length; i++)
+                {
+                    if (spawner.waves[i] == null) continue;
+                    savedDelays[i] = spawner.waves[i].delayBefore;
+                    spawner.waves[i].delayBefore = 0.2f;
+                }
+            }
+
+            // 复位到干净状态
+            KillAllAlive();
+            yield return WaitUnscaled(0.3f);
+            inv.ResetAll(); level.ResetAll();
+            health.ResetHealth(); health.ResetDiagnostics();
+            run.ResetForTest();
+            spawner.ResetForTest();
+            if (room != null) room.ResetForTest();
+            TeleportPlayer(go, new Vector3(0f, 0.45f, -3f));
+            ctl.ResetToLocomotion();
+            yield return WaitUnscaled(0.6f);
+
+            // ==============================================================
+            // ① 技能数据层与加权随机（D2）
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ① 技能数据层与加权随机（D2） ----");
+            var pool = run.skillPool;
+            if (pool == null || pool.Count == 0)
+            {
+                M5(sb, false, "RunManager.skillPool 非空", "为空 —— 后面几节会跳过");
+            }
+            else
+            {
+                int common = 0, rare = 0, epic = 0;
+                var ids = new HashSet<string>();
+                int dup = 0;
+                int zeroWeight = 0;
+                foreach (var s in pool)
+                {
+                    if (s == null) continue;
+                    if (!ids.Add(s.id)) dup++;
+                    if (s.weight <= 0f) zeroWeight++;
+                    if (s.rarity == SkillRarity.Epic) epic++;
+                    else if (s.rarity == SkillRarity.Rare) rare++;
+                    else common++;
+                }
+                M5(sb, pool.Count >= 6, "技能资产数量 ≥ 6", "实际 " + pool.Count + " 条");
+                M5(sb, common > 0 && (rare + epic) > 0, "稀有度有层次",
+                    "普通 " + common + " / 稀有 " + rare + " / 史诗 " + epic);
+                M5(sb, dup == 0, "技能 id 唯一（层数与存档都以 id 为键）",
+                    dup == 0 ? "无重复" : dup + " 条重复");
+                M5(sb, zeroWeight == 0, "没有权重为 0 的「永远抽不到」技能", "异常 " + zeroWeight + " 条");
+
+                var r1 = SkillPool.Draw(pool, null, 3, new System.Random(777));
+                var r2 = SkillPool.Draw(pool, null, 3, new System.Random(777));
+                bool same = r1.picked.Count == r2.picked.Count;
+                if (same)
+                    for (int i = 0; i < r1.picked.Count; i++)
+                        if (r1.picked[i] != r2.picked[i]) same = false;
+                M5(sb, same && r1.picked.Count > 0, "固定种子下抽取可复现（同种子两次结果相同）",
+                    "抽到 " + DescribeList(r1.picked));
+
+                var r3 = SkillPool.Draw(pool, null, 3, new System.Random(20260101));
+                bool differs = r3.picked.Count != r1.picked.Count;
+                if (!differs)
+                    for (int i = 0; i < r3.picked.Count; i++)
+                        if (r3.picked[i] != r1.picked[i]) differs = true;
+                M5(sb, differs, "换种子得到不同组合（抽取确实依赖随机）",
+                    "种子 20260101 → " + DescribeList(r3.picked));
+
+                bool noDupInDraw = true;
+                for (int round = 0; round < 200; round++)
+                {
+                    var rr = SkillPool.Draw(pool, null, 3, new System.Random(3000 + round));
+                    for (int i = 0; i < rr.picked.Count; i++)
+                        for (int j = i + 1; j < rr.picked.Count; j++)
+                            if (rr.picked[i] == rr.picked[j]) noDupInDraw = false;
+                }
+                M5(sb, noDupInDraw, "同一轮三选一里不会出现两条一样的技能", "检查 200 轮");
+
+                var commons = new List<SkillData>();
+                foreach (var s in pool) if (s != null && s.rarity == SkillRarity.Common) commons.Add(s);
+                if (commons.Count >= 2)
+                {
+                    var hi = commons[0];
+                    var lo = commons[0];
+                    foreach (var s in commons)
+                    {
+                        if (s.weight > hi.weight) hi = s;
+                        if (s.weight < lo.weight) lo = s;
+                    }
+                    var tally = SkillPool.SampleDistribution(commons, 1200, 1, 4242);
+                    int chi, clo;
+                    tally.TryGetValue(hi.id, out chi);
+                    tally.TryGetValue(lo.id, out clo);
+                    M5(sb, chi > clo, "权重真的起作用（同稀有度内高权重被抽中的次数更多）",
+                        hi.displayName + "(w=" + N(hi.weight) + ") " + chi + " 次  vs  "
+                        + lo.displayName + "(w=" + N(lo.weight) + ") " + clo + " 次（各 1200 轮）");
+                }
+                else
+                {
+                    M5(sb, false, "同一稀有度至少 2 条技能才能验证权重", "只有 " + commons.Count + " 条普通");
+                }
+
+                var probe = pool[0];
+                for (int i = 0; i < probe.maxStacks; i++) inv.Acquire(probe);
+                bool filtered = true;
+                for (int i = 0; i < 8; i++)
+                {
+                    var rr = SkillPool.Draw(pool, inv, Mathf.Min(3, pool.Count), new System.Random(1000 + i));
+                    for (int k = 0; k < rr.picked.Count; k++) if (rr.picked[k] == probe) filtered = false;
+                }
+                M5(sb, filtered, "叠满 " + probe.maxStacks + " 层的技能不再进候选池",
+                    probe.displayName + " 叠满后 8 次抽取均未出现");
+                inv.ResetAll();
+                M5(sb, Mathf.Abs(stats.DamageMultiplier - 1f) < 1e-4f,
+                    "SkillInventory.ResetAll 会一并清掉 PlayerStats", "伤害×" + F(stats.DamageMultiplier));
+            }
+
+            // ==============================================================
+            // ② 属性叠加（D4）—— 受控实验：直接投递修饰器，逐项量
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ② 属性叠加与实测（D4） ----");
+            stats.ResetAll();
+            M5(sb, Mathf.Abs(stats.DamageMultiplier - 1f) < 1e-4f
+                && Mathf.Abs(stats.MoveSpeedMultiplier - 1f) < 1e-4f,
+                "未装技能时全部倍率 = 1（行为与 Sprint 4 逐位一致）", stats.Describe());
+
+            stats.Add(StatKind.DamageBonus, 0.25f, "验收A");
+            stats.Add(StatKind.DamageBonus, 0.25f, "验收B");
+            M5(sb, Mathf.Abs(stats.DamageMultiplier - 1.5f) < 1e-4f,
+                "伤害加成是**加法累加**（+25% 两层 = ×1.50，而非连乘的 ×1.5625）",
+                "实测 ×" + F(stats.DamageMultiplier));
+
+            stats.Add(StatKind.MoveSpeedBonus, 0.5f, "验收");
+            M5(sb, Mathf.Abs(stats.MoveSpeedMultiplier - 1.5f) < 1e-4f, "移速加成生效",
+                "×" + F(stats.MoveSpeedMultiplier));
+
+            float hpBefore = health.EffectiveMaxHealth;
+            stats.Add(StatKind.MaxHealthBonus, 40f, "验收");
+            M5(sb, Mathf.Abs(health.EffectiveMaxHealth - (hpBefore + 40f)) < 1e-3f,
+                "最大生命加成生效（有效上限 = 基值 + 加成）",
+                F(hpBefore) + " → " + F(health.EffectiveMaxHealth));
+
+            stats.Add(StatKind.AttackSpeedBonus, 1.0f, "验收");
+            M5(sb, Mathf.Abs(stats.AttackSpeedMultiplier - 2f) < 1e-4f, "攻速加成生效（×2）",
+                "×" + F(stats.AttackSpeedMultiplier));
+
+            stats.Add(StatKind.CritChance, 1f, "验收");
+            stats.Add(StatKind.CritDamage, 0.5f, "验收");
+            M5(sb, Mathf.Abs(stats.CritChance - 1f) < 1e-4f && Mathf.Abs(stats.CritMultiplier - 2f) < 1e-4f,
+                "暴击率/暴击伤害加成生效", "暴击率 100%　暴击倍率 ×" + F(stats.CritMultiplier));
+
+            stats.Add(StatKind.DashCooldownCut, 0.5f, "验收");
+            M5(sb, Mathf.Abs(stats.DashCooldownScale - 0.5f) < 1e-4f, "冲刺冷却缩短生效",
+                "冷却×" + F(stats.DashCooldownScale));
+
+            for (int i = 0; i < 40; i++) stats.Add(StatKind.DamageBonus, 0.5f, "压力");
+            M5(sb, stats.DamageMultiplier <= 4.0001f, "伤害倍率被上限钳住（防叠加爆炸）",
+                "叠 42 层后 ×" + F(stats.DamageMultiplier) + "（上限 ×" + N(1f + stats.maxDamageBonus) + "）");
+
+            inv.ResetAll();
+            stats.ResetAll();
+            stats.Add(StatKind.DamageBonus, 0.5f, "实测");
+            stats.SetSeed(20260915);
+            stats.ForceNextCrit(false);
+
+            spawner.ResetForTest();
+            spawner.Begin();
+            { float t = Time.time; while (spawner.SpawnedCount < 1 && Time.time - t < 8f) yield return null; }
+            yield return WaitUnscaled(0.8f);
+
+            var aliveNow = AliveEnemies();
+            if (aliveNow.Count == 0)
+            {
+                M5(sb, false, "实测伤害：需要至少一只敌人", "刷不出敌人，本节跳过");
+            }
+            else
+            {
+                var e0 = aliveNow[0];
+                Vector3 to = e0.transform.position - go.transform.position;
+                to.y = 0f;
+                if (to.sqrMagnitude < 1e-4f) to = Vector3.forward;
+                to.Normalize();
+                TeleportPlayer(go, e0.transform.position - to * 1.15f);
+                ctl.ResetToLocomotion();
+                yield return WaitUnscaled(0.5f);
+
+                float before = hitbox.LastDamage;
+                stats.ForceNextCrit(false);
+                ctl.RequestInjectedAttack();
+                yield return WaitUnscaled(1.0f);
+                float after = hitbox.LastDamage;
+                float expect = hitbox.damage[0] * stats.DamageMultiplier;
+                M5(sb, after > before + 0.01f, "挥砍后判定体的伤害被刷新（属性真的写进了判定）",
+                    F(before) + " → " + F(after));
+                M5(sb, Mathf.Abs(after - expect) / Mathf.Max(0.01f, expect) < 0.03f,
+                    "实测伤害 = 基础伤害 × 伤害倍率",
+                    "基础 " + F(hitbox.damage[0]) + " ×" + F(stats.DamageMultiplier) + " = " + F(expect)
+                    + "　实测 " + F(after));
+            }
+
+            stats.ForceNextCrit(true);
+            float baseDmg = hitbox.damage[0] * stats.DamageMultiplier;
+            bool critFlag = false;
+            float critDmg = stats.RollDamage(hitbox.damage[0], out critFlag);
+            float expectCrit = baseDmg * stats.CritMultiplier;
+            M5(sb, critFlag && Mathf.Abs(critDmg - expectCrit) / Mathf.Max(0.01f, expectCrit) < 0.03f,
+                "暴击伤害 = 名义伤害 × 暴击倍率",
+                F(baseDmg) + " ×" + F(stats.CritMultiplier) + " = " + F(expectCrit) + "　实测 " + F(critDmg));
+
+            stats.ResetAll();
+            M5(sb, Mathf.Abs(stats.DamageMultiplier - 1f) < 1e-4f
+                && Mathf.Abs(stats.MoveSpeedMultiplier - 1f) < 1e-4f
+                && Mathf.Abs(stats.MaxHealthBonus) < 1e-4f,
+                "PlayerStats.ResetAll 把全部属性清零", stats.Describe());
+            health.ResetHealth();
+
+            // ==============================================================
+            // ③ 状态机与三选一（D1 + D3）
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ③ 游戏状态机与三选一（D1 / D3） ----");
+            KillAllAlive();
+            yield return WaitUnscaled(0.3f);
+            run.ResetForTest();
+            M5(sb, run.State == RunState.MainMenu, "复位后状态是主菜单", run.Describe());
+
+            bool rejected = !run.SetState(RunState.Reward) && run.State == RunState.MainMenu;
+            M5(sb, rejected, "非法迁移被拒绝且状态不变（MainMenu → Reward）",
+                "状态仍为 " + run.State + "；非法计数 " + run.IllegalTransitionCount);
+
+            run.SetSeed(20260915);
+            run.StartRun();
+            M5(sb, run.State == RunState.Playing, "「开始一局」进入 Playing", "实际 " + run.State);
+
+            level.GrantXp(level.XpToNext);
+            yield return WaitUnscaled(0.3f);
+            M5(sb, run.State == RunState.Reward, "升级后自动进入奖励状态", "实际 " + run.State);
+            M5(sb, Mathf.Abs(Time.timeScale) < 1e-4f, "奖励界面上时间被冻结（timeScale = 0）",
+                "timeScale = " + F(Time.timeScale));
+            M5(sb, !HitStop.IsActive, "进奖励前先把顿帧结清（否则顿帧恢复会把暂停踩掉）",
+                "HitStop.IsActive = " + HitStop.IsActive);
+
+            int optCount = choice.Options != null ? choice.Options.Count : 0;
+            M5(sb, choice.IsShowing && optCount >= 2, "三选一面板已弹出且带有候选",
+                "候选 " + optCount + " 条：" + DescribeList(choice.Options));
+
+            // ★ 非法迁移必须在**还停在 Reward 时**试。
+            //   一次度量翻车的记录：这条原本写在 InjectChoice 之后，而选完技能状态已经回到 Playing，
+            //   `Playing → Victory` 本来就是合法边 —— 于是测试自己把状态推成了 Victory，
+            //   不仅本条判失败，连后面「玩家死亡 → GameOver」（OnPlayerDied 里 IsRunOver 直接 return）
+            //   也一起失败。**先怀疑度量本身**：两条都正常，唯独这两条红。
+            int illegalBefore = run.IllegalTransitionCount;
+            bool rej2 = !run.SetState(RunState.Victory);
+            M5(sb, run.State == RunState.Reward && rej2 && run.IllegalTransitionCount == illegalBefore + 1,
+                "非法迁移被计数（Reward → Victory 不允许）",
+                "状态仍为 " + run.State + "；非法计数 " + illegalBefore + " → " + run.IllegalTransitionCount);
+
+            int stacksBefore = inv.AcquireCount;
+            bool injected = choice.InjectChoice(0);
+            yield return WaitUnscaled(0.25f);
+            M5(sb, injected, "可以用程序化接口做出选择（InjectChoice —— 自动验收的唯一入口）",
+                "选中第 1 张：" + choice.ChosenName);
+            M5(sb, inv.AcquireCount == stacksBefore + 1, "选择真的写进了技能背包", "背包：" + inv.Describe());
+            M5(sb, run.State == RunState.Playing, "选完自动回到 Playing", "实际 " + run.State);
+            M5(sb, Mathf.Abs(Time.timeScale - 1f) < 1e-4f, "回到 Playing 后时间恢复",
+                "timeScale = " + F(Time.timeScale));
+
+            var lethal = new DamageInfo
+            {
+                amount = 100000f, sourceFaction = Faction.Enemy, hitDirection = Vector3.zero,
+                knockback = 0f, hitStun = 0f, hitStop = 0f,
+            };
+            health.ClearInvincibility();
+            health.TakeDamage(lethal);
+            yield return WaitUnscaled(0.2f);
+            M5(sb, run.State == RunState.GameOver, "玩家死亡后进入结算（GameOver）", "实际 " + run.State);
+            M5(sb, Mathf.Abs(Time.timeScale - 1f) < 1e-4f, "结算不冻结时间（要能点「再来一局」）",
+                "timeScale = " + F(Time.timeScale));
+            health.ResetHealth();
+
+            // ==============================================================
+            // ④ E4 墨晕扩散
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ④ E4 墨晕扩散后处理 ----");
+            M5(sb, InkStyleRegistry.Bloom != null, "渲染器资产里装配了 InkBloomFeature",
+                InkStyleRegistry.Bloom != null ? "已登记" : "**未登记**");
+            M5(sb, InkStyleRegistry.AllRegistered, "三层全屏效果（墨线/宣纸/墨晕）全部登记",
+                InkStyleRegistry.Describe());
+
+            var diffsE = new StringBuilder();
+            int badE = ComparePublicFields(
+                InkStyleRegistry.Edge != null ? InkStyleRegistry.Edge.settings : null,
+                InkStyleRegistry.Edge != null ? InkStyleRegistry.Edge.settings.Clone() : null, diffsE);
+            M5(sb, badE == 0, "InkEdgeFeature.Settings.Clone() 逐字段一致（反射比对）",
+                badE < 0 ? "缺对象" : (badE == 0 ? "无差异" : badE + " 个字段漏拷:\n" + diffsE));
+
+            var diffsP = new StringBuilder();
+            int badP = ComparePublicFields(
+                InkStyleRegistry.Paper != null ? InkStyleRegistry.Paper.settings : null,
+                InkStyleRegistry.Paper != null ? InkStyleRegistry.Paper.settings.Clone() : null, diffsP);
+            M5(sb, badP == 0, "InkPaperFeature.Settings.Clone() 逐字段一致（反射比对）",
+                badP < 0 ? "缺对象" : (badP == 0 ? "无差异" : badP + " 个字段漏拷:\n" + diffsP));
+
+            var diffsB = new StringBuilder();
+            int badB = ComparePublicFields(
+                InkStyleRegistry.Bloom != null ? InkStyleRegistry.Bloom.settings : null,
+                InkStyleRegistry.Bloom != null ? InkStyleRegistry.Bloom.settings.Clone() : null, diffsB);
+            M5(sb, badB == 0, "InkBloomFeature.Settings.Clone() 逐字段一致（反射比对）",
+                badB < 0 ? "缺对象" : (badB == 0 ? "无差异" : badB + " 个字段漏拷:\n" + diffsB));
+
+            if (panel != null && InkStyleRegistry.Bloom != null)
+            {
+                int savedStage = panel.Stage;
+                TeleportPlayer(go, new Vector3(0f, 0.45f, -3f));
+                ctl.ResetToLocomotion();
+                spawner.ResetForTest(); spawner.Begin();
+                { float t = Time.time; while (spawner.SpawnedCount < 1 && Time.time - t < 8f) yield return null; }
+                yield return WaitUnscaled(1.2f);
+
+                const int W = 1280, H = 720;
+                int bx0, bx1, by0, by1;
+                BoxFromFrac(W, H, 0.85f, 0.9f, out bx0, out bx1, out by0, out by1);
+                var shot3 = new Shot();
+                var shot4 = new Shot();
+
+                float savedScale = Time.timeScale;
+                Time.timeScale = 0f;
+                yield return null;
+
+                panel.ApplyStage(3);
+                for (int i = 0; i < 3; i++) yield return null;
+                yield return CaptureToPixels(cam, W, H, (tex, px) =>
+                {
+                    shot3 = Analyse(px, W, H, bx0, bx1, by0, by1);
+                    UnityEngine.Object.Destroy(tex);
+                });
+
+                panel.ApplyStage(4);
+                for (int i = 0; i < 3; i++) yield return null;
+                yield return CaptureToPixels(cam, W, H, (tex, px) =>
+                {
+                    shot4 = Analyse(px, W, H, bx0, bx1, by0, by1);
+                    UnityEngine.Object.Destroy(tex);
+                });
+
+                Time.timeScale = savedScale;
+                panel.ApplyStage(savedStage);
+
+                float d43 = Diff(shot3, shot4);
+                M5(sb, d43 >= 0.003f, "阶段 5（＋墨晕）相对阶段 4 有可见像素差",
+                    "逐像素平均差 " + F(d43) + "（阶段4 平均亮度 " + F(shot3.mean) + " → 阶段5 " + F(shot4.mean) + "）");
+                M5(sb, shot4.mean <= shot3.mean + 0.002f,
+                    "墨晕把画面**压暗**而不是发亮（方向与图形学 Bloom 相反）",
+                    "平均亮度 " + F(shot3.mean) + " → " + F(shot4.mean));
+            }
+            KillAllAlive();
+            yield return WaitUnscaled(0.3f);
+
+            // ==============================================================
+            // ⑤ E5 水墨动作粒子
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ⑤ E5 水墨动作粒子（溅墨 / 墨花）----");
+            foreach (var sn in new[] { "Hidden/InkWash/InkBloom", "InkWash/InkSplash" })
+            {
+                var sh = Shader.Find(sn);
+                M5(sb, sh != null, "着色器可解析 " + sn, sh != null ? "pass = " + sh.passCount : "Shader.Find 返回 null");
+            }
+
+            inkv.ClearAll();
+            inkv.ResetDiagnostics();
+            landing.ResetDiagnostics();
+            int inkBefore = inkv.SpawnCount;
+
+            spawner.ResetForTest(); spawner.Begin();
+            { float t = Time.time; while (spawner.SpawnedCount < 1 && Time.time - t < 8f) yield return null; }
+            yield return WaitUnscaled(1.0f);
+
+            var targets = AliveEnemies();
+            if (targets.Count == 0)
+            {
+                M5(sb, false, "溅墨：需要一只敌人", "刷不出敌人，本节跳过");
+            }
+            else
+            {
+                var e0 = targets[0];
+                var hit = new DamageInfo
+                {
+                    amount = 6f,
+                    hitPoint = e0.transform.position + Vector3.up * 1.0f,
+                    hitDirection = (e0.transform.position - go.transform.position).normalized,
+                    knockback = 0f, hitStun = 0f, hitStop = 0f,
+                    sourceFaction = Faction.Player, source = go,
+                };
+                e0.TakeDamage(hit);
+                yield return WaitUnscaled(0.15f);
+                M5(sb, inkv.SpawnCount > inkBefore, "命中敌人会产生溅墨（受击方驱动）",
+                    "溅墨 " + inkBefore + " → " + inkv.SpawnCount + " 次");
+                M5(sb, inkv.PeakActive > 0, "墨点真的被激活参与渲染", "峰值活跃 " + inkv.PeakActive + " 个");
+            }
+
+            {
+                int before2 = inkv.SpawnCount;
+                var list2 = AliveEnemies();
+                if (list2.Count > 0)
+                {
+                    var e1 = list2[0];
+                    Vector3 to = e1.transform.position - go.transform.position; to.y = 0f;
+                    if (to.sqrMagnitude < 1e-4f) to = Vector3.forward;
+                    to.Normalize();
+                    TeleportPlayer(go, e1.transform.position - to * 1.15f);
+                    ctl.ResetToLocomotion();
+                    yield return WaitUnscaled(0.5f);
+                    for (int i = 0; i < 2; i++) { ctl.RequestInjectedAttack(); yield return WaitUnscaled(1.1f); }
+                    M5(sb, inkv.SpawnCount > before2, "实战挥砍命中也会产生溅墨",
+                        "溅墨 " + before2 + " → " + inkv.SpawnCount + " 次");
+                }
+            }
+
+            {
+                landing.ResetDiagnostics();
+                int bloomBefore = landing.BloomCount;
+                TeleportPlayer(go, new Vector3(0f, 2.6f, -3f));
+                ctl.ResetToLocomotion();
+                yield return WaitUnscaled(1.4f);
+                M5(sb, landing.BloomCount > bloomBefore, "从高处落地会绽开墨花",
+                    "墨花 " + bloomBefore + " → " + landing.BloomCount + " 次，最近下落速度 "
+                    + F(landing.LastFallSpeed) + " m/s（阈值 " + F(landing.minFallSpeed) + "）");
+                M5(sb, landing.LastScale > 0.3f, "墨花尺寸随下落速度缩放（重落更大）",
+                    "本次倍率 " + F(landing.LastScale));
+
+                int dashBefore = landing.DashBloomCount;
+                TeleportPlayer(go, new Vector3(0f, 0.45f, -3f));
+                ctl.ResetToLocomotion();
+                yield return WaitUnscaled(0.5f);
+                ctl.RequestInjectedDash();
+                yield return WaitUnscaled(1.2f);
+                M5(sb, landing.DashBloomCount > dashBefore,
+                    "冲刺急停会产生墨花",
+                    "冲刺墨花 " + dashBefore + " → " + landing.DashBloomCount
+                    + "，因冷却跳过 " + landing.SkippedCooldown + " 次");
+            }
+            M5(sb, inkv.DroppedCount == 0, "墨点池没有溢出（池容量够用）",
+                "池 " + inkv.poolSize + "　丢弃 " + inkv.DroppedCount + "　峰值 " + inkv.PeakActive);
+
+            // ==============================================================
+            // ⑥ 完整一局（M5 的出口条件）
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ⑥ 完整跑完一局 ----");
+            KillAllAlive();
+            yield return WaitUnscaled(0.3f);
+            var savedMax = health.maxHealth;
+            health.maxHealth = 100000f;
+            health.ResetHealth();
+
+            inv.ResetAll(); level.ResetAll();
+            run.ResetForTest();
+            run.SetSeed(20260915);
+            spawner.ResetForTest();
+            if (room != null) room.ResetForTest();
+            run.StartRun();
+            yield return WaitUnscaled(0.3f);
+
+            int rewards = 0;
+            int guard = 0;
+            float t0 = Time.unscaledTime;
+            while (run.State != RunState.Victory && run.State != RunState.GameOver
+                   && guard++ < 6000 && Time.unscaledTime - t0 < 120f)
+            {
+                if (run.State == RunState.Reward)
+                {
+                    yield return WaitUnscaled(0.2f);
+                    if (choice.IsShowing)
+                    {
+                        int pick = rewards % Mathf.Max(1, choice.Options.Count);
+                        if (choice.InjectChoice(pick)) rewards++;
+                    }
+                    continue;
+                }
+
+                KillAllAlive();
+                yield return null;
+            }
+
+            sb.AppendLine("   房间 " + run.RoomIndex + "/" + run.roomsToClear
+                          + "　升级/选择 " + rewards + " 次　迁移 " + run.TransitionCount + " 次"
+                          + "　耗时 " + F(Time.unscaledTime - t0) + " s");
+            M5(sb, run.State == RunState.Victory, "清空 " + run.roomsToClear + " 间房后通关（Victory）",
+                "实际 " + run.State);
+            M5(sb, run.RoomIndex >= run.roomsToClear, "房间推进到位", run.RoomIndex + " / " + run.roomsToClear);
+            M5(sb, rewards >= 3, "一局里经历了多次三选一（技能可叠加成长）", "共 " + rewards + " 次选择");
+            M5(sb, inv.AcquireCount >= 3, "选择都写进了背包", inv.Describe());
+            M5(sb, stats.ModifierCount >= 3, "属性池收到了对应数量的修饰器",
+                "修饰器 " + stats.ModifierCount + " 条　" + stats.Describe());
+            M5(sb, run.IllegalTransitionCount == 0, "整局没有非法状态迁移", run.LastIllegal);
+
+            health.maxHealth = savedMax;
+            health.ResetHealth();
+
+            // ==============================================================
+            // ⑦ 性能
+            // ==============================================================
+            sb.AppendLine();
+            sb.AppendLine("---- ⑦ 性能（Roguelike 全功能开启）----");
+            int frames = 0;
+            float elapsed = 0f;
+            { float t1 = Time.unscaledTime; float t = Time.time;
+              while (Time.time - t < 3.0f) { frames++; elapsed = Time.unscaledTime - t1; yield return null; } }
+            float fps = elapsed > 0f ? frames / elapsed : 0f;
+            sb.AppendLine("   帧数 " + frames + " / 墙钟 " + F(elapsed) + " s  → " + F(fps) + " fps @ "
+                          + Screen.width + "×" + Screen.height);
+            M5(sb, fps >= 55f, "1080p 下帧率 ≥ 55",
+                F(fps) + " fps（若在录屏运行中取得会偏低，需无录屏复测）");
+
+            // ---------------- 收尾 ----------------
+            KillAllAlive();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            ctl.EndInputOverride();
+            if (stance != null) stance.combatExitDelay = 6f;
+            if (panel != null) panel.visible = savedPanelVisible;
+            if (choice != null) choice.Hide();
+            spawner.spawnInterval = savedInterval;
+            run.nextRoomDelay = savedNextRoom;
+            if (savedDelays != null && spawner.waves != null)
+                for (int i = 0; i < spawner.waves.Length && i < savedDelays.Length; i++)
+                    if (spawner.waves[i] != null) spawner.waves[i].delayBefore = savedDelays[i];
+            Time.timeScale = 1f;
+            HitStop.Enabled = oldHitStop;
+
+            sb.AppendLine();
+            sb.AppendLine("---- 汇总 ----");
+            sb.AppendLine("通过 " + _m5Pass + " / 未通过 " + _m5Fail);
+            sb.AppendLine(_m5Fail == 0
+                ? ">>> M5 达成（技能池/三选一/属性叠加/状态机齐备，能完整跑完一局；墨晕与水墨粒子已接入）"
+                : ">>> M5 未达成");
+            WriteReport("S5", sb.ToString());
+            Debug.Log("[PlaytestHarness] S5 结束：通过 " + _m5Pass + " / 未通过 " + _m5Fail);
         }
 
         private static void WriteReport(string prefix, string text)

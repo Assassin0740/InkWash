@@ -1,0 +1,5 @@
+场景 = Main
+===== S5 修复：主菜单里不该在刷怪 =====
+  before: autoStart = False
+  after : autoStart = False（一局的开始统一由 RunManager.StartRun() → spawner.Begin() 驱动）
+场景保存 = True

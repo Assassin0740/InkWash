@@ -12,8 +12,12 @@ namespace InkWash.UI
     /// 动起来可能完全不对（例如飞白太强会让画面一直在"闪"）。
     /// 放在运行时就能边跑边调、立刻看到动态效果。
     ///
-    /// 四个阶段（论文对照图的顺序，每步只加一层）：
-    ///   1 白模（原 PBR） → 2 水墨量化光照 → 3 ＋飞白墨线 → 4 ＋宣纸底纹
+    /// 五个阶段（论文对照图的顺序，每步只加一层）：
+    ///   1 白模（原 PBR） → 2 水墨量化光照 → 3 ＋飞白墨线 → 4 ＋宣纸底纹 → 5 ＋墨晕扩散
+    ///
+    /// 为什么墨晕是**追加的第 5 层**而不是插进前四层：§9.14 的四阶段对照图
+    /// （①白模 → ④宣纸）已经是论文里"逐层叠加"的核心证据，改动它的含义会让那组图与报告对不上。
+    /// 墨晕接在后面，前四个阶段的画面**逐像素不变**（验收会重跑 S4 的逐层像素差来复核）。
     ///
     /// ★ 本面板**不写任何资产**：
     ///   * 材质全走 `new Material(...)` 的运行时实例（写 sharedMaterial 会把改动持久化）；
@@ -30,7 +34,7 @@ namespace InkWash.UI
         public KeyCode toggleKey = KeyCode.F1;
 
         [Header("状态（只读）")]
-        [SerializeField, Range(0, 3)] private int _stage = 3;
+        [SerializeField, Range(0, 4)] private int _stage = 3;
 
         // ---------------- 换材质：自注册表 ----------------
         private class Entry
@@ -132,12 +136,13 @@ namespace InkWash.UI
             if (Input.GetKeyDown(KeyCode.Alpha2)) ApplyStage(1);
             if (Input.GetKeyDown(KeyCode.Alpha3)) ApplyStage(2);
             if (Input.GetKeyDown(KeyCode.Alpha4)) ApplyStage(3);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) ApplyStage(4);
         }
 
         /// <summary>切换阶段。每一阶段只在上一个之上**加一层**，对照图才说得清每层的贡献。</summary>
         public void ApplyStage(int stage)
         {
-            _stage = Mathf.Clamp(stage, 0, 3);
+            _stage = Mathf.Clamp(stage, 0, 4);
             s_stage = _stage;
 
             foreach (var e in Entries) ApplyToEntry(e);
@@ -145,9 +150,11 @@ namespace InkWash.UI
             // 走注册表的覆盖：不碰渲染器资产
             InkStyleRegistry.EdgeOn = _stage >= 2;
             InkStyleRegistry.PaperOn = _stage >= 3;
+            InkStyleRegistry.BloomOn = _stage >= 4;
             // 阶段 ≥1 才需要读 Feature 参数；顺手把运行时覆盖建出来
             if (_stage >= 2) InkStyleRegistry.EnsureEdgeRuntime();
             if (_stage >= 3) InkStyleRegistry.EnsurePaperRuntime();
+            if (_stage >= 4) InkStyleRegistry.EnsureBloomRuntime();
 
             if (_edit != null) Broadcast();
         }
@@ -208,7 +215,7 @@ namespace InkWash.UI
             _scroll = GUILayout.BeginScrollView(_scroll);
 
             GUILayout.Label("墨刃 · 水墨风格参数（F1 隐藏 / 1-4 切阶段）", _title);
-            GUILayout.Label(string.Format("FPS {0:F0}   阶段 {1}/4：{2}   换材质 {3} 家",
+            GUILayout.Label(string.Format("FPS {0:F0}   阶段 {1}/5：{2}   换材质 {3} 家",
                 _fps, _stage + 1, StageName(_stage), Entries.Count));
 
             GUILayout.Space(4);
@@ -219,6 +226,7 @@ namespace InkWash.UI
             GUILayout.BeginHorizontal();
             if (GUILayout.Toggle(_stage == 2, "3 +墨线", GUI.skin.button)) ApplyStage(2);
             if (GUILayout.Toggle(_stage == 3, "4 +宣纸", GUI.skin.button)) ApplyStage(3);
+            if (GUILayout.Toggle(_stage == 4, "5 +墨晕", GUI.skin.button)) ApplyStage(4);
             GUILayout.EndHorizontal();
 
             if (_edit == null)
@@ -282,6 +290,27 @@ namespace InkWash.UI
                 Sl("墨色加深", 0f, 1f, () => ps.inkDeepen, v => { ps.inkDeepen = v; _dirty = true; });
             }
 
+            var bs = InkStyleRegistry.BloomSettings;
+            if (bs != null)
+            {
+                Section("墨晕扩散");
+                InkStyleRegistry.BloomOn = GUILayout.Toggle(InkStyleRegistry.BloomEnabled, " 启用墨晕");
+                Sl("暗度阈值（只晕更暗的部分）", 0f, 1f, () => bs.threshold, v => { bs.threshold = v; _dirty = true; });
+                Sl("晕的强度", 0f, 2f, () => bs.strength, v => { bs.strength = v; _dirty = true; });
+                Sl("近场半径(像素)", 0.5f, 24f, () => bs.radius1, v => { bs.radius1 = v; _dirty = true; });
+                Sl("远场半径(像素)", 1f, 64f, () => bs.radius2, v => { bs.radius2 = v; _dirty = true; });
+                Sl("远场权重", 0f, 1f, () => bs.farWeight, v => { bs.farWeight = v; _dirty = true; });
+                Sl("纸纤维抖动", 0f, 0.6f, () => bs.jitter, v => { bs.jitter = v; _dirty = true; });
+                Sl("墨色掺入", 0f, 1f, () => bs.tintAmount, v => { bs.tintAmount = v; _dirty = true; });
+                Sl("整体墨雾", 0f, 1f, () => bs.veil, v => { bs.veil = v; _dirty = true; });
+                C("晕的墨色", () => bs.inkColor, v => { bs.inkColor = v; _dirty = true; });
+            }
+            else if (InkStyleRegistry.Bloom == null)
+            {
+                Section("墨晕扩散");
+                GUILayout.Label("（渲染器资产里没装配 InkBloomFeature）");
+            }
+
             GUILayout.EndScrollView();
             GUILayout.EndArea();
 
@@ -301,7 +330,8 @@ namespace InkWash.UI
                 case 0: return "白模（原 PBR）";
                 case 1: return "水墨量化光照";
                 case 2: return "＋飞白墨线";
-                default: return "＋宣纸底纹";
+                case 3: return "＋宣纸底纹";
+                default: return "＋墨晕扩散";
             }
         }
 

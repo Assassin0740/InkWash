@@ -30,6 +30,26 @@ namespace InkWash.Rendering
             [Range(0f, 1f)] public float vignette = 0.32f;
             [Range(0.5f, 6f)] public float vignetteSharp = 2.4f;
             [Range(0f, 1f)] public float inkDeepen = 0.25f;
+
+            /// <summary>全量浅拷贝。理由与 <see cref="InkEdgeFeature.Settings.Clone"/> 完全一致：
+            /// 拷贝必须与字段在同一个类里，否则加字段时必然漏。验收会用反射逐字段比对。</summary>
+            public Settings Clone()
+            {
+                return new Settings
+                {
+                    enabled = enabled,
+                    paperTex = paperTex,
+                    paperTiling = paperTiling,
+                    paperStrength = paperStrength,
+                    paperContrast = paperContrast,
+                    grainStrength = grainStrength,
+                    paperTint = paperTint,
+                    tintStrength = tintStrength,
+                    vignette = vignette,
+                    vignetteSharp = vignetteSharp,
+                    inkDeepen = inkDeepen,
+                };
+            }
         }
 
         public Settings settings = new Settings();

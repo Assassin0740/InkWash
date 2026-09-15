@@ -39,6 +39,35 @@ namespace InkWash.Rendering
             [Header("距离")]
             [Range(5f, 200f)] public float distanceFade = 46f;
             [Range(0.5f, 8f)] public float distanceFadeSharp = 2f;
+
+            /// <summary>
+            /// 全量浅拷贝。**必须留在 Settings 类内部**，不能像原来那样写在 Registry 里 ——
+            /// 上一版把拷贝写在 Registry，加 depthBias/normalBias 这两个字段时就漏了，
+            /// 症状极其隐蔽：面板只要动**任何**滑块，运行时覆盖对象里的死区就成了 0，
+            /// 于是"掠射角地面被误判成轮廓"的老毛病静默复发，而面板上那个滑块看着还是 0.3。
+            /// 放在本类里，加字段的人就在这个类里，容易看到旁边还有一份拷贝要同步。
+            /// （验收脚本另用反射逐字段比对，把"漏拷"变成会失败的断言。）
+            /// </summary>
+            public Settings Clone()
+            {
+                return new Settings
+                {
+                    enabled = enabled,
+                    edgeColor = edgeColor,
+                    depthSensitivity = depthSensitivity,
+                    depthBias = depthBias,
+                    normalSensitivity = normalSensitivity,
+                    normalBias = normalBias,
+                    lineThickness = lineThickness,
+                    lineStrength = lineStrength,
+                    dryBrushTex = dryBrushTex,
+                    dryBrushScale = dryBrushScale,
+                    dryBrushStrength = dryBrushStrength,
+                    dryBrushBias = dryBrushBias,
+                    distanceFade = distanceFade,
+                    distanceFadeSharp = distanceFadeSharp,
+                };
+            }
         }
 
         public Settings settings = new Settings();

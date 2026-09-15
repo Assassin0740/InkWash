@@ -89,8 +89,15 @@ MonoBehaviour:
   hitStopDuration: 0.055
   radius: 0.42
   window: 0.14
+  stats: {fileID: 2517279585834350198}
+  health: {fileID: 6225359931486967881}
   _hitMomentCount: 0
   _lastBladeLength: 0
+  _lastDamage: 0
+  _critCount: 0
+  _newHitsLastFrame: 0
+  _totalHealed: 0
+  _maxNominalDamage: 0
 --- !u!1 &2785233610935798848
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +147,10 @@ GameObject:
   - component: {fileID: 5718752645052886692}
   - component: {fileID: 1038111662515904894}
   - component: {fileID: 6225359931486967881}
+  - component: {fileID: 2517279585834350198}
+  - component: {fileID: 2797808462613258062}
+  - component: {fileID: 8102585910089641610}
+  - component: {fileID: 895886384566563399}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -265,6 +276,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   animator: {fileID: 4525460533489108174}
   cameraRig: {fileID: 0}
+  stats: {fileID: 2517279585834350198}
 --- !u!114 &2483706807998641495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,12 +443,99 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 4259422993641270396}
+  stats: {fileID: 2517279585834350198}
   maxHealth: 120
   invincibleAfterHit: 0.65
   _health: 0
   _damageTakenCount: 0
   _damageBlockedByIFrameCount: 0
   _lastDamageTime: -999
+--- !u!114 &2517279585834350198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc8fec5eb31ecf4f83aa96a8553620e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseCritMultiplier: 1.5
+  maxDamageBonus: 3
+  maxMoveSpeedBonus: 1
+  maxAttackSpeedBonus: 1.5
+  minDashCooldownScale: 0.35
+  randomSeed: 20260915
+  _appliedCount: 0
+  _critRolls: 0
+  _critSuccesses: 0
+  _lastRawDamage: 0
+  _lastFinalDamage: 0
+--- !u!114 &2797808462613258062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f753efc5a38d74eab217592a7d43d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 2517279585834350198}
+  _acquireCount: 0
+  _distinctCount: 0
+--- !u!114 &8102585910089641610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fb3febe2ddb4946ac5f6eca081ebfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 2517279585834350198}
+  baseXp: 20
+  growthPerLevel: 14
+  _level: 1
+  _xp: 0
+  _xpToNext: 0
+  _pendingLevelUps: 0
+  _totalXpGained: 0
+  _killCount: 0
+  _lastXpGrant: 0
+--- !u!114 &895886384566563399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e37f09728d91e4897f3ce4df7b67cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4259422993641270396}
+  minFallSpeed: 2
+  cooldown: 0.35
+  bloomOnDashEnd: 1
+  radiusScale: 1
+  minScale: 0.55
+  maxScale: 1.6
+  heavyFallSpeed: 9
+  _bloomCount: 0
+  _dashBloomCount: 0
+  _skippedTooSoft: 0
+  _skippedCooldown: 0
+  _lastFallSpeed: 0
+  _lastScale: 1
 --- !u!1001 &6319620012404730793
 PrefabInstance:
   m_ObjectHideFlags: 0

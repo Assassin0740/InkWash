@@ -1,7 +1,7 @@
 Assembly-CSharp = 已加载
 scriptCompilationFailed = False
-DLL   写入 = 16:24:46
-最新源   = 16:24:31   PlaytestHarness.cs
+DLL   写入 = 17:36:00
+最新源   = 17:35:51   PlaytestHarness.cs
 编译结果 = 最新
   InkWash.Combat.Faction → OK
   InkWash.Combat.DamageInfo → OK
@@ -25,6 +25,18 @@ DLL   写入 = 16:24:46
   InkWash.Rendering.InkStyleRegistry → OK
   InkWash.UI.InkStylePanel → OK
   InkWash.UI.InkMaterialSwap → OK
+  InkWash.Roguelike.StatKind → OK
+  InkWash.Roguelike.PlayerStats → OK
+  InkWash.Roguelike.SkillData → OK
+  InkWash.Roguelike.SkillPool → OK
+  InkWash.Roguelike.SkillInventory → OK
+  InkWash.Roguelike.LevelSystem → OK
+  InkWash.Roguelike.RunState → OK
+  InkWash.Roguelike.RunManager → OK
+  InkWash.UI.SkillChoicePanel → OK
+  InkWash.Rendering.InkBloomFeature → OK
+  InkWash.Effects.InkHitVfx → OK
+  InkWash.Effects.InkLandingBloom → OK
 关键成员：
   InkWash.Enemies.WaveSpawner.ResetForTest → OK
   InkWash.Enemies.WaveSpawner.Begin → OK
@@ -32,7 +44,25 @@ DLL   写入 = 16:24:46
   InkWash.Player.PlayerHealth.ClearInvincibility → OK
   InkWash.Utils.PlaytestHarness.S3EnemyFlow → OK
   InkWash.Utils.PlaytestHarness.S4InkFlow → OK
+  InkWash.Utils.PlaytestHarness.S5RoguelikeFlow → OK
+  InkWash.Combat.HitStop.ForceEnd → OK
+  InkWash.Roguelike.PlayerStats.RollDamage → OK
+  InkWash.Roguelike.PlayerStats.Add → OK
+  InkWash.Roguelike.SkillPool.Draw → OK
+  InkWash.Roguelike.SkillInventory.Acquire → OK
+  InkWash.Roguelike.LevelSystem.GrantXp → OK
+  InkWash.Roguelike.RunManager.StartRun → OK
+  InkWash.Roguelike.RunManager.SetState → OK
+  InkWash.UI.SkillChoicePanel.InjectChoice → OK
+  InkWash.Enemies.EnemyBase.AnyDied → OK
+  InkWash.Enemies.EnemyBase.xpReward → OK
+  InkWash.Player.PlayerController.CurrentAttackSpeed → OK
+  InkWash.Rendering.InkStyleRegistry.AllRegistered → OK
+  InkWash.Effects.InkHitVfx.Spawn → OK
+  InkWash.Effects.InkLandingBloom.BloomCount → OK
 着色器：
   InkWash/InkCharacter → OK  pass=3
   Hidden/InkWash/InkEdge → OK  pass=1
   Hidden/InkWash/InkPaper → OK  pass=1
+  Hidden/InkWash/InkBloom → OK  pass=1
+  InkWash/InkSplash → OK  pass=1
