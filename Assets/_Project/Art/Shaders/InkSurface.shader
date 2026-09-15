@@ -53,9 +53,9 @@ Shader "InkWash/InkSurface"
         // 只暴露三个**锚点**（焦、重、清），中间两级由 _LadderSkew 派生 ——
         // 暴露五个色会让人调成"色阶图"，锚点法天然保住墨的连贯。
         // 注意属性显示名里不能出现英文逗号（团结引擎按逗号裸切参数），一律用「、」。
-        _InkDark  ("焦墨（最暗、忌纯黑）", Color) = (0.075, 0.085, 0.12, 1)
-        _InkMid   ("重墨（中间锚点）",     Color) = (0.30, 0.315, 0.35, 1)
-        _InkLight ("清墨（近纸白）",       Color) = (0.98, 0.976, 0.955, 1)
+        _InkDark  ("焦墨（最暗、忌纯黑）", Color) = (0.06, 0.078, 0.132, 1)
+        _InkMid   ("重墨（中间锚点）",     Color) = (0.265, 0.295, 0.375, 1)
+        _InkLight ("清墨（近纸白）",       Color) = (0.988, 0.976, 0.940, 1)
         _LadderSkew ("中间两级的位置（小=浓墨区更宽）", Range(0.1, 0.9)) = 0.42
         _Bands ("墨阶数（少=大写意）", Range(1, 6)) = 5
         _BandSoftness ("阶间柔度（太大会失去笔阶感、太小出马赫带）", Range(0.001, 0.5)) = 0.08
@@ -100,6 +100,16 @@ Shader "InkWash/InkSurface"
         _AerialFrom ("大气透视起点距离（米）", Float) = 12
         _AerialTo ("大气透视终点距离（米）", Float) = 30
         _AerialStrength ("大气透视强度（远处推向清墨）", Range(0, 1)) = 0.55
+
+        // ---- 墨线轮廓（《大神》式几何外扩壳）----
+        // 为什么场景也要轮廓：白盒场地的台子/院墙只有明暗差、没有"边"，
+        // 读起来像"地上一块脏"而不是"一个台子"。轮廓线负责给出结构。
+        _OutlineWidth ("墨线宽度（米）", Range(0, 0.15)) = 0.02
+        _OutlineColor ("墨线颜色", Color) = (0.055, 0.06, 0.075, 1)
+        _OutlineDistScale ("墨线距离补偿（1/米）", Float) = 0.05
+        _OutlineFacing ("墨线掠射加权（1=只有转折处起笔）", Range(0, 1)) = 0.85
+        _OutlineDry ("墨线飞白断笔强度", Range(0, 1)) = 0.45
+        _OutlineScale ("墨线飞白尺度（世界空间）", Float) = 0.6
     }
 
     SubShader
@@ -112,6 +122,133 @@ Shader "InkWash/InkSurface"
             "Queue" = "Geometry"
         }
         LOD 300
+
+        // ==================================================================
+        // 墨线轮廓（《大神》式几何外扩壳 / inverted hull）
+        // ==================================================================
+        // 与 InkCharacter 的实现同源，两处差异：
+        //   * 飞白噪声用**世界空间**（场景是静态的，不存在角色那种"图案随移动流过"的问题；
+        //     而场景 Cube 的 positionOS 只有 ±0.5，用它采样会让整面墙只落到几格噪声上）
+        //   * 掠射权重默认更高（0.85）—— 场景多是大平面，正对相机的面不应外扩
+        //
+        // 渲染顺序：`SRPDefaultUnlit` 这一批先于 `UniversalForward`，
+        // 轮廓先写深度、物体再盖上去，天然正确，不需要改队列或加 renderer feature。
+        Pass
+        {
+            Name "InkOutline"
+            Tags { "LightMode" = "SRPDefaultUnlit" }
+
+            Cull Front      // 只画背面 —— 外扩壳的背面正好落在物体轮廓之外
+            ZWrite On
+            ZTest LEqual
+
+            HLSLPROGRAM
+            #pragma target 3.0
+            #pragma vertex OutlineVertex
+            #pragma fragment OutlineFragment
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseMap_ST;
+                half4  _BaseColor;
+                half4  _InkDark;
+                half4  _InkMid;
+                half4  _InkLight;
+                half   _LadderSkew;
+                half   _Bands;
+                half   _BandSoftness;
+                half   _BandBias;
+                half   _InkDensity;
+                float4 _BrushTex_ST;
+                half   _BrushScale;
+                half   _BrushStrength;
+                half   _InkMottle;
+                half   _MottleScale;
+                half   _ContactInk;
+                half   _ContactHeight;
+                half   _GroundY;
+                half   _AerialFrom;
+                half   _AerialTo;
+                half   _AerialStrength;
+                half   _GrainScale;
+                half   _GrainAmp;
+                half   _StrokeScale;
+                half   _StrokeStretch;
+                half   _StrokeAmp;
+                half   _HeightFade;
+                half   _HeightFrom;
+                half   _HeightTo;
+                half4  _AmbientTint;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
+            CBUFFER_END
+
+            struct OutlineAttrs { float4 positionOS : POSITION; float3 normalOS : NORMAL; };
+
+            struct OutlineVary
+            {
+                float4 positionCS : SV_POSITION;
+            };
+
+            half OHash21(float2 p)
+            {
+                p = frac(p * float2(123.34h, 345.45h));
+                p += dot(p, p + 34.345h);
+                return frac(p.x * p.y);
+            }
+            half OValueNoise(float2 p)
+            {
+                float2 i = floor(p), f = frac(p);
+                f = f * f * (3.0h - 2.0h * f);
+                half a = OHash21(i);
+                half b = OHash21(i + float2(1.0h, 0.0h));
+                half c = OHash21(i + float2(0.0h, 1.0h));
+                half d = OHash21(i + float2(1.0h, 1.0h));
+                return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+            }
+
+            OutlineVary OutlineVertex(OutlineAttrs v)
+            {
+                OutlineVary o;
+                float3 posWS = TransformObjectToWorld(v.positionOS.xyz);
+                float3 nrmWS = TransformObjectToWorldNormal(v.normalOS);
+                float3 viewDir = normalize(GetWorldSpaceViewDir(posWS));
+
+                // ① 掠射边更粗（《大神》墨线不是等宽描边），pow 提中段让转折处起笔
+                half graze = saturate(1.0h - abs(dot(nrmWS, viewDir)));
+                graze = pow(graze, 0.7h);
+                half facing = lerp(1.0h, graze, _OutlineFacing);
+
+                // ② 飞白断笔 —— 世界空间低频噪声（场景静态，无"图案流动"问题）
+                float2 np = float2(posWS.x + posWS.z * 0.7h, posWS.y) * _OutlineScale;
+                half dry = OValueNoise(np);
+                half dryMask = lerp(1.0h, saturate((dry - 0.28h) * 3.2h), _OutlineDry);
+
+                // ③ 距离补偿：屏幕空间线宽恒定
+                float dist = distance(posWS, _WorldSpaceCameraPos);
+                half w = _OutlineWidth * (1.0h + dist * _OutlineDistScale);
+
+                // ④ 积墨：复用既有接地参数（墙脚、台脚自然浓）
+                half pool = saturate(1.0h - (posWS.y - _GroundY) / max(_ContactHeight, 0.01h));
+                w *= (1.0h + pool * _ContactInk);
+
+                posWS += nrmWS * (w * max(facing, 0.12h) * dryMask);
+
+                o.positionCS = TransformWorldToHClip(posWS);
+                return o;
+            }
+
+            half4 OutlineFragment(OutlineVary i) : SV_Target
+            {
+                return half4(_OutlineColor.rgb, 1.0h);
+            }
+            ENDHLSL
+        }
 
         // ==================================================================
         // 主前向
@@ -171,6 +308,12 @@ Shader "InkWash/InkSurface"
                 half   _HeightFrom;
                 half   _HeightTo;
                 half4  _AmbientTint;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
             CBUFFER_END
 
             TEXTURE2D(_BaseMap);   SAMPLER(sampler_BaseMap);
@@ -225,7 +368,12 @@ Shader "InkWash/InkSurface"
             {
                 half b = max(1.0h, bands);
                 half steps = b - 1.0h;
-                if (steps < 0.5h) return 1.0h;
+                // ★ 单阶 = **关闭量化**，而不是"全亮"。
+                //   大面积平面（院墙、柱子）没有形体明暗，量化器唯一的输入就是
+                //   _BrushStrength 抖动出来的噪声 —— 会被整阶放大成大块迷彩斑。
+                //   返回 saturate(x) 让墨色随光照**连续**变化：墙因此成为一面
+                //   受光的淡墨白墙，而不是一堵花墙。人物的形体明暗仍靠 _Bands>=2 量化。
+                if (steps < 0.5h) return saturate(x);
                 half scaled = saturate(x) * steps;
                 half lower  = floor(scaled);
                 half frac   = scaled - lower;
@@ -323,7 +471,11 @@ Shader "InkWash/InkSurface"
                 float2 gp = float2(p.x * 0.62h, p.y);
                 half grain = Fbm2(gp * _GrainScale);
                 // 远处淡出高频颗粒：屏幕导数大 = 该像素跨了太多噪声周期 ⇒ 再高只会出摩尔纹
-                half grainFade = saturate(1.80h - fwidth(gp.x * _GrainScale) * 0.40h);
+                // ★ 阈值必须与"屏幕采样率"挂钩，而不是拍脑袋的 1.8/0.4：
+                //   fwidth ≈ 1 表示"一个像素正好跨一个噪声周期"，再高就是纯混叠。
+                //   旧值要 fwidth>4.5 才淡出 —— 任何实用距离都够不到 ⇒ 远处纸颗粒
+                //   混叠成均匀灰噪声（画面发脏、发灰）。新值在 fwidth=1 处全淡出。
+                half grainFade = saturate(2.0h - fwidth(gp.x * _GrainScale) * 2.0h);
                 grain = lerp(0.5h, grain, grainFade);
 
                 half stroke = Fbm2(float2(p.x / max(_StrokeStretch, 1.0h), p.y) * _StrokeScale + 27.1h);
@@ -477,6 +629,12 @@ Shader "InkWash/InkSurface"
                 half   _StrokeAmp;
                 half   _HeightFade; half _HeightFrom; half _HeightTo;
                 half4  _AmbientTint;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
             CBUFFER_END
 
             float3 _LightDirection;
@@ -546,6 +704,12 @@ Shader "InkWash/InkSurface"
                 half   _StrokeAmp;
                 half   _HeightFade; half _HeightFrom; half _HeightTo;
                 half4  _AmbientTint;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
             CBUFFER_END
 
             struct Attributes

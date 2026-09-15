@@ -1,0 +1,91 @@
+=== 运行时材质实参 ===
+
+--- M_W_Sword_Ink   shader=InkWash/InkCharacter
+    _BandBias=-0.15  _InkDensity=0.25  _ChromaKeep=0.08  _Bands=4
+    _LadderSkew=0.42  _GrainScale=64  _GrainAmp=0.18  _StrokeScale=8
+    _StrokeStretch=3  _StrokeAmp=0.16  _MottleScale=0.55  _OutlineWidth=0.03
+    _OutlineFacing=0.72  _OutlineDry=0.55  _ContactInk=0.3  _ContactHeight=0.45
+    _GroundY=0  _SpecStrength=0.7  _RimStrength=1.1
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _OutlineColor = 0.035, 0.04, 0.055
+    _RimColor = 0.08, 0.09, 0.12
+    _BaseColor = 1, 1, 1
+
+--- M_InkSlash(Runtime)   shader=InkWash/InkSlash
+    _BaseColor = 0.045, 0.05, 0.068
+
+--- M_Whitebox_Wall   shader=InkWash/InkSurface
+    _BandBias=-0.06  _InkDensity=0.3  _Bands=5  _LadderSkew=0.42
+    _GrainScale=96  _GrainAmp=0.28  _StrokeScale=7  _StrokeStretch=3
+    _StrokeAmp=0.22  _InkMottle=0.06  _MottleScale=1.8  _ContactInk=0.3
+    _ContactHeight=0.45  _GroundY=0
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _BaseColor = 1, 1, 1
+
+--- M_Character_Ink   shader=InkWash/InkCharacter
+    _BandBias=0.15  _InkDensity=0.62  _ChromaKeep=0.08  _Bands=4
+    _LadderSkew=0.42  _GrainScale=64  _GrainAmp=0.18  _StrokeScale=8
+    _StrokeStretch=3  _StrokeAmp=0.16  _MottleScale=1.6  _OutlineWidth=0.055
+    _OutlineFacing=0.72  _OutlineDry=0.55  _ContactInk=0.3  _ContactHeight=0.45
+    _GroundY=0  _SpecStrength=0.5  _RimStrength=0.95
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _OutlineColor = 0.035, 0.04, 0.055
+    _RimColor = 0.08, 0.09, 0.12
+    _BaseColor = 1, 1, 1
+
+--- M_Whitebox_Pillar   shader=InkWash/InkSurface
+    _BandBias=-0.24  _InkDensity=0.3  _Bands=4  _LadderSkew=0.42
+    _GrainScale=96  _GrainAmp=0.28  _StrokeScale=7  _StrokeStretch=3
+    _StrokeAmp=0.22  _InkMottle=0.06  _MottleScale=1.8  _ContactInk=0.3
+    _ContactHeight=0.45  _GroundY=0
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _BaseColor = 1, 1, 1
+
+--- M_Whitebox_Platform   shader=InkWash/InkSurface
+    _BandBias=0.14  _InkDensity=0.3  _Bands=5  _LadderSkew=0.42
+    _GrainScale=96  _GrainAmp=0.42  _StrokeScale=7  _StrokeStretch=3
+    _StrokeAmp=0.22  _InkMottle=0.1  _MottleScale=1.6  _ContactInk=0.3
+    _ContactHeight=0.45  _GroundY=0
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _BaseColor = 1, 1, 1
+
+--- M_Whitebox_Ground   shader=InkWash/InkSurface
+    _BandBias=0.18  _InkDensity=0.3  _Bands=5  _LadderSkew=0.42
+    _GrainScale=96  _GrainAmp=0.46  _StrokeScale=7  _StrokeStretch=3
+    _StrokeAmp=0.22  _InkMottle=0.12  _MottleScale=1.6  _ContactInk=0.3
+    _ContactHeight=0.45  _GroundY=0
+    _InkDark = 0.075, 0.085, 0.12
+    _InkMid = 0.3, 0.315, 0.35
+    _InkLight = 0.98, 0.976, 0.955
+    _BaseColor = 1, 1, 1
+
+=== 角色渲染器实际引用 ===
+  Player/Visual/Feng/root/CC_Base_Hip/CC_Base_Waist/CC_Base_Spine01/CC_Base_Spine02/BackSocket/W_Sword/Align/W_Sword  → M_W_Sword_Ink (instance=False)
+  Player/Visual/Feng/root/CC_Base_Hip/CC_Base_Waist/CC_Base_Spine01/CC_Base_Spine02/CC_Base_R_Clavicle/CC_Base_R_Upperarm/CC_Base_R_Forearm/CC_Base_R_Hand/BladeTrail_Anchor  → M_InkSlash(Runtime) (instance=True)
+  Player/Visual/Feng/Mesh  → M_Character_Ink (instance=False)
+
+=== 场景几何尺寸（算纹理尺度用）===
+  Gates/Gate_W  size=(0.45, 2.50, 20.90)
+  Gates/Gate_E  size=(0.45, 2.50, 20.90)
+  Gates/Gate_S  size=(20.90, 2.50, 0.45)
+  Gates/Gate_N  size=(20.90, 2.50, 0.45)
+  Environment/Pillars/Pillar_2  size=(0.80, 6.00, 0.80)
+  Environment/Wall_S  size=(44.60, 4.00, 0.60)
+  Environment/Pillars/Pillar_1  size=(0.80, 6.00, 0.80)
+  Environment/Pillars/Pillar_0  size=(0.80, 6.00, 0.80)
+  Environment/Arena  size=(10.00, 0.30, 10.00)
+  Environment/Pillars/Pillar_3  size=(0.80, 6.00, 0.80)
+  Environment/Wall_E  size=(0.60, 4.00, 44.60)
+  Environment/Ground  size=(44.00, 0.50, 44.00)
+  Environment/Wall_N  size=(44.60, 4.00, 0.60)
+  Environment/Wall_W  size=(0.60, 4.00, 44.60)

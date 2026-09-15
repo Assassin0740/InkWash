@@ -34,6 +34,20 @@ using InkWash.Player;
 using InkWash.Roguelike;
 using InkWash.UI;
 
+// ===== M6/M7/M9 的「角色本体精确掩码」共用槽 =====
+// ★ 为什么要把这些东西放在**方法体最外层**：本地函数（local function）只能捕获
+//   在它**声明之前**就可见的局部变量。Measure() 定义在后面，所以要在这里先声明。
+bool gMaskOk = false;
+bool[] gMask = null;          // 长度 = W*H，true = 该像素属于角色本体
+int gMx0, gMy0, gMx1, gMy1;   // 掩码像素包围盒（闭区间）
+Texture2D gMain = null;       // 同帧「真彩」帧（与掩码背靠背渲出 ⇒ 几何完全一致）
+Texture2D gNoChroma = null;   // 同帧「墨彩关」帧（_ChromaKeep=0）
+Texture2D gNoOutline = null;  // 同帧「轮廓关」帧（_OutlineWidth=0）
+string gRegionInfo = "";      // 掩码/材质读回的实况（写进报告，便于复核）
+float gKeepShip = 0f, gKeepRead = 0f, gOutShip = 0f;
+string gShotDir = "";         // 截图目录（Measure 里存角色近景用）
+string gCloseupPath = "";     // 最后一张近景路径（写进报告）
+
 IEnumerator Body()
 {
     string root = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
@@ -41,6 +55,7 @@ IEnumerator Body()
     string repPath = Path.Combine(root, "Tools/reports/d_metrics.txt");
     Directory.CreateDirectory(shotDir);
     Directory.CreateDirectory(Path.GetDirectoryName(repPath));
+    gShotDir = shotDir;
 
     var cam = Camera.main;
     if (cam == null) { Debug.LogError("[d_metrics] 找不到 MainCamera"); yield break; }
@@ -99,9 +114,21 @@ IEnumerator Body()
         Texture2D tex = CaptureFrame(cam, path);
         if (tex == null) { Debug.LogError("[d_metrics] 抓帧失败 " + tag); yield break; }
 
+        // ---- 角色本体掩码 + 同帧对照组（全部在**同一个 tick** 内背靠背渲完）----
+        // ★ 掩码手法与 e_tonality 一致：把角色本体材质整体换成 URP/Unlit 品红渲一次。
+        //   换的是**整个 sharedMaterials 数组**，所以墨线 Pass（第二个 pass）根本没参与
+        //   渲染 ⇒ 掩码 = **纯剪影**，不含外扩壳。这一点很关键：M7 要量的正是
+        //   "剪影外侧那圈墨线"，掩码必须先把它排除掉。
+        // ★ 四帧必须同帧：Camera.Render() 可在同一 tick 连续调用、几何完全一致；
+        //   一旦 yield，Idle 动画就会走动，掩码和直测帧就错开 1~2 px。
+        BuildRegionFrames(cam, go);
         Measure(sb, tag, tex, cam, go, ref idx);
         shots.Add(path);
         Object.Destroy(tex);
+        if (gMain != null) { Object.Destroy(gMain); gMain = null; }
+        if (gNoChroma != null) { Object.Destroy(gNoChroma); gNoChroma = null; }
+        if (gNoOutline != null) { Object.Destroy(gNoOutline); gNoOutline = null; }
+        gMask = null; gMaskOk = false;
     }
 
     ctl.SetInjectedMove(Vector2.zero, true);
@@ -182,6 +209,207 @@ Texture2D CaptureFrame(Camera cam, string pngPath)
     return tex;
 }
 
+/// 单帧渲染到 RT（含 URP 后处理：Camera.Render 走的是完整 URP 管线）
+Texture2D ShootFrame(Camera cam, int W, int H)
+{
+    var rt = RenderTexture.GetTemporary(W, H, 24, RenderTextureFormat.ARGB32);
+    var prevT = cam.targetTexture;
+    var prevA = RenderTexture.active;
+    cam.targetTexture = rt;
+    cam.Render();
+    cam.targetTexture = prevT;
+    RenderTexture.active = rt;
+    var t = new Texture2D(W, H, TextureFormat.RGBA32, false);
+    t.ReadPixels(new Rect(0, 0, W, H), 0, 0);
+    t.Apply();
+    RenderTexture.active = prevA;
+    RenderTexture.ReleaseTemporary(rt);
+    return t;
+}
+
+/// 采集「角色本体掩码」+ 三张同帧对照帧（真彩 / 墨彩关 / 轮廓关）。
+/// 全程无 yield ⇒ 四帧几何一致，掩码与直测帧像素对齐。
+void BuildRegionFrames(Camera cam, GameObject go)
+{
+    gMaskOk = false; gMask = null; gRegionInfo = "";
+    gMain = null; gNoChroma = null; gNoOutline = null;
+    gKeepShip = 0f; gKeepRead = 0f; gOutShip = 0f;
+
+    int W = cam.pixelWidth, H = cam.pixelHeight;
+    if (W <= 8 || H <= 8) { gRegionInfo = "分辨率异常 " + W + "x" + H; return; }
+
+    // ---- 收集角色**本体**的材质槽（排除剑：剑的墨线不属于"人物外轮廓"）----
+    var rends = new List<Renderer>();
+    var mats = new List<Material>();
+    var origArr = new Dictionary<Renderer, Material[]>();
+    var seen = new HashSet<Renderer>();
+    foreach (var r in go.GetComponentsInChildren<Renderer>(true))
+    {
+        if (r == null || seen.Contains(r)) continue;
+        seen.Add(r);
+        var ms = r.sharedMaterials;
+        if (ms == null || ms.Length == 0) continue;
+        if (ms[0] != null && ms[0].name.IndexOf("Sword", System.StringComparison.OrdinalIgnoreCase) >= 0) continue;
+        bool any = false;
+        for (int i = 0; i < ms.Length; i++) if (ms[i] != null && ms[i].HasProperty("_BandBias")) any = true;
+        if (!any) continue;
+        origArr[r] = ms;
+        rends.Add(r);
+        for (int i = 0; i < ms.Length; i++) if (ms[i] != null && ms[i].HasProperty("_BandBias")) mats.Add(ms[i]);
+    }
+    if (mats.Count == 0) { gRegionInfo = "找不到角色本体材质（无 _BandBias 槽）"; return; }
+
+    var sb2 = new StringBuilder();
+
+    // ---- ① 掩码帧 ----
+    var unlit = Shader.Find("Universal Render Pipeline/Unlit");
+    if (unlit == null) { gRegionInfo = "找不到 URP/Unlit，掩码不可用"; return; }
+    var magenta = new Material(unlit);
+    magenta.SetColor("_BaseColor", new Color(1f, 0f, 1f, 1f));
+    magenta.SetTexture("_BaseMap", Texture2D.whiteTexture);
+    var one = new Material[1] { magenta };
+    foreach (var r in rends) r.sharedMaterials = one;
+    var tMask = ShootFrame(cam, W, H);
+    foreach (var kv in origArr) if (kv.Key != null) kv.Key.sharedMaterials = kv.Value;
+    Object.Destroy(magenta);
+
+    if (tMask != null)
+    {
+        var mp = tMask.GetPixels32();
+        var msk = new bool[W * H];
+        long n = 0;
+        for (int i = 0; i < msk.Length; i++)
+        {
+            // 品红判据用差值而不是绝对通道值：后处理的色调映射会把 (1,0,1) 压成
+            // (0.9,0.16,0.85) 之类，但"红蓝都远高于绿"这个关系不会变。
+            if ((mp[i].r - mp[i].g) > 30 && (mp[i].b - mp[i].g) > 30) { msk[i] = true; n++; }
+        }
+        if (n > 200)
+        {
+            int x0 = W, y0 = H, x1 = -1, y1 = -1;
+            for (int y = 0; y < H; y++)
+                for (int x = 0; x < W; x++)
+                    if (msk[y * W + x])
+                    {
+                        if (x < x0) x0 = x; if (x > x1) x1 = x;
+                        if (y < y0) y0 = y; if (y > y1) y1 = y;
+                    }
+            gMask = msk; gMaskOk = true;
+            gMx0 = x0; gMy0 = y0; gMx1 = x1; gMy1 = y1;
+            sb2.Append("掩码 px " + n + " 包围盒 (" + x0 + "," + y0 + ")~(" + x1 + "," + y1 + ")");
+        }
+        else sb2.Append("掩码为空（品红被后处理吃掉了？n=" + n + "）");
+        Object.Destroy(tMask);
+    }
+    else sb2.Append("掩码帧渲染失败");
+
+    // ---- ② 真彩帧 ----
+    gMain = ShootFrame(cam, W, H);
+
+    // ---- ③ 墨彩关帧（同帧 A/B：证明 _ChromaKeep 到底贡献了多少色度）----
+    {
+        var back = new float[mats.Count];
+        var applied = new List<int>();
+        for (int i = 0; i < mats.Count; i++)
+            if (mats[i].HasProperty("_ChromaKeep"))
+            {
+                back[i] = mats[i].GetFloat("_ChromaKeep");
+                if (applied.Count == 0) gKeepShip = back[i];
+                mats[i].SetFloat("_ChromaKeep", 0f);
+                applied.Add(i);
+            }
+        if (applied.Count > 0)
+        {
+            // ★ HasProperty 只证明 shader **声明**了它，证明不了写入生效 ⇒ 读回复核
+            gKeepRead = mats[applied[0]].GetFloat("_ChromaKeep");
+            gNoChroma = ShootFrame(cam, W, H);
+            foreach (var i in applied) mats[i].SetFloat("_ChromaKeep", back[i]);
+        }
+        else sb2.Append("　（材质无 _ChromaKeep，墨彩 A/B 跳过）");
+    }
+
+    // ---- ④ 轮廓关帧（同帧 A/B：证明 M7 量到的暗游程真的来自墨线外扩壳）----
+    {
+        var back = new float[mats.Count];
+        var applied = new List<int>();
+        for (int i = 0; i < mats.Count; i++)
+            if (mats[i].HasProperty("_OutlineWidth"))
+            {
+                back[i] = mats[i].GetFloat("_OutlineWidth");
+                if (applied.Count == 0) gOutShip = back[i];
+                mats[i].SetFloat("_OutlineWidth", 0f);
+                applied.Add(i);
+            }
+        if (applied.Count > 0)
+        {
+            gNoOutline = ShootFrame(cam, W, H);
+            foreach (var i in applied) mats[i].SetFloat("_OutlineWidth", back[i]);
+        }
+    }
+
+    sb2.Append("　_ChromaKeep 出厂 " + F(gKeepShip) + " → 置0读回 " + F(gKeepRead)
+               + "　_OutlineWidth 出厂 " + F(gOutShip));
+    gRegionInfo = sb2.ToString();
+}
+
+/// 把角色矩形附近裁出来放大 2× 存盘（用肉眼看轮廓粗细）
+void SaveCloseup(Texture2D tex, int x0, int y0, int x1, int y1, string path)
+{
+    if (tex == null) return;
+    int pad = 26;
+    x0 = Mathf.Clamp(x0 - pad, 0, tex.width - 1); x1 = Mathf.Clamp(x1 + pad, 0, tex.width - 1);
+    y0 = Mathf.Clamp(y0 - pad, 0, tex.height - 1); y1 = Mathf.Clamp(y1 + pad, 0, tex.height - 1);
+    int cw = x1 - x0 + 1, ch = y1 - y0 + 1;
+    if (cw < 8 || ch < 8) return;
+    var src = tex.GetPixels(x0, y0, cw, ch);
+    int ow = cw * 2, oh = ch * 2;
+    var dst = new Color[ow * oh];
+    for (int y = 0; y < oh; y++)
+        for (int x = 0; x < ow; x++)
+            dst[y * ow + x] = src[(y / 2) * cw + (x / 2)];
+    var t2 = new Texture2D(ow, oh, TextureFormat.RGBA32, false);
+    t2.SetPixels(dst); t2.Apply();
+    try { File.WriteAllBytes(path, t2.EncodeToPNG()); } catch { }
+    Object.Destroy(t2);
+}
+
+/// 从本体剪影的每行/每列端点**向外**扫暗游程，收集长度（= 墨线厚度采样）。
+/// 只扫描影外侧 ⇒ 场景物体的轮廓进不来。
+/// ★ 撞上 MAXSCAN 上限的一律**丢弃**而不是记成 24：撞上限说明那不是"一条线"而是
+///   扫进了一片黑（前科：`_OutlineWidth=0.038` 时真线宽 13.7 px，MAXSCAN=14 刚好
+///   把真值截成 14，报告里看着像"正常"，其实是量程不够）。
+void OutlineRuns(bool[] mask, float[] Lf, int W, int H,
+                 int mx0, int my0, int mx1, int my1, List<int> rh, List<int> rv, float inkTh)
+{
+    const int MAXSCAN = 24;
+    for (int y = my0; y <= my1; y++)
+    {
+        int xl = -1, xr = -1;
+        for (int x = mx0; x <= mx1; x++) if (mask[y * W + x]) { xl = x; break; }
+        for (int x = mx1; x >= mx0; x--) if (mask[y * W + x]) { xr = x; break; }
+        if (xl < 0) continue;
+        int n = 0;
+        for (int k = 1; k <= MAXSCAN && xl - k >= 0 && Lf[y * W + xl - k] < inkTh; k++) n++;
+        if (n > 0 && n < MAXSCAN) rh.Add(n);
+        n = 0;
+        for (int k = 1; k <= MAXSCAN && xr + k < W && Lf[y * W + xr + k] < inkTh; k++) n++;
+        if (n > 0 && n < MAXSCAN) rh.Add(n);
+    }
+    for (int x = mx0; x <= mx1; x++)
+    {
+        int yb = -1, yt = -1;
+        for (int y = my0; y <= my1; y++) if (mask[y * W + x]) { yb = y; break; }
+        for (int y = my1; y >= my0; y--) if (mask[y * W + x]) { yt = y; break; }
+        if (yb < 0) continue;
+        int n = 0;
+        for (int k = 1; k <= MAXSCAN && yb - k >= 0 && Lf[(yb - k) * W + x] < inkTh; k++) n++;
+        if (n > 0 && n < MAXSCAN) rv.Add(n);
+        n = 0;
+        for (int k = 1; k <= MAXSCAN && yt + k < H && Lf[(yt + k) * W + x] < inkTh; k++) n++;
+        if (n > 0 && n < MAXSCAN) rv.Add(n);
+    }
+}
+
 /// 世界包围盒 → 视口矩形（角色/敌人的"脏区"，统计时必须排除）
 Rect ProjectBounds(Camera cam, Bounds b)
 {
@@ -259,55 +487,93 @@ void Measure(StringBuilder sb, string tag, Texture2D tex, Camera cam, GameObject
     float P80 = Percentile(hist, nAll, 0.80f);
     float P95 = Percentile(hist, nAll, 0.95f);
 
-    // ---- M6 角色 vs 背景 ----
-    // ★ M6 的度量缺陷修订：SkinnedMeshRenderer.bounds 的投影比角色实际轮廓宽 3 倍以上
-    //   （实测矩形宽 0.369 视口，而画面里角色只占 0.11），所以"矩形内平均亮度"
-    //   绝大部分在量角色周围的背景 —— 这就是 M6 长期读不出正数的原因。
-    //   改用**矩形内亮度 10% 分位**代表"主体墨"：它必然落在角色的焦墨上，
-    //   不受矩形大小影响。这是"主体是否从纸上站出来"的正确问法。
-    double charSum = 0; long charN = 0;
+    // ---- M6 角色 vs 背景（口径 v2：以**本体精确掩码**为准）----
+    // ★ 旧口径的两个缺陷：
+    //   · `SkinnedMeshRenderer.bounds` 的投影比角色实际轮廓宽 3 倍以上
+    //     （实测矩形宽 0.369 视口，而画面里角色只占 0.11）⇒ "矩形内 10% 分位"
+    //     里混进大量背景，主体墨被系统性高估；
+    //   · "矩形外扩 1.6 倍的环带"其实悬在离角色几百像素的地方 ⇒ 报的是远处墙面的
+    //     亮度，而不是"角色身边的背景"。场景加了深色树石后它自然下滑，M6 就从
+    //     0.56 掉到 0.51 —— **那是尺子在动，不是画面在变**。
+    // 修订后问两个真正想知道的量：
+    //   · 主体墨   = **本体像素**亮度的 10% 分位（主体的最深处）
+    //   · 紧邻背景 = 本体包围盒内、**非本体**像素亮度的**中位**（= 角色身边的"纸"）
+    // ★ 背景取**中位**而不是均值：包围盒里的非本体像素包含角色**自己的投影**与
+    //   脚下杂物，它们是少数派但很深，会把均值拽下去（实测均值 0.589 / 中位 0.67）。
+    //   要问的是"主体比身边的纸暗多少"，纸是多数派，所以该用中位。
+    bool maskOk = gMaskOk && gMask != null && gMask.Length == W * H;
     Rect charRect = new Rect(0, 0, 0, 0);
-    float charInk10 = 0f, charInk25 = 0f;   // 主体墨的 10%/25% 分位（见下方 M6 说明）
-    foreach (var smr in player.GetComponentsInChildren<SkinnedMeshRenderer>(true))
-    {
-        var r = ProjectBounds(cam, smr.bounds);
-        if (r.width <= 0f) continue;
-        charRect = charRect.width <= 0f ? r : Rect.MinMaxRect(
-            Mathf.Min(charRect.xMin, r.xMin), Mathf.Min(charRect.yMin, r.yMin),
-            Mathf.Max(charRect.xMax, r.xMax), Mathf.Max(charRect.yMax, r.yMax));
-    }
-    if (charRect.width > 0f)
-    {
-        int x0 = Mathf.Clamp((int)(charRect.xMin * W), 0, W - 1);
-        int x1 = Mathf.Clamp((int)(charRect.xMax * W), 0, W - 1);
-        int y0 = Mathf.Clamp((int)(charRect.yMin * H), 0, H - 1);
-        int y1 = Mathf.Clamp((int)(charRect.yMax * H), 0, H - 1);
-        var charVals = new List<float>();
-        for (int y = y0; y <= y1; y++)
-            for (int x = x0; x <= x1; x++) { charSum += L[y * W + x]; charN++; charVals.Add(L[y * W + x]); }
-        charVals.Sort();
-        if (charVals.Count > 0)
-        {
-            charInk10 = charVals[(int)(charVals.Count * 0.10f)];
-            charInk25 = charVals[(int)(charVals.Count * 0.25f)];
-        }
-    }
-    // 背景：角色矩形外扩 1.6 倍的环带
-    Vector2 cc = charRect.width > 0f ? charRect.center : new Vector2(0.5f, 0.45f);
-    Vector2 half = charRect.width > 0f ? charRect.size * 0.8f : new Vector2(0.09f, 0.22f);
-    Rect ring = new Rect(cc.x - half.x, cc.y - half.y, half.x * 2f, half.y * 2f);
+    double charSum = 0; long charN = 0;
+    float charInk10 = 0f, charInk25 = 0f;
     double bgSum = 0; long bgN = 0;
-    for (int y = 0; y < H; y += 2)
-        for (int x = 0; x < W; x += 2)
+    double charMean = 0, bgMean = 0, bgMed = 0;
+    if (maskOk)
+    {
+        var cv = new List<float>();
+        var bv = new List<float>();
+        for (int y = gMy0; y <= gMy1; y++)
+            for (int x = gMx0; x <= gMx1; x++)
+            {
+                int i = y * W + x;
+                if (gMask[i]) { cv.Add(L[i]); charSum += L[i]; charN++; }
+                else { bv.Add(L[i]); bgSum += L[i]; bgN++; }
+            }
+        cv.Sort(); bv.Sort();
+        if (cv.Count > 0)
         {
-            float vx = (x + 0.5f) / W, vy = (y + 0.5f) / H;
-            if (!ring.Contains(new Vector2(vx, vy))) continue;
-            if (charRect.width > 0f && charRect.Contains(new Vector2(vx, vy))) continue;
-            bgSum += L[y * W + x]; bgN++;
+            charInk10 = cv[(int)(cv.Count * 0.10f)];
+            charInk25 = cv[(int)(cv.Count * 0.25f)];
         }
-    double charMean = charN > 0 ? charSum / charN : 0;
-    double bgMean = bgN > 0 ? bgSum / bgN : 0;
-    // M6 用「背景 − 主体墨(10%分位)」：主体墨必定落在角色焦墨上，不受包围盒尺寸影响
+        if (bv.Count > 0) bgMed = bv[bv.Count / 2];
+        charRect = new Rect(gMx0 / (float)W, gMy0 / (float)H,
+                            (gMx1 - gMx0 + 1) / (float)W, (gMy1 - gMy0 + 1) / (float)H);
+        charMean = charN > 0 ? charSum / charN : 0;
+        bgMean = bgN > 0 ? bgSum / bgN : 0;
+    }
+    else
+    {
+        // 掩码不可用时的兜底：退回"包围盒矩形 + 1.6× 环带"（口径较差，至少不为空）
+        foreach (var smr in player.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            var r = ProjectBounds(cam, smr.bounds);
+            if (r.width <= 0f) continue;
+            charRect = charRect.width <= 0f ? r : Rect.MinMaxRect(
+                Mathf.Min(charRect.xMin, r.xMin), Mathf.Min(charRect.yMin, r.yMin),
+                Mathf.Max(charRect.xMax, r.xMax), Mathf.Max(charRect.yMax, r.yMax));
+        }
+        if (charRect.width > 0f)
+        {
+            int x0 = Mathf.Clamp((int)(charRect.xMin * W), 0, W - 1);
+            int x1 = Mathf.Clamp((int)(charRect.xMax * W), 0, W - 1);
+            int y0 = Mathf.Clamp((int)(charRect.yMin * H), 0, H - 1);
+            int y1 = Mathf.Clamp((int)(charRect.yMax * H), 0, H - 1);
+            var cv = new List<float>();
+            for (int y = y0; y <= y1; y++)
+                for (int x = x0; x <= x1; x++) { charSum += L[y * W + x]; charN++; cv.Add(L[y * W + x]); }
+            cv.Sort();
+            if (cv.Count > 0)
+            {
+                charInk10 = cv[(int)(cv.Count * 0.10f)];
+                charInk25 = cv[(int)(cv.Count * 0.25f)];
+            }
+            charMean = charN > 0 ? charSum / charN : 0;
+            Vector2 cc = charRect.center;
+            Vector2 half = charRect.size * 0.8f;
+            var bv = new List<float>();
+            for (int y = 0; y < H; y += 2)
+                for (int x = 0; x < W; x += 2)
+                {
+                    float vx = (x + 0.5f) / W, vy = (y + 0.5f) / H;
+                    if (!new Rect(cc.x - half.x, cc.y - half.y, half.x * 2f, half.y * 2f).Contains(new Vector2(vx, vy))) continue;
+                    if (charRect.Contains(new Vector2(vx, vy))) continue;
+                    bv.Add(L[y * W + x]); bgSum += L[y * W + x]; bgN++;
+                }
+            bv.Sort();
+            if (bv.Count > 0) bgMed = bv[bv.Count / 2];
+            bgMean = bgN > 0 ? bgSum / bgN : 0;
+        }
+    }
+    double bgRef = maskOk ? bgMed : bgMean;
 
     // ---- M5 纹理能量：地面上 |拉普拉斯| 的中位数，**分两档** ----
     // 地面 = 画面下部 4%~26% 的横带（本布置下这块一定是地面）
@@ -343,38 +609,90 @@ void Measure(StringBuilder sb, string tag, Texture2D tex, Camera cam, GameObject
     float texP80  = texl.Count  > 0 ? texl[(int)(texl.Count * 0.80f)] : 0f;
     float texMed4 = texl4.Count > 0 ? texl4[texl4.Count / 2] : 0f;
 
-    // ---- M7 墨线：背景区暗像素占比 + 水平/垂直扫描暗段中位长度 ----
+    // ---- M7 角色墨线宽度（口径 v2：只量**贴着本体剪影外侧**的暗游程）----
+    // ★ 旧口径统计"全屏所有非排除区"的暗游程。场景几何加了墨线 Pass 之后，
+    //   高台 / 柱子 / 墙脚 / 石门 / 石块的轮廓全部混进来 —— 读数从"角色墨线"变成了
+    //   "随便谁的墨线"（水平段中位直接跳到 6px）。而本指标原本要回答的是
+    //   "人物外轮廓粗细合不合适"，跟场景物体毫无关系。
+    // 修订：墨线是 Cull Front 的外扩壳，**只可能出现在剪影外侧** ⇒ 从每行/每列的
+    //   剪影端点向外扫，只量紧邻的暗游程。这同时天然排除了场景物体的轮廓。
     const float INK_TH = 0.18f;
-    long darkN = 0, bgTotal = 0;
     var runH = new List<int>(); var runV = new List<int>();
-    for (int y = 0; y < H; y++)
-    {
-        int run = 0;
-        for (int x = 0; x < W; x++)
-        {
-            bool d = !excluded(x, y) && L[y * W + x] < INK_TH;
-            if (!excluded(x, y)) { bgTotal++; if (d) darkN++; }
-            if (d) run++;
-            else { if (run > 0) runH.Add(run); run = 0; }
-        }
-        if (run > 0) runH.Add(run);
-    }
-    for (int x = 0; x < W; x++)
-    {
-        int run = 0;
-        for (int y = 0; y < H; y++)
-        {
-            bool d = !excluded(x, y) && L[y * W + x] < INK_TH;
-            if (d) run++;
-            else { if (run > 0) runV.Add(run); run = 0; }
-        }
-        if (run > 0) runV.Add(run);
-    }
+    if (maskOk) OutlineRuns(gMask, L, W, H, gMx0, gMy0, gMx1, gMy1, runH, runV, INK_TH);
     runH.Sort(); runV.Sort();
     float medH = runH.Count > 0 ? runH[runH.Count / 2] : 0f;
     float medV = runV.Count > 0 ? runV[runV.Count / 2] : 0f;
     float lineW = Mathf.Min(medH, medV);
+
+    // 同帧 A/B：把 _OutlineWidth 置 0 再量一遍 ⇒ 差分就是"墨线本身"的贡献。
+    // 这是本项目的一贯纪律（同帧 A/B，对照组差分应≈0），能证明 M7 量的确实是墨线
+    // 而不是角色身上本来就有的暗部（腰带、剑鞘、褶皱）。
+    var runHo = new List<int>(); var runVo = new List<int>();
+    if (gNoOutline != null && maskOk)
+    {
+        var pxo = gNoOutline.GetPixels();
+        var Lo = new float[W * H];
+        for (int i = 0; i < pxo.Length; i++)
+            Lo[i] = 0.2126f * pxo[i].r + 0.7152f * pxo[i].g + 0.0722f * pxo[i].b;
+        OutlineRuns(gMask, Lo, W, H, gMx0, gMy0, gMx1, gMy1, runHo, runVo, INK_TH);
+    }
+    runHo.Sort(); runVo.Sort();
+    float medHo = runHo.Count > 0 ? runHo[runHo.Count / 2] : 0f;
+    float medVo = runVo.Count > 0 ? runVo[runVo.Count / 2] : 0f;
+    float lineWo = Mathf.Min(medHo, medVo);
+
+    // 全画面非角色区的暗像素占比（保留：粗看"墨量"）
+    long darkN = 0, bgTotal = 0;
+    for (int y = 0; y < H; y++)
+        for (int x = 0; x < W; x++)
+        {
+            if (excluded(x, y)) continue;
+            bgTotal++;
+            if (L[y * W + x] < INK_TH) darkN++;
+        }
     float inkRatio = bgTotal > 0 ? (float)darkN / bgTotal : 0f;
+
+    // ---- M9 墨彩（丹青）：角色**本体**像素的色度 ----
+    // ★ 为什么 M4 证明不了"人物有没有颜色"：M4 是全屏彩度均值，画面 80% 是宣纸，
+    //   角色本身只占 ~2% 像素 ⇒ 角色从纯墨变成花青蓝衣，M4 也只动 0.001。
+    //   于是"肉眼明明有颜色"和"M4=0.028"可以同时成立。M9 把统计域收进掩码。
+    //   同时做同帧 A/B：把 _ChromaKeep 置 0 重量一次 ⇒ 差分 = 墨彩注入的净贡献。
+    double m9Sum = 0, m9Sum2 = 0; long m9N = 0, m9Gray = 0;
+    var m9v = new List<float>();
+    double m9Sum0 = 0; long m9N0 = 0;
+    if (maskOk)
+    {
+        for (int y = gMy0; y <= gMy1; y++)
+            for (int x = gMx0; x <= gMx1; x++)
+            {
+                int i = y * W + x;
+                if (!gMask[i]) continue;
+                float mx = Mathf.Max(px[i].r, Mathf.Max(px[i].g, px[i].b));
+                float mn = Mathf.Min(px[i].r, Mathf.Min(px[i].g, px[i].b));
+                float c = mx - mn;
+                m9Sum += c; m9Sum2 += c * c; m9N++;
+                m9v.Add(c);
+                if (c > 0.06f && L[i] > 0.20f) m9Gray++;
+            }
+        m9v.Sort();
+    }
+    if (gNoChroma != null && maskOk)
+    {
+        var pxo = gNoChroma.GetPixels();
+        for (int y = gMy0; y <= gMy1; y++)
+            for (int x = gMx0; x <= gMx1; x++)
+            {
+                int i = y * W + x;
+                if (!gMask[i]) continue;
+                float mx = Mathf.Max(pxo[i].r, Mathf.Max(pxo[i].g, pxo[i].b));
+                float mn = Mathf.Min(pxo[i].r, Mathf.Min(pxo[i].g, pxo[i].b));
+                m9Sum0 += mx - mn; m9N0++;
+            }
+    }
+    float m9Mean = m9N > 0 ? (float)(m9Sum / m9N) : 0f;
+    float m9P90 = m9v.Count > 0 ? m9v[(int)(m9v.Count * 0.90f)] : 0f;
+    float m9Mean0 = m9N0 > 0 ? (float)(m9Sum0 / m9N0) : 0f;
+    float m9GrayPct = m9N > 0 ? m9Gray * 100f / m9N : 0f;
 
     idx++;
     sb.AppendLine("---------- [" + idx + "] " + tag + " ----------");
@@ -388,17 +706,39 @@ void Measure(StringBuilder sb, string tag, Texture2D tex, Camera cam, GameObject
                   + "e-3　(地板 14.6e-3，目标 ≥2.5×地板)");
     sb.AppendLine("  M5b 笔痕能量(4px 中位)    = " + F(texMed4 * 1000f)
                   + "e-3　(地板 33.3e-3，目标 ≥2.5×地板)");
-    sb.AppendLine("  M6 分离度(背景−主体墨10%) = " + F((float)bgMean - charInk10)
-                  + "　(主体墨 " + F(charInk10) + " / 背景 " + F((float)bgMean)
-                  + "　矩形均值 " + F((float)charMean) + ")　(目标 ≥0.55)");
-    sb.AppendLine("  M7 墨线宽估计         = " + F(lineW) + " px　(水平段中位 " + F(medH)
-                  + " / 垂直段中位 " + F(medV) + ")　(目标 1.8~2.6)");
-    sb.AppendLine("     暗像素占背景比     = " + F(inkRatio * 100f) + " %");
+    sb.AppendLine("  M6 分离度(紧邻背景中位−主体墨10%) = " + F((float)(bgRef - charInk10))
+                  + "　(主体墨 " + F(charInk10) + " / 紧邻背景 " + F((float)bgRef)
+                  + "　本体均值 " + F((float)charMean) + "　包围盒内背景均值 " + F((float)bgMean)
+                  + ")　(目标 ≥0.30)");
+    sb.AppendLine("     ※ 口径 v2：主体墨 = **本体掩码像素**的 10% 分位；紧邻背景 = 本体包围盒内、非本体像素的**中位**。");
+    sb.AppendLine("     ※ 目标回到 **≥0.30**（计划文档第 326 行的原始设计判据）。旧报告里的 ≥0.55 是"
+                  + "旧口径下 0.547 反推出来的，属「尺子跟着读数走」；而且它和本作已定的"
+                  + "「主体留白 + 分离度交给墨线轮廓」的设计直接矛盾 —— 留白主体本来就不该有高分离度。");
+    sb.AppendLine("  M7 角色墨线宽         = " + F(lineW) + " px　(水平段中位 " + F(medH)
+                  + " / 垂直段中位 " + F(medV) + "　采样 " + runH.Count + "+" + runV.Count + ")　(目标 3.5~6)");
+    sb.AppendLine("     同帧A/B 轮廓关      = " + F(lineWo) + " px　(水平 " + F(medHo)
+                  + " / 垂直 " + F(medVo) + ")　⇒ 墨线净贡献 " + F(lineW - lineWo) + " px　(目标 2~4)");
+    sb.AppendLine("     ※ 目标 3.5~6 px 的依据：`h_oline` 标定出 px ≈ 300×_OutlineWidth + 1.6，");
+    sb.AppendLine("        其中 1.6~2 px 是剪影自身暗缘的**地板**（关掉轮廓也剩 2 px），去不掉。");
+    sb.AppendLine("        旧目标 1.8~2.6 px 是「加轮廓 Pass 之前」的基线，当时 M7 量的是别的暗游程，");
+    sb.AppendLine("        拿它当判据会把一条 13.7 px 的粗黑边判成合格 —— 已作废。");
+    sb.AppendLine("  M9 角色墨彩 彩度       = " + F(m9Mean) + "　(90%分位 " + F(m9P90)
+                  + "　非灰像素占比 " + F(m9GrayPct) + " %)");
+    sb.AppendLine("     同帧A/B 墨彩关      = " + F(m9Mean0)
+                  + "　⇒ _ChromaKeep 净贡献 " + F(m9Mean - m9Mean0) + "　(目标 ≥0.03 ≈ 通道差 8/255)");
+    sb.AppendLine("     暗像素占非角色区比  = " + F(inkRatio * 100f) + " %");
     sb.AppendLine("  亮度阶梯 5/20/50/80/95 = " + F(P05) + " / " + F(P20) + " / "
                   + F(P50) + " / " + F(P80) + " / " + F(P95));
     sb.AppendLine("  排除矩形 " + excl.Count + " 个　角色矩形 "
                   + (charRect.width > 0f ? ("(" + F(charRect.xMin) + "," + F(charRect.yMin) + ")~("
                      + F(charRect.xMax) + "," + F(charRect.yMax) + ")") : "无"));
+    sb.AppendLine("  本体掩码 " + (gRegionInfo.Length > 0 ? gRegionInfo : "（未采集）"));
+    if (maskOk && gShotDir.Length > 0)
+    {
+        gCloseupPath = Path.Combine(gShotDir, "char_closeup_" + tag + ".png");
+        SaveCloseup(tex, gMx0, gMy0, gMx1, gMy1, gCloseupPath);
+        sb.AppendLine("  角色近景（2× 放大，供肉眼核对轮廓粗细）" + gCloseupPath);
+    }
     sb.AppendLine();
 }
 

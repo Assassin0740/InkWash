@@ -1,0 +1,21 @@
+目标 = Wall_N  材质 M_Whitebox_Wall
+    _BandBias = 0.2
+    _Bands = 1
+    _BandSoftness = 0.08
+    _LadderSkew = 0.42
+    _GrainScale = 96
+    _GrainAmp = 0.12
+    _StrokeScale = 7
+    _StrokeStretch = 3
+    _StrokeAmp = 0.1
+    _InkMottle = 0.04
+    _MottleScale = 2.4
+    _OutlineWidth = 0.032
+
+  00_基线              笔痕能量=44.46e-3  明度范围[0.585,0.776]
+  01_关主光阴影           笔痕能量=44.46e-3  明度范围[0.585,0.776]
+  02_关纸颗粒Grain       笔痕能量=26.34e-3  明度范围[0.596,0.760]
+  03_关笔触Stroke       笔痕能量=43.31e-3  明度范围[0.599,0.763]
+  04_关积墨Mottle       笔痕能量=44.46e-3  明度范围[0.585,0.776]
+  05_关量化Bands1       笔痕能量=44.46e-3  明度范围[0.585,0.776]
+  06_全关              笔痕能量=24.27e-3  明度范围[0.611,0.749]

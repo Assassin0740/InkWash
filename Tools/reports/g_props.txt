@@ -1,0 +1,39 @@
+当前场景 = Assets/_Project/Scenes/Main.unity  isDirty=False
+已备份 -> Tools/tmp/Main.unity.bak_before_props  (107796 bytes)
+
+材质 M_Ink_Eave  _BandBias=-0.22  _Bands=1  _OutlineWidth=0.03
+材质 M_Ink_Prop  _BandBias=0.02  _Bands=1  _OutlineWidth=0.022
+
+=== 瓦檐 ===
+  Eave_N        pos=(0.00, 4.16, 22.00) size=(45.60, 0.32, 1.40)
+  Eave_S        pos=(0.00, 4.16, -22.00) size=(45.60, 0.32, 1.40)
+  Eave_E        pos=(22.00, 4.16, 0.00) size=(1.40, 0.32, 45.60)
+  Eave_W        pos=(-22.00, 4.16, 0.00) size=(1.40, 0.32, 45.60)
+  EaveGate_N    pos=(0.00, 2.94, 10.00) size=(21.80, 0.28, 1.20)
+  EaveGate_S    pos=(0.00, 2.94, -10.00) size=(21.80, 0.28, 1.20)
+  EaveGate_E    pos=(10.00, 2.94, 0.00) size=(1.20, 0.28, 21.80)
+  EaveGate_W    pos=(-10.00, 2.94, 0.00) size=(1.20, 0.28, 21.80)
+
+=== 自然道具 ===
+  Pine_1           pos=(17.5, 0.0, 17.5)  缩放后高=8  底Y=0  渲染器=1
+  Pine_3           pos=(-17.5, 0.0, 17.5)  缩放后高=9  底Y=0  渲染器=1
+  Pine_2           pos=(17.5, 0.0, -17.5)  缩放后高=7.5  底Y=0  渲染器=1
+  Pine_4           pos=(-17.5, 0.0, -17.5)  缩放后高=8.5  底Y=0  渲染器=1
+  Pine_5           pos=(19.5, 0.0, 0.0)  缩放后高=7  底Y=0  渲染器=1
+  Pine_1           pos=(-19.5, 0.0, 0.0)  缩放后高=7.5  底Y=0  渲染器=1
+  DeadTree_2       pos=(13.5, 0.0, -14.0)  缩放后高=6  底Y=0  渲染器=1
+  DeadTree_4       pos=(-13.5, 0.0, 14.0)  缩放后高=5.5  底Y=0  渲染器=1
+  TwistedTree_1    pos=(14.5, 0.0, 14.5)  缩放后高=6.2  底Y=0  渲染器=1
+  TwistedTree_3    pos=(-14.5, 0.0, -14.5)  缩放后高=5.8  底Y=0  渲染器=1
+  Rock_Medium_1    pos=(19.0, 0.0, 8.5)  缩放后高=1.051  底Y=0  渲染器=1
+  Rock_Medium_2    pos=(19.2, 0.0, -7.5)  缩放后高=0.598  底Y=0  渲染器=1
+  Rock_Medium_3    pos=(-19.0, 0.0, 9.5)  缩放后高=0.81  底Y=0  渲染器=1
+  Rock_Medium_1    pos=(-19.2, 0.0, -8.5)  缩放后高=0.781  底Y=0  渲染器=1
+  Rock_Medium_2    pos=(8.5, 0.0, 19.0)  缩放后高=0.847  底Y=0  渲染器=1
+  Rock_Medium_3    pos=(-8.5, 0.0, -19.0)  缩放后高=0.71  底Y=0  渲染器=1
+  Bush_Common      pos=(15.5, 0.0, 12.5)  缩放后高=1.288  底Y=0  渲染器=1
+  Bush_Common      pos=(-15.5, 0.0, -12.5)  缩放后高=0.976  底Y=0  渲染器=1
+  Bush_Common      pos=(12.5, 0.0, -16.5)  缩放后高=1.046  底Y=0  渲染器=1
+  Bush_Common      pos=(-12.5, 0.0, 16.5)  缩放后高=1.075  底Y=0  渲染器=1
+
+场景保存 = True

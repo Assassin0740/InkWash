@@ -1,0 +1,12 @@
+相机 = Main Camera
+已停用 ThirdPersonCamera
+  已存 A0_玩家实机视角.png
+    玩家机位 (0.00, 2.79, -7.17) rot=(14.0, 0.0, 0.0) fov=48.00482
+  已存 A1_用户机位_全部.png
+  已存 B_隐藏Gates石门.png
+  已存 C_隐藏Ground.png
+  已存 D_隐藏Arena台.png
+  已存 E_隐藏Walls院墙.png
+  已存 F_贴地平视.png
+  已存 G_俯视全景.png
+  已存 H_俯视全景_无Gates.png

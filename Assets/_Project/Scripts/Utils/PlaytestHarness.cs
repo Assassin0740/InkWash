@@ -55,8 +55,19 @@ namespace InkWash.Utils
     {
         private const string ReportDirRelative = "Tools/reports";
 
-        /// <summary>每个阶段的起始位置（场地中央偏南，给前进方向留足空间）。</summary>
-        private static readonly Vector3 StageAnchor = new Vector3(0f, 0.05f, -14f);
+        /// <summary>
+        /// 每个阶段的起始位置（场地**内**偏南，给前进方向留足跑道）。
+        /// ★ 2026-09-15 修正：原值是 (0, 0.05, **-14**)，那时场地里还没有石门。
+        ///   S3 加了 `Gates/Gate_N/S/E/W`（石门在 z = ±10，是**实心碰撞体**）之后，
+        ///   这个复位点就落到了**南门外**：向北一跑，3.4 m 处顶住石门，
+        ///   于是 S1「疾跑速度 0.000 / 受阻帧 62%」、S2 连击位移 0.000 全部是
+        ///   「顶着关着的石门」量出来的假失败 —— 不是游戏缺陷，是**验收场地失效**。
+        ///   实测（`Tools/cs/h_scene_bounds.cs` → `Tools/reports/h_scene_bounds.txt`）：
+        ///   起点 z=-14 → 位移 3.425 m / 平均 1.386 m/s / 受阻 62%；
+        ///   起点 z=-9  → 位移 9.736 m / 平均 3.873 m/s / 受阻 **0%**。
+        ///   现值取 -8：在南门内侧 2 m，向北有 ≈18 m 跑道（runSpeed 4.0 × 2.5 s = 10 m）。
+        /// </summary>
+        private static readonly Vector3 StageAnchor = new Vector3(0f, 0.05f, -8f);
 
         /// <summary>复位后等待相机与动画收敛的时间（不计入采样）。</summary>
         private const float SettleSeconds = 0.7f;

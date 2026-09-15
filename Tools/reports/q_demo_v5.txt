@@ -1,0 +1,8 @@
+=== 演示录屏 q_demo_v5（第八轮：外轮廓 5px / 墨彩 0.60 / 干净院墙 / 瓦檐+道具）===
+  1 非战斗待机          状态=Idle     速度=0.00 战斗中=False Idle片段=Rig|Idle_Loop
+  3 持剑待机 ★         状态=Idle     速度=0.00 战斗中=True Idle片段=Idle_Carry_A
+  4 走路             状态=Walk     速度=1.25 战斗中=True Idle片段=Idle_Carry_A
+  5 跑步             状态=Run      速度=4.00 战斗中=False Idle片段=Rig|Idle_Loop
+  6 停回待机           状态=Idle     速度=0.00 战斗中=False Idle片段=Rig|Idle_Loop
+  7 三段连击           状态=Idle     速度=0.00 战斗中=True Idle片段=Idle_Carry_A
+  8 侧身 55°         状态=Idle     速度=0.00 战斗中=True Idle片段=Idle_Carry_A

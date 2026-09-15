@@ -93,7 +93,7 @@ string[] mats =
 {
     "M_Whitebox_Ground", "M_Whitebox_Wall", "M_Whitebox_Pillar", "M_Whitebox_Platform",
     "M_Character_Ink", "M_Ink_Enemy_MoOu_0", "M_Ink_Enemy_MoTu_0", "M_Ink_Enemy_MoYan_0",
-    "M_W_Sword_Ink",
+    "M_W_Sword_Ink", "M_Ink_Eave", "M_Ink_Prop",
 };
 int matBad = 0;
 foreach (var mn in mats)
@@ -108,10 +108,15 @@ foreach (var mn in mats)
 
     // ★ 「shader 有这个属性」≠「材质显式设了这个值」。
     //   材质文件里没有这一行 ⇒ **静默落到 shader 默认值** —— grep 查不到、改 shader 会连带改观感。
-    //   所以凡是带 _OutlineWidth 的材质，都要求它在 .mat 里**显式写出来**（本项目硬规矩 #1）。
+    //   所以凡是带 _OutlineWidth / _ChromaKeep 的材质，都要求它在 .mat 里**显式写出来**（本项目硬规矩 #1）。
     bool needOutline = m.HasProperty("_OutlineWidth");
     bool explicitOutline = !needOutline || HasExplicit(mn, "_OutlineWidth");
     if (needOutline && !explicitOutline) matBad++;
+    // _ChromaKeep 同理：它在 InkCharacter 上有默认 0.45，材质里不写就永远吃默认值 ——
+    // 本轮"人物墨彩"就是踩这个坑进来的（角色材质从来没显式写过它）。
+    bool needChroma = m.HasProperty("_ChromaKeep");
+    bool explicitChroma = !needChroma || HasExplicit(mn, "_ChromaKeep");
+    if (needChroma && !explicitChroma) matBad++;
     if (!ok || dead) matBad++;
 
     // 墨阶亮度：用相对亮度看分配是否合理（焦<浓<重<淡<清）
@@ -126,9 +131,23 @@ foreach (var mn in mats)
                   + "  _Bands=" + (m.HasProperty("_Bands") ? F(m.GetFloat("_Bands")) : "?")
                   + (needOutline
                      ? ("  _OutlineW=" + (explicitOutline ? F(m.GetFloat("_OutlineWidth")) : "**未显式设置**"))
+                     : "")
+                  + (needChroma
+                     ? ("  _ChromaKeep=" + (explicitChroma ? F(m.GetFloat("_ChromaKeep")) : "**未显式设置**"))
                      : ""));
 }
 sb.AppendLine();
+// 角色墨线的屏幕像素换算：世界米 × 362 ≈ px（`h_oline` 实测，含 ~1.6 px 地板）
+{
+    var cm = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Art/Materials/M_Character_Ink.mat");
+    if (cm != null && cm.HasProperty("_OutlineWidth"))
+    {
+        float w = cm.GetFloat("_OutlineWidth");
+        sb.AppendLine("  【角色墨线换算】_OutlineWidth=" + F(w) + " m × ≈300 + 1.6 ≈ "
+                      + F(w * 300f + 1.6f) + " px　(目标 3.5~6；标定见 Tools/reports/h_oline.txt)");
+        sb.AppendLine();
+    }
+}
 
 // ---- ⑤ 光照与调色板一致性 ----
 sb.AppendLine("---- ⑤ 光照 / 调色板 ----");

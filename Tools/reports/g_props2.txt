@@ -1,0 +1,62 @@
+备份 -> Tools/tmp/Main.unity.bak_after_props
+
+M_Ink_Prop 资产 = M_Ink_Prop shader=InkWash/InkSurface
+
+=== 修复前 ===
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+
+重新赋材质渲染器数 = 20
+
+=== 树位调整 ===
+  Pine_1 idx0 → (13.0, 0.0, 13.0)
+  Pine_3 idx1 → (-13.0, 0.0, 13.0)
+  Pine_2 idx2 → (13.0, 0.0, -13.0)
+  Pine_4 idx3 → (-13.0, 0.0, -13.0)
+  Pine_1 idx5 → (13.0, 0.0, 13.0)
+  DeadTree_2 idx6 → (15.5, 0.0, -12.0)
+  DeadTree_4 idx7 → (-15.5, 0.0, 12.0)
+  TwistedTree_1 idx8 → (12.0, 0.0, 15.5)
+  TwistedTree_3 idx9 → (-12.0, 0.0, -15.5)
+
+场景保存 = True（未调用 AssetDatabase.Refresh）
+
+=== 修复后 ===
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop
+  Props → M_Ink_Prop

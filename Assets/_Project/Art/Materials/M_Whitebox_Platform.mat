@@ -98,15 +98,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _OutlineDistScale: 0.05
+    - _OutlineScale: 0.7
+    - _OutlineDry: 0.42
+    - _OutlineFacing: 0.85
+    - _OutlineWidth: 0.026
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BandBias: 0.14
+    - _BandBias: -0.06
     - _BandSoftness: 0.08
-    - _Bands: 5
+    - _Bands: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BrushScale: 6
-    - _BrushStrength: 0.55
+    - _BrushStrength: 0.15
     - _GrainAmp: 0.42
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -142,12 +147,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _OutlineColor: {r: 0.055, g: 0.06, b: 0.075, a: 1}
     - _AmbientTint: {r: 0.92, g: 0.945, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.8, g: 0.79, b: 0.76, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _InkDark: {r: 0.075, g: 0.085, b: 0.12, a: 1}
-    - _InkLight: {r: 0.98, g: 0.976, b: 0.955, a: 1}
-    - _InkMid: {r: 0.3, g: 0.315, b: 0.35, a: 1}
+    - _InkDark: {r: 0.06, g: 0.078, b: 0.132, a: 1}
+    - _InkLight: {r: 0.988, g: 0.976, b: 0.940, a: 1}
+    - _InkMid: {r: 0.265, g: 0.295, b: 0.375, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

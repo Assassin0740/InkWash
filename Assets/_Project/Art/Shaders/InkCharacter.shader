@@ -32,9 +32,9 @@ Shader "InkWash/InkCharacter"
         // ---- 墨分五色：与 InkSurface **共用同一套墨阶表** ----
         // 全画面只有一个调色板是水墨成立的硬条件：两套墨色叠在一起，
         // 角色会"贴"在背景上。改这里的值时必须同步改 InkSurface。
-        _InkDark  ("焦墨（最暗、忌纯黑）", Color) = (0.075, 0.085, 0.12, 1)
-        _InkMid   ("重墨（中间锚点）",     Color) = (0.30, 0.315, 0.35, 1)
-        _InkLight ("清墨（近纸白）",       Color) = (0.98, 0.976, 0.955, 1)
+        _InkDark  ("焦墨（最暗、忌纯黑）", Color) = (0.06, 0.078, 0.132, 1)
+        _InkMid   ("重墨（中间锚点）",     Color) = (0.265, 0.295, 0.375, 1)
+        _InkLight ("清墨（近纸白）",       Color) = (0.988, 0.976, 0.940, 1)
         _LadderSkew ("中间两级的位置（小=浓墨区更宽）", Range(0.1, 0.9)) = 0.42
         _Bands ("墨阶数（少=大写意）", Range(1, 8)) = 4
         _BandSoftness ("阶间柔度", Range(0.001, 0.5)) = 0.06
@@ -45,7 +45,7 @@ Shader "InkWash/InkCharacter"
         // 病 5：底层贴图的色相泄漏。KayKit 骨骼是亮蓝灰、斗篷是橙 ——
         // 它们是画面上**唯一的高饱和色**，对比最强，于是抢走全部视线（M4b 1.5% vs 目标 ≤0.5%）。
         // 保留 8% 原色相：明暗关系全保留（骨头与袍子的明度差仍在、形态可辨），只消灭色相差。
-        _ChromaKeep ("保留原色相（0=全灰、1=原色）", Range(0, 1)) = 0.08
+        _ChromaKeep ("墨彩强度（0=纯墨、1=衣料本色透出、>1 更艳）", Range(0, 2)) = 0.45
 
         // ---- ★ 参照《大神》：**几何轮廓**（反向外扩壳），不是屏幕空间细线 ----
         // 为什么必须走几何：屏幕空间等宽细线本质是"边缘检测"，改来改去都是制图描边。
@@ -238,7 +238,12 @@ Shader "InkWash/InkCharacter"
             {
                 half b = max(1.0h, bands);
                 half steps = b - 1.0h;
-                if (steps < 0.5h) return 1.0h;              // 单阶：全亮（纯平涂）
+                // ★ 单阶 = **关闭量化**，而不是"全亮"。
+                //   大面积平面（院墙、柱子）没有形体明暗，量化器唯一的输入就是
+                //   _BrushStrength 抖动出来的噪声 —— 会被整阶放大成大块迷彩斑。
+                //   返回 saturate(x) 让墨色随光照**连续**变化：墙因此成为一面
+                //   受光的淡墨白墙，而不是一堵花墙。人物的形体明暗仍靠 _Bands>=2 量化。
+                if (steps < 0.5h) return saturate(x);              // 单阶：全亮（纯平涂）
                 half scaled = saturate(x) * steps;
                 half lower  = floor(scaled);
                 half frac   = scaled - lower;
@@ -329,7 +334,11 @@ Shader "InkWash/InkCharacter"
                 float2 gp = float2(p.x * 0.62h, p.y);
                 half grain = Fbm2(gp * _GrainScale);
                 // 远处淡出高频颗粒：屏幕导数大 = 该像素跨了太多噪声周期 ⇒ 再高只会出摩尔纹
-                half grainFade = saturate(1.80h - fwidth(gp.x * _GrainScale) * 0.40h);
+                // ★ 阈值必须与"屏幕采样率"挂钩，而不是拍脑袋的 1.8/0.4：
+                //   fwidth ≈ 1 表示"一个像素正好跨一个噪声周期"，再高就是纯混叠。
+                //   旧值要 fwidth>4.5 才淡出 —— 任何实用距离都够不到 ⇒ 远处纸颗粒
+                //   混叠成均匀灰噪声（画面发脏、发灰）。新值在 fwidth=1 处全淡出。
+                half grainFade = saturate(2.0h - fwidth(gp.x * _GrainScale) * 2.0h);
                 grain = lerp(0.5h, grain, grainFade);
 
                 // _BrushUvFromWorld=1（默认）用世界坐标三平面：纹理不随角色动作滑动
@@ -346,10 +355,12 @@ Shader "InkWash/InkCharacter"
                 UNITY_SETUP_INSTANCE_ID(input);
 
                 half3 albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
-                // ★ 去色：只留 _ChromaKeep 的原色相。明暗全保留、色相被消灭。
+                // ★ 明暗去色：贴图在这里只贡献**明暗**（衣纹、骨节的形体信息）。
+                //   色相另存一份，到最终颜色处作为"墨彩"注入 —— 见下方 _ChromaKeep。
+                half3 albedoHue = albedo;
                 {
                     half grey = dot(albedo, half3(0.2126h, 0.7152h, 0.0722h));
-                    albedo = lerp(half3(grey, grey, grey), albedo, _ChromaKeep);
+                    albedo = lerp(half3(grey, grey, grey), albedo, 0.10h);
                 }
                 half3 normalWS = normalize(input.normalWS);
                 half3 viewDirWS = normalize(GetWorldSpaceViewDir(input.positionWS));
@@ -423,6 +434,17 @@ Shader "InkWash/InkCharacter"
                 // 贴图只提供**低幅度**的形体信息（衣纹、骨节）。它不再是"颜色来源"，
                 // 只是让同阶内部有细节 —— 水墨的形体靠墨阶，不靠固有色。
                 color *= lerp(half3(1,1,1), albedo, _InkDensity);
+
+                // ★ 墨彩：中国画的黑白之外还有丹青 —— 赭石、花青、藤黄。
+                //   贴图的"纯色相项"(albedo − luma) 是**零均值**的：乘回墨色只改色相、
+                //   几乎不改明暗。于是形体（墨阶）与颜色（衣料本色）彻底解耦 ——
+                //   这正是水墨人物"以墨立骨、以色辅之"的做法。
+                //   系数 2.2 是过饱和回填：本作贴图彩度仅 0.135，不放大就看不出来。
+                {
+                    half gh = dot(albedoHue, half3(0.2126h, 0.7152h, 0.0722h));
+                    half3 chroma = (albedoHue - gh) * _ChromaKeep * 2.2h;
+                    color = saturate(color * (1.0h + chroma));
+                }
 
                 // ③ ★ 直接调制最终颜色（新增）—— 零均值噪声 ⇒ 均值≈1，不会把主体整体压暗。
                 half texMod = (nz.x - 0.5h) * _GrainAmp + (nz.y - 0.5h) * _StrokeAmp * 0.20h;

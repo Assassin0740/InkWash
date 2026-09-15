@@ -1,0 +1,7 @@
+原材质 = M_Character_Ink  id=-473960  assetPath=
+材质数组长度 = 1  [M_Character_Ink]
+
+设置 3 帧后 sharedMaterial.id = -473960　(期望 -474274)　❌ 被别的代码换回去了
+  _InkLight 读回 = RGBA(0.98, 0.98, 0.96, 1.00)
+  中央区域偏红像素 = 0 / 70560  (0.0%)
+  贴图原色（URP/Unlit 直出）平均彩度 = 0.135
