@@ -1,5 +1,96 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2404347858924842861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9107570735455809921}
+  - component: {fileID: 4298723765825447586}
+  - component: {fileID: 1372127774203242281}
+  m_Layer: 0
+  m_Name: SwordHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9107570735455809921
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404347858924842861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2232024764245728898}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4298723765825447586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404347858924842861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c31dd676e8e951c408fbee5ef2d31271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 6830905228196163153}
+  ownerFaction: 0
+  pointA: {x: 0, y: 0, z: 0}
+  pointB: {x: 0, y: 0, z: 1}
+  radius: 0.42
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  damage: 16
+  knockback: 2.6
+  hitStun: 0.26
+  hitStop: 0.055
+  oncePerTargetInWindow: 1
+  _activationCount: 0
+  _hitCount: 0
+--- !u!114 &1372127774203242281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404347858924842861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c03d31ba7adc6c4abeb7322e426551c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4259422993641270396}
+  vfx: {fileID: 2483706807998641495}
+  damage:
+  - 16
+  - 20
+  - 32
+  knockback:
+  - 2.6
+  - 3.2
+  - 6
+  hitStun:
+  - 0.26
+  - 0.3
+  - 0.55
+  hitStopDuration: 0.055
+  radius: 0.42
+  window: 0.14
+  _hitMomentCount: 0
+  _lastBladeLength: 0
 --- !u!1 &2785233610935798848
 GameObject:
   m_ObjectHideFlags: 0
@@ -48,6 +139,7 @@ GameObject:
   - component: {fileID: 4669033096784831669}
   - component: {fileID: 5718752645052886692}
   - component: {fileID: 1038111662515904894}
+  - component: {fileID: 6225359931486967881}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -69,6 +161,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5780780885362609218}
+  - {fileID: 9107570735455809921}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4525460533489108174
@@ -325,6 +418,25 @@ MonoBehaviour:
   idleSlotClip: {fileID: 7400000, guid: fd8497b7ea07a4741a663a02f5856e53, type: 2}
   combatExitDelay: 6
   startInCombat: 0
+--- !u!114 &6225359931486967881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e157979b2a837624989372a505c25210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 4259422993641270396}
+  maxHealth: 120
+  invincibleAfterHit: 0.65
+  _health: 0
+  _damageTakenCount: 0
+  _damageBlockedByIFrameCount: 0
+  _lastDamageTime: -999
 --- !u!1001 &6319620012404730793
 PrefabInstance:
   m_ObjectHideFlags: 0

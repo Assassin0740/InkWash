@@ -1,0 +1,38 @@
+Assembly-CSharp = 已加载
+scriptCompilationFailed = False
+DLL   写入 = 16:24:46
+最新源   = 16:24:31   PlaytestHarness.cs
+编译结果 = 最新
+  InkWash.Combat.Faction → OK
+  InkWash.Combat.DamageInfo → OK
+  InkWash.Combat.IDamageable → OK
+  InkWash.Combat.Hitbox → OK
+  InkWash.Combat.HitStop → OK
+  InkWash.Combat.PlayerRef → OK
+  InkWash.Player.PlayerHealth → OK
+  InkWash.Player.PlayerSwordHitbox → OK
+  InkWash.Enemies.EnemyBase → OK
+  InkWash.Enemies.EnemyMelee → OK
+  InkWash.Enemies.EnemyRanged → OK
+  InkWash.Enemies.EnemyElite → OK
+  InkWash.Enemies.InkProjectile → OK
+  InkWash.Enemies.WaveSpawner → OK
+  InkWash.Enemies.RoomController → OK
+  InkWash.Utils.PlaytestHarness → OK
+  InkWash.Rendering.InkEdgeFeature → OK
+  InkWash.Rendering.InkPaperFeature → OK
+  InkWash.Rendering.InkFullScreenPass → OK
+  InkWash.Rendering.InkStyleRegistry → OK
+  InkWash.UI.InkStylePanel → OK
+  InkWash.UI.InkMaterialSwap → OK
+关键成员：
+  InkWash.Enemies.WaveSpawner.ResetForTest → OK
+  InkWash.Enemies.WaveSpawner.Begin → OK
+  InkWash.Enemies.RoomController.ResetForTest → OK
+  InkWash.Player.PlayerHealth.ClearInvincibility → OK
+  InkWash.Utils.PlaytestHarness.S3EnemyFlow → OK
+  InkWash.Utils.PlaytestHarness.S4InkFlow → OK
+着色器：
+  InkWash/InkCharacter → OK  pass=3
+  Hidden/InkWash/InkEdge → OK  pass=1
+  Hidden/InkWash/InkPaper → OK  pass=1

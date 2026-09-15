@@ -1,0 +1,485 @@
+========== ① KayKit Skeletons 体检 ==========
+--- Necromancer.fbx
+    Mesh: Necromancer_ArmLeft  verts=975  tris=864  bones=23  bounds_h=0.303
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=32  根名=Necromancer  首层子=Necromancer_ArmLeft,Necromancer_ArmRight,Necromancer_Body,Necromancer_Crown
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+--- Skeleton_Golem.fbx
+    Mesh: Skeleton_Golem_ArmLeft  verts=987  tris=838  bones=23  bounds_h=1.158
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=33  根名=Skeleton_Golem  首层子=Rig_Large,Skeleton_Golem_ArmLeft,Skeleton_Golem_ArmRight,Skeleton_Golem_Body
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+--- Skeleton_Mage.fbx
+    Mesh: Skeleton_Mage_ArmLeft  verts=670  tris=748  bones=23  bounds_h=0.327
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=34  根名=Skeleton_Mage  首层子=Rig_Medium,Skeleton_Mage_ArmLeft,Skeleton_Mage_ArmRight,Skeleton_Mage_Body
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+--- Skeleton_Minion.fbx
+    Mesh: Skeleton_Minion_ArmLeft  verts=527  tris=644  bones=23  bounds_h=0.197
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=34  根名=Skeleton_Minion  首层子=Rig_Medium,Skeleton_Minion_ArmLeft,Skeleton_Minion_ArmRight,Skeleton_Minion_Body
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+--- Skeleton_Rogue.fbx
+    Mesh: Skeleton_Rogue_ArmLeft  verts=743  tris=692  bones=23  bounds_h=0.232
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=35  根名=Skeleton_Rogue  首层子=Rig_Medium,Skeleton_Rogue_ArmLeft,Skeleton_Rogue_ArmRight,Skeleton_Rogue_Body
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+--- Skeleton_Warrior.fbx
+    Mesh: Skeleton_Warrior_ArmLeft  verts=743  tris=692  bones=23  bounds_h=0.232
+    Material: skeleton  shader=Universal Render Pipeline/Lit
+    节点总数=35  根名=Skeleton_Warrior  首层子=Rig_Medium,Skeleton_Warrior_ArmLeft,Skeleton_Warrior_ArmRight,Skeleton_Warrior_Body
+    疑似脊椎/根骨 = root
+    内置片段=0
+    内置 Avatar=(无)
+
+========== ② KayKit 动画库片段清单 ==========
+--- Rig_Large_CombatMelee.fbx  (32 段)
+    __preview__Melee_1H_Slash          len= 1.567  loop=False  human=False
+    __preview__Melee_1H_Stab           len= 1.400  loop=False  human=False
+    __preview__Melee_2H_Attack         len= 1.333  loop=False  human=False
+    __preview__Melee_2H_Idle           len= 1.567  loop=False  human=False
+    __preview__Melee_2H_Slam           len= 2.833  loop=False  human=False
+    __preview__Melee_Block             len= 1.067  loop=False  human=False
+    __preview__Melee_Block_Attack      len= 1.033  loop=False  human=False
+    __preview__Melee_Block_Hit         len= 1.000  loop=False  human=False
+    __preview__Melee_Blocking          len= 1.067  loop=False  human=False
+    __preview__Melee_Dualwield_Slash   len= 1.033  loop=False  human=False
+    __preview__Melee_Dualwield_SlashCombo len= 1.600  loop=False  human=False
+    __preview__Melee_Unarmed_Idle      len= 1.067  loop=False  human=False
+    __preview__Melee_Unarmed_Kick      len= 1.700  loop=False  human=False
+    __preview__Melee_Unarmed_Punch     len= 1.233  loop=False  human=False
+    __preview__Melee_Unarmed_Smash     len= 3.467  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    Melee_1H_Slash                     len= 1.567  loop=False  human=False
+    Melee_1H_Stab                      len= 1.400  loop=False  human=False
+    Melee_2H_Attack                    len= 1.333  loop=False  human=False
+    Melee_2H_Idle                      len= 1.567  loop=False  human=False
+    Melee_2H_Slam                      len= 2.833  loop=False  human=False
+    Melee_Block                        len= 1.067  loop=False  human=False
+    Melee_Block_Attack                 len= 1.033  loop=False  human=False
+    Melee_Block_Hit                    len= 0.667  loop=False  human=False
+    Melee_Blocking                     len= 1.067  loop=False  human=False
+    Melee_Dualwield_Slash              len= 1.033  loop=False  human=False
+    Melee_Dualwield_SlashCombo         len= 1.600  loop=False  human=False
+    Melee_Unarmed_Idle                 len= 1.067  loop=False  human=False
+    Melee_Unarmed_Kick                 len= 1.700  loop=False  human=False
+    Melee_Unarmed_Punch                len= 1.233  loop=False  human=False
+    Melee_Unarmed_Smash                len= 3.467  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Large_General.fbx  (12 段)
+    __preview__Death_A                 len= 1.667  loop=False  human=False
+    __preview__Death_A_Pose            len= 1.000  loop=False  human=False
+    __preview__Hit_A                   len= 1.000  loop=False  human=False
+    __preview__Idle_A                  len= 1.967  loop=False  human=False
+    __preview__Idle_B                  len= 6.000  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    Death_A                            len= 1.667  loop=False  human=False
+    Death_A_Pose                       len= 0.033  loop=False  human=False
+    Hit_A                              len= 0.700  loop=False  human=False
+    Idle_A                             len= 1.967  loop=False  human=False
+    Idle_B                             len= 6.000  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Large_MovementAdvanced.fbx  (10 段)
+    __preview__Dodge_Backwards         len= 1.000  loop=False  human=False
+    __preview__Dodge_Forward           len= 1.000  loop=False  human=False
+    __preview__Dodge_Left              len= 1.000  loop=False  human=False
+    __preview__Dodge_Right             len= 1.000  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    Dodge_Backwards                    len= 0.333  loop=False  human=False
+    Dodge_Forward                      len= 0.333  loop=False  human=False
+    Dodge_Left                         len= 0.333  loop=False  human=False
+    Dodge_Right                        len= 0.333  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Large_MovementBasic.fbx  (6 段)
+    __preview__Running_A               len= 1.067  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    __preview__Walking_A               len= 1.067  loop=False  human=False
+    Running_A                          len= 1.067  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+    Walking_A                          len= 1.067  loop=False  human=False
+--- Rig_Large_Simulation.fbx  (4 段)
+    __preview__Flexing                 len= 4.300  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    Flexing                            len= 4.300  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Large_Special.fbx  (4 段)
+    __preview__EXPERIMENTAL_Large_Transform len= 1.667  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    EXPERIMENTAL_Large_Transform       len= 1.667  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Medium_CombatMelee.fbx  (46 段)
+    __preview__Melee_1H_Attack_Chop    len= 1.067  loop=False  human=True
+    __preview__Melee_1H_Attack_Jump_Chop len= 1.333  loop=False  human=True
+    __preview__Melee_1H_Attack_Slice_Diagonal len= 1.000  loop=False  human=True
+    __preview__Melee_1H_Attack_Slice_Horizontal len= 1.367  loop=False  human=True
+    __preview__Melee_1H_Attack_Stab    len= 1.600  loop=False  human=True
+    __preview__Melee_2H_Attack_Chop    len= 1.633  loop=False  human=True
+    __preview__Melee_2H_Attack_Slice   len= 1.100  loop=False  human=True
+    __preview__Melee_2H_Attack_Spin    len= 2.400  loop=False  human=True
+    __preview__Melee_2H_Attack_Spinning len= 1.000  loop=False  human=True
+    __preview__Melee_2H_Attack_Stab    len= 1.600  loop=False  human=True
+    __preview__Melee_2H_Idle           len= 1.067  loop=False  human=True
+    __preview__Melee_Block             len= 1.067  loop=False  human=True
+    __preview__Melee_Block_Attack      len= 1.067  loop=False  human=True
+    __preview__Melee_Block_Hit         len= 1.067  loop=False  human=True
+    __preview__Melee_Blocking          len= 1.067  loop=False  human=True
+    __preview__Melee_Dualwield_Attack_Chop len= 1.267  loop=False  human=True
+    __preview__Melee_Dualwield_Attack_Slice len= 1.167  loop=False  human=True
+    __preview__Melee_Dualwield_Attack_Stab len= 1.600  loop=False  human=True
+    __preview__Melee_Unarmed_Attack_Kick len= 1.000  loop=False  human=True
+    __preview__Melee_Unarmed_Attack_Punch_A len= 1.167  loop=False  human=True
+    __preview__Melee_Unarmed_Idle      len= 1.067  loop=False  human=True
+    __preview__T-Pose                  len= 1.000  loop=False  human=True
+    Melee_1H_Attack_Chop               len= 1.067  loop=False  human=True
+    Melee_1H_Attack_Jump_Chop          len= 1.333  loop=False  human=True
+    Melee_1H_Attack_Slice_Diagonal     len= 1.000  loop=False  human=True
+    Melee_1H_Attack_Slice_Horizontal   len= 1.367  loop=False  human=True
+    Melee_1H_Attack_Stab               len= 1.600  loop=False  human=True
+    Melee_2H_Attack_Chop               len= 1.633  loop=False  human=True
+    Melee_2H_Attack_Slice              len= 1.100  loop=False  human=True
+    Melee_2H_Attack_Spin               len= 2.400  loop=False  human=True
+    Melee_2H_Attack_Spinning           len= 0.667  loop=False  human=True
+    Melee_2H_Attack_Stab               len= 1.600  loop=False  human=True
+    Melee_2H_Idle                      len= 1.067  loop=True   human=True
+    Melee_Block                        len= 1.067  loop=False  human=True
+    Melee_Block_Attack                 len= 1.067  loop=False  human=True
+    Melee_Block_Hit                    len= 1.067  loop=False  human=True
+    Melee_Blocking                     len= 1.067  loop=True   human=True
+    Melee_Dualwield_Attack_Chop        len= 1.267  loop=False  human=True
+    Melee_Dualwield_Attack_Slice       len= 1.167  loop=False  human=True
+    Melee_Dualwield_Attack_Stab        len= 1.600  loop=False  human=True
+    Melee_Unarmed_Attack_Kick          len= 0.933  loop=False  human=True
+    Melee_Unarmed_Attack_Punch_A       len= 1.167  loop=False  human=True
+    Melee_Unarmed_Idle                 len= 1.067  loop=True   human=True
+    Slice_Diagonal_Rec                 len= 0.300  loop=False  human=True
+    Slice_Horizontal_Rec               len= 0.410  loop=False  human=True
+    T-Pose                             len= 0.033  loop=False  human=True
+--- Rig_Medium_CombatRanged.fbx  (40 段)
+    __preview__Ranged_1H_Aiming        len= 1.067  loop=False  human=False
+    __preview__Ranged_1H_Reload        len= 1.167  loop=False  human=False
+    __preview__Ranged_1H_Shoot         len= 1.067  loop=False  human=False
+    __preview__Ranged_1H_Shooting      len= 1.600  loop=False  human=False
+    __preview__Ranged_2H_Aiming        len= 1.600  loop=False  human=False
+    __preview__Ranged_2H_Reload        len= 1.600  loop=False  human=False
+    __preview__Ranged_2H_Shoot         len= 1.067  loop=False  human=False
+    __preview__Ranged_2H_Shooting      len= 1.067  loop=False  human=False
+    __preview__Ranged_Bow_Aiming_Idle  len= 1.833  loop=False  human=False
+    __preview__Ranged_Bow_Draw         len= 1.333  loop=False  human=False
+    __preview__Ranged_Bow_Draw_Up      len= 1.333  loop=False  human=False
+    __preview__Ranged_Bow_Idle         len= 1.567  loop=False  human=False
+    __preview__Ranged_Bow_Release      len= 1.333  loop=False  human=False
+    __preview__Ranged_Bow_Release_Up   len= 1.367  loop=False  human=False
+    __preview__Ranged_Magic_Raise      len= 2.100  loop=False  human=False
+    __preview__Ranged_Magic_Shoot      len= 1.000  loop=False  human=False
+    __preview__Ranged_Magic_Spellcasting len= 1.000  loop=False  human=False
+    __preview__Ranged_Magic_Spellcasting_Long len= 2.533  loop=False  human=False
+    __preview__Ranged_Magic_Summon     len= 4.300  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    Ranged_1H_Aiming                   len= 1.067  loop=False  human=False
+    Ranged_1H_Reload                   len= 1.167  loop=False  human=False
+    Ranged_1H_Shoot                    len= 1.067  loop=False  human=False
+    Ranged_1H_Shooting                 len= 1.600  loop=False  human=False
+    Ranged_2H_Aiming                   len= 1.600  loop=False  human=False
+    Ranged_2H_Reload                   len= 1.600  loop=False  human=False
+    Ranged_2H_Shoot                    len= 1.067  loop=False  human=False
+    Ranged_2H_Shooting                 len= 1.067  loop=False  human=False
+    Ranged_Bow_Aiming_Idle             len= 1.833  loop=False  human=False
+    Ranged_Bow_Draw                    len= 1.333  loop=False  human=False
+    Ranged_Bow_Draw_Up                 len= 1.333  loop=False  human=False
+    Ranged_Bow_Idle                    len= 1.567  loop=False  human=False
+    Ranged_Bow_Release                 len= 1.333  loop=False  human=False
+    Ranged_Bow_Release_Up              len= 1.367  loop=False  human=False
+    Ranged_Magic_Raise                 len= 2.100  loop=False  human=False
+    Ranged_Magic_Shoot                 len= 0.933  loop=False  human=False
+    Ranged_Magic_Spellcasting          len= 0.667  loop=False  human=False
+    Ranged_Magic_Spellcasting_Long     len= 2.533  loop=False  human=False
+    Ranged_Magic_Summon                len= 4.300  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Medium_General.fbx  (30 段)
+    __preview__Death_A                 len= 1.000  loop=False  human=True
+    __preview__Death_A_Pose            len= 1.000  loop=False  human=True
+    __preview__Death_B                 len= 2.633  loop=False  human=True
+    __preview__Death_B_Pose            len= 1.000  loop=False  human=True
+    __preview__Hit_A                   len= 1.000  loop=False  human=True
+    __preview__Hit_B                   len= 1.000  loop=False  human=True
+    __preview__Idle_A                  len= 1.067  loop=False  human=True
+    __preview__Idle_B                  len= 2.133  loop=False  human=True
+    __preview__Interact                len= 1.300  loop=False  human=True
+    __preview__PickUp                  len= 1.300  loop=False  human=True
+    __preview__Spawn_Air               len= 1.300  loop=False  human=True
+    __preview__Spawn_Ground            len= 1.300  loop=False  human=True
+    __preview__Throw                   len= 1.367  loop=False  human=True
+    __preview__T-Pose                  len= 1.000  loop=False  human=True
+    __preview__Use_Item                len= 1.600  loop=False  human=True
+    Death_A                            len= 0.800  loop=False  human=True
+    Death_A_Pose                       len= 0.033  loop=False  human=True
+    Death_B                            len= 2.633  loop=False  human=True
+    Death_B_Pose                       len= 0.033  loop=False  human=True
+    Hit_A                              len= 0.667  loop=False  human=True
+    Hit_B                              len= 0.867  loop=False  human=True
+    Idle_A                             len= 1.067  loop=True   human=True
+    Idle_B                             len= 2.133  loop=True   human=True
+    Interact                           len= 1.300  loop=False  human=True
+    PickUp                             len= 1.300  loop=False  human=True
+    Spawn_Air                          len= 1.300  loop=False  human=True
+    Spawn_Ground                       len= 1.300  loop=False  human=True
+    Throw                              len= 1.367  loop=False  human=True
+    T-Pose                             len= 0.033  loop=False  human=True
+    Use_Item                           len= 1.600  loop=False  human=True
+--- Rig_Medium_MovementAdvanced.fbx  (26 段)
+    __preview__Crawling                len= 1.067  loop=False  human=True
+    __preview__Crouching               len= 1.067  loop=False  human=True
+    __preview__Dodge_Backward          len= 1.000  loop=False  human=True
+    __preview__Dodge_Forward           len= 1.000  loop=False  human=True
+    __preview__Dodge_Left              len= 1.000  loop=False  human=True
+    __preview__Dodge_Right             len= 1.000  loop=False  human=True
+    __preview__Running_HoldingBow      len= 1.000  loop=False  human=True
+    __preview__Running_HoldingRifle    len= 1.000  loop=False  human=True
+    __preview__Running_Strafe_Left     len= 1.000  loop=False  human=True
+    __preview__Running_Strafe_Right    len= 1.000  loop=False  human=True
+    __preview__Sneaking                len= 2.133  loop=False  human=True
+    __preview__T-Pose                  len= 1.000  loop=False  human=True
+    __preview__Walking_Backwards       len= 1.067  loop=False  human=True
+    Crawling                           len= 1.067  loop=False  human=True
+    Crouching                          len= 1.067  loop=False  human=True
+    Dodge_Backward                     len= 0.400  loop=False  human=True
+    Dodge_Forward                      len= 0.400  loop=False  human=True
+    Dodge_Left                         len= 0.400  loop=False  human=True
+    Dodge_Right                        len= 0.400  loop=False  human=True
+    Running_HoldingBow                 len= 0.800  loop=False  human=True
+    Running_HoldingRifle               len= 0.800  loop=False  human=True
+    Running_Strafe_Left                len= 0.800  loop=False  human=True
+    Running_Strafe_Right               len= 0.800  loop=False  human=True
+    Sneaking                           len= 2.133  loop=False  human=True
+    T-Pose                             len= 0.033  loop=False  human=True
+    Walking_Backwards                  len= 1.067  loop=False  human=True
+--- Rig_Medium_MovementBasic.fbx  (22 段)
+    __preview__Jump_Full_Long          len= 2.333  loop=False  human=True
+    __preview__Jump_Full_Short         len= 1.167  loop=False  human=True
+    __preview__Jump_Idle               len= 1.067  loop=False  human=True
+    __preview__Jump_Land               len= 1.000  loop=False  human=True
+    __preview__Jump_Start              len= 1.000  loop=False  human=True
+    __preview__Running_A               len= 1.000  loop=False  human=True
+    __preview__Running_B               len= 1.000  loop=False  human=True
+    __preview__T-Pose                  len= 1.000  loop=False  human=True
+    __preview__Walking_A               len= 1.067  loop=False  human=True
+    __preview__Walking_B               len= 1.067  loop=False  human=True
+    __preview__Walking_C               len= 1.600  loop=False  human=True
+    Jump_Full_Long                     len= 2.333  loop=False  human=True
+    Jump_Full_Short                    len= 1.167  loop=False  human=True
+    Jump_Idle                          len= 1.067  loop=True   human=True
+    Jump_Land                          len= 0.667  loop=False  human=True
+    Jump_Start                         len= 0.600  loop=False  human=True
+    Running_A                          len= 0.800  loop=True   human=True
+    Running_B                          len= 0.800  loop=True   human=True
+    T-Pose                             len= 0.033  loop=False  human=True
+    Walking_A                          len= 1.067  loop=True   human=True
+    Walking_B                          len= 1.067  loop=True   human=True
+    Walking_C                          len= 1.600  loop=True   human=True
+--- Rig_Medium_Simulation.fbx  (28 段)
+    __preview__Cheering                len= 1.667  loop=False  human=False
+    __preview__Lie_Down                len= 3.000  loop=False  human=False
+    __preview__Lie_Idle                len= 2.667  loop=False  human=False
+    __preview__Lie_StandUp             len= 2.333  loop=False  human=False
+    __preview__Push_Ups                len= 1.033  loop=False  human=False
+    __preview__Sit_Chair_Down          len= 1.000  loop=False  human=False
+    __preview__Sit_Chair_Idle          len= 3.600  loop=False  human=False
+    __preview__Sit_Chair_StandUp       len= 1.000  loop=False  human=False
+    __preview__Sit_Floor_Down          len= 1.000  loop=False  human=False
+    __preview__Sit_Floor_Idle          len= 4.000  loop=False  human=False
+    __preview__Sit_Floor_StandUp       len= 1.133  loop=False  human=False
+    __preview__Sit_Ups                 len= 1.733  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    __preview__Waving                  len= 2.133  loop=False  human=False
+    Cheering                           len= 1.667  loop=False  human=False
+    Lie_Down                           len= 3.000  loop=False  human=False
+    Lie_Idle                           len= 2.667  loop=False  human=False
+    Lie_StandUp                        len= 2.333  loop=False  human=False
+    Push_Ups                           len= 1.033  loop=False  human=False
+    Sit_Chair_Down                     len= 0.800  loop=False  human=False
+    Sit_Chair_Idle                     len= 3.600  loop=False  human=False
+    Sit_Chair_StandUp                  len= 0.800  loop=False  human=False
+    Sit_Floor_Down                     len= 1.000  loop=False  human=False
+    Sit_Floor_Idle                     len= 4.000  loop=False  human=False
+    Sit_Floor_StandUp                  len= 1.133  loop=False  human=False
+    Sit_Ups                            len= 1.733  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+    Waving                             len= 2.133  loop=False  human=False
+--- Rig_Medium_Special.fbx  (30 段)
+    __preview__EXPERIMENTAL_Medium_Transform len= 1.000  loop=False  human=False
+    __preview__Skeletons_Awaken_Floor  len= 2.300  loop=False  human=False
+    __preview__Skeletons_Awaken_Floor_Long len= 3.833  loop=False  human=False
+    __preview__Skeletons_Awaken_Standing len= 1.000  loop=False  human=False
+    __preview__Skeletons_Death         len= 2.000  loop=False  human=False
+    __preview__Skeletons_Death_Pose    len= 1.000  loop=False  human=False
+    __preview__Skeletons_Death_Resurrect len= 2.700  loop=False  human=False
+    __preview__Skeletons_Idle          len= 4.267  loop=False  human=False
+    __preview__Skeletons_Inactive_Floor_Pose len= 1.000  loop=False  human=False
+    __preview__Skeletons_Inactive_Standing_Pose len= 1.000  loop=False  human=False
+    __preview__Skeletons_Spawn_Ground  len= 3.567  loop=False  human=False
+    __preview__Skeletons_Taunt         len= 1.033  loop=False  human=False
+    __preview__Skeletons_Taunt_Longer  len= 3.000  loop=False  human=False
+    __preview__Skeletons_Walking       len= 1.600  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    EXPERIMENTAL_Medium_Transform      len= 1.000  loop=False  human=False
+    Skeletons_Awaken_Floor             len= 2.300  loop=False  human=False
+    Skeletons_Awaken_Floor_Long        len= 3.833  loop=False  human=False
+    Skeletons_Awaken_Standing          len= 1.000  loop=False  human=False
+    Skeletons_Death                    len= 2.000  loop=False  human=False
+    Skeletons_Death_Pose               len= 0.033  loop=False  human=False
+    Skeletons_Death_Resurrect          len= 2.700  loop=False  human=False
+    Skeletons_Idle                     len= 4.267  loop=False  human=False
+    Skeletons_Inactive_Floor_Pose      len= 0.033  loop=False  human=False
+    Skeletons_Inactive_Standing_Pose   len= 0.033  loop=False  human=False
+    Skeletons_Spawn_Ground             len= 3.567  loop=False  human=False
+    Skeletons_Taunt                    len= 1.033  loop=False  human=False
+    Skeletons_Taunt_Longer             len= 3.000  loop=False  human=False
+    Skeletons_Walking                  len= 1.600  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+--- Rig_Medium_Tools.fbx  (58 段)
+    __preview__Chop                    len= 4.333  loop=False  human=False
+    __preview__Chopping                len= 1.333  loop=False  human=False
+    __preview__Dig                     len= 4.667  loop=False  human=False
+    __preview__Digging                 len= 1.400  loop=False  human=False
+    __preview__Fishing_Bite            len= 2.233  loop=False  human=False
+    __preview__Fishing_Cast            len= 1.933  loop=False  human=False
+    __preview__Fishing_Catch           len= 3.233  loop=False  human=False
+    __preview__Fishing_Idle            len= 2.333  loop=False  human=False
+    __preview__Fishing_Reeling         len= 1.600  loop=False  human=False
+    __preview__Fishing_Struggling      len= 3.433  loop=False  human=False
+    __preview__Fishing_Tug             len= 1.900  loop=False  human=False
+    __preview__Hammer                  len= 4.333  loop=False  human=False
+    __preview__Hammering               len= 2.667  loop=False  human=False
+    __preview__Holding_A               len= 1.000  loop=False  human=False
+    __preview__Holding_B               len= 1.000  loop=False  human=False
+    __preview__Holding_C               len= 1.000  loop=False  human=False
+    __preview__Lockpick                len= 3.000  loop=False  human=False
+    __preview__Lockpicking             len= 2.333  loop=False  human=False
+    __preview__Pickaxe                 len= 6.033  loop=False  human=False
+    __preview__Pickaxing               len= 3.733  loop=False  human=False
+    __preview__Saw                     len= 2.400  loop=False  human=False
+    __preview__Sawing                  len= 1.000  loop=False  human=False
+    __preview__T-Pose                  len= 1.000  loop=False  human=False
+    __preview__Work_A                  len= 2.533  loop=False  human=False
+    __preview__Work_B                  len= 3.100  loop=False  human=False
+    __preview__Work_C                  len= 3.667  loop=False  human=False
+    __preview__Working_A               len= 1.500  loop=False  human=False
+    __preview__Working_B               len= 2.533  loop=False  human=False
+    __preview__Working_C               len= 2.000  loop=False  human=False
+    Chop                               len= 4.333  loop=False  human=False
+    Chopping                           len= 1.333  loop=False  human=False
+    Dig                                len= 4.667  loop=False  human=False
+    Digging                            len= 1.400  loop=False  human=False
+    Fishing_Bite                       len= 2.233  loop=False  human=False
+    Fishing_Cast                       len= 1.933  loop=False  human=False
+    Fishing_Catch                      len= 3.233  loop=False  human=False
+    Fishing_Idle                       len= 2.333  loop=False  human=False
+    Fishing_Reeling                    len= 1.600  loop=False  human=False
+    Fishing_Struggling                 len= 3.433  loop=False  human=False
+    Fishing_Tug                        len= 1.900  loop=False  human=False
+    Hammer                             len= 4.333  loop=False  human=False
+    Hammering                          len= 2.667  loop=False  human=False
+    Holding_A                          len= 1.000  loop=False  human=False
+    Holding_B                          len= 1.000  loop=False  human=False
+    Holding_C                          len= 1.000  loop=False  human=False
+    Lockpick                           len= 3.000  loop=False  human=False
+    Lockpicking                        len= 2.333  loop=False  human=False
+    Pickaxe                            len= 6.033  loop=False  human=False
+    Pickaxing                          len= 3.733  loop=False  human=False
+    Saw                                len= 2.400  loop=False  human=False
+    Sawing                             len= 0.667  loop=False  human=False
+    T-Pose                             len= 0.033  loop=False  human=False
+    Work_A                             len= 2.533  loop=False  human=False
+    Work_B                             len= 3.100  loop=False  human=False
+    Work_C                             len= 3.667  loop=False  human=False
+    Working_A                          len= 1.500  loop=False  human=False
+    Working_B                          len= 2.533  loop=False  human=False
+    Working_C                          len= 2.000  loop=False  human=False
+
+========== ③ URP 管线 ==========
+  currentRenderPipeline = URP-HighFidelity (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)
+  当前质量等级 = 2 / 3
+  管线资产路径 = Assets/Settings/URP-HighFidelity.asset
+  RendererDataList 长度 = 1
+    [0] URP-HighFidelity-Renderer  path=Assets/Settings/URP-HighFidelity-Renderer.asset
+        已有 Feature 数 = 1
+          - ScreenSpaceAmbientOcclusion [SSAO]
+  MSAA = 4
+  HDR = True
+  RequireDepthTexture = True
+  RequireOpaqueTexture = True
+
+========== ④ NavMesh 能力 ==========
+  可用类型: UnityEngine.AI.NavMeshAgent | Unity.AI.Navigation.NavMeshSurface
+  场景中的 NavMeshSurface = 0
+  现有 NavMesh：顶点 0 / 三角 0
+
+========== ⑤ 场景白盒尺寸 ==========
+  Ground   pos=(0.00, -0.25, 0.00)  size=(44.00, 0.50, 44.00)
+  Arena    pos=(0.00, 0.15, 0.00)  size=(10.00, 0.30, 10.00)
+  Wall_N   pos=(0.00, 2.00, 22.00)  size=(44.60, 4.00, 0.60)
+  Wall_S   pos=(0.00, 2.00, -22.00)  size=(44.60, 4.00, 0.60)
+  Wall_E   pos=(22.00, 2.00, 0.00)  size=(0.60, 4.00, 44.60)
+  Wall_W   pos=(-22.00, 2.00, 0.00)  size=(0.60, 4.00, 44.60)
+  Pillars 子数 = 4
+
+========== ⑥ 现有玩家可复用接口 ==========
+  Method get_PlanarVelocity
+  Method get_CurrentSpeed
+  Method get_DesiredSpeed
+  Method get_IsGrounded
+  Method get_IsDashing
+  Method get_IsInvincible
+  Method get_CanDash
+  Method get_Phase
+  Method get_ComboStep
+  Method get_IsCancelWindowOpen
+  Method get_MoveDirection
+  Method get_PhaseTime
+  Method get_DesiredVelocity
+  Method get_AttackStateSeen
+  Method get_CurrentRefSpeed
+  Method get_WantsRunAnimation
+  Method add_SwingStarted
+  Method remove_SwingStarted
+  Method add_HitMoment
+  Method remove_HitMoment
+  Method add_DashStarted
+  Method remove_DashStarted
+  Method BeginInputOverride
+  Method EndInputOverride
+  Method SetInjectedMove
+  Method RequestInjectedDash
+  Method RequestInjectedAttack
+  Method get_IsInputOverridden
+  Method ResetToLocomotion
+  Property PlanarVelocity
+  Property CurrentSpeed
+  Property DesiredSpeed
+  Property IsGrounded
+  Property IsDashing
+  Property IsInvincible
+  Property CanDash
+  Property Phase
+  Property ComboStep
+  Property IsCancelWindowOpen
+  Property MoveDirection
+  Property PhaseTime
+  Property DesiredVelocity
+  Property AttackStateSeen
+  Property CurrentRefSpeed
+  Property WantsRunAnimation
+  Property IsInputOverridden
+  Event SwingStarted
+  Event HitMoment
+  Event DashStarted

@@ -1,0 +1,16 @@
+asset 存在 = True
+LoadAssetAtPath → UnityEngine.Shader  name=InkWash/InkCharacter
+作为 Shader → InkWash/InkCharacter  isSupported=True  passCount=3
+Shader.Find 三个：
+  InkWash/InkCharacter → True
+  Hidden/InkWash/InkEdge → True
+  Hidden/InkWash/InkPaper → True
+Assets 下所有 shader：
+  Assets/_Project/Art/Shaders/InkCharacter.shader
+  Assets/_Project/Art/Shaders/InkEdge.shader
+  Assets/_Project/Art/Shaders/InkPaper.shader
+  Assets/_Project/Shaders/InkSlash.shader
+Art/Shaders 下所有资产：
+  Assets/_Project/Art/Shaders/InkCharacter.shader
+  Assets/_Project/Art/Shaders/InkEdge.shader
+  Assets/_Project/Art/Shaders/InkPaper.shader

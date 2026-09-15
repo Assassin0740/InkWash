@@ -1,0 +1,58 @@
+========== ① 骷髅模型 FBX ==========
+  Necromancer        Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=NecromancerAvatar human=True valid=True
+  Skeleton_Golem     Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=Skeleton_GolemAvatar human=True valid=True
+  Skeleton_Mage      Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=Skeleton_MageAvatar human=True valid=True
+  Skeleton_Minion    Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=Skeleton_MinionAvatar human=True valid=True
+  Skeleton_Rogue     Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=Skeleton_RogueAvatar human=True valid=True
+  Skeleton_Warrior   Generic/NoAvatar  →  Human/CreateFromThisModel   Avatar=Skeleton_WarriorAvatar human=True valid=True
+
+========== ② 动画 FBX ==========
+  Rig_Medium_CombatRanged            Generic  → Human  (墨偶远程施法)  Avatar=Rig_Medium_CombatRangedAvatar  human片段=20
+  Rig_Medium_Special                 Generic  → Human  (骷髅专属：起身/死亡/待机)  Avatar=Rig_Medium_SpecialAvatar  human片段=15
+  Rig_Large_CombatMelee              Generic  → Human  (墨魇近战)  Avatar=Rig_Large_CombatMeleeAvatar  human片段=16
+  Rig_Large_General                  Generic  → Human  (墨魇待机/受击/死亡)  Avatar=Rig_Large_GeneralAvatar  human片段=6
+  Rig_Large_MovementBasic            Generic  → Human  (墨魇移动)  Avatar=Rig_Large_MovementBasicAvatar  human片段=3
+
+========== ③ 敌人动画清单复核（isHumanMotion 必须为 True）==========
+--- Rig_Medium_CombatMelee
+    Melee_1H_Attack_Slice_Diagonal   len= 1.000  human=True   loop=False
+    Melee_1H_Attack_Slice_Horizontal len= 1.367  human=True   loop=False
+    Melee_1H_Attack_Chop             len= 1.067  human=True   loop=False
+    Melee_1H_Attack_Stab             len= 1.600  human=True   loop=False
+--- Rig_Medium_CombatRanged
+    Ranged_Magic_Spellcasting        len= 0.667  human=True   loop=False
+    Ranged_Magic_Shoot               len= 0.933  human=True   loop=False
+    Ranged_Magic_Raise               len= 2.100  human=True   loop=False
+    Ranged_Magic_Spellcasting_Long   len= 2.533  human=True   loop=False
+--- Rig_Medium_General
+    Idle_A                           len= 1.067  human=True   loop=True
+    Idle_B                           len= 2.133  human=True   loop=True
+    Hit_A                            len= 0.667  human=True   loop=False
+    Hit_B                            len= 0.867  human=True   loop=False
+    Death_A                          len= 0.800  human=True   loop=False
+    Death_B                          len= 2.633  human=True   loop=False
+    Throw                            len= 1.367  human=True   loop=False
+--- Rig_Medium_MovementBasic
+    Walking_A                        len= 1.067  human=True   loop=True
+    Walking_B                        len= 1.067  human=True   loop=True
+    Running_A                        len= 0.800  human=True   loop=True
+    Running_B                        len= 0.800  human=True   loop=True
+--- Rig_Medium_Special
+    Skeletons_Idle                   len= 4.267  human=True   loop=False
+    Skeletons_Death                  len= 2.000  human=True   loop=False
+    Skeletons_Spawn_Ground           len= 3.567  human=True   loop=False
+    Skeletons_Awaken_Standing        len= 1.000  human=True   loop=False
+    Skeletons_Taunt                  len= 1.033  human=True   loop=False
+--- Rig_Large_CombatMelee
+    Melee_1H_Slash                   len= 1.567  human=True   loop=False
+    Melee_1H_Stab                    len= 1.400  human=True   loop=False
+    Melee_2H_Attack                  len= 1.333  human=True   loop=False
+    Melee_2H_Slam                    len= 2.833  human=True   loop=False
+--- Rig_Large_General
+    Idle_A                           len= 1.967  human=True   loop=False
+    Idle_B                           len= 6.000  human=True   loop=False
+    Hit_A                            len= 0.700  human=True   loop=False
+    Death_A                          len= 1.667  human=True   loop=False
+--- Rig_Large_MovementBasic
+    Walking_A                        len= 1.067  human=True   loop=False
+    Running_A                        len= 1.067  human=True   loop=False

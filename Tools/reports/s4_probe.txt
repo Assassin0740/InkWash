@@ -1,0 +1,150 @@
+===== S4 开工体检 =====
+色彩空间 = Linear
+当前构建目标 = StandaloneWindows64
+图形 API = Direct3D11
+
+URP 资产 = URP-HighFidelity
+  msaa=4  hdr=True  shadowDist=150  renderScale=1
+  depthTexture=True  opaqueTexture=True
+  rendererData 类型 = UniversalRenderer
+
+找到 4 个 UniversalRendererData：
+  Assets/Settings/URP-Balanced-Renderer.asset
+    已装配 Feature 1 个（map=1）：
+      [0] SSAO  (ScreenSpaceAmbientOcclusion)  active=True
+    m_DepthPrimingMode = 0
+  Assets/Settings/URP-HighFidelity-Renderer.asset
+    已装配 Feature 1 个（map=1）：
+      [0] SSAO  (ScreenSpaceAmbientOcclusion)  active=True
+    m_DepthPrimingMode = 0
+  Assets/Settings/URP-Performant-Renderer.asset
+    已装配 Feature 0 个（map=0）：
+    m_DepthPrimingMode = 0
+  Packages/com.unity.render-pipelines.universal/Runtime/Data/UniversalRendererData.asset
+    已装配 Feature 0 个（map=0）：
+    m_DepthPrimingMode = 0
+
+---- 角色材质 ----
+  Mesh  sharedMesh=Mesh  子网格 1
+     Material_Pbr   shader=Universal Render Pipeline/Lit   path=Assets/Char_Feng/Fbx/Feng.fbx
+        pass(UniversalForward) = -1
+        _BaseMap = Material_Pbr_Diffuse  2048x2048  sRGB=True
+        _BaseColor = RGBA(1.000, 1.000, 1.000, 1.000)
+        _Metallic = RGBA(0.000, 0.000, 0.000, 0.000)
+        _Smoothness = RGBA(0.000, 0.000, 0.000, 0.000)
+  Player layer = 8 (Player)
+    子节点 Feng 用了不同 layer = 0 (Default)
+    子节点 Mesh 用了不同 layer = 0 (Default)
+    子节点 root 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Hip 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Pelvis 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Thigh 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Calf 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_CalfTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_CalfTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Foot 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ToeBase 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_BigToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_IndexToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_MidToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_PinkyToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_RingToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ToeBaseShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_KneeShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ThighTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ThighTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Thigh 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Calf 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_CalfTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_CalfTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Foot 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ToeBase 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_BigToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_IndexToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_MidToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_PinkyToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_RingToe1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ToeBaseShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_KneeShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ThighTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ThighTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Waist 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Spine01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Spine02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Clavicle 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Upperarm 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Forearm 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ElbowShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ForearmTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_ForearmTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Hand 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Index1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Index2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Index3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Mid1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Mid2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Mid3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Pinky1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Pinky2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Pinky3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Ring1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Ring2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Ring3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Thumb1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Thumb2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Thumb3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_UpperarmTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_UpperarmTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_RibsTwist 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Breast 用了不同 layer = 0 (Default)
+    子节点 CC_Base_NeckTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_NeckTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Head 用了不同 layer = 0 (Default)
+    子节点 CC_Base_FacialBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_JawRoot 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Teeth02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Tongue01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Tongue02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Tongue03 用了不同 layer = 0 (Default)
+    子节点 CC_Base_L_Eye 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Eye 用了不同 layer = 0 (Default)
+    子节点 CC_Base_UpperJaw 用了不同 layer = 0 (Default)
+    子节点 CC_Base_Teeth01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Clavicle 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Upperarm 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Forearm 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ElbowShareBone 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ForearmTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_ForearmTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Hand 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Index1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Index2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Index3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Mid1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Mid2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Mid3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Pinky1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Pinky2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Pinky3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Ring1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Ring2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Ring3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Thumb1 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Thumb2 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Thumb3 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_UpperarmTwist01 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_UpperarmTwist02 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_RibsTwist 用了不同 layer = 0 (Default)
+    子节点 CC_Base_R_Breast 用了不同 layer = 0 (Default)
+    子节点 BackSocket 用了不同 layer = 0 (Default)
+    子节点 SwordHitbox 用了不同 layer = 0 (Default)
+
+---- 已有候选资产 ----
+  t:Shader InkWash → 0 个
+  t:Shader Ink → 1 个
+  t:Shader Toon → 0 个
+  t:Texture2D Xuan → 0 个
+  t:Texture2D Paper → 0 个
+
+---- Art/Textures 现状 ----
+  Assets/_Project/Art/Fonts/MaShanZheng-Regular.ttf

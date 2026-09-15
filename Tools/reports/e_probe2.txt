@@ -1,0 +1,185 @@
+========== ① 动画 FBX 的导入设置 ==========
+--- Rig_Medium_CombatMelee       animType=Human    avatarSetup=CreateFromThisModel    srcAvatar=(null)
+     导入内 Avatar = Rig_Medium_CombatMeleeAvatar human=True valid=True
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Medium_CombatRanged      animType=Generic  avatarSetup=NoAvatar               srcAvatar=(null)
+     导入内 Avatar = (无)
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Medium_General           animType=Human    avatarSetup=CreateFromThisModel    srcAvatar=(null)
+     导入内 Avatar = Rig_Medium_GeneralAvatar human=True valid=True
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Medium_MovementBasic     animType=Human    avatarSetup=CreateFromThisModel    srcAvatar=(null)
+     导入内 Avatar = Rig_Medium_MovementBasicAvatar human=True valid=True
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Medium_MovementAdvanced  animType=Human    avatarSetup=CreateFromThisModel    srcAvatar=(null)
+     导入内 Avatar = Rig_Medium_MovementAdvancedAvatar human=True valid=True
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Medium_Special           animType=Generic  avatarSetup=NoAvatar               srcAvatar=(null)
+     导入内 Avatar = (无)
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Large_CombatMelee        animType=Generic  avatarSetup=NoAvatar               srcAvatar=(null)
+     导入内 Avatar = (无)
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Large_General            animType=Generic  avatarSetup=NoAvatar               srcAvatar=(null)
+     导入内 Avatar = (无)
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+--- Rig_Large_MovementBasic      animType=Generic  avatarSetup=NoAvatar               srcAvatar=(null)
+     导入内 Avatar = (无)
+     optimizeGameObjects=False  resample=True  importAnimation=True  fps=KeyframeReduction
+
+========== ② 骨架节点名：动画 FBX vs 骷髅模型 ==========
+--- Rig_Medium_General       唯一节点名 31 个
+     chest, foot.l, foot.r, hand.l, hand.r, handslot.l, handslot.r, head, hips, lowerarm.l, lowerarm.r, lowerleg.l, lowerleg.r, Mannequin_ArmLeft, Mannequin_ArmRight, Mannequin_Body, Mannequin_Head, Mannequin_LegLeft, Mannequin_LegRight, Rig_Medium, Rig_Medium_General, root, spine, toes.l, toes.r, upperarm.l, upperarm.r, upperleg.l, upperleg.r, wrist.l, wrist.r
+--- Rig_Large_General        唯一节点名 31 个
+     chest, foot.l, foot.r, hand.l, hand.r, handslot.l, handslot.r, head, hips, lowerarm.l, lowerarm.r, lowerleg.l, lowerleg.r, MannequinLarge_ArmLeft, MannequinLarge_ArmRight, MannequinLarge_Body, MannequinLarge_Head, MannequinLarge_LegLeft, MannequinLarge_LegRight, Rig_Large, Rig_Large_General, root, spine, toes.l, toes.r, upperarm.l, upperarm.r, upperleg.l, upperleg.r, wrist.l, wrist.r
+--- Skeleton_Minion          唯一节点名 34 个
+     chest, foot.l, foot.r, hand.l, hand.r, handslot.l, handslot.r, head, hips, lowerarm.l, lowerarm.r, lowerleg.l, lowerleg.r, Rig_Medium, root, Skeleton_Minion, Skeleton_Minion_ArmLeft, Skeleton_Minion_ArmRight, Skeleton_Minion_Body, Skeleton_Minion_Cloak, Skeleton_Minion_Eyes, Skeleton_Minion_Head, Skeleton_Minion_Jaw, Skeleton_Minion_LegLeft, Skeleton_Minion_LegRight, spine, toes.l, toes.r, upperarm.l, upperarm.r, upperleg.l, upperleg.r, wrist.l, wrist.r
+--- Skeleton_Mage            唯一节点名 34 个
+     chest, foot.l, foot.r, hand.l, hand.r, handslot.l, handslot.r, head, hips, lowerarm.l, lowerarm.r, lowerleg.l, lowerleg.r, Rig_Medium, root, Skeleton_Mage, Skeleton_Mage_ArmLeft, Skeleton_Mage_ArmRight, Skeleton_Mage_Body, Skeleton_Mage_Eyes, Skeleton_Mage_Hat, Skeleton_Mage_Jaw, Skeleton_Mage_LegLeft, Skeleton_Mage_LegRight, Skeleton_Mage_Skull, spine, toes.l, toes.r, upperarm.l, upperarm.r, upperleg.l, upperleg.r, wrist.l, wrist.r
+--- Skeleton_Golem           唯一节点名 33 个
+     chest, foot.l, foot.r, hand.l, hand.r, handslot.l, handslot.r, head, hips, lowerarm.l, lowerarm.r, lowerleg.l, lowerleg.r, Rig_Large, root, Skeleton_Golem, Skeleton_Golem_ArmLeft, Skeleton_Golem_ArmRight, Skeleton_Golem_Body, Skeleton_Golem_Eyes, Skeleton_Golem_Head, Skeleton_Golem_Jaw, Skeleton_Golem_LegLeft, Skeleton_Golem_LegRight, spine, toes.l, toes.r, upperarm.l, upperarm.r, upperleg.l, upperleg.r, wrist.l, wrist.r
+
+--- 交集/差集（判断能否零重定向）---
+  Rig_Medium_General ∩ Skeleton_Minion = 24   仅在动画=7   仅在模型=10
+      仅在动画: Mannequin_ArmLeft, Mannequin_ArmRight, Mannequin_Body, Mannequin_Head, Mannequin_LegLeft, Mannequin_LegRight, Rig_Medium_General
+      仅在模型: Skeleton_Minion, Skeleton_Minion_ArmLeft, Skeleton_Minion_ArmRight, Skeleton_Minion_Body, Skeleton_Minion_Cloak, Skeleton_Minion_Eyes, Skeleton_Minion_Head, Skeleton_Minion_Jaw, Skeleton_Minion_LegLeft, Skeleton_Minion_LegRight
+  Rig_Medium_General ∩ Skeleton_Mage = 24   仅在动画=7   仅在模型=10
+      仅在动画: Mannequin_ArmLeft, Mannequin_ArmRight, Mannequin_Body, Mannequin_Head, Mannequin_LegLeft, Mannequin_LegRight, Rig_Medium_General
+      仅在模型: Skeleton_Mage, Skeleton_Mage_ArmLeft, Skeleton_Mage_ArmRight, Skeleton_Mage_Body, Skeleton_Mage_Eyes, Skeleton_Mage_Hat, Skeleton_Mage_Jaw, Skeleton_Mage_LegLeft, Skeleton_Mage_LegRight, Skeleton_Mage_Skull
+  Rig_Medium_General ∩ Skeleton_Golem = 23   仅在动画=8   仅在模型=10
+      仅在动画: Mannequin_ArmLeft, Mannequin_ArmRight, Mannequin_Body, Mannequin_Head, Mannequin_LegLeft, Mannequin_LegRight, Rig_Medium, Rig_Medium_General
+      仅在模型: Rig_Large, Skeleton_Golem, Skeleton_Golem_ArmLeft, Skeleton_Golem_ArmRight, Skeleton_Golem_Body, Skeleton_Golem_Eyes, Skeleton_Golem_Head, Skeleton_Golem_Jaw, Skeleton_Golem_LegLeft, Skeleton_Golem_LegRight
+  Rig_Large_General ∩ Skeleton_Minion = 23   仅在动画=8   仅在模型=11
+      仅在动画: MannequinLarge_ArmLeft, MannequinLarge_ArmRight, MannequinLarge_Body, MannequinLarge_Head, MannequinLarge_LegLeft, MannequinLarge_LegRight, Rig_Large, Rig_Large_General
+      仅在模型: Rig_Medium, Skeleton_Minion, Skeleton_Minion_ArmLeft, Skeleton_Minion_ArmRight, Skeleton_Minion_Body, Skeleton_Minion_Cloak, Skeleton_Minion_Eyes, Skeleton_Minion_Head, Skeleton_Minion_Jaw, Skeleton_Minion_LegLeft, Skeleton_Minion_LegRight
+  Rig_Large_General ∩ Skeleton_Mage = 23   仅在动画=8   仅在模型=11
+      仅在动画: MannequinLarge_ArmLeft, MannequinLarge_ArmRight, MannequinLarge_Body, MannequinLarge_Head, MannequinLarge_LegLeft, MannequinLarge_LegRight, Rig_Large, Rig_Large_General
+      仅在模型: Rig_Medium, Skeleton_Mage, Skeleton_Mage_ArmLeft, Skeleton_Mage_ArmRight, Skeleton_Mage_Body, Skeleton_Mage_Eyes, Skeleton_Mage_Hat, Skeleton_Mage_Jaw, Skeleton_Mage_LegLeft, Skeleton_Mage_LegRight, Skeleton_Mage_Skull
+  Rig_Large_General ∩ Skeleton_Golem = 24   仅在动画=7   仅在模型=9
+      仅在动画: MannequinLarge_ArmLeft, MannequinLarge_ArmRight, MannequinLarge_Body, MannequinLarge_Head, MannequinLarge_LegLeft, MannequinLarge_LegRight, Rig_Large_General
+      仅在模型: Skeleton_Golem, Skeleton_Golem_ArmLeft, Skeleton_Golem_ArmRight, Skeleton_Golem_Body, Skeleton_Golem_Eyes, Skeleton_Golem_Head, Skeleton_Golem_Jaw, Skeleton_Golem_LegLeft, Skeleton_Golem_LegRight
+
+========== ③ 骷髅材质与贴图 ==========
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  mage                               shader=Universal Render Pipeline/Lit            baseMap=mage_texture
+  ranger                             shader=Universal Render Pipeline/Lit            baseMap=ranger_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  ranger                             shader=Universal Render Pipeline/Lit            baseMap=ranger_texture
+  ranger                             shader=Universal Render Pipeline/Lit            baseMap=ranger_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  ranger                             shader=Universal Render Pipeline/Lit            baseMap=ranger_texture
+  ranger                             shader=Universal Render Pipeline/Lit            baseMap=ranger_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  druid                              shader=Universal Render Pipeline/Lit            baseMap=druid_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  barbarian                          shader=Universal Render Pipeline/Lit            baseMap=barbarian_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  rogue                              shader=Universal Render Pipeline/Lit            baseMap=rogue_texture
+  mage                               shader=Universal Render Pipeline/Lit            baseMap=mage_texture
+  mage                               shader=Universal Render Pipeline/Lit            baseMap=mage_texture
+  mage                               shader=Universal Render Pipeline/Lit            baseMap=mage_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  knight                             shader=Universal Render Pipeline/Lit            baseMap=knight_texture
+  engineer                           shader=Universal Render Pipeline/Lit            baseMap=engineer_texture
+  mage                               shader=Universal Render Pipeline/Lit            baseMap=mage_texture
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Character_Material                 shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  Glow                               shader=Universal Render Pipeline/Lit            baseMap=(null)
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+  skeleton                           shader=Universal Render Pipeline/Lit            baseMap=skeleton_texture_A
+
+========== ④ 骷髅模型的网格部件构成 ==========
+  Skeleton_Minion    部件数=9  顶点合计=5634  三角合计=5288  根=Skeleton_Minion
+     部件: Skeleton_Minion_ArmLeft, Skeleton_Minion_ArmRight, Skeleton_Minion_Body, Skeleton_Minion_Cloak, Skeleton_Minion_Eyes, Skeleton_Minion_Head, Skeleton_Minion_Jaw, Skeleton_Minion_LegLeft, Skeleton_Minion_LegRight
+  Skeleton_Mage      部件数=8  顶点合计=4298  三角合计=4280  根=Skeleton_Mage
+     部件: Skeleton_Mage_ArmLeft, Skeleton_Mage_ArmRight, Skeleton_Mage_Body, Skeleton_Mage_Eyes, Skeleton_Mage_Jaw, Skeleton_Mage_LegLeft, Skeleton_Mage_LegRight, Skeleton_Mage_Skull
+  Skeleton_Warrior   部件数=9  顶点合计=5736  三角合计=5104  根=Skeleton_Warrior
+     部件: Skeleton_Warrior_ArmLeft, Skeleton_Warrior_ArmRight, Skeleton_Warrior_Body, Skeleton_Warrior_Cloak, Skeleton_Warrior_Eyes, Skeleton_Warrior_Head, Skeleton_Warrior_Jaw, Skeleton_Warrior_LegLeft, Skeleton_Warrior_LegRight
+  Skeleton_Golem     部件数=8  顶点合计=6899  三角合计=5822  根=Skeleton_Golem
+     部件: Skeleton_Golem_ArmLeft, Skeleton_Golem_ArmRight, Skeleton_Golem_Body, Skeleton_Golem_Eyes, Skeleton_Golem_Head, Skeleton_Golem_Jaw, Skeleton_Golem_LegLeft, Skeleton_Golem_LegRight
+  Necromancer        部件数=7  顶点合计=7032  三角合计=6032  根=Necromancer
+     部件: Necromancer_ArmLeft, Necromancer_ArmRight, Necromancer_Body, Necromancer_Crown, Necromancer_Head, Necromancer_LegLeft, Necromancer_LegRight
+
+========== ⑤ 现有 Prefab / 战斗相关现状 ==========
+  Player.prefab 顶层组件: Transform, Animator, CharacterController, PlayerController, SwordVfx, AudioDirector, FootIK, WeaponHandPose, CombatStance
+  Animator.avatar = FengAvatar  controller = Player
+  含 'Hitbox' 的脚本: 0

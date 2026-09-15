@@ -1,0 +1,41 @@
+========== 素材解析 ==========
+  墨徒·Idle    Idle_A                             len= 1.067 loop=True  human=True
+  墨徒·Run     Running_A                          len= 0.800 loop=True  human=True
+  墨徒·Atk     Melee_1H_Attack_Slice_Diagonal     len= 1.000 loop=False human=True
+  墨徒·Hit     Hit_A                              len= 0.667 loop=False human=True
+  墨徒·Die     Death_A                            len= 0.800 loop=False human=True
+  墨偶·Idle    Idle_B                             len= 2.133 loop=True  human=True
+  墨偶·Run     Walking_B                          len= 1.067 loop=True  human=True
+  墨偶·Atk     Ranged_Magic_Spellcasting          len= 0.667 loop=False human=True
+  墨偶·Hit     Hit_B                              len= 0.867 loop=False human=True
+  墨偶·Die     Death_B                            len= 2.633 loop=False human=True
+  墨魇·Idle    RigLarge_Idle_A_Loop               len= 1.967 loop=True  human=True
+  墨魇·Run     RigLarge_Walking_A_Loop            len= 1.067 loop=True  human=True
+  墨魇·Atk     Melee_2H_Slam                      len= 2.833 loop=False human=True
+  墨魇·Atk2    Melee_2H_Attack                    len= 1.333 loop=False human=True
+  墨魇·Hit     Hit_A                              len= 0.700 loop=False human=True
+  墨魇·Die     Death_A                            len= 1.667 loop=False human=True
+  已建控制器 墨徒 → Assets/_Project/Animations/Enemies/EnemyMelee.controller  状态=5 转移=3(AnyState)
+  已建控制器 墨偶 → Assets/_Project/Animations/Enemies/EnemyRanged.controller  状态=5 转移=3(AnyState)
+  已建控制器 墨魇 → Assets/_Project/Animations/Enemies/EnemyElite.controller  状态=6 转移=4(AnyState)
+
+========== 控制器复核 ==========
+--- EnemyMelee  参数: Speed:Float,Attack:Trigger,Attack2:Trigger,Hit:Trigger,Dead:Trigger
+    Idle       motion=Idle_A
+    Run        motion=Running_A
+    Attack     motion=Melee_1H_Attack_Slice_Diagonal
+    Hit        motion=Hit_A
+    Dead       motion=Death_A
+--- EnemyRanged  参数: Speed:Float,Attack:Trigger,Attack2:Trigger,Hit:Trigger,Dead:Trigger
+    Idle       motion=Idle_B
+    Run        motion=Walking_B
+    Attack     motion=Ranged_Magic_Spellcasting
+    Hit        motion=Hit_B
+    Dead       motion=Death_B
+--- EnemyElite  参数: Speed:Float,Attack:Trigger,Attack2:Trigger,Hit:Trigger,Dead:Trigger
+    Idle       motion=RigLarge_Idle_A_Loop
+    Run        motion=RigLarge_Walking_A_Loop
+    Attack     motion=Melee_2H_Slam
+    Hit        motion=Hit_A
+    Dead       motion=Death_A
+    Attack2    motion=Melee_2H_Attack

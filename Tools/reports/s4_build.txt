@@ -1,0 +1,27 @@
+场景 = Main
+===== S4 水墨风资产落地 =====
+
+---- ① 程序化贴图 ----
+  飞白噪声 → Assets/_Project/Art/Textures/T_InkBrushNoise.png
+  宣纸底纹 → Assets/_Project/Art/Textures/T_XuanPaper.png
+  导入设置：sRGB=Off   Wrap=Repeat   生成 Mipmap
+
+---- ② 角色/敌人水墨材质 ----
+  Assets/_Project/Art/Materials/M_Character_Ink.mat   漫反射=Material_Pbr_Diffuse
+  Player ← InkMaterialSwap  槽 1   原材质=Material_Pbr
+  Enemy_MoTu.prefab ← InkMaterialSwap  槽 1   原材质=skeleton
+  Enemy_MoOu.prefab ← InkMaterialSwap  槽 1   原材质=skeleton
+  Enemy_MoYan.prefab ← InkMaterialSwap  槽 1   原材质=skeleton
+
+---- ③ 装配 RendererFeature ----
+  URP-HighFidelity-Renderer.asset ← 追加 InkEdgeFeature
+  URP-HighFidelity-Renderer.asset ← 追加 InkPaperFeature
+  URP-HighFidelity-Renderer.asset 现有 Feature 3 个 / map 3  [一致]
+  URP-Balanced-Renderer.asset ← 追加 InkEdgeFeature
+  URP-Balanced-Renderer.asset ← 追加 InkPaperFeature
+  URP-Balanced-Renderer.asset 现有 Feature 3 个 / map 3  [一致]
+
+---- ④ 参数面板 ----
+  调参材质 = M_Character_Ink
+
+场景保存 = True

@@ -8,6 +8,10 @@ using InkWash.Player;
 using InkWash.CameraRig;
 using InkWash.Effects;
 using InkWash.Core;
+using InkWash.Combat;
+using InkWash.Enemies;
+using InkWash.Rendering;
+using InkWash.UI;
 
 namespace InkWash.Utils
 {
@@ -2249,6 +2253,922 @@ namespace InkWash.Utils
                         F(st.lungeTotal), F(st.lungeFast), F(st.t90), F(st.peakSpeed),
                         F(st.peakDesired), st.attackFrames, F(st.onsetPhaseTime)));
             }
+        }
+
+        // ==================================================================
+        // S3 敌人验收（M3：有对手）
+        // ==================================================================
+
+        private static int _m3Pass, _m3Fail;
+
+        private static void M3(StringBuilder sb, bool ok, string label, string detail)
+        {
+            if (ok) _m3Pass++; else _m3Fail++;
+            sb.AppendLine("[" + (ok ? "通过" : "未通过") + "] " + label
+                          + (string.IsNullOrEmpty(detail) ? "" : "    " + detail));
+        }
+
+        private static void TeleportPlayer(GameObject go, Vector3 pos)
+        {
+            var cc = go.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            go.transform.position = pos;
+            if (cc != null) cc.enabled = true;
+        }
+
+        /// <summary>把场上所有活着的敌人一次性打死（验收里推进波次用，不走动画时间）。</summary>
+        private static int KillAllAlive()
+        {
+            int n = 0;
+            foreach (var e in UnityEngine.Object.FindObjectsOfType<EnemyBase>())
+            {
+                if (e == null || !e.IsAlive) continue;
+                var d = new DamageInfo
+                {
+                    amount = 100000f,
+                    sourceFaction = Faction.Player,
+                    hitDirection = Vector3.zero,
+                    knockback = 0f,
+                    hitStun = 0f,
+                    hitStop = 0f,
+                };
+                e.TakeDamage(d);
+                n++;
+            }
+            return n;
+        }
+
+        private static List<EnemyBase> AliveEnemies()
+        {
+            var list = new List<EnemyBase>();
+            foreach (var e in UnityEngine.Object.FindObjectsOfType<EnemyBase>())
+                if (e != null && e.IsAlive) list.Add(e);
+            return list;
+        }
+
+        private static float MinDistanceTo(GameObject go, List<EnemyBase> list)
+        {
+            float best = float.MaxValue;
+            foreach (var e in list)
+            {
+                if (e == null) continue;
+                float d = Vector3.Distance(go.transform.position, e.transform.position);
+                if (d < best) best = d;
+            }
+            return best;
+        }
+
+        /// <summary>
+        /// Sprint 3 验收：NavMesh → 波次生成 → 追击收敛 → 敌人攻击玩家 → 无敌帧 →
+        /// 玩家攻击敌人（掉血/硬直）→ 击杀推进波次 → 全清开门。
+        ///
+        /// 度量口径上的两条特别注意：
+        /// 1) 全程 **关掉顿帧**（<see cref="HitStop.Enabled"/>）—— 时间缩放会让"等待 N 秒"和
+        ///    "N 秒内走了多远"全部失真，且失真程度取决于命中次数（不可复现）。
+        /// 2) "追击有效"的判据用**与玩家的距离收敛**，不用"敌人位移了多少"：
+        ///    敌人可能被柱子卡住绕路，位移很大但没靠近。距离才是玩家真正感知到的东西。
+        /// </summary>
+        public static IEnumerator S3EnemyFlow()
+        {
+            var sb = new StringBuilder();
+            _m3Pass = 0; _m3Fail = 0;
+
+            var ctx = ResolveContext();
+            if (ctx == null) { WriteReport("S3", "<错误> 场景里找不到 Player / PlayerController"); yield break; }
+
+            var go = ctx.playerGo;
+            var ctl = ctx.ctl;
+            var health = go.GetComponent<PlayerHealth>();
+            var stance = go.GetComponentInChildren<CombatStance>(true);
+            var spawner = UnityEngine.Object.FindObjectOfType<WaveSpawner>();
+            var room = UnityEngine.Object.FindObjectOfType<RoomController>();
+            if (health == null) { WriteReport("S3", "<错误> Player 上没有 PlayerHealth（预制体没保存？）"); yield break; }
+            if (spawner == null) { WriteReport("S3", "<错误> 场景里找不到 WaveSpawner"); yield break; }
+
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("Sprint 3 验收 —— 敌人 AI 与关卡组织（M3：有对手）");
+            sb.AppendLine("生成时间 " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            sb.AppendLine("======================================================================");
+
+            bool oldHitStop = HitStop.Enabled;
+            HitStop.Enabled = false;                       // 见方法注释：顿帧会让所有时长失真
+
+            ctl.BeginInputOverride();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            if (stance != null) stance.combatExitDelay = 99999f;
+
+            // ---------------- ① 环境 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ① NavMesh 环境 ----");
+            var tri = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            M3(sb, tri.indices.Length > 0, "NavMesh 已烘焙",
+                "顶点 " + tri.vertices.Length + " / 三角 " + (tri.indices.Length / 3));
+            int walkable = 0; int probe = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                float ang = i * Mathf.PI * 2f / 8f;
+                var p = new Vector3(Mathf.Sin(ang) * 8f, 1f, Mathf.Cos(ang) * 8f);
+                UnityEngine.AI.NavMeshHit nh;
+                probe++;
+                if (UnityEngine.AI.NavMesh.SamplePosition(p, out nh, 3f, UnityEngine.AI.NavMesh.AllAreas)) walkable++;
+            }
+            M3(sb, walkable == probe, "场地四周 8 个取样点全部可寻路", walkable + "/" + probe);
+
+            // ---------------- ② 复位 + 生成第一波 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ② 波次生成 ----");
+
+            // 先把残留敌人清掉、把波次状态机**整个**复位。
+            // 理由：`--runtime` 跑完不会自动退出 Play，第二个脚本完全可能落在同一个还活着的
+            // 会话里；那时 spawner 已经 _allCleared，Begin() 直接 return，
+            // 于是"一只怪都没刷出来"却零报错 —— 这种静默失败必须在源头挡住，
+            // 不能指望每个调用者都记得先 stop。
+            KillAllAlive();
+            { float t = Time.time; while (Time.time - t < 0.3f) yield return null; }
+            spawner.ResetForTest();
+            EnemyBase.AliveCount = 0; EnemyBase.TotalKills = 0; EnemyBase.TotalSpawned = 0;
+            if (room != null) room.ResetForTest();
+            health.ResetHealth(); health.ResetDiagnostics(); health.ClearInvincibility();
+
+            TeleportPlayer(go, new Vector3(0f, 0.45f, -3f));
+            ctl.ResetToLocomotion();
+            { float t = Time.time; while (Time.time - t < 0.9f) yield return null; }
+
+            M3(sb, spawner.WaveCount == 3, "波次配置 = 3 波", "实际 " + spawner.WaveCount);
+            spawner.Begin();
+
+            { float t = Time.time; while (spawner.SpawnedCount < 3 && Time.time - t < 10f) yield return null; }
+            M3(sb, spawner.SpawnedCount == 3, "第一波刷出 3 只墨徒", "实际 " + spawner.SpawnedCount);
+
+            var alive = AliveEnemies();
+            int onNav = 0;
+            foreach (var e in alive)
+            {
+                var ag = e.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                if (ag != null && ag.enabled && ag.isOnNavMesh) onNav++;
+            }
+            M3(sb, alive.Count == 3 && onNav == 3, "3 只敌人全部落在导航网格上（可寻路）",
+                onNav + "/" + alive.Count + "   生成失败次数 " + spawner.SpawnFailedCount);
+            sb.AppendLine("   出生点（出生圈半径应 < 房间内净半径，否则会被门挡住视线）：");
+            foreach (var e in alive)
+                sb.AppendLine("     " + e.enemyName + " @ " + e.transform.position.ToString("F2")
+                              + "   距玩家 " + F(e.DistanceToPlayer) + " m   朝向 " + e.transform.forward.ToString("F2"));
+
+            // ---------------- ③ 追击收敛 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ③ 追击 ----");
+            float d0 = MinDistanceTo(go, alive);
+            float minD = d0;
+            int attackSeen = 0;
+            { float t = Time.time; while (Time.time - t < 5.0f) yield return null; }
+            alive = AliveEnemies();
+            minD = Mathf.Min(minD, MinDistanceTo(go, alive));
+            foreach (var e in alive) attackSeen += e.AttackCount;
+            M3(sb, minD < d0 - 3f, "敌人主动接近玩家（距离收敛）",
+                "起始最近 " + F(d0) + " m → 收敛到 " + F(minD) + " m");
+            M3(sb, attackSeen > 0, "有敌人进入了攻击状态", "合计起手 " + attackSeen + " 次");
+            sb.AppendLine("   敌人状态快照：");
+            foreach (var e in alive)
+                sb.AppendLine("     " + e.enemyName + "  状态=" + e.State + "  HP=" + F(e.Health)
+                    + "  距玩家=" + F(e.DistanceToPlayer) + " m  起手=" + e.AttackCount);
+
+            // ---------------- ④ 敌人打到玩家 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ④ 敌人攻击 → 玩家掉血 ----");
+            health.ResetHealth(); health.ResetDiagnostics(); health.ClearInvincibility();
+            { float t = Time.time; while (health.DamageTakenCount == 0 && Time.time - t < 14f) yield return null; }
+            M3(sb, health.DamageTakenCount > 0, "敌人的攻击确实打到了玩家",
+                "受击 " + health.DamageTakenCount + " 次，剩余 HP " + F(health.Health) + " / " + F(health.maxHealth));
+            M3(sb, health.Health < health.maxHealth, "玩家生命值下降", F(health.Health) + " < " + F(health.maxHealth));
+
+            // ---------------- ⑤ 无敌帧 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑤ 受击无敌帧 ----");
+            health.ResetHealth(); health.ResetDiagnostics(); health.ClearInvincibility();
+            var probeDmg = new DamageInfo { amount = 10f, sourceFaction = Faction.Enemy };
+            bool r1 = health.TakeDamage(probeDmg);
+            bool r2 = health.TakeDamage(probeDmg);
+            M3(sb, r1 && !r2, "受击后短暂无敌：连续两次只吃一次伤害",
+                "第一次=" + r1 + " 第二次=" + r2 + "  HP=" + F(health.Health)
+                + "  被无敌挡下 " + health.DamageBlockedByIFrameCount + " 次");
+
+            // ---------------- ⑥ 玩家攻击敌人（掉血 + 硬直 + 击退）----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑥ 玩家攻击 → 敌人受击 ----");
+            alive = AliveEnemies();
+            EnemyBase target = null; float bestD = float.MaxValue;
+            foreach (var e in alive)
+            {
+                float d = Vector3.Distance(go.transform.position, e.transform.position);
+                if (d < bestD) { bestD = d; target = e; }
+            }
+            if (target == null)
+            {
+                M3(sb, false, "找一个活着的敌人来打", "场上没有活着的敌人");
+            }
+            else
+            {
+                // 贴到它面前 1.7 m 并面向它（不靠"走过去"—— 走路会引入路径不确定性）
+                Vector3 to = target.transform.position - go.transform.position; to.y = 0f;
+                if (to.sqrMagnitude < 1e-4f) to = Vector3.forward;
+                to.Normalize();
+                TeleportPlayer(go, target.transform.position - to * 1.7f + Vector3.up * 0.1f);
+                go.transform.rotation = Quaternion.LookRotation(to, Vector3.up);
+                ctl.ResetToLocomotion();
+                if (stance != null) stance.ForceStance(true);   // 保证剑在手上（判定体要跟着剑走）
+                { float t = Time.time; while (Time.time - t < 0.5f) yield return null; }
+
+                float hp0 = target.Health;
+                int dt0 = target.DamageTakenCount;
+                bool sawStun = false;
+                bool hitSeen = false;
+                float knock = 0f;
+                Vector3 p0 = target.transform.position;
+                ctl.RequestInjectedAttack();
+                float t0 = Time.time;
+                float hitAt = -1f;
+                while (Time.time - t0 < 1.6f)
+                {
+                    if (target == null || !target.IsAlive) break;
+                    if (target.State == EnemyState.HitStun) sawStun = true;
+
+                    if (target.DamageTakenCount > dt0)
+                    {
+                        hitSeen = true;
+                        if (hitAt < 0f) hitAt = Time.time;
+                    }
+                    // ★ 击退位移必须**在命中之后继续采样一段时间**。
+                    //   早期版本一见"掉血 + 硬直"就 break，量到的是"命中那一帧到下一帧"的位移
+                    //   （实测 0.021 m）。名义击退 2.6 m/s、硬直 0.26 s，理论位移约 0.28 m ——
+                    //   也就是说那条断言其实一直"通过"着，只是量的是一个几乎为零的假数字。
+                    //   度量窗口必须覆盖事件（这里是击退过程），不能停在事件起点。
+                    if (hitSeen) knock = Mathf.Max(knock, Vector3.Distance(p0, target.transform.position));
+                    if (hitSeen && hitAt > 0f && Time.time - hitAt > 0.45f) break;
+                    yield return null;
+                }
+                knock = Mathf.Max(knock, Vector3.Distance(p0, target.transform.position));
+
+                bool hurt = target == null || target.Health < hp0;
+                M3(sb, hurt, "玩家的剑打中了敌人（敌人掉血）",
+                    "HP " + F(hp0) + " → " + F(target != null ? target.Health : 0f)
+                    + "  受击次数 " + (target != null ? target.DamageTakenCount - dt0 : 0));
+                M3(sb, sawStun, "敌人进入受击硬直", "观测到 HitStun = " + sawStun);
+                M3(sb, knock > 0.10f, "敌人被击退（位置发生位移）",
+                    "击退峰值位移 " + F(knock) + " m（名义 击退 2.6 m/s × 硬直 0.26 s ≈ 0.28 m）");
+
+                var sh = go.transform.Find("SwordHitbox");
+                var hb = sh != null ? sh.GetComponent<Hitbox>() : null;
+                if (hb != null)
+                {
+                    M3(sb, hb.HitCount > 0, "玩家判定体记录到命中",
+                        "开窗 " + hb.ActivationCount + " 次 / 命中 " + hb.HitCount + " 次");
+                }
+            }
+
+            // ---------------- ⑦ 击杀推进波次 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑦ 波次推进 ----");
+            int killedNow = KillAllAlive();
+            { float t = Time.time; while (spawner.WaveStartedCount < 2 && Time.time - t < 20f) yield return null; }
+            M3(sb, spawner.WaveClearedCount >= 1, "第 1 波清空后判定通过",
+                "清空 " + spawner.WaveClearedCount + " 波 / 已开 " + spawner.WaveStartedCount + " 波"
+                + "  本次击杀 " + killedNow);
+            { float t = Time.time; while (spawner.SpawnedCount < 8 && Time.time - t < 20f) yield return null; }
+            M3(sb, spawner.SpawnedCount >= 8, "第 2 波按配置刷出（3 墨徒 + 2 墨偶）",
+                "累计生成 " + spawner.SpawnedCount);
+            var mixed = AliveEnemies();
+            int ranged = 0; foreach (var e in mixed) if (e is EnemyRanged) ranged++;
+            M3(sb, ranged > 0, "第 2 波里出现了远程敌人（墨偶）", "墨偶 " + ranged + " 只");
+            if (ranged > 0)
+            {
+                // 远程敌人在玩家贴脸时应该后撤 —— 这是它区别于近战的唯一行为
+                var r = mixed.Find(x => x is EnemyRanged);
+                TeleportPlayer(go, r.transform.position + new Vector3(1.2f, 0.1f, 0f));
+                { float t = Time.time; while (Time.time - t < 2.2f) yield return null; }
+                var rg = r as EnemyRanged;
+                M3(sb, rg != null && (rg.RetreatCount > 0 || rg.ProjectilesSpawned > 0),
+                    "墨偶会走位/开火（远程行为生效）",
+                    rg != null ? ("后撤 " + rg.RetreatCount + " 次 / 发射 " + rg.ProjectilesSpawned + " 发") : "-");
+            }
+
+            // ---------------- ⑧ 全清 + 开门 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑧ 全清开门 ----");
+            {
+                float t = Time.time;
+                int guard = 0;
+                // guard 只是"活着别死循环"的保险丝，真正的上限是 120 s 的墙钟。
+                // 早期版本写成 900 帧（≈15 s）会在 3 波还没刷完时就把循环掐掉，
+                // 报出"全清失败"这种假故障 —— 帧数上限必须远大于最坏情况。
+                while (!spawner.AllCleared && Time.time - t < 120f && guard++ < 20000)
+                {
+                    KillAllAlive();
+                    yield return null;
+                }
+            }
+            M3(sb, spawner.AllCleared, "三波全部清空", "已开 " + spawner.WaveStartedCount + " 波 / 清 " + spawner.WaveClearedCount + " 波");
+            { float t = Time.time; while (Time.time - t < 2.0f) yield return null; }   // 等门沉下去
+            if (room != null)
+            {
+                M3(sb, room.IsCleared, "房间控制器判定「已清空」", "IsCleared=" + room.IsCleared);
+                M3(sb, room.GateProgress > 0.95f, "石门下沉完成（开门）",
+                    "位移进度 " + F(room.GateProgress) + "，扇数 " + room.OpenedGateCount);
+            }
+            M3(sb, EnemyBase.TotalKills >= spawner.SpawnedCount && spawner.SpawnedCount >= 8,
+                "击杀数 == 生成数（无漏算/幽灵敌人）",
+                "击杀 " + EnemyBase.TotalKills + " / 生成 " + spawner.SpawnedCount);
+
+            // ---------------- 收尾 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- 汇总 ----");
+            sb.AppendLine("通过 " + _m3Pass + " / 未通过 " + _m3Fail);
+            sb.AppendLine(_m3Fail == 0 ? ">>> M3 达成（3 种敌人经 NavMesh 追击并围攻，波次生成器可刷出多波）"
+                                       : ">>> M3 未达成");
+
+            KillAllAlive();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            ctl.EndInputOverride();
+            if (stance != null) stance.combatExitDelay = 6f;
+            HitStop.Enabled = oldHitStop;
+            WriteReport("S3", sb.ToString());
+            Debug.Log("[PlaytestHarness] S3 结束：通过 " + _m3Pass + " / 未通过 " + _m3Fail);
+        }
+
+        // ==================================================================
+        // Sprint 4：水墨风格（M4）
+        // ==================================================================
+
+        private static int _m4Pass, _m4Fail;
+
+        private static void M4(StringBuilder sb, bool ok, string label, string detail)
+        {
+            if (ok) _m4Pass++; else _m4Fail++;
+            sb.AppendLine("[" + (ok ? "通过" : "未通过") + "] " + label
+                          + (string.IsNullOrEmpty(detail) ? "" : "    " + detail));
+        }
+
+        /// <summary>阶段截图统计（在给定矩形里取）。</summary>
+        private struct Shot
+        {
+            public float mean;      // 平均亮度 0..1
+            public float std;       // 亮度标准差
+            public int distinct;    // 量化到 64 级后**出现过的**亮度级数
+            public int n80;         // 覆盖 80% 像素所需的亮度级数（**别拿它当主判据**：64 桶上会卡边界，重跑就翻）
+            public int dominant3;   // 占比 ≥3% 的亮度级数
+            public float topShare;  // 最大那个亮度级占的像素比例
+            public float cover4;    // 前 4 种亮度覆盖的像素比例 ← 判"4 阶量化"的主判据
+            public Color32[] box;
+        }
+
+        private static float Lum(Color32 p) => (p.r * 0.299f + p.g * 0.587f + p.b * 0.114f) / 255f;
+
+        /// <summary>
+        /// 统计一个矩形区域。
+        ///
+        /// 主判据为什么是 <see cref="Shot.n80"/> 而不是"出现过多少级"（distinct）：
+        ///   只要画面里有一点抗锯齿边缘、一点贴图噪声，"出现过"的亮度级就会铺满 64 级 ——
+        ///   那个数**永远很大，永远证明不了什么**（第一次就是这么误判成"量化没生效"的）。
+        ///   而"覆盖 80% 像素需要几个级"对少量噪声像素完全不敏感：
+        ///   连续渐变要几十级才凑够 80%，4 阶量化只要 4 级左右。这才量得出来。
+        /// </summary>
+        private static Shot Analyse(Color32[] px, int w, int h, int x0, int x1, int y0, int y1)
+        {
+            x0 = Mathf.Clamp(x0, 0, w - 1); x1 = Mathf.Clamp(x1, x0 + 1, w);
+            y0 = Mathf.Clamp(y0, 0, h - 1); y1 = Mathf.Clamp(y1, y0 + 1, h);
+            int bw = x1 - x0, bh = y1 - y0;
+            var box = new Color32[bw * bh];
+            var hist = new int[64];
+            double sum = 0, sum2 = 0;
+            int k = 0;
+            for (int y = y0; y < y1; y++)
+                for (int x = x0; x < x1; x++)
+                {
+                    var c = px[y * w + x];
+                    box[k++] = c;
+                    float l = Lum(c);
+                    sum += l; sum2 += l * l;
+                    hist[Mathf.Clamp((int)(l * 64f), 0, 63)]++;
+                }
+
+            var s = new Shot();
+            s.mean = (float)(sum / box.Length);
+            s.std = Mathf.Sqrt(Mathf.Max(0f, (float)(sum2 / box.Length) - s.mean * s.mean));
+            s.box = box;
+
+            int total = box.Length, top = 0, dom = 0;
+            for (int i = 0; i < 64; i++) if (hist[i] > 0) s.distinct++;
+            for (int i = 0; i < 64; i++)
+            {
+                if (hist[i] > top) top = hist[i];
+                if (hist[i] >= total * 0.03f) dom++;
+            }
+            s.topShare = (float)top / total;
+            s.dominant3 = dom;
+
+            var sorted = (int[])hist.Clone();
+            System.Array.Sort(sorted);
+            System.Array.Reverse(sorted);
+            int acc = 0, n = 0;
+            while (n < 64 && acc < total * 0.80f) { acc += sorted[n]; n++; }
+            s.n80 = n;
+            // 「前 4 种墨色覆盖了多少像素」：4 阶量化的**直接**表述 ——
+            // 它就是"整幅画只剩 4 种墨色"这句话的数值形式，不经过任何二次阈值。
+            int top4 = 0;
+            for (int i = 0; i < 4 && i < 64; i++) top4 += sorted[i];
+            s.cover4 = (float)top4 / total;
+            return s;
+        }
+
+        /// <summary>由"该物体在屏幕上的占比"反推采样矩形（居中）。</summary>
+        private static void BoxFromFrac(int w, int h, float fracW, float fracH, out int x0, out int x1, out int y0, out int y1)
+        {
+            int bw = Mathf.Clamp(Mathf.RoundToInt(fracW * w), 8, w);
+            int bh = Mathf.Clamp(Mathf.RoundToInt(fracH * h), 8, h);
+            x0 = (w - bw) / 2; x1 = x0 + bw;
+            y0 = (h - bh) / 2; y1 = y0 + bh;
+        }
+
+        /// <summary>某个尺寸的物体在给定距离上占屏幕高度的比例（针孔相机）。</summary>
+        private static float ScreenFrac(Camera cam, float worldSize, float distance, bool vertical, int w, int h)
+        {
+            float halfH = Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad) * distance;
+            float halfW = halfH * (float)w / h;
+            return worldSize / (2f * (vertical ? halfH : halfW));
+        }
+
+        /// <summary>两张同机位图在中央框上的平均绝对亮度差。用来证明"这一层真的看得见"。</summary>
+        private static float Diff(Shot a, Shot b)
+        {
+            if (a.box == null || b.box == null || a.box.Length != b.box.Length) return -1f;
+            double acc = 0;
+            for (int i = 0; i < a.box.Length; i++) acc += Mathf.Abs(Lum(a.box[i]) - Lum(b.box[i]));
+            return (float)(acc / a.box.Length);
+        }
+
+        /// <summary>
+        /// 把相机渲进一张临时 RT 再读回像素。
+        ///
+        /// 为什么不用 `ScreenCapture.CaptureScreenshotAsTexture`：
+        ///   它抓的是 **Game View**，会把 IMGUI（参数面板）一起拍进去 ——
+        ///   面板上全是文字与滑块，像素统计会被彻底带偏。
+        ///   走 `targetTexture` 只过渲染管线，UI 天然不在图里，分辨率也由我们定死。
+        /// </summary>
+        private static IEnumerator CaptureToPixels(Camera cam, int w, int h,
+                                                   System.Action<Texture2D, Color32[]> done)
+        {
+            var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
+            var prevTarget = cam.targetTexture;
+            var prevActive = RenderTexture.active;
+
+            cam.targetTexture = rt;
+            yield return null; yield return null;   // 等一帧画完（这期间 TargetTexture 已生效）
+
+            RenderTexture.active = rt;
+            var tex = new Texture2D(w, h, TextureFormat.RGB24, false);
+            tex.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+            tex.Apply();
+
+            RenderTexture.active = prevActive;
+            cam.targetTexture = prevTarget;
+            RenderTexture.ReleaseTemporary(rt);
+
+            var px = tex.GetPixels32();
+            done(tex, px);
+        }
+
+        /// <summary>
+        /// Sprint 4 验收：水墨量化光照 → 飞白墨线 → 宣纸底纹，四阶段逐层可见，且不影响性能。
+        ///
+        /// 度量口径上的一条关键做法：**截图期间把 `Time.timeScale` 置 0**。
+        ///   四个阶段必须是"同一瞬间的同一幅画只换了画法" —— 只要有角色/敌人移动，
+        ///   阶段间的像素差里就混进了运动，既证明不了风格，也随帧率漂。冻结时间之后，
+        ///   差值是**纯风格差**，可复现。（注意：冻结后所有等待都必须按**帧**而不是按秒，
+        ///   所以下面统一用 `yield return null`。）
+        /// </summary>
+        public static IEnumerator S4InkFlow()
+        {
+            var sb = new StringBuilder();
+            _m4Pass = 0; _m4Fail = 0;
+
+            var ctx = ResolveContext();
+            if (ctx == null) { WriteReport("S4", "<错误> 场景里找不到 Player / PlayerController / Main Camera"); yield break; }
+
+            var go = ctx.playerGo;
+            var ctl = ctx.ctl;
+            var cam = ctx.cam;
+            var smr = go.GetComponentInChildren<SkinnedMeshRenderer>(true);
+            var panel = UnityEngine.Object.FindObjectOfType<InkStylePanel>();
+            var health = go.GetComponent<PlayerHealth>();
+
+            sb.AppendLine("======================================================================");
+            sb.AppendLine("Sprint 4 验收 —— 水墨风格与渲染管线扩展（M4：有墨味）");
+            sb.AppendLine("生成时间 " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            sb.AppendLine("======================================================================");
+
+            bool oldHitStop = HitStop.Enabled;
+            HitStop.Enabled = false;
+            ctl.BeginInputOverride();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            var stance = go.GetComponentInChildren<CombatStance>(true);
+            if (stance != null) stance.combatExitDelay = 99999f;
+
+            TeleportPlayer(go, new Vector3(0f, 0.45f, -3f));
+            ctl.ResetToLocomotion();
+            { float t = Time.time; while (Time.time - t < 0.9f) yield return null; }
+
+            // ---------------- ① 着色器 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ① 水墨着色器（编译通过才找得到）----");
+            foreach (var sn in new[] { "InkWash/InkCharacter", "Hidden/InkWash/InkEdge", "Hidden/InkWash/InkPaper" })
+            {
+                var sh = Shader.Find(sn);
+                M4(sb, sh != null, "着色器可解析 " + sn, sh != null ? "pass = " + sh.passCount : "Shader.Find 返回 null");
+            }
+
+            // ---------------- ② 主角材质 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ② 主角水墨材质 ----");
+            string matShader = (smr != null && smr.sharedMaterial != null) ? smr.sharedMaterial.shader.name : "<无>";
+            M4(sb, matShader == "InkWash/InkCharacter", "主角当前材质用的是水墨着色器", "实际 = " + matShader);
+            M4(sb, panel != null, "场景里存在参数面板 InkStylePanel",
+                panel != null ? "调参材质 = " + (panel.inkMaterial != null ? panel.inkMaterial.name : "<无>") : "");
+            M4(sb, panel != null && panel.inkMaterial != null, "面板已绑定可调的水墨材质", "");
+
+            // ---------------- ③ RendererFeature 装配 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ③ RendererFeature 装配 ----");
+            M4(sb, InkStyleRegistry.BothRegistered, "两个全屏 Feature 已在运行时注册（= 渲染器资产里确实装了）",
+                "Edge=" + (InkStyleRegistry.Edge != null) + "  Paper=" + (InkStyleRegistry.Paper != null));
+            var es = InkStyleRegistry.EdgeSettings;
+            var ps = InkStyleRegistry.PaperSettings;
+            M4(sb, es != null && es.dryBrushTex != null, "墨线的飞白噪声贴图已接上",
+                es != null && es.dryBrushTex != null ? es.dryBrushTex.name : "<无>");
+            M4(sb, ps != null && ps.paperTex != null, "宣纸底纹贴图已接上",
+                ps != null && ps.paperTex != null ? ps.paperTex.name : "<无>");
+
+            // ---------------- ④ 敌人也换材质（运行时生成，靠组件自注册）----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ④ 敌人材质与换材质登记 ----");
+            var spawner = UnityEngine.Object.FindObjectOfType<WaveSpawner>();
+            if (spawner == null) sb.AppendLine("    ** 场景里找不到 WaveSpawner，跳过本节");
+            else
+            {
+                KillAllAlive();
+                spawner.ResetForTest();
+                EnemyBase.AliveCount = 0; EnemyBase.TotalKills = 0; EnemyBase.TotalSpawned = 0;
+                { float t = Time.time; while (Time.time - t < 0.3f) yield return null; }
+                spawner.Begin();
+                { float t = Time.time; while (spawner.SpawnedCount < 3 && Time.time - t < 10f) yield return null; }
+
+                var alive = AliveEnemies();
+                int inkCount = 0;
+                foreach (var e in alive)
+                {
+                    var r = e.GetComponentInChildren<SkinnedMeshRenderer>(true);
+                    if (r != null && r.sharedMaterial != null && r.sharedMaterial.shader.name == "InkWash/InkCharacter") inkCount++;
+                }
+                M4(sb, alive.Count > 0 && inkCount == alive.Count, "刷出来的敌人全部使用水墨材质",
+                    inkCount + "/" + alive.Count + " 只");
+                M4(sb, InkStylePanel.RegisteredCount >= alive.Count + 1,
+                    "换材质对象已登记（主角 + 敌人，运行时生成的敌人靠组件自注册）",
+                    "登记 " + InkStylePanel.RegisteredCount + " 家（敌人 " + alive.Count + " 只）");
+
+                // 阶段 1「白模」必须能把敌人也切回原 PBR 材质 —— 这一条同时验证
+                // "记录原始材质"没被第二次施工覆盖成水墨材质（那样对照实验会静默失效）
+                if (panel != null && alive.Count > 0)
+                {
+                    panel.ApplyStage(0);
+                    yield return null; yield return null;
+                    var r0 = alive[0].GetComponentInChildren<SkinnedMeshRenderer>(true);
+                    string s0 = (r0 != null && r0.sharedMaterial != null) ? r0.sharedMaterial.shader.name : "<无>";
+                    panel.ApplyStage(3);
+                    yield return null; yield return null;
+                    var r3 = alive[0].GetComponentInChildren<SkinnedMeshRenderer>(true);
+                    string s3 = (r3 != null && r3.sharedMaterial != null) ? r3.sharedMaterial.shader.name : "<无>";
+                    M4(sb, s0 != "InkWash/InkCharacter" && s3 == "InkWash/InkCharacter",
+                        "切阶段 1 时敌人回到原 PBR 材质、切回阶段 4 又是水墨",
+                        "阶段1 = " + s0 + " ｜ 阶段4 = " + s3);
+                }
+            }
+            if (health != null) health.ResetHealth();
+
+            // ---------------- ⑤ 四阶段截图（冻结时间 + 特写机位）----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑤ 四阶段对照（截图期间 Time.timeScale = 0）----");
+
+            string shotDir = Path.Combine(Path.GetFullPath(Path.Combine(Application.dataPath, "..")),
+                                          "Tools/screenshots/s4");
+            Directory.CreateDirectory(shotDir);
+
+            // 特写机位：站在主角正前方 3.2 m、胸口高度看过去，角色大约占满画面高度的 6 成。
+            // 拉这么近是为了让中央框里几乎只有角色本体 —— 量化是不是真的把连续光照压成了几阶，
+            // 只有这样才量得出来（框里混进大面积地面会把差异摊平）。
+            var rig = ctx.rig;
+            bool savedRigOn = rig != null && rig.enabled;
+            Vector3 savedCamPos = cam.transform.position;
+            Quaternion savedCamRot = cam.transform.rotation;
+            if (rig != null) rig.enabled = false;
+
+            // 机位对准**身体中点**（不是胸口）：这样角色在画面里是上下居中的，
+            // 采样框才能简单地按"居中矩形"给出来。
+            const float BodyHeight = 2.20f, BodyWidth = 0.80f, ShotDist = 3.2f;
+            Vector3 aim = go.transform.position + Vector3.up * 1.05f;
+            Vector3 camPos = aim + go.transform.forward * ShotDist;
+            cam.transform.position = camPos;
+            cam.transform.rotation = Quaternion.LookRotation(aim - camPos, Vector3.up);
+            { float t = Time.time; while (Time.time - t < 0.4f) yield return null; }
+
+            const int W = 1280, H = 720;
+            // 采样框按**解析投影**给：角色在 3.2 m 处占屏高 BodyHeight/(2·d·tan(fov/2))，
+            // 宽同理。只在框里取像素，才能把"角色的变化"从"背景没变"里拎出来。
+            int bx0, bx1, by0, by1;
+            BoxFromFrac(W, H,
+                ScreenFrac(cam, BodyWidth, ShotDist, false, W, H) * 1.15f,
+                ScreenFrac(cam, BodyHeight, ShotDist, true, W, H) * 1.05f,
+                out bx0, out bx1, out by0, out by1);
+            sb.AppendLine("   机位 " + F(ShotDist) + " m ／ fov " + F(cam.fieldOfView)
+                          + " ／ 采样框 " + (bx1 - bx0) + "×" + (by1 - by0) + " px（居中）");
+
+            float oldScale = Time.timeScale;
+            Time.timeScale = 0f;                     // 见方法注释：冻结时间，差值才是纯风格差
+            yield return null; yield return null;
+
+            var shots = new Shot[4];
+            var matNames = new string[4];
+            for (int s = 0; s < 4; s++)
+            {
+                if (panel != null) panel.ApplyStage(s);
+                yield return null;
+                yield return null;
+
+                bool wantEdge = s >= 2, wantPaper = s >= 3;
+                M4(sb, InkStyleRegistry.EdgeEnabled == wantEdge,
+                    "阶段 " + (s + 1) + " 墨线开关", "期望 " + wantEdge + " 实际 " + InkStyleRegistry.EdgeEnabled);
+                M4(sb, InkStyleRegistry.PaperEnabled == wantPaper,
+                    "阶段 " + (s + 1) + " 宣纸开关", "期望 " + wantPaper + " 实际 " + InkStyleRegistry.PaperEnabled);
+
+                var r = go.GetComponentInChildren<SkinnedMeshRenderer>(true);
+                matNames[s] = (r != null && r.sharedMaterial != null) ? r.sharedMaterial.shader.name : "<无>";
+                string want = s == 0 ? "Universal Render Pipeline/Lit" : "InkWash/InkCharacter";
+                M4(sb, matNames[s] == want, "阶段 " + (s + 1) + " 主角材质", matNames[s]);
+
+                int idx = s;
+                yield return CaptureToPixels(cam, W, H, (tex, px) =>
+                {
+                    shots[idx] = Analyse(px, W, H, bx0, bx1, by0, by1);
+                    // 写盘失败不能让协程死掉：此刻 Time.timeScale = 0，
+                    // 协程一死就再也没人把它恢复回去，编辑器会直接僵住。
+                    try
+                    {
+                        File.WriteAllBytes(Path.Combine(shotDir, "M4_stage" + (idx + 1) + ".png"), tex.EncodeToPNG());
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Debug.LogWarning("[S4] 写截图失败: " + ex.Message);
+                    }
+                    UnityEngine.Object.Destroy(tex);
+                });
+                sb.AppendLine("   阶段 " + (s + 1) + "（" + InkStylePanel.StageName(s) + "）"
+                              + "   平均亮度 " + F(shots[s].mean) + "   标准差 " + F(shots[s].std)
+                              + "   出现级数 " + shots[s].distinct + "   80%级数 " + shots[s].n80);
+            }
+            Time.timeScale = oldScale;
+            if (rig != null) rig.enabled = savedRigOn;
+            cam.transform.position = savedCamPos;
+            cam.transform.rotation = savedCamRot;
+            sb.AppendLine("   截图写入 " + shotDir + "（M4_stage1..4.png，1280×720，无 UI）");
+
+            float d10 = Diff(shots[1], shots[0]);
+            float d21 = Diff(shots[2], shots[1]);
+            float d32 = Diff(shots[3], shots[2]);
+            float d30 = Diff(shots[3], shots[0]);
+            sb.AppendLine("   逐层像素差（中央框平均绝对亮度差，0..1）：");
+            sb.AppendLine("     ② 量化光照 − ① 白模 = " + F(d10));
+            sb.AppendLine("     ③ 飞白墨线 − ②        = " + F(d21));
+            sb.AppendLine("     ④ 宣纸底纹 − ③        = " + F(d32));
+            sb.AppendLine("     ④ − ①（总变化）       = " + F(d30));
+            M4(sb, d10 > 0.005f, "量化光照改变了画面（② vs ①）", "差值 " + F(d10));
+            M4(sb, d21 > 0.005f, "飞白墨线可见（③ vs ②）", "差值 " + F(d21));
+            M4(sb, d32 > 0.005f, "宣纸底纹可见（④ vs ③）", "差值 " + F(d32));
+            M4(sb, d30 >= d21 && d30 >= d32, "四层叠加的总变化不小于任何单层", F(d30) + " ≥ " + F(Mathf.Max(d21, d32)));
+            // ---- 「量化」不能拿上面这个框来判（一次度量翻车的记录）----
+            // 这里刻意**不判定**，只把数字摊出来。两条原因，第一条就是这次的真凶：
+            //   ① 本着色器在同一墨阶内**仍然乘了漫反射贴图**，所以"出现过多少亮度级"
+            //      本来就不会塌缩 —— 那个数永远很大，拿它判量化只能得到假失败；
+            //   ② 采样框里还有不随阶段变化的地面与墙，把差异进一步摊平。
+            // 正确做法是在**白球**上量：无贴图、关飞白与轮廓，画面里就只剩量化本身。
+            sb.AppendLine("   （参考，不作判定）角色区域：出现亮度级 "
+                          + shots[0].distinct + " → " + shots[1].distinct + " → " + shots[2].distinct
+                          + " → " + shots[3].distinct + "；覆盖 80% 像素所需级数 "
+                          + shots[0].n80 + " / " + shots[1].n80 + " / " + shots[2].n80 + " / " + shots[3].n80);
+
+            // ---------------- ⑤b 量化阶数实测（白球）----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑤b 量化阶数实测（白球：无贴图、飞白=0、轮廓=0、高光=0）----");
+            sb.AppendLine("   做法：球放在相机正前方 1.70 m；**关掉场景里所有灯、把环境光清成黑**，只留一盏");
+            sb.AppendLine("   『顺镜头方向』的平行光 —— 球面正中的 N·L = 1.0，越靠边越暗，是一条受控的亮度斜坡。");
+            sb.AppendLine("   为什么必须受控（两次翻车记录）：① 主光方向是场景定的，球正面完全可能背光，");
+            sb.AppendLine("   那样无论几阶都只剩最暗一阶，「量出来全是 1 级」；");
+            sb.AppendLine("   ② 第二版改用近距离点光（0.9 m / 强度 3.5），把球直接打爆成纯白 ——");
+            sb.AppendLine("   PBR 对照组的平均亮度 0.957、单一级别占 85%，饱和的输入里根本不存在可分的阶。");
+            sb.AppendLine("   那是**尺子坏了**，不是量化没生效。");
+            sb.AppendLine("   判据：把 0..1 亮度切成 64 个桶，看『前 4 种墨色覆盖了百分之多少像素』—— 4 阶量化下应当接近");
+            sb.AppendLine("   100%，因为整幅画本来就只剩 4 种墨色；再配『最大一桶占多少』做交叉验证。");
+            sb.AppendLine("   另外把『阶间柔度』压到 0.01（默认 0.06）：软边是美术过渡，与量化本身无关，");
+            sb.AppendLine("   留着它会有约 32% 的像素落在阶与阶之间，度量会把「阶」读成连续渐变。");
+
+            var probe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            probe.name = "InkProbeSphere";
+            var probeCol = probe.GetComponent<Collider>();
+            if (probeCol != null) UnityEngine.Object.Destroy(probeCol);
+            const float ProbeD = 1.0f, ProbeDist = 1.70f;
+            var probeMr = probe.GetComponent<MeshRenderer>();
+            probe.transform.localScale = Vector3.one * ProbeD;
+            probe.transform.position = cam.transform.position + cam.transform.forward * ProbeDist;
+
+            // ---- 受控光照：存档 → 清空 → 只留一盏 headlight（跑完必须还原）----
+            var savedLights = new System.Collections.Generic.List<Light>();
+            var savedLightOn = new System.Collections.Generic.List<bool>();
+            foreach (var L in UnityEngine.Object.FindObjectsOfType<Light>())
+            {
+                savedLights.Add(L); savedLightOn.Add(L.enabled); L.enabled = false;
+            }
+            var savedAmbMode = RenderSettings.ambientMode;
+            var savedAmbColor = RenderSettings.ambientLight;
+            var savedAmbIntensity = RenderSettings.ambientIntensity;
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientLight = Color.black;
+            RenderSettings.ambientIntensity = 0f;
+            DynamicGI.UpdateEnvironment();
+
+            var probeLightGo = new GameObject("InkProbeLight");
+            var probeLight = probeLightGo.AddComponent<Light>();
+            probeLight.type = LightType.Directional;
+            probeLight.intensity = 1.0f;
+            probeLight.color = Color.white;
+            probeLight.shadows = LightShadows.None;
+            // 顺镜头照过去：球面正中 N·L = 1，边缘 0 → 一条干净的连续亮度斜坡，量化后必然成阶
+            probeLightGo.transform.position = cam.transform.position;
+            probeLightGo.transform.rotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
+
+            int sx0, sx1, sy0, sy1;
+            BoxFromFrac(W, H,
+                ScreenFrac(cam, ProbeD, ProbeDist, false, W, H) * 0.90f,
+                ScreenFrac(cam, ProbeD, ProbeDist, true, W, H) * 0.90f,
+                out sx0, out sx1, out sy0, out sy1);
+
+            var litShader = Shader.Find("Universal Render Pipeline/Lit");
+            var inkShader = Shader.Find("InkWash/InkCharacter");
+            float[] bandSet = { 2f, 4f, 8f };
+            var probeShots = new Shot[bandSet.Length + 1];
+            var probeNames = new string[bandSet.Length + 1];
+            sb.AppendLine("   采样框 " + (sx1 - sx0) + "×" + (sy1 - sy0) + " px（居中）");
+
+            // 用局部函数而不是 lambda：for 循环变量在 lambda 里是**同一个变量**，
+            // 稍不留神就把三次结果写进同一个下标（写对了也读不出来哪里对）。
+            var shotOne = probeShots; var nameOne = probeNames;
+            for (int i = 0; i < bandSet.Length + 1; i++)
+            {
+                Material m;
+                if (i == 0)
+                {
+                    if (litShader == null) { sb.AppendLine("   ** 找不到 URP/Lit，跳过 PBR 对照"); continue; }
+                    m = new Material(litShader);
+                    m.SetColor("_BaseColor", Color.white);
+                    if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", 0f);
+                    if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", 0f);
+                    nameOne[0] = "URP/Lit（PBR 对照）";
+                    if (panel != null) panel.ApplyStage(0);       // 两个全屏 Feature 都关，画面里只有球
+                }
+                else
+                {
+                    if (inkShader == null) { sb.AppendLine("   ** 找不到水墨着色器，跳过阶数实测"); continue; }
+                    m = new Material(inkShader);
+                    m.SetFloat("_Bands", bandSet[i - 1]);
+                    m.SetFloat("_BrushStrength", 0f);   // ★ 关飞白：否则抖动把阶边界抹开，量不到阶数
+                    m.SetFloat("_RimStrength", 0f);
+                    m.SetFloat("_SpecStrength", 0f);
+                    // ★ 阶间柔度压到最小：它是**美术上的软边过渡**，与"有没有量化"是两件事。
+                    //   留着默认 0.06 时，三个阶边界各摊开约 0.12 的亮度宽度 —— 按球面面积算
+                    //   正好吃掉约 32% 的像素，于是"前 4 种墨色"只剩 75%，看着像量化没生效。
+                    //   探针要测的是量化**本身**，所以把软边摘出去单独看。
+                    m.SetFloat("_BandSoftness", 0.01f);
+                    nameOne[i] = "水墨 " + bandSet[i - 1].ToString("0") + " 阶";
+                    if (panel != null) panel.ApplyStage(1);       // 有量化、没有墨线/宣纸
+                }
+                probeMr.sharedMaterial = m;
+                yield return null; yield return null;
+
+                int idx = i;
+                yield return CaptureToPixels(cam, W, H, (tex, px) =>
+                {
+                    shotOne[idx] = Analyse(px, W, H, sx0, sx1, sy0, sy1);
+                    try
+                    {
+                        string fn = idx == 0 ? "M4_quant_pbr.png"
+                                             : "M4_quant_bands" + bandSet[idx - 1].ToString("0") + ".png";
+                        File.WriteAllBytes(Path.Combine(shotDir, fn), tex.EncodeToPNG());
+                    }
+                    catch (System.Exception ex) { Debug.LogWarning("[S4] 写图失败: " + ex.Message); }
+                    UnityEngine.Object.Destroy(tex);
+                });
+                UnityEngine.Object.Destroy(m);
+            }
+
+            UnityEngine.Object.Destroy(probe);
+            UnityEngine.Object.Destroy(probeLightGo);
+            // ---- 还原受控光照前存档的场景光照（不还原会把后面的展示/性能段全拍黑）----
+            for (int i = 0; i < savedLights.Count; i++)
+                if (savedLights[i] != null) savedLights[i].enabled = savedLightOn[i];
+            RenderSettings.ambientMode = savedAmbMode;
+            RenderSettings.ambientLight = savedAmbColor;
+            RenderSettings.ambientIntensity = savedAmbIntensity;
+            DynamicGI.UpdateEnvironment();
+
+            for (int i = 0; i < probeShots.Length; i++)
+                sb.AppendLine("   " + probeNames[i] + "：平均亮度 " + F(probeShots[i].mean)
+                              + "，出现过 " + probeShots[i].distinct + " 级"
+                              + "，前 4 种墨色覆盖 " + F(probeShots[i].cover4 * 100f) + "%"
+                              + "，最大一级占 " + F(probeShots[i].topShare * 100f) + "%"
+                              + "（参考 n80 = " + probeShots[i].n80 + "）");
+
+            bool probeOk = probeShots[0].n80 > 0 && probeShots[2].n80 > 0;
+            if (probeOk)
+            {
+                // ★ 主判据是「前 4 种墨色覆盖了多少像素」，不是 n80。
+                //   上一版用 n80（覆盖 80% 像素需要几个 64 桶），它恰好卡在 5/6 的边界上 ——
+                //   同一份代码重跑一次就从 5 变 6、判定翻面。那是**度量自身在抖**，不是画面变了。
+                //   "4 阶量化"要说的本来就是"整幅画只剩 4 种墨色"，直接量它。PBR 作为对照。
+                M4(sb, probeShots[2].cover4 >= 0.90f,
+                    "4 阶量化后前 4 种墨色覆盖 ≥ 90% 像素（= 画面只剩 4 种墨色）",
+                    "PBR " + F(probeShots[0].cover4 * 100f) + "% → 4 阶 " + F(probeShots[2].cover4 * 100f) + "%");
+                M4(sb, probeShots[2].topShare > probeShots[0].topShare,
+                    "4 阶量化出现大片同亮度区域（最大一级占比高于 PBR）",
+                    "PBR " + F(probeShots[0].topShare * 100f) + "% → 4 阶 " + F(probeShots[2].topShare * 100f) + "%");
+                M4(sb, probeShots[1].cover4 >= probeShots[2].cover4 && probeShots[2].cover4 >= probeShots[3].cover4,
+                    "墨阶数越少，前 4 种墨色的覆盖越集中（2 阶 ≥ 4 阶 ≥ 8 阶）",
+                    F(probeShots[1].cover4 * 100f) + "% ≥ " + F(probeShots[2].cover4 * 100f) + "% ≥ "
+                    + F(probeShots[3].cover4 * 100f) + "%");
+            }
+            else
+            {
+                M4(sb, false, "量化阶数实测取不到有效样本",
+                    "PBR " + probeShots[0].n80 + " / 4 阶 " + probeShots[2].n80 + "（检查着色器与灯光）");
+            }
+
+            // ---------------- ⑥ 展示：四阶段轮播（供录屏）----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑥ 展示轮播（4 阶段 × 4 s，横向慢走）----");
+            ctl.SetInjectedMove(Vector2.zero, false);
+            { float t = Time.time; while (Time.time - t < 0.4f) yield return null; }
+            for (int s = 0; s < 4; s++)
+            {
+                if (panel != null) panel.ApplyStage(s);
+                float t0 = Time.time;
+                float dir = 1f;
+                float flip = 0f;
+                ctl.SetInjectedMove(new Vector2(dir, 0f), false);
+                while (Time.time - t0 < 4.0f)
+                {
+                    if (Time.time - flip > 1.0f) { flip = Time.time; dir = -dir; }
+                    ctl.SetInjectedMove(new Vector2(dir, 0f), false);
+                    yield return null;
+                }
+            }
+            ctl.SetInjectedMove(Vector2.zero, false);
+
+            // ---------------- ⑦ 性能 ----------------
+            sb.AppendLine();
+            sb.AppendLine("---- ⑦ 性能（阶段 4 最重，面板已隐藏）----");
+            if (panel != null) panel.ApplyStage(3);
+            bool savedVisible = panel != null && panel.visible;
+            if (panel != null) panel.visible = false;
+            { float t = Time.time; while (Time.time - t < 0.6f) yield return null; }   // 预热
+            int frames = 0;
+            float elapsed = 0f;
+            { float t0 = Time.unscaledTime; float t = Time.time;
+              while (Time.time - t < 3.0f) { frames++; elapsed = Time.unscaledTime - t0; yield return null; } }
+            float fps = elapsed > 0f ? frames / elapsed : 0f;
+            if (panel != null) panel.visible = savedVisible;
+            sb.AppendLine("   帧数 " + frames + " / 墙钟 " + F(elapsed) + " s  → " + F(fps) + " fps @ "
+                          + Screen.width + "×" + Screen.height);
+            M4(sb, fps >= 55f, "1080p 下帧率 ≥ 55", F(fps) + " fps（若本行在录屏运行中取得，会明显偏低，需无录屏复测）");
+
+            // ---------------- 收尾 ----------------
+            KillAllAlive();
+            ctl.SetInjectedMove(Vector2.zero, false);
+            ctl.EndInputOverride();
+            if (stance != null) stance.combatExitDelay = 6f;
+            HitStop.Enabled = oldHitStop;
+
+            sb.AppendLine();
+            sb.AppendLine("---- 汇总 ----");
+            sb.AppendLine("通过 " + _m4Pass + " / 未通过 " + _m4Fail);
+            sb.AppendLine(_m4Fail == 0
+                ? ">>> M4 达成（多阶量化光照 + 飞白墨线 + 宣纸底纹三层可分别开关，四阶段逐层可见）"
+                : ">>> M4 未达成");
+            WriteReport("S4", sb.ToString());
+            Debug.Log("[PlaytestHarness] S4 结束：通过 " + _m4Pass + " / 未通过 " + _m4Fail);
         }
 
         private static void WriteReport(string prefix, string text)

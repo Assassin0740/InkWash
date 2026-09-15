@@ -1,0 +1,73 @@
+===== s3_diag_ai =====
+spawner 配置: spawnCenter=(0.00, 0.30, 0.00)  spawnRadius=9.5  minDistanceToPlayer=5.5  spawnPoints=0  waves=3  autoStart=False  当前 AllCleared=False  SpawnedCount=0
+玩家 position = (0.00, 0.33, -3.00)
+PlayerRef.Exists = True  Position = (0.00, 0.33, -3.00)
+PlayerRef.Instance == go ? True
+
+---- 生成后逐帧追踪（只打状态变化）----
+   t=1.20  墨徒:Spawning@0.0(y0.08) 
+   t=1.21  墨徒:Spawning@9.5(y0.03) 
+   t=1.46  墨徒:Idle@9.5(y0.03) 
+   t=1.66  墨徒:Spawning@0.0(y0.08) 墨徒:Idle@9.5(y0.03) 
+   t=1.66  墨徒:Spawning@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 
+   t=1.91  墨徒:Idle@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 
+   t=2.11  墨徒:Spawning@0.0(y0.08) 墨徒:Idle@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 
+   t=2.12  墨徒:Spawning@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 
+   t=2.36  墨徒:Idle@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 墨徒:Idle@9.5(y0.03) 
+
+敌人数 = 3
+--- 墨徒  state=Idle  stateTime=3.15
+    pos=(-9.464, 0.032, -2.172)  eulerY=0.0
+    forward=(0.000, 0.000, 1.000)
+    dist=9.501  sightRange=17  (dist>range? False)
+    angle=95.0  半视野=110.0  (angle>half? False)
+    requireLineOfSight=True  Linecast → Gate_W  layer=0  是敌人自己=False 是玩家=False 距命中=4.26
+    agent: enabled=True isOnNavMesh=True isStopped=True hasPath=False speed=0.00 pos=(-9.46, 0.03, -2.17)
+    animator: null? True  paramCount=-1
+--- 墨徒  state=Idle  stateTime=3.60
+    pos=(6.418, 0.025, -10.004)  eulerY=0.0
+    forward=(0.000, 0.000, 1.000)
+    dist=9.500  sightRange=17  (dist>range? False)
+    angle=42.5  半视野=110.0  (angle>half? False)
+    requireLineOfSight=True  Linecast → Gate_S  layer=0  是敌人自己=False 是玩家=False 距命中=6.48
+    agent: enabled=True isOnNavMesh=True isStopped=True hasPath=False speed=0.00 pos=(6.42, 0.03, -10.00)
+    animator: null? True  paramCount=-1
+--- 墨徒  state=Idle  stateTime=4.06
+    pos=(0.000, 0.025, 6.500)  eulerY=0.0
+    forward=(0.000, 0.000, 1.000)
+    dist=9.500  sightRange=17  (dist>range? False)
+    angle=180.0  半视野=110.0  (angle>half? True)
+    requireLineOfSight=True  Linecast → Gate_N  layer=0  是敌人自己=False 是玩家=False 距命中=1.28
+    agent: enabled=True isOnNavMesh=True isStopped=True hasPath=False speed=0.00 pos=(0.00, 0.03, 6.50)
+    animator: null? True  paramCount=-1
+
+---- 强制把第一只敌人瞬移到玩家面前 6 m，观察 2 s ----
+  墨徒  state=Idle  pos=(0.000, 0.325, 3.000)  dist=6.00  agent.velocity=(0.000, 0.000, 0.000)  hasPath=False  desiredVelocity=(0.000, 0.000, 0.000)  remainingDistance=0.00
+
+---- 玩家贴到它面前 1.7 m 并挥剑，逐帧记录判定体 ----
+  SwordHitbox 节点 = True  Hitbox = True  PlayerSwordHitbox = True
+  SwordVfx = True  WeaponInstance = W_Sword
+  挥剑前：玩家=(0.000, 0.330, 1.300)  目标=(0.000, 0.325, 3.000)  水平距=1.700
+    f27 t=0.19  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f28 t=0.20  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f29 t=0.21  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f30 t=0.21  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f31 t=0.22  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f32 t=0.23  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f33 t=0.23  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f34 t=0.24  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f35 t=0.25  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f36 t=0.25  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f37 t=0.26  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f38 t=0.27  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f39 t=0.28  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f40 t=0.28  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f41 t=0.29  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f42 t=0.30  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f43 t=0.30  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f44 t=0.31  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f45 t=0.32  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f46 t=0.32  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+    f47 t=0.33  active=True  A=(0.59, 1.47, 2.49) B=(1.32, 0.91, 1.81) r=0.42  扫描到 1 个: [Player L8]  HitCount=0
+  HitMomentCount=1  剑身长度=1.278  开窗=1  命中=0
+  目标 HP 42.0 → 42.0  受击次数=0  状态=Idle

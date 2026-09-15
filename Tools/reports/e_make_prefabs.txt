@@ -1,0 +1,10 @@
+========== 生成敌人预制体 ==========
+  墨徒  身高=1.75m  OK
+  墨偶  身高=1.70m  OK
+  墨魇  身高=2.55m  OK
+  已保存 Assets/_Project/Prefabs/Enemies/Enemy_MoTu.prefab
+  已保存 Assets/_Project/Prefabs/Enemies/Enemy_MoOu.prefab
+  已保存 Assets/_Project/Prefabs/Enemies/Enemy_MoYan.prefab
+  已保存 Assets/_Project/Prefabs/Enemies/Ink_Projectile.prefab
+  墨偶已挂上墨弹预制体
+  已给 Player.prefab 补上 PlayerHealth + SwordHitbox
