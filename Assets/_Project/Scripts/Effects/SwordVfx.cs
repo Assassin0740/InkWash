@@ -146,6 +146,11 @@ namespace InkWash.Effects
         /// <summary>右手骨骼是否解析成功（拖尾挂点）。</summary>
         public bool HasBladeAnchor => bladeAnchor != null;
 
+        /// <summary>运行时克隆出来的正式武器实例；没配 weaponPrefab 时为 null。</summary>
+        /// <remarks>给 <see cref="InkWash.Player.CombatStance"/> 这类组件用 —— 它负责把武器在
+        /// 「右手 ↔ 背部」之间搬运，直接复用本实例，避免再克隆一份出来两把剑。</remarks>
+        public GameObject WeaponInstance => _weapon;
+
         /// <summary>刀刃当前线速度（米/秒）。拖尾门控的输入量，也用于验收判定"出光时刀已经动了"。</summary>
         public float BladeSpeed { get; private set; }
 

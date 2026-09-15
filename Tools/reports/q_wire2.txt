@@ -1,0 +1,18 @@
+父骨骼: CC_Base_Spine02  (世界路径 Player/Visual/Feng/root/CC_Base_Hip/CC_Base_Waist/CC_Base_Spine01/CC_Base_Spine02)
+新建 BackSocket
+  localPos   = (-0.041672, 0.196906, -0.055625)
+  localEuler = (62.4750, 92.6888, 180.2694)
+  localScale = (1.000, 1.000, 1.000)
+新建 CombatStance 组件
+
+========== 接线后（重新读盘复核）==========
+  animator          = Player
+  player            = Player
+  swordVfx          = Player  (weaponPrefab=W_Sword)
+  backSocket        = Player/Visual/Feng/root/CC_Base_Hip/CC_Base_Waist/CC_Base_Spine01/CC_Base_Spine02/BackSocket
+  handPose          = Player
+  relaxedIdleClip   = Rig|Idle_Loop
+  combatExitDelay   = 6
+  startInCombat     = False
+
+已保存 Assets/_Project/Prefabs/Player/Player.prefab

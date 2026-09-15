@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2785233610935798848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1333182768497197333}
+  m_Layer: 0
+  m_Name: BackSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1333182768497197333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2785233610935798848}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.6177691, y: -0.3594451, z: 0.5911231, w: 0.37381008}
+  m_LocalPosition: {x: -0.041672, y: 0.196906, z: -0.055625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 146315340268506561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6830905228196163153
 GameObject:
   m_ObjectHideFlags: 0
@@ -16,6 +47,7 @@ GameObject:
   - component: {fileID: 4642661093928065823}
   - component: {fileID: 4669033096784831669}
   - component: {fileID: 5718752645052886692}
+  - component: {fileID: 1038111662515904894}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -260,6 +292,27 @@ MonoBehaviour:
   fingerCurl: {x: 70, y: 85, z: 55}
   thumbCurl: {x: 30, y: 30, z: 25}
   palmOffset: 0.015
+--- !u!114 &1038111662515904894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf1dd6cfdcdcc4744bb68df18c87c39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4525460533489108174}
+  player: {fileID: 4259422993641270396}
+  swordVfx: {fileID: 2483706807998641495}
+  backSocket: {fileID: 1333182768497197333}
+  handPose: {fileID: 5718752645052886692}
+  relaxedIdleClip: {fileID: 4925837963642883786, guid: 09c96d4af43f0aa4ebb0859db9ad12f3,
+    type: 3}
+  combatExitDelay: 6
+  startInCombat: 0
 --- !u!1001 &6319620012404730793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -594,9 +647,19 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 02817023ae24556428b408e73b9255bd, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -2165490838445971053, guid: 02817023ae24556428b408e73b9255bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1333182768497197333}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02817023ae24556428b408e73b9255bd, type: 3}
+--- !u!4 &146315340268506561 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2165490838445971053, guid: 02817023ae24556428b408e73b9255bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7202786911083406418}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7241728783785968569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 02817023ae24556428b408e73b9255bd,

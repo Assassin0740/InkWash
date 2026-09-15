@@ -1,0 +1,28 @@
+CombatStance.IsReady = True
+  combatExitDelay = 6  startInCombat = False
+  relaxedIdleClip = Rig|Idle_Loop
+  backSocket      = BackSocket
+
+① 初始（期望：非战斗 / 垂手 / 剑在背）
+  InCombat=False  Idle片段=Rig|Idle_Loop        武器挂点=背:BackSocket     握拳补丁=False 距上次战斗输入=0.00s
+  期望 Idle 片段应含 Idle_Loop、挂点应为「背:BackSocket」
+
+② 触发攻击后（期望：战斗 / 持剑待机 / 剑在右手）
+  InCombat=True   Idle片段=Melee_1H_Attack_Slice_Diagonal 武器挂点=手:CC_Base_R_Hand 握拳补丁=True  距上次战斗输入=0.00s
+  Phase=Attack  SwitchToCombatCount=1
+
+③ 把 combatExitDelay 临时改为 1.5s，静置观察是否自动收回（打时间线）
+   [t= 0.00s] Phase=Attack      InCombat=True  SinceCombatInput= 0.00 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 0.50s] Phase=Attack      InCombat=True  SinceCombatInput= 0.00 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 1.00s] Phase=Attack      InCombat=True  SinceCombatInput= 0.00 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 1.50s] Phase=Attack      InCombat=True  SinceCombatInput= 0.00 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 2.00s] Phase=Attack      InCombat=True  SinceCombatInput= 0.00 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 2.50s] Phase=Locomotion  InCombat=True  SinceCombatInput= 0.13 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 3.00s] Phase=Locomotion  InCombat=True  SinceCombatInput= 0.37 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 3.50s] Phase=Locomotion  InCombat=True  SinceCombatInput= 0.61 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 4.00s] Phase=Locomotion  InCombat=True  SinceCombatInput= 0.85 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 4.50s] Phase=Locomotion  InCombat=True  SinceCombatInput= 1.07 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 5.00s] Phase=Locomotion  InCombat=True  SinceCombatInput= 1.26 挂点=手:CC_Base_R_Hand 进战斗=1 退战斗=1
+   [t= 5.50s] Phase=Locomotion  InCombat=False SinceCombatInput= 1.50 挂点=背:BackSocket     进战斗=1 退战斗=2
+  InCombat=False  Idle片段=Rig|Idle_Loop        武器挂点=背:BackSocket     握拳补丁=False 距上次战斗输入=1.50s
+  >>> 观察到自动收回 = True   进战斗次数=1  退战斗次数=2

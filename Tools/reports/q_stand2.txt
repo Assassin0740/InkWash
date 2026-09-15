@@ -1,0 +1,12 @@
+A_UAL1_IdleLoop          实际=Rig|Idle_Loop      剑与向下=  57.6° 剑与前方= 143.2° 剑显示=False
+B_UAL2_IdleNoLoop        实际=Armature|Idle_No_Loop 剑与向下=  57.6° 剑与前方= 143.3° 剑显示=False
+C_KI_Idle01              实际=Idle01             剑与向下=  70.1° 剑与前方= 154.9° 剑显示=False
+D_KayKit_IdleA           实际=Idle_A             剑与向下=  88.4° 剑与前方= 152.9° 剑显示=False
+E_反例_垂手但剑在手              实际=Rig|Idle_Loop      剑与向下=  57.1° 剑与前方= 142.9° 剑显示=True
+F_Feng_持剑待机              实际=Idle               剑与向下=  34.1° 剑与前方=  91.5° 剑显示=True
+A_UAL1_IdleLoop          实际=Rig|Idle_Loop      剑与向下=  57.1° 剑与前方= 143.0° 剑显示=False
+B_UAL2_IdleNoLoop        实际=Armature|Idle_No_Loop 剑与向下=  57.4° 剑与前方= 143.1° 剑显示=False
+C_KI_Idle01              实际=Idle01             剑与向下=  70.2° 剑与前方= 154.9° 剑显示=False
+D_KayKit_IdleA           实际=Idle_A             剑与向下=  88.4° 剑与前方= 152.9° 剑显示=False
+E_反例_垂手但剑在手              实际=Rig|Idle_Loop      剑与向下=  57.2° 剑与前方= 143.0° 剑显示=True
+F_Feng_持剑待机              实际=Idle               剑与向下=  34.0° 剑与前方=  91.5° 剑显示=True

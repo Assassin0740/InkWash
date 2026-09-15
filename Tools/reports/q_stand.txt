@@ -1,0 +1,140 @@
+========== 当前 Player.controller 各状态片段 ==========
+控制器: Assets/_Project/Animations/Player.controller
+  Idle                   → Idle                     ← 
+  Walk                   → Walking_A                ← 
+  Run                    → Running_A                ← 
+  Dash                   → Dodge_Forward            ← 
+  Atk1                   → Melee_1H_Attack_Slice_Diagonal ← 
+  Atk1Rec                → Slice_Diagonal_Rec       ← 
+  Atk2                   → Melee_1H_Attack_Slice_Horizontal ← 
+  Atk2Rec                → Slice_Horizontal_Rec     ← 
+  Atk3                   → Melee_1H_Attack_Stab     ← 
+
+========== 全部 Humanoid 片段（按名字分组）==========
+--- A. 名字像「待机/站立/垂手」的 ---
+  Idle                           [ 2.50s] ← Assets/Char_Feng/Animation/Idle.anim
+  Melee_2H_Idle                  [ 1.57s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_CombatMelee.fbx
+  Melee_Unarmed_Idle             [ 1.07s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_CombatMelee.fbx
+  Melee_Unarmed_Smash            [ 3.47s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_CombatMelee.fbx
+  Melee_Unarmed_Punch            [ 1.23s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_CombatMelee.fbx
+  Melee_Unarmed_Kick             [ 1.70s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_CombatMelee.fbx
+  Idle_A                         [ 1.97s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_General.fbx
+  Idle_B                         [ 6.00s] ← Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_General.fbx
+  Melee_Unarmed_Attack_Punch_A   [ 1.17s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatMelee.fbx
+  Melee_2H_Idle                  [ 1.07s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatMelee.fbx
+  Melee_Unarmed_Idle             [ 1.07s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatMelee.fbx
+  Melee_Unarmed_Attack_Kick      [ 0.93s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatMelee.fbx
+  Ranged_Bow_Idle                [ 1.57s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatRanged.fbx
+  Ranged_Bow_Aiming_Idle         [ 1.83s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_CombatRanged.fbx
+  Idle_A                         [ 1.07s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_General.fbx
+  Idle_B                         [ 2.13s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_General.fbx
+  Jump_Idle                      [ 1.07s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_MovementBasic.fbx
+  Lie_StandUp                    [ 2.33s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Sit_Chair_StandUp              [ 0.80s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Lie_Idle                       [ 2.67s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Sit_Floor_Idle                 [ 4.00s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Sit_Floor_StandUp              [ 1.13s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Sit_Chair_Idle                 [ 3.60s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Simulation.fbx
+  Skeletons_Idle                 [ 4.27s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Special.fbx
+  Skeletons_Awaken_Standing      [ 1.00s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Special.fbx
+  Skeletons_Inactive_Standing_Pose [ 0.03s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Special.fbx
+  Fishing_Idle                   [ 2.33s] ← Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_Tools.fbx
+  Idle01                         [ 2.70s] ← Assets/ThirdParty/KevinIglesias/Animations/Male/Idles/HumanM@Idle01.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Alien.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Alien.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Birb.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Birb.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/BlueDemon.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/BlueDemon.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Bunny.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Bunny.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Cactoro.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Cactoro.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Demon.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Demon.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Dino.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Dino.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Fish.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Fish.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Frog.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Frog.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Monkroose.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Monkroose.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/MushroomKing.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/MushroomKing.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Ninja.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Ninja.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Orc.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Orc.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Orc_Skull.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Orc_Skull.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Tribal.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Tribal.fbx
+  CharacterArmature|Jump_Idle    [ 0.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Yeti.fbx
+  CharacterArmature|Idle         [ 1.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX/Yeti.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Alien.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Birb.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Cactoro.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Cat.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Chicken.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Dog.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Fish.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/GreenBlob.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/GreenSpikyBlob.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Mushnub.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Mushnub_Evolved.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Ninja.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Orc.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Pigeon.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/PinkBlob.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Wizard.fbx
+  CharacterArmature|Idle         [ 2.00s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX/Yeti.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Alpaking.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Alpaking_Evolved.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Armabee.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Armabee_Evolved.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Demon.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Dragon.fbx
+  CharacterArmature|Flying_Idle  [ 1.50s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Dragon_Evolved.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Ghost.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Ghost_Skull.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Glub.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Glub_Evolved.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Goleling.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Goleling_Evolved.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Hywirl.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Pigeon.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Squidle.fbx
+  CharacterArmature|Flying_Idle  [ 1.17s] ← Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX/Tribal.fbx
+  Rig|Sword_Idle                 [ 1.67s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Idle_Torch_Loop            [ 1.27s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Idle_Talking_Loop          [ 2.93s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Crouch_Idle_Loop           [ 2.93s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Spell_Simple_Idle_Loop     [ 2.10s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Swim_Idle_Loop             [ 3.33s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Idle_Loop                  [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Pistol_Idle_Loop           [ 1.67s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Rig|Sitting_Idle_Loop          [ 1.67s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx
+  Armature|Zombie_Idle_Loop      [ 1.33s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_FoldArms_Loop    [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_Rail_Call        [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_TalkingPhone_Loop [ 2.93s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_Shield_Loop      [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|LayToIdle             [ 1.53s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_Rail_Loop        [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|NinjaJump_Idle_Loop   [ 2.00s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_Lantern_Loop     [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_No_Loop          [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Idle_Shield_Break     [ 1.07s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Zombie_Idle_Loop      [ 1.33s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_FoldArms_Loop    [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_Rail_Call        [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_TalkingPhone_Loop [ 2.93s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_Shield_Loop      [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|LayToIdle             [ 1.53s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_Rail_Loop        [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|NinjaJump_Idle_Loop   [ 2.00s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_Lantern_Loop     [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_No_Loop          [ 2.50s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+  Armature|Idle_Shield_Break     [ 1.07s] ← Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard_RM.fbx
+（工程内带时长的片段总数: 1663）
