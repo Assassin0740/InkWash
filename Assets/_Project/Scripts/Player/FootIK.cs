@@ -103,7 +103,11 @@ namespace InkWash.Player
         [Tooltip("网格最低点与地面的目标间隙（米）。0 = 正好落在踏面上")]
         public float groundClearance = 0.005f;
 
-        [Tooltip("从最低点上方多高开始向下探地面")]
+        [Tooltip("从最低点上方多高开始向下探地面。\n" +
+                 "⚠ 起点是 max(网格最低点, 角色根 Y) + 本值 —— 不只是网格最低点。\n" +
+                 "为什么：动画可以把模型压到角色根之下很远（UAL2 剑术的收招段沉 0.5~0.9m），\n" +
+                 "若以网格最低点为起点、本值又小，射线起点会落到**地面之下**，向下探永远打不到地面，\n" +
+                 "于是 HasGroundInfo=false → BodyLift 归零 → 沉得更深（正反馈）。")]
         public float probeUp = 0.5f;
 
         [Tooltip("向下探测的最大距离。超过这个深度就认为「没地面信息」，不做修正")]
@@ -116,8 +120,10 @@ namespace InkWash.Player
         [Tooltip("抬升量的收敛速度（越大越硬）。太小会跟不上快速下蹲，太大会看到弹跳")]
         public float liftSmooth = 14f;
 
-        [Tooltip("单次最大抬升，防止探到异常地面时把人弹飞")]
-        public float maxLift = 0.8f;
+        [Tooltip("单次最大抬升，防止探到异常地面时把人弹飞。\n" +
+                 "取 1.3 而不是 0.8：UAL2 剑术的收招段（Atk2Rec/Atk3）动画本体最低点在 −0.85m 左右，\n" +
+                 "需要的一次性抬升量超过 0.8，卡上限会让脚永远差一截。")]
+        public float maxLift = 1.3f;
 
         [Header("每段动画的竖直基准偏移")]
         [Tooltip("由 Tools/cs/f_calib_footik.cs 量、Tools/cs/f_apply_footik.cs 推送。\n" +
@@ -331,7 +337,15 @@ namespace InkWash.Player
             }
 
             float groundY;
-            if (!ProbeGround(low, out groundY))
+            // ⚠ 探测起点取「网格最低点」与「角色根」的**较高者**，不能只用网格最低点。
+            //   角色根由 CharacterController 保持在地面附近，是个可靠的锚；
+            //   而动画可以把模型压到根之下很远（UAL2 剑术收招段实测沉 0.5~0.9m）。
+            //   若只用网格最低点 + probeUp(0.5m)，射线起点会落到地面之下，
+            //   向下探永远打不到地面 → HasGroundInfo=false → BodyLift 归零 →
+            //   沉得更深，形成正反馈（2026-09-15 换 UAL2 剑术片段时暴露：
+            //   Atk2Rec 最深处探地失败，−0.58m 一直不修）。
+            var probeFrom = new Vector3(low.x, Mathf.Max(low.y, transform.position.y), low.z);
+            if (!ProbeGround(probeFrom, out groundY))
             {
                 HasGroundInfo = false;
                 RawPenetration = 0f;

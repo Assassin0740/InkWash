@@ -1,0 +1,6 @@
+旧_Atk1_KayKit_Diagonal  (1.00s)
+新_Atk1_UAL2_RegularA  (0.43s)
+旧_Atk2_KayKit_Horizontal  (1.37s)
+新_Atk2_UAL2_RegularB  (0.53s)
+旧_Atk3_KayKit_Stab  (1.60s)
+新_Atk3_UAL2_RegularC  (2.00s)

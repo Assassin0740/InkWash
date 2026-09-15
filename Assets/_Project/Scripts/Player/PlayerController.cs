@@ -119,12 +119,16 @@ namespace InkWash.Player
         public float[] comboLungeDuration = { 0.22f, 0.24f, 0.42f };
 
         [Tooltip("各段挥砍动作总时长（秒），与 Player.controller 里的状态时长一致。\n" +
-                 "KayKit 的单手攻击是自包含片段（起手+挥砍+收招一体），这里取片段原长：\n" +
-                 "Slice_Diagonal 1.000 / Slice_Horizontal 1.367 / Stab 1.600")]
-        public float[] comboSwingDuration = { 1.0f, 1.367f, 1.6f };
+                 "Quaternius UAL2 的剑术片段是「斩击 + 收招」两段式，控制器里对应\n" +
+                 "AtkN 与 AtkNRec 两个状态，所以这里的总时长 = 主段 × 其 exitTime + 收招段 × 其 exitTime：\n" +
+                 "A 0.433×0.95 + A_Rec 0.967×0.85 = 1.233\n" +
+                 "B 0.533×0.95 + B_Rec 1.033×0.85 = 1.384\n" +
+                 "C 2.000×0.72 = 1.440")]
+        public float[] comboSwingDuration = { 1.233f, 1.384f, 1.44f };
 
-        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏")]
-        public float[] comboHitTime = { 0.15f, 0.18f, 0.4f };
+        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近：\n" +
+                 "A 0.279s / B 0.258s / C 0.656s（Tools/cs/q_atktiming.cs 标定）")]
+        public float[] comboHitTime = { 0.24f, 0.24f, 0.6f };
 
         [Tooltip("各段后摇的取消窗口起点（归一化时间），与动画状态机的 exitTime 对应")]
         public float[] comboRecCancelStart = { 0.3f, 0.3f, 0.45f };

@@ -48,10 +48,12 @@ namespace InkWash.Effects
         public Vector3 thumbCurl = new Vector3(30f, 30f, 25f);
 
         [Header("左手专用卷曲（空手，比持剑手松一点）")]
-        [Tooltip("空手握拳不必像握剑那么死，略松更自然")]
-        public Vector3 leftFingerCurl = new Vector3(58f, 70f, 45f);
+        [Tooltip("空手不必像握剑那么死。但**不能太松** —— UAL2 的攻击片段基础姿势是徒手张开的，\n" +
+                 "补丁叠上去后握拳度会明显偏高（实测用 58/70/45 时峰值 1.83 > 阈值 1.7），\n" +
+                 "所以这里取与右手相同。验收行「攻击全程两手都握着」的阈值为 1.7（摊开≈2.2 / 握拳≈1.2）。")]
+        public Vector3 leftFingerCurl = new Vector3(70f, 85f, 55f);
 
-        public Vector3 leftThumbCurl = new Vector3(25f, 25f, 20f);
+        public Vector3 leftThumbCurl = new Vector3(30f, 30f, 25f);
 
         [Header("手掌额外的掌侧偏移（米，正数=往掌心方向推）")]
         [Tooltip("拳心取四指根均值，落在掌背一侧；真正的隧道中心要往掌心推一点。\n" +
