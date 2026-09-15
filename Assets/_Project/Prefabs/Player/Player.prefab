@@ -274,6 +274,14 @@ MonoBehaviour:
     y: 0.36
   - state: Atk3
     y: 0.1
+  - state: Rig|Idle_Loop
+    y: 0.0307
+  - state: Sword_Idle_Loop
+    y: 0.0477
+  - state: Feng_Walk_Loop
+    y: -0.0554
+  - state: Run01_Carry
+    y: 0.1735
 --- !u!114 &5718752645052886692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +321,8 @@ MonoBehaviour:
   handPose: {fileID: 5718752645052886692}
   relaxedIdleClip: {fileID: 4925837963642883786, guid: 09c96d4af43f0aa4ebb0859db9ad12f3,
     type: 3}
-  combatIdleClip: {fileID: 7400000, guid: fd8497b7ea07a4741a663a02f5856e53, type: 2}
+  combatIdleClip: {fileID: 7400000, guid: 4605d53bc0c6e334284c0a9654e8a489, type: 2}
+  idleSlotClip: {fileID: 7400000, guid: fd8497b7ea07a4741a663a02f5856e53, type: 2}
   combatExitDelay: 6
   startInCombat: 0
 --- !u!1001 &6319620012404730793

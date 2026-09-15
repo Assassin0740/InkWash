@@ -1,0 +1,5 @@
+段                时长    InCombat  Idle片段            Run状态片段      速度
+1 非战斗待机           1.8s   False    Rig|Idle_Loop      Idle             0.00  [背:BackSocket]
+3 持剑待机            2.0s   True     Sword_Idle_Loop    Idle             0.00  [手:CC_Base_R_Hand]
+4 跑步              3.5s   True     Sword_Idle_Loop    Run              4.00  [手:CC_Base_R_Hand]
+5 停回待机            1.4s   True     Sword_Idle_Loop    Idle             0.00  [手:CC_Base_R_Hand]

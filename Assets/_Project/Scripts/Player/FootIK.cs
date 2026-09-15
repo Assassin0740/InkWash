@@ -137,6 +137,9 @@ namespace InkWash.Player
         /// <summary>当前状态名（layer0）。取不到时为 null。</summary>
         public string CurrentState { get; private set; }
 
+        /// <summary>本帧实际取到偏移值的那把钥匙（片段名或状态名）。诊断用。</summary>
+        public string CurrentOffsetKey { get; private set; }
+
         /// <summary>当前状态施加的竖直基准偏移（米）。</summary>
         public float BodyBase { get; private set; }
 
@@ -166,6 +169,7 @@ namespace InkWash.Player
         private SkinnedMeshRenderer[] _smrs;
         private Mesh _bakeMesh;
         private readonly List<Vector3> _vbuf = new List<Vector3>(16384);
+        private readonly List<AnimatorClipInfo> _clipInfoBuf = new List<AnimatorClipInfo>(4);
         private Vector3 _lowestWorld;
 
         // 竖直偏移的输出通道（见 <see cref="ApplyBodyOffset"/>）
@@ -252,12 +256,43 @@ namespace InkWash.Player
             return false;
         }
 
+        /// <summary>
+        /// 取当前状态施加的竖直基准偏移。
+        ///
+        /// **查表顺序：片段名优先，状态名兜底。**
+        /// 为什么不能只按状态名查：一个状态的片段可能在运行期被换掉（CombatStance 用
+        /// AnimatorOverrideController 把 Idle 在「非战斗垂手」与「战斗持剑」两段之间切换），
+        /// 而两段的身体最低点差了好几厘米 —— 一个状态存一个数值，必然有一段是错的。
+        /// 片段是「片段 × 骨架」绑定的，本来就该用片段名当钥匙。
+        /// </summary>
         private float ResolveStateOffset(string state)
         {
-            if (string.IsNullOrEmpty(state) || stateOffsets == null) return 0f;
+            if (stateOffsets == null) return 0f;
+
+            string clip = ResolveCurrentClipName();
+            if (!string.IsNullOrEmpty(clip))
+            {
+                for (int i = 0; i < stateOffsets.Length; i++)
+                    if (stateOffsets[i].state == clip) { CurrentOffsetKey = clip; return stateOffsets[i].y; }
+            }
+
+            if (string.IsNullOrEmpty(state)) { CurrentOffsetKey = null; return 0f; }
             for (int i = 0; i < stateOffsets.Length; i++)
-                if (stateOffsets[i].state == state) return stateOffsets[i].y;
+                if (stateOffsets[i].state == state) { CurrentOffsetKey = state; return stateOffsets[i].y; }
+
+            CurrentOffsetKey = null;
             return 0f;
+        }
+
+        /// <summary>layer0 当前实际播放的片段名（会反映 AnimatorOverrideController 的替换）。</summary>
+        private string ResolveCurrentClipName()
+        {
+            if (_anim == null) return null;
+            _clipInfoBuf.Clear();
+            _anim.GetCurrentAnimatorClipInfo(0, _clipInfoBuf);
+            if (_clipInfoBuf.Count == 0) return null;
+            var c = _clipInfoBuf[0].clip;
+            return c != null ? c.name : null;
         }
 
         /// <summary>量出当前姿势下**真实网格最低点**的世界坐标。用复用的 Mesh / List，避免每帧 GC。</summary>

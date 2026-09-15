@@ -1,0 +1,46 @@
+src=Run01_Forward  refIdle=Rig|Idle_Loop  refSwordIdle=Rig|Sword_Idle
+右臂通道数 = 36 / 总 130
+   Right Arm Down-Up
+   Right Arm Front-Back
+   Right Arm Twist In-Out
+   Right Forearm Stretch
+   Right Forearm Twist In-Out
+   Right Hand Down-Up
+   Right Hand In-Out
+   Right Shoulder Down-Up
+   Right Shoulder Front-Back
+   RightHand.Index.1 Stretched
+   RightHand.Index.2 Stretched
+   RightHand.Index.3 Stretched
+   RightHand.Index.Spread
+   RightHand.Little.1 Stretched
+   RightHand.Little.2 Stretched
+   RightHand.Little.3 Stretched
+   RightHand.Little.Spread
+   RightHand.Middle.1 Stretched
+   RightHand.Middle.2 Stretched
+   RightHand.Middle.3 Stretched
+   RightHand.Middle.Spread
+   RightHand.Ring.1 Stretched
+   RightHand.Ring.2 Stretched
+   RightHand.Ring.3 Stretched
+   RightHand.Ring.Spread
+   RightHand.Thumb.1 Stretched
+   RightHand.Thumb.2 Stretched
+   RightHand.Thumb.3 Stretched
+   RightHand.Thumb.Spread
+   RightHandQ.w
+   RightHandQ.x
+   RightHandQ.y
+   RightHandQ.z
+   RightHandT.x
+   RightHandT.y
+   RightHandT.z
+
+写出 Assets/_Project/Animations/Baked/Run01_Ctrl.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Still.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Still_Hd.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Carry.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Carry_Io.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Carry_Du.anim  len=0.600 loop=True
+写出 Assets/_Project/Animations/Baked/Run01_SwCarry.anim  len=0.600 loop=True

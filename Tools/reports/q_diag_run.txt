@@ -1,0 +1,17 @@
+=== A. 控制器资产 ===
+  Idle → Feng_Idle_Loop  (Assets/_Project/Animations/Feng_Idle_Loop.anim)
+  Walk → Feng_Walk_Loop  (Assets/_Project/Animations/Feng_Walk_Loop.anim)
+  Run → Run01_Carry  (Assets/_Project/Animations/Baked/Run01_Carry.anim)
+
+=== B. 烘焙片段自身的曲线 ===
+  Run01_Ctrl  len=0.600  绑定数=130  legacy=False  humanMotion=True  循环=True
+  Assets/_Project/Animations/Baked/Run01_IdleArm.anim 找不到
+
+=== C. 状态机实际播放（Animator.Play + Update）===
+  状态      实际片段              动画本体最低点min   max
+  Idle      Rig|Idle_Loop               0.003 m    0.018 m
+  Walk      Feng_Walk_Loop             -0.074 m    0.091 m
+  Run       Run01_Carry                -0.112 m    0.413 m
+
+=== D. 直接 SampleAnimation（绕开状态机）===
+  Run01_Ctrl                 -0.158 m    0.402 m

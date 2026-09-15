@@ -59,6 +59,12 @@ namespace InkWash.Player
                  "（武器不挂手、不握拳），控制台一条报错都没有。")]
         public AnimationClip combatIdleClip;
 
+        [Tooltip("控制器里 Idle 状态**原本挂的片段**（本项目 = Feng_Idle_Loop）。\n" +
+                 "用来在 AnimatorOverrideController 的覆盖表里精确定位「Idle 槽位」那把钥匙。\n" +
+                 "★ 留空也能跑（会退回按名字猜），但**配置上最稳**：按名字猜曾把名字里带 \"Idle\" 的\n" +
+                 "跑步片段（Run01_IdleArm）误当 Idle 槽位，导致 Run 状态被覆盖成待机、且零报错。")]
+        public AnimationClip idleSlotClip;
+
         [Header("节奏")]
         [Tooltip("最后一次攻击 / 冲刺之后，静置多少秒收回武器、回到自然站立")]
         public float combatExitDelay = 6f;
@@ -180,12 +186,37 @@ namespace InkWash.Player
 
                 // 找 Idle 状态的**槽位**。注意必须用 GetOverrides 拿到的原始 key，
                 // 否则 _ovr[key] = clip 这个索引器设不进去（静默无效）。
-                // 用 Contains 而不是 == ：控制器里的 Idle 槽位可能挂的是循环副本（Feng_Idle_Loop）。
+                //
+                // ★ 为什么不只是 Contains("Idle")：控制器里 Idle 槽位挂的可能是循环副本
+                // （Feng_Idle_Loop），所以要容错；但光用 Contains 会**误伤**名字里碰巧带 "Idle"
+                // 的其它片段 —— 实测把烘焙的「持剑跑」命名为 Run01_IdleArm 后，
+                // Run 状态被当成 Idle 槽位覆盖成了待机姿态（跑步时角色在待机！），且零报错。
+                // 规则：含 "Idle" 且**不含任何别的动作关键词**才算 Idle 槽位。
                 var pairs = new List<KeyValuePair<AnimationClip, AnimationClip>>();
                 _ovr.GetOverrides(pairs);
-                foreach (var kv in pairs)
+
+                // ① 显式指定的槽位片段最优先（最稳，改名/重命名都不会误伤）
+                if (idleSlotClip != null)
                 {
-                    if (kv.Key != null && kv.Key.name.Contains("Idle")) { _idleSlot = kv.Key; break; }
+                    foreach (var kv in pairs)
+                        if (kv.Key != null && (kv.Key == idleSlotClip || kv.Key.name == idleSlotClip.name))
+                        { _idleSlot = kv.Key; break; }
+                }
+                // ② 没有显式配置就按名字猜：含 Idle、且不含别的动作关键词
+                if (_idleSlot == null)
+                {
+                    foreach (var kv in pairs)
+                    {
+                        if (kv.Key == null || !kv.Key.name.Contains("Idle")) continue;
+                        if (ContainsOtherActionToken(kv.Key.name)) continue;
+                        _idleSlot = kv.Key; break;
+                    }
+                }
+                // ③ 实在找不到再放宽（尽量别走到这里）
+                if (_idleSlot == null)
+                {
+                    foreach (var kv in pairs)
+                        if (kv.Key != null && kv.Key.name.Contains("Idle")) { _idleSlot = kv.Key; break; }
                 }
                 if (_idleSlot == null) return false;   // 控制器里还没备好 Idle，下一帧再试
 
@@ -203,6 +234,20 @@ namespace InkWash.Player
             if (animator.runtimeAnimatorController != _ovr) animator.runtimeAnimatorController = _ovr;
             _ready = true;
             return true;
+        }
+
+        /// <summary>片段名里是否含「别的动作」关键词 —— 含则它不可能是 Idle 槽位。</summary>
+        private static readonly string[] OtherActionTokens =
+        {
+            "Run", "Walk", "Atk", "Attack", "Sword", "Dash", "Dodge", "Jump", "Hit", "Death", "Roll", "Cast"
+        };
+
+        private static bool ContainsOtherActionToken(string clipName)
+        {
+            if (string.IsNullOrEmpty(clipName)) return true;
+            for (int i = 0; i < OtherActionTokens.Length; i++)
+                if (clipName.IndexOf(OtherActionTokens[i], System.StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return false;
         }
 
         private void ApplyStance(bool combat, bool force = false)

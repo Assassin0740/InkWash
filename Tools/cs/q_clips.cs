@@ -1,67 +1,47 @@
-using System.Collections.Generic;
+// q_clips.cs —— 全项目动画片段清单（按包分组，过滤 idle/sword/run/walk/guard/stance）
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-// 清点工程内所有 Animator 可用的 Humanoid 片段（按来源分组），供挑选 Idle 用
 var sb = new StringBuilder();
+var rx = new Regex("idle|sword|run|walk|guard|stance|sprint|jog|stand|breath|block", RegexOptions.IgnoreCase);
 
-var guids = AssetDatabase.FindAssets("t:AnimationClip");
-var groups = new SortedDictionary<string, List<string>>();
-int total = 0, human = 0;
+var byPack = new System.Collections.Generic.SortedDictionary<string, System.Collections.Generic.List<string>>();
 
-foreach (var g in guids)
+string[] roots = { "Assets/ThirdParty", "Assets/Char_Feng", "Assets/_Project", "Assets/W_Sword" };
+var seen = new System.Collections.Generic.HashSet<string>();
+
+foreach (var root in roots)
 {
-    string path = AssetDatabase.GUIDToAssetPath(g);
-    // 只扫第三方动画包与自有动画目录，跳过 Library/Packages
-    if (!path.StartsWith("Assets/")) continue;
-
-    var clips = AssetDatabase.LoadAllAssetsAtPath(path);
-    foreach (var obj in clips)
+    if (!AssetDatabase.IsValidFolder(root)) continue;
+    foreach (var guid in AssetDatabase.FindAssets("t:AnimationClip", new[] { root }))
     {
-        if (!(obj is AnimationClip c)) continue;
-        if (c.name.StartsWith("__preview__")) continue;
-        total++;
-        if (!c.isHumanMotion) continue;
-        human++;
-
-        // 分来源
-        string src;
-        int t = path.IndexOf("/", "Assets/".Length);
-        string a = path.StartsWith("Assets/ThirdParty/") ? path.Substring("Assets/ThirdParty/".Length) : null;
-        if (a != null)
+        string p = AssetDatabase.GUIDToAssetPath(guid);
+        if (!seen.Add(p)) continue;
+        foreach (var o in AssetDatabase.LoadAllAssetsAtPath(p))
         {
-            int s2 = a.IndexOf("/");
-            src = "ThirdParty/" + (s2 > 0 ? a.Substring(0, s2) : a);
-        }
-        else if (path.StartsWith("Assets/_Project/")) src = "_Project";
-        else src = path.Substring("Assets/".Length).Split('/')[0];
+            var c = o as AnimationClip;
+            if (c == null || c.name.StartsWith("__preview__")) continue;
+            if (!rx.IsMatch(c.name)) continue;
 
-        if (!groups.TryGetValue(src, out var list)) { list = new List<string>(); groups[src] = list; }
-        list.Add(c.name + "  [" + c.length.ToString("F2") + "s]  ← " + System.IO.Path.GetFileName(path));
+            string pack;
+            var parts = p.Split('/');
+            pack = parts.Length >= 3 && parts[1] == "ThirdParty" ? "ThirdParty/" + parts[2] : (parts.Length >= 2 ? parts[0] + "/" + parts[1] : p);
+            if (!byPack.ContainsKey(pack)) byPack[pack] = new System.Collections.Generic.List<string>();
+            byPack[pack].Add(string.Format("  {0,-42} len={1:F3} loop={2,-5} {3}", c.name, c.length, c.isLooping, Path.GetFileName(p)));
+        }
     }
 }
 
-sb.AppendLine("工程内 AnimationClip 总数 = " + total + "，其中 Humanoid = " + human);
-sb.AppendLine();
-foreach (var kv in groups)
+foreach (var kv in byPack)
 {
-    kv.Value.Sort();
-    sb.AppendLine("════ " + kv.Key + "  (" + kv.Value.Count + " 个 Humanoid) ════");
-    foreach (var n in kv.Value) sb.AppendLine("   " + n);
+    sb.AppendLine("########## " + kv.Key + "   (" + kv.Value.Count + " 条)");
+    foreach (var line in kv.Value.OrderBy(x => x)) sb.AppendLine(line);
     sb.AppendLine();
 }
 
-// 单独把名字里带 idle / stand / guard / relax 的挑出来
-sb.AppendLine("════ 名字像「待机」的候选 ════");
-foreach (var kv in groups)
-    foreach (var n in kv.Value)
-    {
-        string low = n.ToLowerInvariant();
-        if (low.Contains("idle") || low.Contains("stand") || low.Contains("guard")
-            || low.Contains("relax") || low.Contains("wait") || low.Contains("breath"))
-            sb.AppendLine("   [" + kv.Key + "] " + n);
-    }
-
-Debug.Log("[q_clips] 完成");
+File.WriteAllText("Tools/reports/q_clips.txt", sb.ToString(), new UTF8Encoding(false));
 return sb.ToString();

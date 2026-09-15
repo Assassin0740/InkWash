@@ -1,0 +1,11 @@
+=== 烘焙变体：剑的甩动 ===
+变体                    剑尖总行程   剑轴·竖直范围   剑尖相对头骨(dx,dy,dz)  剑→面部最小
+Run01_Ctrl                7.611 m     20~170 °   ( -0.62, -0.11,  0.30)     0.210
+Run01_IdleArm             0.585 m     86~89  °   (  0.14, -0.61,  0.85)     0.722
+Run01_IdleArm_Du          0.569 m     86~89  °   (  0.10, -0.61,  0.83)     0.717
+Run01_IdleArm_Io          0.567 m     80~83  °   (  0.14, -0.52,  0.77)     0.678
+Run01_Still               2.816 m     92~96  °   ( -0.46, -0.61,  0.24)     0.609
+Run01_Still_Hd            2.736 m     94~98  °   ( -0.48, -0.64,  0.20)     0.630
+Run01_SwIdleArm           1.301 m     83~88  °   (  0.59, -0.59,  0.90)     0.807
+
+出图 _baked.png  行顺序（上起）：Run01_Ctrl | Run01_IdleArm | Run01_IdleArm_Du | Run01_IdleArm_Io | Run01_Still | Run01_Still_Hd | Run01_SwIdleArm

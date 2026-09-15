@@ -1,0 +1,161 @@
+run    = Run01_Forward  len=0.6
+idle   = Rig|Idle_Loop  len=2.5
+swIdle = Rig|Sword_Idle  len=1.666667
+run.legacy = False   run.humanMotion = True
+
+===== RUN 曲线绑定数 = 130 =====
+   Chest                  × 3   例:Chest Front-Back
+   Head                   × 3   例:Head Nod Down-Up
+   Jaw                    × 2   例:Jaw Close
+   Left                   × 19   例:Left Eye Down-Up
+   LeftFootQ              × 4   例:LeftFootQ.x
+   LeftFootT              × 3   例:LeftFootT.x
+   LeftHand               × 5   例:LeftHand.Thumb.Spread
+   LeftHand.Index.1       × 1   例:LeftHand.Index.1 Stretched
+   LeftHand.Index.2       × 1   例:LeftHand.Index.2 Stretched
+   LeftHand.Index.3       × 1   例:LeftHand.Index.3 Stretched
+   LeftHand.Little.1      × 1   例:LeftHand.Little.1 Stretched
+   LeftHand.Little.2      × 1   例:LeftHand.Little.2 Stretched
+   LeftHand.Little.3      × 1   例:LeftHand.Little.3 Stretched
+   LeftHand.Middle.1      × 1   例:LeftHand.Middle.1 Stretched
+   LeftHand.Middle.2      × 1   例:LeftHand.Middle.2 Stretched
+   LeftHand.Middle.3      × 1   例:LeftHand.Middle.3 Stretched
+   LeftHand.Ring.1        × 1   例:LeftHand.Ring.1 Stretched
+   LeftHand.Ring.2        × 1   例:LeftHand.Ring.2 Stretched
+   LeftHand.Ring.3        × 1   例:LeftHand.Ring.3 Stretched
+   LeftHand.Thumb.1       × 1   例:LeftHand.Thumb.1 Stretched
+   LeftHand.Thumb.2       × 1   例:LeftHand.Thumb.2 Stretched
+   LeftHand.Thumb.3       × 1   例:LeftHand.Thumb.3 Stretched
+   LeftHandQ              × 4   例:LeftHandQ.x
+   LeftHandT              × 3   例:LeftHandT.x
+   Neck                   × 3   例:Neck Nod Down-Up
+   Right                  × 19   例:Right Eye Down-Up
+   RightFootQ             × 4   例:RightFootQ.x
+   RightFootT             × 3   例:RightFootT.x
+   RightHand              × 5   例:RightHand.Thumb.Spread
+   RightHand.Index.1      × 1   例:RightHand.Index.1 Stretched
+   RightHand.Index.2      × 1   例:RightHand.Index.2 Stretched
+   RightHand.Index.3      × 1   例:RightHand.Index.3 Stretched
+   RightHand.Little.1     × 1   例:RightHand.Little.1 Stretched
+   RightHand.Little.2     × 1   例:RightHand.Little.2 Stretched
+   RightHand.Little.3     × 1   例:RightHand.Little.3 Stretched
+   RightHand.Middle.1     × 1   例:RightHand.Middle.1 Stretched
+   RightHand.Middle.2     × 1   例:RightHand.Middle.2 Stretched
+   RightHand.Middle.3     × 1   例:RightHand.Middle.3 Stretched
+   RightHand.Ring.1       × 1   例:RightHand.Ring.1 Stretched
+   RightHand.Ring.2       × 1   例:RightHand.Ring.2 Stretched
+   RightHand.Ring.3       × 1   例:RightHand.Ring.3 Stretched
+   RightHand.Thumb.1      × 1   例:RightHand.Thumb.1 Stretched
+   RightHand.Thumb.2      × 1   例:RightHand.Thumb.2 Stretched
+   RightHand.Thumb.3      × 1   例:RightHand.Thumb.3 Stretched
+   RightHandQ             × 4   例:RightHandQ.x
+   RightHandT             × 3   例:RightHandT.x
+   RootQ                  × 4   例:RootQ.x
+   RootT                  × 3   例:RootT.x
+   Spine                  × 3   例:Spine Front-Back
+   UpperChest             × 3   例:UpperChest Front-Back
+
+===== IDLE 曲线绑定数 = 130 =====
+   Chest                  × 3   例:Chest Front-Back
+   Head                   × 3   例:Head Nod Down-Up
+   Jaw                    × 2   例:Jaw Close
+   Left                   × 19   例:Left Eye Down-Up
+   LeftFootQ              × 4   例:LeftFootQ.x
+   LeftFootT              × 3   例:LeftFootT.x
+   LeftHand               × 5   例:LeftHand.Thumb.Spread
+   LeftHand.Index.1       × 1   例:LeftHand.Index.1 Stretched
+   LeftHand.Index.2       × 1   例:LeftHand.Index.2 Stretched
+   LeftHand.Index.3       × 1   例:LeftHand.Index.3 Stretched
+   LeftHand.Little.1      × 1   例:LeftHand.Little.1 Stretched
+   LeftHand.Little.2      × 1   例:LeftHand.Little.2 Stretched
+   LeftHand.Little.3      × 1   例:LeftHand.Little.3 Stretched
+   LeftHand.Middle.1      × 1   例:LeftHand.Middle.1 Stretched
+   LeftHand.Middle.2      × 1   例:LeftHand.Middle.2 Stretched
+   LeftHand.Middle.3      × 1   例:LeftHand.Middle.3 Stretched
+   LeftHand.Ring.1        × 1   例:LeftHand.Ring.1 Stretched
+   LeftHand.Ring.2        × 1   例:LeftHand.Ring.2 Stretched
+   LeftHand.Ring.3        × 1   例:LeftHand.Ring.3 Stretched
+   LeftHand.Thumb.1       × 1   例:LeftHand.Thumb.1 Stretched
+   LeftHand.Thumb.2       × 1   例:LeftHand.Thumb.2 Stretched
+   LeftHand.Thumb.3       × 1   例:LeftHand.Thumb.3 Stretched
+   LeftHandQ              × 4   例:LeftHandQ.x
+   LeftHandT              × 3   例:LeftHandT.x
+   Neck                   × 3   例:Neck Nod Down-Up
+   Right                  × 19   例:Right Eye Down-Up
+   RightFootQ             × 4   例:RightFootQ.x
+   RightFootT             × 3   例:RightFootT.x
+   RightHand              × 5   例:RightHand.Thumb.Spread
+   RightHand.Index.1      × 1   例:RightHand.Index.1 Stretched
+   RightHand.Index.2      × 1   例:RightHand.Index.2 Stretched
+   RightHand.Index.3      × 1   例:RightHand.Index.3 Stretched
+   RightHand.Little.1     × 1   例:RightHand.Little.1 Stretched
+   RightHand.Little.2     × 1   例:RightHand.Little.2 Stretched
+   RightHand.Little.3     × 1   例:RightHand.Little.3 Stretched
+   RightHand.Middle.1     × 1   例:RightHand.Middle.1 Stretched
+   RightHand.Middle.2     × 1   例:RightHand.Middle.2 Stretched
+   RightHand.Middle.3     × 1   例:RightHand.Middle.3 Stretched
+   RightHand.Ring.1       × 1   例:RightHand.Ring.1 Stretched
+   RightHand.Ring.2       × 1   例:RightHand.Ring.2 Stretched
+   RightHand.Ring.3       × 1   例:RightHand.Ring.3 Stretched
+   RightHand.Thumb.1      × 1   例:RightHand.Thumb.1 Stretched
+   RightHand.Thumb.2      × 1   例:RightHand.Thumb.2 Stretched
+   RightHand.Thumb.3      × 1   例:RightHand.Thumb.3 Stretched
+   RightHandQ             × 4   例:RightHandQ.x
+   RightHandT             × 3   例:RightHandT.x
+   RootQ                  × 4   例:RootQ.x
+   RootT                  × 3   例:RootT.x
+   Spine                  × 3   例:Spine Front-Back
+   UpperChest             × 3   例:UpperChest Front-Back
+
+===== SWORD_IDLE 曲线绑定数 = 130 =====
+   Chest                  × 3   例:Chest Front-Back
+   Head                   × 3   例:Head Nod Down-Up
+   Jaw                    × 2   例:Jaw Close
+   Left                   × 19   例:Left Eye Down-Up
+   LeftFootQ              × 4   例:LeftFootQ.x
+   LeftFootT              × 3   例:LeftFootT.x
+   LeftHand               × 5   例:LeftHand.Thumb.Spread
+   LeftHand.Index.1       × 1   例:LeftHand.Index.1 Stretched
+   LeftHand.Index.2       × 1   例:LeftHand.Index.2 Stretched
+   LeftHand.Index.3       × 1   例:LeftHand.Index.3 Stretched
+   LeftHand.Little.1      × 1   例:LeftHand.Little.1 Stretched
+   LeftHand.Little.2      × 1   例:LeftHand.Little.2 Stretched
+   LeftHand.Little.3      × 1   例:LeftHand.Little.3 Stretched
+   LeftHand.Middle.1      × 1   例:LeftHand.Middle.1 Stretched
+   LeftHand.Middle.2      × 1   例:LeftHand.Middle.2 Stretched
+   LeftHand.Middle.3      × 1   例:LeftHand.Middle.3 Stretched
+   LeftHand.Ring.1        × 1   例:LeftHand.Ring.1 Stretched
+   LeftHand.Ring.2        × 1   例:LeftHand.Ring.2 Stretched
+   LeftHand.Ring.3        × 1   例:LeftHand.Ring.3 Stretched
+   LeftHand.Thumb.1       × 1   例:LeftHand.Thumb.1 Stretched
+   LeftHand.Thumb.2       × 1   例:LeftHand.Thumb.2 Stretched
+   LeftHand.Thumb.3       × 1   例:LeftHand.Thumb.3 Stretched
+   LeftHandQ              × 4   例:LeftHandQ.x
+   LeftHandT              × 3   例:LeftHandT.x
+   Neck                   × 3   例:Neck Nod Down-Up
+   Right                  × 19   例:Right Eye Down-Up
+   RightFootQ             × 4   例:RightFootQ.x
+   RightFootT             × 3   例:RightFootT.x
+   RightHand              × 5   例:RightHand.Thumb.Spread
+   RightHand.Index.1      × 1   例:RightHand.Index.1 Stretched
+   RightHand.Index.2      × 1   例:RightHand.Index.2 Stretched
+   RightHand.Index.3      × 1   例:RightHand.Index.3 Stretched
+   RightHand.Little.1     × 1   例:RightHand.Little.1 Stretched
+   RightHand.Little.2     × 1   例:RightHand.Little.2 Stretched
+   RightHand.Little.3     × 1   例:RightHand.Little.3 Stretched
+   RightHand.Middle.1     × 1   例:RightHand.Middle.1 Stretched
+   RightHand.Middle.2     × 1   例:RightHand.Middle.2 Stretched
+   RightHand.Middle.3     × 1   例:RightHand.Middle.3 Stretched
+   RightHand.Ring.1       × 1   例:RightHand.Ring.1 Stretched
+   RightHand.Ring.2       × 1   例:RightHand.Ring.2 Stretched
+   RightHand.Ring.3       × 1   例:RightHand.Ring.3 Stretched
+   RightHand.Thumb.1      × 1   例:RightHand.Thumb.1 Stretched
+   RightHand.Thumb.2      × 1   例:RightHand.Thumb.2 Stretched
+   RightHand.Thumb.3      × 1   例:RightHand.Thumb.3 Stretched
+   RightHandQ             × 4   例:RightHandQ.x
+   RightHandT             × 3   例:RightHandT.x
+   RootQ                  × 4   例:RootQ.x
+   RootT                  × 3   例:RootT.x
+   Spine                  × 3   例:Spine Front-Back
+   UpperChest             × 3   例:UpperChest Front-Back
+

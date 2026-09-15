@@ -19,7 +19,8 @@ namespace InkWash.Effects
     ///    第一批接刀时就是错把剑身对齐到手指方向，看着像剑从指缝里长出来。
     /// 2. **局部轴先用"卷指前"的姿态算一次，再统一卷**。这样每节指骨是"绕固定局部轴"转，
     ///    等价于真实指关节的铰链；若边卷边取轴，得到的是各节各绕一个世界轴，指头会散开。
-    /// 3. **左右手的符号是反的，必须在运行时实测**（见 <see cref="CalibrateSign"/>）。
+    /// 3. **左右手的符号是反的，必须在运行时实测**（见 <see cref="MeasureSign"/>），
+    ///    而且是**每帧**实测 —— 一次性标定会在换片段后静默翻转成正号，把左手掰开。
     ///    `spreadDir = 小指根 − 食指根` 是个**镜像轴**：同一个正角度在右手是"屈"、
     ///    在左手是"伸"。实测左手 +70° 让「中指指尖到腕」从 0.124 m 涨到 0.214 m
     ///    （反向掰直），所以左手照抄右手的角度只会把手掰开。
@@ -76,8 +77,17 @@ namespace InkWash.Effects
         public float RightFistRatio { get; private set; } = -1f;
         public float LeftFistRatio { get; private set; } = -1f;
 
+        /// <summary>MeasureSign 探针角度。太小测不出差别、太大可能越过"最卷"点，60° 实测够用。</summary>
+        private const float ProbeAngle = 60f;
+
+        /// <summary>握拳度超过这个值就认为"不是拳"（五指张开≈2.2），用于主动告警。</summary>
+        private const float FistOpenWarn = 2.05f;
+
         private Animator _anim;
         private SwordVfx _vfx;
+        /// <summary>进入 Armed 后累计了多少帧 —— 前几帧骨骼姿势还没稳，不做告警判定。</summary>
+        private int _armedFrames;
+        private bool _warnedRightOpen, _warnedLeftOpen;
         private Transform _rightHand, _leftHand;
         private readonly List<Bone> _rightBones = new List<Bone>();
         private readonly List<Bone> _leftBones = new List<Bone>();
@@ -112,13 +122,25 @@ namespace InkWash.Effects
             CurledBoneCount = 0;
             RightFistRatio = -1f;
             LeftFistRatio = -1f;
-            if (!Armed) return;
+            if (!Armed) { _armedFrames = 0; _warnedRightOpen = false; _warnedLeftOpen = false; return; }
 
-            if (rightHand && _rightHand != null) Curl(_rightHand, _rightRoots, _rightBones, RightCurlSign);
-            if (leftHand && _leftHand != null) Curl(_leftHand, _leftRoots, _leftBones, LeftCurlSign);
+            // 卷曲符号**每帧当场实测**（不能一次性标定，见 MeasureSign 的注释）
+            if (rightHand && _rightHand != null)
+            {
+                RightCurlSign = MeasureSign(_rightHand, _rightRoots, RightCurlSign);
+                Curl(_rightHand, _rightRoots, _rightBones, RightCurlSign);
+            }
+            if (leftHand && _leftHand != null)
+            {
+                LeftCurlSign = MeasureSign(_leftHand, _leftRoots, LeftCurlSign);
+                Curl(_leftHand, _leftRoots, _leftBones, LeftCurlSign);
+            }
 
             RightFistRatio = FistRatio(_rightHand, _rightMidTip, _rightSpread);
             LeftFistRatio = FistRatio(_leftHand, _leftMidTip, _leftSpread);
+
+            _armedFrames++;
+            if (_armedFrames > 12) WarnIfFistOpen();   // 前几帧姿势还没稳，别急着喊
         }
 
         /// <summary>
@@ -137,9 +159,10 @@ namespace InkWash.Effects
             CollectChains(_rightHand, "R_", fingerCurl, thumbCurl, _rightRoots, _rightBones);
             CollectChains(_leftHand, "L_", leftFingerCurl, leftThumbCurl, _leftRoots, _leftBones);
 
-            // 左右手的铰链轴是镜像的 ⇒ 符号必须实测，不能照抄（见类注释第 3 条）
-            RightCurlSign = CalibrateSign(_rightHand, _rightRoots);
-            LeftCurlSign = CalibrateSign(_leftHand, _leftRoots);
+            // 左右手的铰链轴是镜像的 ⇒ 符号必须实测，不能照抄（见类注释第 3 条）。
+            // 这里只留"未定"（0），真正的符号交给 MeasureSign 每帧实测。
+            RightCurlSign = 0f;
+            LeftCurlSign = 0f;
 
             _rightMidTip = FindMidTip(_rightRoots);
             _leftMidTip = FindMidTip(_leftRoots);
@@ -218,16 +241,28 @@ namespace InkWash.Effects
         }
 
         /// <summary>
-        /// 实测「绕 +spreadDir 转到底是屈还是伸」，返回该用的符号（+1 / −1）。
+        /// 实测「绕 +spreadDir 转到底是屈还是伸」，返回**此刻**该用的符号（+1 / −1）。
         ///
         /// 为什么必须实测：`spreadDir = 小指根 − 食指根` 在左右手上是**镜像**的，
         /// 人手本身也是镜像的 —— 沿同一个正角度旋转，一侧屈、另一侧伸。
-        /// 写死"左手取负"能过，但换骨架/换手性就又错；当场试一次最省事：
-        /// 卷 3 节各 40°，若中指指尖**离腕更远**，说明掰反了，取反。
+        /// 写死"左手取负"能过，但换骨架/换手性就又错；当场试一次最省事。
+        ///
+        /// ⚠ **必须每帧测，不能一次性标定**（踩过，代价很大）：
+        /// 符号本身是骨架性质，但**测量手段**依赖当时的姿态 —— 判据是「卷一节之后中指指尖
+        /// 离腕更近还是更远」，而某些姿态下 ±角度引起的变化量会小到接近 0
+        /// （旧版一次性实现在这里 `return 1f` 兜底）。后果：
+        /// 换一个持剑待机片段之后，左手被标定成 +1（反号），补丁把**手指掰开**，
+        /// 握拳度从 1.46 涨到 2.60（比"五指张开≈2.2"还高），
+        /// 而全流程**没有任何一处报错**，只在验收里冒出一条看不懂的未通过。
+        ///
+        /// 现在的做法：每帧拿食指链当探针，±<see cref="ProbeAngle"/>° 各拧一次，
+        /// 取「指尖离腕更近」那个方向；两方向差别过小 = 这一帧判不出来 ⇒ 沿用上一帧；
+        /// 换符号需要明显更优（迟滞），避免逐帧左右横跳把手指抖花。
         /// </summary>
-        private float CalibrateSign(Transform hand, List<Transform> roots)
+        private float MeasureSign(Transform hand, List<Transform> roots, float prev)
         {
-            if (hand == null || roots.Count < 2) return 1f;
+            float fallback = prev != 0f ? prev : 1f;
+            if (hand == null || roots.Count < 2) return fallback;
 
             Transform index = null, pinky = null;
             for (int i = 0; i < roots.Count; i++)
@@ -236,35 +271,72 @@ namespace InkWash.Effects
                 if (n.Contains("Index")) index = roots[i];
                 else if (n.Contains("Pinky")) pinky = roots[i];
             }
-            if (index == null || pinky == null) return 1f;
+            if (index == null || pinky == null) return fallback;
 
             var chain = new List<Transform>();
             Transform cur = index;
             for (int i = 0; i < 3 && cur != null; i++) { chain.Add(cur); cur = cur.childCount > 0 ? cur.GetChild(0) : null; }
-            if (chain.Count < 2) return 1f;
+            if (chain.Count < 2) return fallback;
 
             Transform tip = chain[chain.Count - 1];
             if (tip.childCount > 0) tip = tip.GetChild(0);
 
             Vector3 spreadDir = (pinky.position - index.position).normalized;
-            if (spreadDir.sqrMagnitude < 1e-8f) return 1f;
+            if (spreadDir.sqrMagnitude < 1e-8f) return fallback;
 
-            float before = (tip.position - hand.position).magnitude;
-
-            // 轴必须一次性取好（卷了父骨之后子骨的局部轴会变）
+            // 轴必须一次性取好（卷了父骨之后子骨的局部轴会变）；探针**改完必须原样还原**
             var axes = new Vector3[chain.Count];
             for (int i = 0; i < chain.Count; i++) axes[i] = chain[i].InverseTransformDirection(spreadDir);
             var saved = new Quaternion[chain.Count];
             for (int i = 0; i < chain.Count; i++) saved[i] = chain[i].localRotation;
 
-            for (int i = 0; i < chain.Count; i++)
-                chain[i].localRotation = chain[i].localRotation * Quaternion.AngleAxis(40f, axes[i]);
-            float after = (tip.position - hand.position).magnitude;
+            for (int i = 0; i < chain.Count; i++) chain[i].localRotation = saved[i] * Quaternion.AngleAxis(ProbeAngle, axes[i]);
+            float dPlus = (tip.position - hand.position).magnitude;
+
+            for (int i = 0; i < chain.Count; i++) chain[i].localRotation = saved[i] * Quaternion.AngleAxis(-ProbeAngle, axes[i]);
+            float dMinus = (tip.position - hand.position).magnitude;
 
             for (int i = 0; i < chain.Count; i++) chain[i].localRotation = saved[i];
 
-            if (Mathf.Abs(after - before) < 0.001f) return 1f;   // 判不出来（手已经卷到底）就当正向
-            return after > before ? -1f : 1f;
+            // 两个方向几乎没差别 ⇒ 这一帧判不出来（指尖正对着转轴等），沿用上一帧，别瞎翻
+            if (Mathf.Abs(dPlus - dMinus) < 0.0005f) return fallback;
+
+            float best = dPlus < dMinus ? 1f : -1f;
+            if (prev != 0f && best != prev)
+            {
+                // 迟滞：另一个符号要**明显**更优（> 2 mm）才换，否则逐帧横跳会把手指抖花
+                float prevD = prev > 0f ? dPlus : dMinus;
+                float bestD = best > 0f ? dPlus : dMinus;
+                if (prevD - bestD < 0.002f) return prev;
+            }
+            return best;
+        }
+
+        /// <summary>
+        /// 握拳度明显高于「五指张开」基准 ⇒ 卷曲方向反了或指链没解析全。
+        /// 这类失效**不会自己报错**（本轮就是靠验收里一条孤零零的"未通过"才暴露的），
+        /// 所以主动喊一声。只在跨越阈值那一帧打，恢复正常后再打一条，不刷屏。
+        /// </summary>
+        private void WarnIfFistOpen()
+        {
+            CheckFistOpen("右手", RightFistRatio, ref _warnedRightOpen);
+            CheckFistOpen("左手", LeftFistRatio, ref _warnedLeftOpen);
+        }
+
+        private void CheckFistOpen(string label, float ratio, ref bool warned)
+        {
+            if (ratio < 0f) return;
+            if (!warned && ratio > FistOpenWarn)
+            {
+                warned = true;
+                Debug.LogWarning("[WeaponHandPose] " + label + "卷曲方向可能反了：握拳度 "
+                    + ratio.ToString("F2") + " > " + FistOpenWarn.ToString("F1")
+                    + "（五指张开≈2.2 / 握拳≈1.2）。查 MeasureSign 实测符号与指链解析。");
+            }
+            else if (warned && ratio <= FistOpenWarn)
+            {
+                warned = false;
+            }
         }
 
         /// <summary>手的参考系：手指方向、指根展开方向、掌法向（都在世界空间）。</summary>

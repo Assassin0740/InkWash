@@ -1,0 +1,23 @@
+══════ 预制体当前 stateOffsets ══════
+  noGroundFixStates = Dash   groundClearance = 0.0050
+  Idle                         y = 0.0307
+  Walk                         y = -0.0554
+  Run                          y = 0.1735
+  Dash                         y = -0.0041
+  Atk1                         y = 0.0200
+  Atk1Rec                      y = 0.1800
+  Atk2                         y = 0.0300
+  Atk2Rec                      y = 0.3600
+  Atk3                         y = 0.1000
+
+地面Y = 0.300
+片段                          时长    无IK最低min  无IK最低max   口径     建议偏移
+---------------------------- ------- ------------ ------------ -------- ----------
+Feng_Idle_Loop   非战斗待机  ★ 找不到
+Sword_Idle_Loop  战斗待机        1.667s      -0.0542       -0.0427   取最浅    0.0477
+Feng_Walk_Loop   走路  ★ 找不到
+Run01_Carry      跑步(烘焙)      0.600s      -0.1757        0.4020   取最深    0.1807
+
+口径说明：FootIK 的 BodyLift = Clamp(need, 0, maxLift) **只会往上抬**，
+          所以静态偏移取「最浅」= 保证不靠 IK 也不穿地；有腾空相的片段取「最深」
+          = 落地那一瞬正好触地、腾空帧自然离地。

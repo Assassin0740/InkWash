@@ -1,0 +1,12 @@
+① 删除 Assets/_Project/Animations/Baked/Run01_IdleArm.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_IdleArm_Io.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_IdleArm_Du.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_Still.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_Still_Hd.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_SwIdleArm.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_SwCarry.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_Carry_Io.anim
+① 删除 Assets/_Project/Animations/Baked/Run01_Carry_Du.anim
+② Run 状态 motion: <null>  →  Run01_Carry
+③ combatIdleClip: Sword_Idle_Loop  →  Sword_Idle_Loop
+③ idleSlotClip:   <null>  →  Feng_Idle_Loop

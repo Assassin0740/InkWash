@@ -1,0 +1,86 @@
+=========== A. 战斗姿态「持剑待机」的剑位 ===========
+（先切到战斗姿态，静置 1.2 s 让 Idle 稳定，再量）
+CombatStance.InCombat         = True
+CombatStance.CurrentIdleClip  = Feng_Idle_Loop
+CombatStance.WeaponMountPath  = 手:CC_Base_R_Hand
+Animator 当前状态 hash         = 2081823275   nt=3.496
+武器实例                      = W_Sword
+
+武器根（握柄中点）世界坐标     = (-0.048, 1.918, -2.942)
+bladeAnchor 世界坐标          = (-0.048, 1.918, -2.942)
+剑轴（归一）                  = (-0.833, 0.533, 0.150)
+剑轴与世界 up 夹角            = 57.8°
+mesh localBounds 尺寸         = (0.232, 1.198, 0.096)   最大y(局部)=0.599
+武器 lossyScale              = (2.213, 2.213, 2.213)
+剑尖（估算）                  = (-1.152, 2.624, -2.744)
+
+头骨世界坐标                  = (-0.013, 2.259, -3.036)
+胸骨世界坐标                  = (0.000, 1.536, -3.032)
+右手世界坐标                  = (-0.048, 1.918, -2.942)
+左手世界坐标                  = (0.049, 1.967, -2.926)
+
+★ 剑身线段 → 头骨   最近距离 = 0.3275 m
+  剑身线段 → 胸骨   最近距离 = 0.3958 m
+  头骨高度 = 2.259   左手↔右手距离 = 0.110
+  剑轴 vs 前臂轴 夹角 = 26.2°   (≈90° 表示剑身⊥前臂)
+出图位 0 = 正视
+出图位 1 = 侧视
+出图位 2 = 俯视
+
+=========== B. 「动作僵硬」的客观量化 ===========
+指标：一个循环内该骨骼「累计转动角度」（越大越活）。幅度小 = 僵硬。
+
+片段                          时长    腰 hips        脊 spine       胸 chest       头 head        左肩 LShoulder  右肩 RShoulder  左肘 LElbow     右肘 RElbow     左髋 LThigh     右髋 RThigh     左膝 LKnee      右膝 RKnee     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+RUN  当前: Run01_Forward(KI)    0.600  72°           65°           66°           39°           242°          243°          305°          312°          196°          207°          241°          296°         
+RUN  KayKit Running_A         0.800  24°           45°           44°           29°           131°          135°          161°          157°          283°          291°          354°          354°         
+RUN  UAL2 Rig|Run_Loop         ★ 找不到
+WALK 当前: Feng_Walk_Loop       1.333  11°           12°           14°           8°            19°           24°           20°           33°           134°          160°          152°          166°         
+IDLE 当前: Feng_Idle_Loop       2.500  0°            0°            8°            22°           21°           20°           20°           20°           12°           18°           13°           14°          
+
+判读：同行里各骨数值越大越活。「跑」应当明显大于「走」；若只比走大一点或更小 ⇒ 僵硬。
+
+=========== C. UAL2 片段清单（找持剑待机候选）===========
+  Armature|Zombie_Idle_Loop               1.333s
+  Armature|Melee_Hook                     0.467s
+  Armature|OverhandThrow                  1.333s
+  Armature|Melee_Hook_Rec                 0.600s
+  Armature|Idle_FoldArms_Loop             2.500s
+  Armature|Farm_PlantSeed                 2.767s
+  Armature|Consume                        1.333s
+  Armature|Idle_Rail_Call                 2.500s
+  Armature|Yes                            2.500s
+  Armature|Zombie_Walk_Fwd_Loop           1.333s
+  Armature|NinjaJump_Start                0.967s
+  Armature|NinjaJump_Land                 1.267s
+  Armature|Slide_Start                    0.833s
+  Armature|Farm_Harvest                   2.500s
+  Armature|Shield_OneShot                 0.833s
+  Armature|Sword_Regular_B                0.533s
+  Armature|Idle_TalkingPhone_Loop         2.933s
+  Armature|Idle_Shield_Loop               2.500s
+  Armature|Sword_Regular_C                2.000s
+  Armature|Hit_Knockback                  0.833s
+  Armature|Farm_Watering                  3.800s
+  Armature|Sword_Regular_Combo            3.000s
+  Armature|LayToIdle                      1.533s
+  Armature|Idle_Rail_Loop                 2.500s
+  Armature|TreeChopping_Loop              0.967s
+  Armature|NinjaJump_Idle_Loop            2.000s
+  Armature|Zombie_Scratch                 1.800s
+  Armature|Sword_Regular_A                0.433s
+  Armature|Slide_Exit                     0.500s
+  Armature|ClimbUp_1m                     0.667s
+  Armature|Walk_Carry_Loop                2.000s
+  Armature|Idle_Lantern_Loop              2.500s
+  Armature|A_TPose                        2.500s
+  Armature|Idle_No_Loop                   2.500s
+  Armature|Sword_Block                    1.233s
+  Armature|Sword_Dash                     1.567s
+  Armature|Slide_Loop                     2.000s
+  Armature|Chest_Open                     1.367s
+  Armature|Sword_Regular_A_Rec            0.967s
+  Armature|Sword_Regular_B_Rec            1.033s
+  Armature|Idle_Shield_Break              1.067s
+  Armature|Shield_Dash                    1.100s
+  Armature|Sword_Heavy_Combo              4.333s

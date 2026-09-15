@@ -1,0 +1,10 @@
+=== 持剑待机帧 ===
+  帧 0: 状态=Idle nt=0.62 速度=0.00 片段=Sword_Idle_Loop
+  帧 1: 状态=Idle nt=0.73 速度=0.00 片段=Sword_Idle_Loop
+  帧 2: 状态=Idle nt=0.84 速度=0.00 片段=Sword_Idle_Loop
+  帧 3: 状态=Idle nt=0.95 速度=0.00 片段=Sword_Idle_Loop
+=== 跑步帧 ===
+  帧 0: 状态=Run nt=0.60 速度=4.00
+  帧 1: 状态=Run nt=0.68 速度=4.00
+  帧 2: 状态=Run nt=0.75 速度=4.00
+  帧 3: 状态=Run nt=0.82 速度=4.00

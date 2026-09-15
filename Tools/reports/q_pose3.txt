@@ -1,0 +1,29 @@
+### A. 控制器层（关键：有几层、遮罩、混合权重）
+层[Base Layer] "Base Layer"  遮罩=<无>  混合=Override  默认权重=1  IK=True
+
+### B. 层0 全部状态
+  Idle        motion=Feng_Idle_Loop [AnimationClip]                 speed=1
+  Walk        motion=Feng_Walk_Loop [AnimationClip]                 speed=1 speedParam=MotionSpeed
+  Run         motion=Run01_Carry [AnimationClip]                    speed=1 speedParam=MotionSpeed
+  Dash        motion=Dodge_Forward [AnimationClip]                  speed=1
+  Atk1        motion=Armature|Sword_Regular_A [AnimationClip]       speed=1.25
+  Atk1Rec     motion=Armature|Sword_Regular_A_Rec [AnimationClip]   speed=1.7
+  Atk2        motion=Armature|Sword_Regular_B [AnimationClip]       speed=1.25
+  Atk2Rec     motion=Armature|Sword_Regular_B_Rec [AnimationClip]   speed=1.7
+  Atk3        motion=Armature|Sword_Regular_C [AnimationClip]       speed=1.25
+
+### C. 预制体上的 CombatStance 片段指向
+  CombatStance.relaxedIdleClip = Rig|Idle_Loop   (Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx)
+  CombatStance.combatIdleClip = Sword_Idle_Loop   (Assets/_Project/Animations/Sword_Idle_Loop.anim)
+  CombatStance.idleSlotClip = Feng_Idle_Loop   (Assets/_Project/Animations/Feng_Idle_Loop.anim)
+
+### D. 控制器引用的 AnimationClip 循环状态
+  Armature|Sword_Regular_A           len=0.433  isLooping=False  Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Sword_Regular_A_Rec       len=0.967  isLooping=False  Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Sword_Regular_B           len=0.533  isLooping=False  Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Sword_Regular_B_Rec       len=1.033  isLooping=False  Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Armature|Sword_Regular_C           len=2.000  isLooping=False  Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity/UAL2_Standard.fbx
+  Dodge_Forward                      len=0.400  isLooping=False  Assets/ThirdParty/KayKit/Animations/Rig_Medium/Rig_Medium_MovementAdvanced.fbx
+  Feng_Idle_Loop                     len=2.500  isLooping=True  Assets/_Project/Animations/Feng_Idle_Loop.anim
+  Feng_Walk_Loop                     len=1.333  isLooping=True  Assets/_Project/Animations/Feng_Walk_Loop.anim
+  Run01_Carry                        len=0.600  isLooping=True  Assets/_Project/Animations/Baked/Run01_Carry.anim

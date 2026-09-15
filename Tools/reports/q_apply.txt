@@ -1,0 +1,3 @@
+① 写出 Assets/_Project/Animations/Sword_Idle_Loop.anim  len=1.667  loop=True  曲线数=130  (源 Rig|Sword_Idle 曲线数=130)
+② Run 状态 motion: Run01_Forward  →  Run01_IdleArm
+③ CombatStance.combatIdleClip: Feng_Idle_Loop  →  Sword_Idle_Loop
