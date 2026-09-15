@@ -49,7 +49,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c34b6b13c2f0838499e631e4beadcd14, type: 2}
+  m_Motion: {fileID: 7400000, guid: e6f973e4fcd03864590634c6a51525e6, type: 2}
   m_Tag: 
   m_SpeedParameter: MotionSpeed
   m_MirrorParameter: 
@@ -517,7 +517,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e7080d5ab7d043045989167dd6e02366, type: 2}
+  m_Motion: {fileID: 7400000, guid: fd8497b7ea07a4741a663a02f5856e53, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -907,7 +907,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Atk2Rec
-  m_Speed: 1.4
+  m_Speed: 1.7
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 568622696509281835}
@@ -939,7 +939,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Atk1Rec
-  m_Speed: 1.4
+  m_Speed: 1.7
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6081502486209125932}

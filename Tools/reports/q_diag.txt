@@ -1,0 +1,55 @@
+================ A. 运行环境 ================
+Application.isPlaying  = True
+Time.timeScale         = 1.00
+Time.frameCount        = 7
+Cursor.lockState       = Locked
+Cursor.visible         = False
+场景内 Camera 数       = 1
+Camera.main            = Main Camera
+
+================ B. 相机链路 ================
+enabled                = True    activeInHierarchy = True
+mouseLookEnabled       = True    lockCursorOnStart = True
+yaw / pitch            = 0.00 / 14.00
+target                 = Player
+
+---- 输入轴可用性 ----
+  Mouse X      = 0.0000   OK
+  Mouse Y      = 0.0000   OK
+  Horizontal   = 0.0000   OK
+  Vertical     = 0.0000   OK
+  改 yaw +30 后：相机 eulerAngles.y = 30.0（原本 0.0，能变说明相机跟 yaw 的链路是通的）
+
+================ C. 片段循环状态 ================
+  Rig|Idle_Loop                        len=2.500  isLooping=True
+  Walk                                 len=1.333  isLooping=False
+  Run01_Forward                        len=0.600  isLooping=True
+  Dodge_Forward                        len=0.400  isLooping=False
+  Armature|Sword_Regular_A             len=0.433  isLooping=False
+  Armature|Sword_Regular_A_Rec         len=0.967  isLooping=False
+  Armature|Sword_Regular_B             len=0.533  isLooping=False
+  Armature|Sword_Regular_B_Rec         len=1.033  isLooping=False
+  Armature|Sword_Regular_C             len=2.000  isLooping=False
+
+================ D. 走路 4s 实测 ================
+  帧    状态     片段                    isLoop   normTime(循环应>1后回0)
+  0     Rig|Idle_Loop           True    0.395
+  12    Rig|Idle_Loop           True    0.431
+  24    Rig|Idle_Loop           True    0.464
+  36    Walk                    False   0.238
+  48    Walk                    False   0.379
+  60    Walk                    False   0.477
+  72    Walk                    False   0.573
+  84    Walk                    False   0.668
+  96    Walk                    False   0.763
+  108   Walk                    False   0.860
+  120   Walk                    False   0.954
+  132   Walk                    False   1.051
+  144   Walk                    False   1.148
+  156   Walk                    False   1.243
+  168   Walk                    False   1.339
+  → 观测到 normTime 回绕次数 = 1   （有回绕 = 正常循环）
+
+================ E. 状态切换轨迹（走→跑） ================
+  t=2.33  → Walk   normTime=1.45   间隔=0.00s
+  t=2.58  → Run01_Forward   normTime=0.28   间隔=0.25s

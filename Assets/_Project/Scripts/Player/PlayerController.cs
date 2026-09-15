@@ -38,10 +38,14 @@ namespace InkWash.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("移动")]
-        [Tooltip("走路速度（米/秒）。对应动画 Walk（Feng 自带 Walk）。\n" +
-                 "Feng Walk 原生地面速度 0.91 m/s（脚踝法实测），取 1.4 → 1.54× → 步频 2.31 步/秒。\n" +
-                 "上限由验收的步频断言把关（≤ 3.0 步/秒）。")]
-        public float walkSpeed = 1.4f;
+        [Tooltip("走路速度（米/秒）。对应动画 Walk（Feng 自带 Walk 的循环副本 Feng_Walk_Loop）。\n" +
+                 "取 1.25 → 1.25/0.91 = 1.37× → 步频 2.06 步/秒（124 步/分，快走偏上但可控）。\n" +
+                 "★ 曾经取 1.4（1.54×）→ 步频 2.31 步/秒 = 竞走级，观感是「小碎步快走」。\n" +
+                 "★ 也试过换 KI Walk01_Forward（原生 1.80，取 1.4 只要 0.78×，步频更漂亮）——\n" +
+                 "  但实测它的最低点跨度 0.327m（Feng 只有 0.166），侧视图里腿抬得像跨步/跑步，\n" +
+                 "  不像走路，已回退。选片段不能只看步频，要看「脚位波动」。\n" +
+                 "上限由验收的步频断言把关。")]
+        public float walkSpeed = 1.25f;
 
         [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（Kevin Iglesias Run01_Forward）。\n" +
                  "Run01_Forward 原生 4.12 m/s（脚踝法实测），取 4.0 → 0.97× → 步频 3.23 步/秒，落在真人跑步区间。\n" +
@@ -90,7 +94,7 @@ namespace InkWash.Player
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
                  "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
-                 "当前：走路 1.4/0.91 = 1.54，跑步 4.0/4.12 = 0.97，上限取 2.2 留足余量。")]
+                 "当前：走路 1.25/0.91 = 1.37，跑步 4.0/4.12 = 0.97，上限取 2.2 留足余量。")]
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
@@ -119,10 +123,11 @@ namespace InkWash.Player
                  "Quaternius UAL2 的剑术片段是「斩击 + 收招」两段式，控制器里对应\n" +
                  "AtkN 与 AtkNRec 两个状态，所以这里的总时长 =\n" +
                  "主段 × exitTime / 主段speed + 收招段 × exitTime / 收招speed（speed 见 Player.controller）：\n" +
-                 "A 0.433×0.95/1.25 + 0.967×0.85/1.40 = 0.916\n" +
-                 "B 0.533×0.95/1.25 + 1.033×0.85/1.40 = 1.032\n" +
-                 "C 2.000×0.72/1.25 = 1.152")]
-        public float[] comboSwingDuration = { 0.916f, 1.032f, 1.152f };
+                 "A 0.433×0.95/1.25 + 0.967×0.85/1.70 = 0.813\n" +
+                 "B 0.533×0.95/1.25 + 1.033×0.85/1.70 = 0.922\n" +
+                 "C 2.000×0.72/1.25 = 1.152\n" +
+                 "（收招段 speed 由 1.40 提到 1.70 —— 收招占一轮连击 60%+，是「廉价感」的直接来源）")]
+        public float[] comboSwingDuration = { 0.813f, 0.922f, 1.152f };
 
         [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近、略提前：\n" +
                  "A 0.279s / B 0.258s / C 0.656s（Tools/cs/q_atktiming.cs 标定）\n" +

@@ -1,0 +1,4 @@
+① 待机片段 = Rig|Idle_Loop  isLooping=True
+② 走路 3.5s 片段=Feng_Walk_Loop  速度=1.25  循环回绕 1 次（3.5s ÷ 0.97s ≈ 3.6 个循环，应 ≥3）
+③ 跑步 3s 片段=Run01_Forward  速度=4.00
+④ 三段连击 ×3 轮 耗时 7.20s（每轮 2.40s）

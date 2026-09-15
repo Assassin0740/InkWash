@@ -48,10 +48,16 @@ namespace InkWash.Player
         [Tooltip("握拳补丁：非战斗（手里没剑）时必须关掉，否则空手也攥着拳头")]
         public WeaponHandPose handPose;
 
-        [Header("非战斗待机片段")]
-        [Tooltip("平时站着播的片段，要求是「自然双手下垂」的徒手待机（本项目用 UAL1 的 Rig|Idle_Loop）。\n" +
+        [Header("待机片段（两个姿态各一段）")]
+        [Tooltip("非战斗（平时站着）播的片段，要求是「自然双手下垂」的徒手待机（本项目用 UAL1 的 Rig|Idle_Loop）。\n" +
                  "留空则不做动画切换，只做收剑。")]
         public AnimationClip relaxedIdleClip;
+
+        [Tooltip("战斗（持剑）待机播的片段。留空则用控制器 Idle 状态槽位里原本挂的片段。\n" +
+                 "★ 为什么要显式配置：旧实现靠「片段名 == \"Idle\"」去认槽位，一旦把控制器里的 Idle\n" +
+                 "换成循环副本（名字变成 Feng_Idle_Loop），匹配就失效 —— 而且**整套战斗姿态会静默失效**\n" +
+                 "（武器不挂手、不握拳），控制台一条报错都没有。")]
+        public AnimationClip combatIdleClip;
 
         [Header("节奏")]
         [Tooltip("最后一次攻击 / 冲刺之后，静置多少秒收回武器、回到自然站立")]
@@ -86,7 +92,8 @@ namespace InkWash.Player
 
         // ---------------- 内部 ----------------
         private AnimatorOverrideController _ovr;
-        private AnimationClip _combatIdleClip;     // 控制器里 Idle 原本挂的片段（持剑待机）
+        private AnimationClip _idleSlot;           // OverrideController 里 Idle 状态的槽位（必须由 GetOverrides 拿到的原始 key）
+        private AnimationClip _combatIdleClip;     // 战斗待机实际播的片段
         private GameObject _weapon;
         private Transform _handParent;             // 武器原本的父节点（右手挂点）
         private bool _ready;
@@ -171,13 +178,19 @@ namespace InkWash.Player
                 _ovr = ctrl as AnimatorOverrideController;
                 if (_ovr == null) _ovr = new AnimatorOverrideController(ctrl);
 
+                // 找 Idle 状态的**槽位**。注意必须用 GetOverrides 拿到的原始 key，
+                // 否则 _ovr[key] = clip 这个索引器设不进去（静默无效）。
+                // 用 Contains 而不是 == ：控制器里的 Idle 槽位可能挂的是循环副本（Feng_Idle_Loop）。
                 var pairs = new List<KeyValuePair<AnimationClip, AnimationClip>>();
                 _ovr.GetOverrides(pairs);
                 foreach (var kv in pairs)
                 {
-                    if (kv.Key != null && kv.Key.name == "Idle") { _combatIdleClip = kv.Key; break; }
+                    if (kv.Key != null && kv.Key.name.Contains("Idle")) { _idleSlot = kv.Key; break; }
                 }
-                if (_combatIdleClip == null) return false;   // 控制器里还没备好 Idle，下一帧再试
+                if (_idleSlot == null) return false;   // 控制器里还没备好 Idle，下一帧再试
+
+                // 战斗待机片段：显式配置优先，否则用槽位自身挂的那个
+                _combatIdleClip = combatIdleClip != null ? combatIdleClip : _idleSlot;
             }
 
             // 2. 记下武器实例与它原本的父节点
@@ -199,12 +212,12 @@ namespace InkWash.Player
             if (combat) SwitchToCombatCount++; else SwitchToRelaxedCount++;
 
             // ① Idle 片段：只改 ovr 里那一条映射
-            if (_ovr != null && _combatIdleClip != null)
+            if (_ovr != null && _idleSlot != null)
             {
                 AnimationClip clip = combat
                     ? _combatIdleClip
                     : (relaxedIdleClip != null ? relaxedIdleClip : _combatIdleClip);
-                _ovr[_combatIdleClip] = clip;
+                _ovr[_idleSlot] = clip;
                 CurrentIdleClipName = clip != null ? clip.name : "<null>";
             }
 
