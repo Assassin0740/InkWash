@@ -1,0 +1,40 @@
+================ q_bake_run_fix ================
+
+  目标 Run04_KI_Carry  len=0.600  右臂 0/9  最大range=0.0000
+  源   Run01_Forward  len=0.600  右臂 9/9  最大range=1.9654
+
+  源片段里可用的右臂通道 9 条：
+    Right Arm Down-Up              关键帧=19  均值=-0.1858
+    Right Arm Front-Back           关键帧=19  均值=0.3645
+    Right Arm Twist In-Out         关键帧=19  均值=-0.0374
+    Right Forearm Stretch          关键帧=19  均值=0.1578
+    Right Forearm Twist In-Out     关键帧=19  均值=-0.2516
+    Right Hand Down-Up             关键帧=19  均值=0.0117
+    Right Hand In-Out              关键帧=19  均值=0.0055
+    Right Shoulder Down-Up         关键帧=19  均值=-0.0074
+    Right Shoulder Front-Back      关键帧=19  均值=0.6702
+
+  目标片段现有右臂通道 9 条，旧值（当前的搬运常数值）：
+    Right Shoulder Down-Up         旧常数= -0.3729 → 新 range=0.1405
+    Right Shoulder Front-Back      旧常数=  1.7202 → 新 range=1.9654
+    Right Arm Down-Up              旧常数= -0.3579 → 新 range=0.6398
+    Right Arm Front-Back           旧常数=  0.1438 → 新 range=0.8986
+    Right Arm Twist In-Out         旧常数=  0.1897 → 新 range=0.7982
+    Right Forearm Stretch          旧常数=  0.5805 → 新 range=0.5491
+    Right Forearm Twist In-Out     旧常数=  0.1500 → 新 range=0.2274
+    Right Hand Down-Up             旧常数=  0.0286 → 新 range=0.3205
+    Right Hand In-Out              旧常数= -0.0106 → 新 range=0.2112
+
+  ==== 复核（重新读盘） ====
+  Run04_KI_Carry  len=0.600  右臂 9/9  最大range=1.9654
+  替换 9 条，补入 0 条
+  左臂对照（应保持不变）:
+    Left Shoulder Down-Up          range=0.1905
+    Left Shoulder Front-Back       range=1.9605
+    Left Arm Down-Up               range=0.7271
+    Left Arm Front-Back            range=0.8923
+    Left Arm Twist In-Out          range=0.7714
+    Left Forearm Stretch           range=0.5488
+    Left Forearm Twist In-Out      range=0.2310
+
+================ end ================

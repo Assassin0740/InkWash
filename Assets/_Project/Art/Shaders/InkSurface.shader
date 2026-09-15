@@ -68,18 +68,20 @@ Shader "InkWash/InkSurface"
         _BrushStrength ("飞白强度", Range(0, 1)) = 0.5
 
         // ---- 积墨（世界坐标低频斑驳） ----
-        _InkMottle ("积墨（地面斑驳）", Range(0, 1)) = 0.34
+        _InkMottle ("积墨（地面斑驳）", Range(0, 1)) = 0.30
         _MottleScale ("积墨尺度", Float) = 0.35
 
         // ---- ★ v3 纹理管线：三层噪声（机制说明见下方 HLSL 注释） ----
         // 为什么改成程序化：T_InkBrushNoise 是 256² 的**低频平滑**图案
         // （相邻像素相关 0.994、1/8 降采样后 std 不变 ⇒ 内容频率约 32 个特征/整图），
         // 高尺度采样时被 GPU 的 mip 平均成常数 ⇒ 噪声贡献在数学上归零。
-        _GrainScale ("纸颗粒尺度（高频，越大越细）", Float) = 96
-        _GrainAmp ("纸颗粒强度（直接调制颜色）", Range(0, 1)) = 0.46
-        _StrokeScale ("笔触尺度（中频皴法，越大越细）", Float) = 7.0
-        _StrokeStretch ("笔触方向性拉伸比（1=各向同性=噪点）", Range(1, 12)) = 3.0
-        _StrokeAmp ("笔触强度（阶内浓度调制）", Range(0, 1)) = 0.22
+        //   ★ 尺度是"每米几个周期"：96 ⇒ 周期≈1cm，在任何游戏距离都远超
+        //     Nyquist ⇒ 纸颗粒被 LOD 淡出成**永久不可见**（地面因此是纯色板）。
+        _GrainScale ("纸颗粒尺度（高频，越大越细）", Float) = 18
+        _GrainAmp ("纸颗粒强度（直接调制颜色）", Range(0, 1)) = 0.12
+        _StrokeScale ("笔触尺度（中频皴法，越大越细）", Float) = 1.5
+        _StrokeStretch ("笔触方向性拉伸比（1=各向同性=噪点）", Range(1, 12)) = 2.0
+        _StrokeAmp ("笔触强度（阶内浓度调制）", Range(0, 1)) = 0.26
 
         // ---- 高度留白 ----
         _HeightFade ("高处留白强度", Range(0, 1)) = 0.18
@@ -449,6 +451,48 @@ Shader "InkWash/InkSurface"
                 return saturate(ValueNoise(p) * 0.65h + ValueNoise(p * 2.17h + 11.3h) * 0.35h);
             }
 
+            /// 噪声采样点在**屏幕上**的足迹：取 x / y 两轴变化率的较大者。
+            /// 值 ≈ 1 的物理含义是"一个像素正好跨一个噪声周期"（Nyquist 极限）。
+            ///
+            /// ★ 为什么必须取两轴的 max（旧版只看一个轴，是「地板斜纹随视角变」的根因）：
+            ///   `fwidth(q) = |ddx(q)| + |ddy(q)|` 只描述 q **自己**把两轴加在一起；
+            ///   而噪声空间是二维的 —— 掠射视角下"沿视线方向"那一轴的世界足迹
+            ///   可以是另一轴的一到两个数量级（实测：地面 8 m 处横向 ≈2 cm/px、
+            ///   沿视线 ≈30 cm/px）。只盯一个轴 ⇒ **漏掉真正欠采样的那个方向**
+            ///   ⇒ 高频图案在掠射面上混叠成沿视线辐射的斜向条带。
+            half InkFootprint(float2 q)
+            {
+                float2 d = max(abs(ddx(q)), abs(ddy(q)));
+                return max(d.x, d.y);
+            }
+
+            /// Nyquist 淡出：足迹 ≤0.5 全保留、≥1.0 全淡出。返回 1 = 保留。
+            half InkNyquistFade(half footprint)
+            {
+                return saturate(2.0h - footprint * 2.0h);
+            }
+
+            /// ★ 细节 LOD 退级：细层随足迹淡出时，用 **1/4 频率**的同族噪声顶上。
+            ///
+            /// 为什么必须这样做 —— 「淡出到 0.5（常数）」是错的：
+            ///   数学上它确实消除了混叠，但视觉上**等于把纹理删掉**。实测后果是大平面
+            ///   退化成一块光板（中央高台从"有纸感的浅灰"变成"一块光滑中灰板"），
+            ///   而用户对场景的抱怨恰恰是"没有纹理效果"。**远距离不该是平色，该是大块墨晕。**
+            ///
+            /// 阈值：`InkNyquistFade(f)=saturate(2-2f)`
+            ///   细层 f = footprint × 1.4      ⇒ ≤0.18 全保留，≥0.36 全让位
+            ///   粗层 f = footprint × 0.35     ⇒ 频率低 4 倍 ⇒ 一直撑到 footprint≥1.3
+            /// 取 1.4（而不是 Fbm2 第二倍频的 2.17）是有意的折中：2.17 太保守，
+            /// 会把**第一**倍频在主频还完全可分辨时就一起杀掉。
+            half InkDetail2(float2 q, half foot)
+            {
+                half hi = Fbm2(q);
+                half lo = Fbm2(q * 0.25h);
+                return lerp(0.5h, lerp(lo, hi, InkNyquistFade(foot * 1.4h)),
+                                   InkNyquistFade(foot * 0.35h));
+            }
+
+
             /// 三层纹理采样。三层各自有职责，不能混：
             ///   x = 纸颗粒  高频 + 轻微各向异性(1.6:1) —— 纸的纤维，**在纸白区也看得见**
             ///   y = 笔触    中频 + **方向性拉伸**          —— 皴法/笔痕，"一笔刷过"的方向感
@@ -467,20 +511,30 @@ Shader "InkWash/InkSurface"
                 else if (an.x >= an.z)             p = float2(posWS.z, posWS.y);  // 朝左右
                 else                               p = posWS.xy;                  // 朝前后
 
-                // 纸颗粒：轻微各向异性 —— 真实的纸纤维是短的丝，不是圆点
-                float2 gp = float2(p.x * 0.62h, p.y);
-                half grain = Fbm2(gp * _GrainScale);
-                // 远处淡出高频颗粒：屏幕导数大 = 该像素跨了太多噪声周期 ⇒ 再高只会出摩尔纹
-                // ★ 阈值必须与"屏幕采样率"挂钩，而不是拍脑袋的 1.8/0.4：
-                //   fwidth ≈ 1 表示"一个像素正好跨一个噪声周期"，再高就是纯混叠。
-                //   旧值要 fwidth>4.5 才淡出 —— 任何实用距离都够不到 ⇒ 远处纸颗粒
-                //   混叠成均匀灰噪声（画面发脏、发灰）。新值在 fwidth=1 处全淡出。
-                half grainFade = saturate(2.0h - fwidth(gp.x * _GrainScale) * 2.0h);
-                grain = lerp(0.5h, grain, grainFade);
+                // ---- ★ 采样点先在**噪声空间**里算出来，才能对同一个量求屏幕足迹 ----
+                //   旧版把 `gp * _GrainScale` 直接塞进 Fbm2、然后拿 `gp.x * _GrainScale`
+                //   去算 fwidth —— 既只看了 x 轴，又和中频笔触层完全脱节。
+                float2 qGrain  = float2(p.x * 0.62h, p.y) * _GrainScale;
+                float2 qStroke = float2(p.x / max(_StrokeStretch, 1.0h), p.y) * _StrokeScale + 27.1h;
 
-                half stroke = Fbm2(float2(p.x / max(_StrokeStretch, 1.0h), p.y) * _StrokeScale + 27.1h);
-                half mottle = SAMPLE_TEXTURE2D(_BrushTex, sampler_BrushTex,
-                                               p * _MottleScale * 0.21h + 3.7h).r;
+                float2 qMottle = p * max(_MottleScale, 0.05h) * 0.21h + 3.7h;
+
+                // ---- ★ 屏幕足迹 Nyquist + LOD 退级 ----
+                //   `InkFootprint` 取 x/y 两轴变化率的**较大者**（旧版只看一个轴，
+                //   漏掉掠射视角下真正欠采样的那一轴，正是"斜向条带"的根因）。
+                //   细层淡出后由 `InkDetail2` 的粗层顶替 ⇒ 远处是墨晕不是平色。
+                half grain  = InkDetail2(qGrain,  InkFootprint(qGrain));
+                half stroke = InkDetail2(qStroke, InkFootprint(qStroke));
+
+                // ---- ★ 积墨层必须**程序化**，不能再用 `_BrushTex` ----
+                //   上一轮把纸颗粒/笔触换成了程序化噪声，**唯独漏了积墨这一路**，
+                //   于是它继续踩同一个坑（见上方 v3 管线注释）：
+                //   位图在远处被硬件挑到高 mip，256² 一路降到 8×8 ⇒ 整片平均成
+                //   mean≈0.483 的**常数**；而积墨遮罩是 `saturate(mottle-0.5)*2`
+                //   ⇒ 常数 <0.5 时遮罩恒为 0 ⇒ **整条通路静默失效**。
+                //   实测：`_InkMottle` 归零，全画面最大变化仅 0.0024（≈没有）。
+                //   程序化噪声没有 mip，且 qMottle 周期≈2~3 m ⇒ 整张画面都在 Nyquist 内。
+                half mottle = Fbm2(qMottle);
                 return half3(grain, stroke, mottle);
             }
 
@@ -491,11 +545,28 @@ Shader "InkWash/InkSurface"
                 half3 albedo  = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
                 half3 normalWS = normalize(input.normalWS);
 
+                // ---- 取三层噪声（纸颗粒 / 笔触 / 积墨）----
+                //   ★ 必须**在光照之前**取：下面要用积墨层把阴影的硬直边揉开。
+                half3 nz = SampleInkNoise(input.positionWS, normalWS);
+
                 // ---- 光照 ----
                 Light mainLight = GetMainLight(input.shadowCoord);
                 half atten = mainLight.distanceAttenuation;
                 half ndl = dot(normalWS, mainLight.direction);
-                half lambert = saturate(ndl) * saturate(mainLight.shadowAttenuation) * atten;
+
+                // ★ 阴影边手绘化：方向光阴影虽开了软过滤（shadows=Soft），
+                //   几何边缘仍是一条**笔直**的线；在留白地面上它被读成"一块涂上去的灰带"
+                //   （用户截图里的"斜向灰带"）。r8 实测：关掉方向光阴影，画面 30/160 格、
+                //   最大 Δ0.26 —— 确认带子就是阴影。
+                //   用世界空间低频噪声（周期≈2~3 m）揉开它的好处：
+                //   ① 边界形状**固定在世界空间** ⇒ 相机移动时不漂，读成"画出来的墨边"
+                //      而不是"跟着视角变的贴图错误"；
+                //   ② 阴影**内部**也被揉出浓淡 ⇒ 不再是死板的一片平灰。
+                //   幅度挂 `_StrokeAmp`（避免新增 uniform ⇒ 4 个 CBUFFER 不用动）。
+                //   受光面 shadowAttenuation=1 ⇒ saturate 后恒为 1，**不受影响**。
+                half shadowAtten = saturate(mainLight.shadowAttenuation
+                                          + (nz.z - 0.5h) * _StrokeAmp * 1.4h);
+                half lambert = saturate(ndl) * shadowAtten * atten;
 
                 #ifdef _ADDITIONAL_LIGHTS
                 uint addCount = GetAdditionalLightsCount();
@@ -512,13 +583,19 @@ Shader "InkWash/InkSurface"
                 half3 sh = SampleSH(normalWS);
                 half ambient = saturate(dot(sh, half3(0.333h, 0.333h, 0.333h)));
 
-                // ---- 取三层噪声（纸颗粒 / 笔触 / 积墨）----
-                half3 nz = SampleInkNoise(input.positionWS, normalWS);
+                // （三层噪声已在光照之前取好 —— 阴影边需要它，见上）
 
                 // ① 抖阶边界：噪声必须加在 **saturate 之前**。
                 //    v1 的 jitter 加在已经饱和的 lit 上，被 Quantize 首句的 saturate 削掉
                 //    ⇒ 受光区（画面 80% 面积）噪声数学上等于不存在。这一路修的就是它。
-                half jitter = ((nz.y - 0.5h) * 0.75h + (nz.x - 0.5h) * 0.40h) * _BrushStrength;
+                //   ★ 抖阶只在**有阶可抖**时才有意义：jitter 的职责是打断墨阶**边界**。
+                //     大平面（`_Bands=1`）已经把量化整个关掉了 ⇒ jitter 无事可做，而它注
+                //     入的是 **ramp 空间**，会被墨阶表在暗部的陡斜率放大 —— 实测表现：
+                //     墙投下的阴影里那半块地板糊上一层"毛"，受光面却干净得像纸，
+                //     **同一块地板读成两种材质**（用户报的"地上出现奇怪的现象"）。
+                //     `saturate(_Bands - 1)`：_Bands ≤1 → 0，≥2 → 1（角色的墨阶一个不动）。
+                half bandGate = saturate(_Bands - 1.0h);
+                half jitter = ((nz.y - 0.5h) * 0.75h + (nz.x - 0.5h) * 0.40h) * _BrushStrength * bandGate;
 
                 // ★ v2 核心公式：主光 0.80、环境光 0.40，再加上本物体的基础墨阶偏移。
                 //   旧版是 `lambert + ambient*0.55` 且环境光 0.885 ⇒ 必然饱和。
@@ -540,8 +617,11 @@ Shader "InkWash/InkSurface"
                 //    S6 的"没有纹理"就是这一步缺失的直接后果。
                 //    权重刻意压到 0.22：扫描实测 `*0.5` 时低频幅度会把亮部顶到墨阶表上界、
                 //    被削平 ⇒ 等于给画面加低频压扩器，高频纹理反而掉 30%（E3 vs E2）。
-                ramp = saturate(ramp + (nz.y - 0.5h) * _StrokeAmp * 0.22h
-                                     + (nz.z - 0.5h) * _InkMottle  * 0.30h);
+                //   ★ 同 jitter 的理由：ramp 空间的注入在暗部被墨阶表放大，大平面又没有阶，
+                //     注入只会把阴影区糊成毛 ⇒ 一并闸掉。大平面的质感改由下方的 `texMod`
+                //     （**颜色空间**、与明暗无关）承担，阴影内外一致。
+                ramp = saturate(ramp + bandGate * ((nz.y - 0.5h) * _StrokeAmp * 0.22h
+                                                 + (nz.z - 0.5h) * _InkMottle  * 0.30h));
 
                 // ---- ★ 增量 G-1 接地墨渍：离地越近越浓，让物体"坐"在纸上 ----
                 //   ★ 必须乘 (1 - 朝上程度)：只按世界高度判会把**整块地面**也压暗
@@ -578,8 +658,12 @@ Shader "InkWash/InkSurface"
 
                 // ---- 积墨：低洼/背光处一片片渗进去的深色 ----
                 // 只作用在偏亮的阶上（清墨/淡墨）—— 暗部再加就糊了。
+                //   ★ 这一路过去是**死的**（见 SampleInkNoise 里积墨的注释）：位图被
+                //     mip 平均成常数后遮罩恒为 0。换成程序化噪声后它第一次真正生效，
+                //     所以混合权重从 0.55 收到 0.42 —— 先给出"积墨"的斑驳感，
+                //     又不至于把留白地面涂成花脸。
                 half mottleMask = saturate(nz.z - 0.5h) * 2.0h * _InkMottle * (1.0h - ramp * 0.55h);
-                color = lerp(color, _InkDark.rgb, mottleMask * 0.55h);
+                color = lerp(color, _InkDark.rgb, mottleMask * 0.42h);
 
                 color = MixFog(color, input.fogFactor);
                 return half4(color, 1.0h);

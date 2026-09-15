@@ -1,0 +1,21 @@
+================ q_dash_bake ================
+UAL2 片段数 = 86
+  Armature|Sword_Dash  len=1.567
+    能量(按峰值归一): ## .#+           .      
+    自动窗口≈ 0.000 s（仅参考）；实际起点 = 0.100 s（FORCED_START）
+  Armature|Shield_Dash  len=1.100
+    能量(按峰值归一): ##...     .........     
+    自动窗口≈ 0.000 s（仅参考）；实际起点 = 0.100 s（FORCED_START）
+  Armature|Slide_Start  len=0.833
+    能量(按峰值归一):  .+++..##..             
+    自动窗口≈ 0.000 s（仅参考）；实际起点 = 0.100 s（FORCED_START）
+
+  ⇒ 选用 Armature|Sword_Dash 窗口 [0.100, 0.650]
+
+  已烘出 Assets/_Project/Animations/Baked/Dash_Lunge.anim  len=0.550  通道数=130
+  Dash 状态原 motion = null  speed=1.000  speedParameter=
+  Dash 状态新 motion = Dash_Lunge  speed=1.000
+  复核 Dash → Dash_Lunge  speed=1.000
+  复核片段 Dash_Lunge len=0.550 通道=130
+
+================ end ================

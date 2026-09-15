@@ -1,0 +1,15 @@
+================ q_final ================
+
+---------- ① 重击（K 键）断言 ----------
+  调用前 Phase = Locomotion
+  TryStartHeavyAttack() 返回 = True
+  调用后 Phase = Attack   IsDashing=False
+  SwingStarted 触发次数 = 1   最后一段号 = 3（应为 3 = 重击终结技）
+  Animator 当前状态 hash=2081823275  目标状态 hash=0
+  断言：Phase=Attack 且 段号=3 ⇒ **通过**
+
+  已实例化并墨化敌人 3 个
+  第 4 格 = 主角与 3 只怪并排
+  格1 = 主角正面  格2 = 主角背面（看背上的剑）  格3 = 墨化后的怪  格4 = 并排对比
+
+================ end ================

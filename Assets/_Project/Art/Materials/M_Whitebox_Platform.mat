@@ -98,24 +98,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _OutlineDistScale: 0.05
-    - _OutlineScale: 0.7
-    - _OutlineDry: 0.42
-    - _OutlineFacing: 0.85
-    - _OutlineWidth: 0.026
+    - _AerialFrom: 12
+    - _AerialStrength: 0.55
+    - _AerialTo: 30
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BandBias: -0.06
+    - _BandBias: 0.18
     - _BandSoftness: 0.08
     - _Bands: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BrushScale: 6
     - _BrushStrength: 0.15
-    - _GrainAmp: 0.42
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _ContactHeight: 0.45
+    - _ContactInk: 0.3
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -126,15 +125,23 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _GrainAmp: 0.11
+    - _GrainScale: 18
+    - _GroundY: 0
     - _HeightFade: 0.1
     - _HeightFrom: 0.3
     - _HeightTo: 2
     - _InkDensity: 0.3
-    - _InkMottle: 0.10
+    - _InkMottle: 0.3
     - _LadderSkew: 0.42
     - _Metallic: 0
-    - _MottleScale: 1.6
+    - _MottleScale: 2.2
     - _OcclusionStrength: 1
+    - _OutlineDistScale: 0.05
+    - _OutlineDry: 0.42
+    - _OutlineFacing: 0.85
+    - _OutlineScale: 0.7
+    - _OutlineWidth: 0.026
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -143,17 +150,20 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _StrokeAmp: 0.26
+    - _StrokeScale: 1.5
+    - _StrokeStretch: 2
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _OutlineColor: {r: 0.055, g: 0.06, b: 0.075, a: 1}
     - _AmbientTint: {r: 0.92, g: 0.945, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.8, g: 0.79, b: 0.76, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _InkDark: {r: 0.06, g: 0.078, b: 0.132, a: 1}
-    - _InkLight: {r: 0.988, g: 0.976, b: 0.940, a: 1}
+    - _InkLight: {r: 0.988, g: 0.976, b: 0.94, a: 1}
     - _InkMid: {r: 0.265, g: 0.295, b: 0.375, a: 1}
+    - _OutlineColor: {r: 0.055, g: 0.06, b: 0.075, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

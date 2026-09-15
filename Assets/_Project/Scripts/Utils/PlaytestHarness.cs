@@ -630,8 +630,8 @@ namespace InkWash.Utils
             yield return RunCombatStage(stages, ctx, "B 步行(前)", 2.5f, Vector2.up, false, null);
             yield return RunCombatStage(stages, ctx, "C 疾跑(前)", 2.5f, Vector2.up, true, null);
 
-            // ---- 冲刺（翻滚）：问题 4 的专用段，顺带验证冲刺不再"挥着剑滑行" ----
-            yield return RunCombatStage(stages, ctx, "I 冲刺(翻滚)", 1.6f, Vector2.up, true,
+            // ---- 冲刺（低身前冲）：问题 4 的专用段，顺带验证冲刺不再"挥着剑滑行" ----
+            yield return RunCombatStage(stages, ctx, "I 冲刺(前冲)", 1.6f, Vector2.up, true,
                 (c, t, f, w) => { if (f == 1) w.dash = true; });
 
             // ---- 单段挥砍：特效 / 震屏 / 后摇 ----
@@ -746,7 +746,7 @@ namespace InkWash.Utils
             var recancel = FindC(stages, "F 后摇取消(延迟再按)");
             var dashcancel = FindC(stages, "G 后摇取消(冲刺)");
             var settle = FindC(stages, "H 收招静止");
-            var dashStage = FindC(stages, "I 冲刺(翻滚)");
+            var dashStage = FindC(stages, "I 冲刺(前冲)");
 
             int pass = 0, fail = 0;
             System.Action<string, bool, string> check = (label, ok, detail) =>
@@ -826,7 +826,8 @@ namespace InkWash.Utils
                     "最大附加层权重 " + F(combo.upperWeightMax) + "（图层数应为 1）");
 
             sb.AppendLine();
-            sb.AppendLine("-- 问题 4「右键动作很奇怪」：冲刺换成翻滚，且与冲刺时长对齐 --");
+            sb.AppendLine("-- 问题 4「右键动作很奇怪」：Dash 换成 UAL2 `Sword_Dash` 的低身前冲（不再是 KayKit 的 Q 版翻滚），"
+                + "且与冲刺时长对齐 --");
             if (dashStage != null)
             {
                 check("[I 冲刺] 冲刺期间动画状态是 Dash",
@@ -1511,17 +1512,20 @@ namespace InkWash.Utils
                 sb.AppendLine("  " + (ok ? "[通过] " : "[未通过] ") + label + "   " + detail);
             };
 
+            // 2026-09-16：Dash 不再豁免。原来这里是 `if (r.state == "Dash") continue;` ——
+            // 那是因为旧 Dash 挂的是 KayKit 的 Q 版翻滚（身体贴地滚，夹地会把身体顶起来）。
+            // 换成写实的低身前冲 `Dash_Lunge` 之后，这条豁免直接变成"半截埋在地里冲刺"
+            // （实机逐帧取证见 Tools/reports/q_dash_ground.txt），FootIK 的豁免名单已清空。
             float worst = 0f; string worstState = "";
-            foreach (var r in rows) { if (r.state == "Dash") continue; if (r.lowest < worst) { worst = r.lowest; worstState = r.state; } }
+            foreach (var r in rows) { if (r.lowest < worst) { worst = r.lowest; worstState = r.state; } }
             chk("问题 6 落脚状态脚不穿地（最低点 ≥ -0.02m）", worst >= -0.02f,
                 "最差 " + (worstState.Length > 0 ? worstState : "-") + " " + F(worst) + " m（FootIK 抬升补偿后应贴近 0）");
 
             // 反向的毛病同样要拦：脚踩不到地、整个人飘在半空。
-            // 冲刺（翻滚）豁免 —— 那是腾空动作；Run 不能豁免，它整段的最低点也该触地（跑步有腾空相，但落地相必须落地）。
+            // Run 整段的最低点也该触地（跑步有腾空相，但落地相必须落地）；Dash 现在同样纳入。
             float worstFloat = float.MinValue; string worstFloatState = "";
             foreach (var r in rows)
             {
-                if (r.state == "Dash") continue;
                 if (r.lowest > worstFloat) { worstFloat = r.lowest; worstFloatState = r.state; }
             }
             chk("问题 6b 落脚状态不浮空（最低点 ≤ +0.05m）", worstFloat <= 0.05f,
@@ -1529,8 +1533,8 @@ namespace InkWash.Utils
 
             var dashRow = FindPose(rows, "Dash");
             if (dashRow != null)
-                sb.AppendLine("  [参考] Dash(翻滚) 最低点 " + F(dashRow.lowest) + " m —— 单独判定：该状态" +
-                    "豁免帧内贴地（脚本来就在空中），只靠静态基准偏移把它抬到不铲地，不进上面的断言");
+                sb.AppendLine("  [参考] Dash(低身前冲) 最低点 " + F(dashRow.lowest) + " m（已纳入上面的断言；"
+                    + "此行的 roll 残留见 Tools/reports/q_dash_ground.txt 的逐帧表）");
 
             var w = FindPose(rows, "Walk");
             if (w != null)

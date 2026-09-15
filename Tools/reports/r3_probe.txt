@@ -1,0 +1,124 @@
+================ r3_probe ================
+  param Speed : Float
+  param MotionSpeed : Float
+  param Grounded : Bool
+  param Dash : Trigger
+  param Attack1 : Trigger
+  param Attack2 : Trigger
+  param Attack3 : Trigger
+
+---------- ① 各片段的右臂活动量（左臂作对照） ----------
+  片段                                        右臂 活动/总        左臂 活动/总   右臂最大range
+  Feng_Idle_Loop                                1/9            1/9   0.1841   len=2.500
+          [冻结] Right Shoulder Front-Back  常数 1.7202
+          [冻结] Right Arm Down-Up  常数 -0.5149
+          [冻结] Right Arm Front-Back  常数 -0.5244
+          [冻结] Right Arm Twist In-Out  常数 -0.6450
+          [冻结] Right Forearm Stretch  常数 -0.2729
+          [冻结] Right Forearm Twist In-Out  常数 0.5868
+          [冻结] Right Hand Down-Up  常数 0.1322
+          [冻结] Right Hand In-Out  常数 -0.6515
+  Feng_Walk_Loop                                6/9            5/9   0.5683   len=1.333
+          [冻结] Right Arm Front-Back  常数 0.1414
+          [冻结] Right Hand Down-Up  常数 -0.0363
+          [冻结] Right Hand In-Out  常数 -0.3294
+  Run04_KI_Carry                                0/9            9/9   0.0000   len=0.600
+          [冻结] Right Shoulder Down-Up  常数 -0.3729
+          [冻结] Right Shoulder Front-Back  常数 1.7202
+          [冻结] Right Arm Down-Up  常数 -0.3579
+          [冻结] Right Arm Front-Back  常数 0.1438
+          [冻结] Right Arm Twist In-Out  常数 0.1897
+          [冻结] Right Forearm Stretch  常数 0.5805
+          [冻结] Right Forearm Twist In-Out  常数 0.1500
+          [冻结] Right Hand Down-Up  常数 0.0286
+          [冻结] Right Hand In-Out  常数 -0.0106
+  Dodge_Forward                                 5/9            5/9   0.2870   len=0.400
+          [冻结] Right Shoulder Down-Up  常数 0.0000
+          [冻结] Right Shoulder Front-Back  常数 0.0000
+          [冻结] Right Forearm Twist In-Out  常数 0.0026
+          [冻结] Right Hand Down-Up  常数 0.0048
+  Armature|Sword_Regular_A                      9/9            9/9   1.3705   len=0.433
+  Armature|Sword_Regular_A_Rec                  9/9            9/9   1.0557   len=0.967
+  Armature|Sword_Regular_B                      9/9            9/9   1.4412   len=0.533
+  Armature|Sword_Regular_B_Rec                  9/9            9/9   1.6781   len=1.033
+  Armature|Sword_Regular_C                      9/9            9/9   2.0565   len=2.000
+  Sword_Idle_Loop                               2/9            5/9   0.1315   len=1.667
+          [冻结] Right Shoulder Down-Up  常数 -0.3729
+          [冻结] Right Shoulder Front-Back  常数 1.7202
+          [冻结] Right Arm Down-Up  常数 -0.3579
+          [冻结] Right Arm Front-Back  常数 0.1438
+          [冻结] Right Arm Twist In-Out  常数 0.1895
+          [冻结] Right Forearm Twist In-Out  常数 0.1522
+          [冻结] Right Hand Down-Up  常数 0.0288
+  Idle_Carry_A                                  0/9            5/9   0.0000   len=2.500
+          [冻结] Right Shoulder Down-Up  常数 -0.3729
+          [冻结] Right Shoulder Front-Back  常数 1.7202
+          [冻结] Right Arm Down-Up  常数 -0.3579
+          [冻结] Right Arm Front-Back  常数 0.1438
+          [冻结] Right Arm Twist In-Out  常数 0.1897
+          [冻结] Right Forearm Stretch  常数 0.5805
+          [冻结] Right Forearm Twist In-Out  常数 0.1500
+          [冻结] Right Hand Down-Up  常数 0.0286
+          [冻结] Right Hand In-Out  常数 -0.0106
+
+  ★ 右臂**完全冻结**的片段：Run04_KI_Carry, Idle_Carry_A
+
+---------- ② 地面/场景材质 ----------
+  M_Whitebox_Ground _Bands=1  _BandBias=0.18  _GrainScale=96  _GrainAmp=0.46  _StrokeScale=7  _StrokeStretch=3  _StrokeAmp=0.22  _BrushStrength=0.15
+
+---------- ③ 场景里的地面/台子 ----------
+  root: Environment
+    Environment/Ground   mesh=Cube  size=(44.00, 0.50, 44.00)  scale=(44.00, 0.50, 44.00)  mat=M_Whitebox_Ground
+    Environment/Arena   mesh=Cube  size=(10.00, 0.30, 10.00)  scale=(10.00, 0.30, 10.00)  mat=M_Whitebox_Platform
+    Environment/Wall_N   mesh=Cube  size=(44.60, 4.00, 0.60)  scale=(44.60, 4.00, 0.60)  mat=M_Whitebox_Wall
+    Environment/Wall_S   mesh=Cube  size=(44.60, 4.00, 0.60)  scale=(44.60, 4.00, 0.60)  mat=M_Whitebox_Wall
+    Environment/Wall_E   mesh=Cube  size=(0.60, 4.00, 44.60)  scale=(0.60, 4.00, 44.60)  mat=M_Whitebox_Wall
+    Environment/Wall_W   mesh=Cube  size=(0.60, 4.00, 44.60)  scale=(0.60, 4.00, 44.60)  mat=M_Whitebox_Wall
+    Environment/Pillars/Pillar_0   mesh=Cylinder  size=(0.80, 6.00, 0.80)  scale=(0.80, 3.00, 0.80)  mat=M_Whitebox_Pillar
+    Environment/Pillars/Pillar_1   mesh=Cylinder  size=(0.80, 6.00, 0.80)  scale=(0.80, 3.00, 0.80)  mat=M_Whitebox_Pillar
+    Environment/Pillars/Pillar_2   mesh=Cylinder  size=(0.80, 6.00, 0.80)  scale=(0.80, 3.00, 0.80)  mat=M_Whitebox_Pillar
+    Environment/Pillars/Pillar_3   mesh=Cylinder  size=(0.80, 6.00, 0.80)  scale=(0.80, 3.00, 0.80)  mat=M_Whitebox_Pillar
+    Environment/Eaves/Eave_N   mesh=Cube  size=(45.60, 0.32, 1.40)  scale=(45.60, 0.32, 1.40)  mat=M_Ink_Eave
+    Environment/Eaves/Eave_S   mesh=Cube  size=(45.60, 0.32, 1.40)  scale=(45.60, 0.32, 1.40)  mat=M_Ink_Eave
+    Environment/Eaves/Eave_E   mesh=Cube  size=(1.40, 0.32, 45.60)  scale=(1.40, 0.32, 45.60)  mat=M_Ink_Eave
+    Environment/Eaves/Eave_W   mesh=Cube  size=(1.40, 0.32, 45.60)  scale=(1.40, 0.32, 45.60)  mat=M_Ink_Eave
+    Environment/Eaves/EaveGate_N   mesh=Cube  size=(21.80, 0.28, 1.20)  scale=(21.80, 0.28, 1.20)  mat=M_Ink_Eave
+    Environment/Eaves/EaveGate_S   mesh=Cube  size=(21.80, 0.28, 1.20)  scale=(21.80, 0.28, 1.20)  mat=M_Ink_Eave
+    Environment/Eaves/EaveGate_E   mesh=Cube  size=(1.20, 0.28, 21.80)  scale=(1.20, 0.28, 21.80)  mat=M_Ink_Eave
+    Environment/Eaves/EaveGate_W   mesh=Cube  size=(1.20, 0.28, 21.80)  scale=(1.20, 0.28, 21.80)  mat=M_Ink_Eave
+    Environment/Props/Prop00_松·东南_Pine_1   mesh=Pine_1  size=(6.51, 8.00, 6.19)  scale=(1.09, 1.09, 1.09)  mat=M_Ink_Prop
+    Environment/Props/Prop01_松·东北_Pine_3   mesh=Pine_3  size=(6.51, 9.00, 6.39)  scale=(1.22, 1.22, 1.22)  mat=M_Ink_Prop
+    Environment/Props/Prop02_松·西南_Pine_2   mesh=Pine_2  size=(7.69, 7.50, 7.82)  scale=(1.02, 1.02, 1.02)  mat=M_Ink_Prop
+    Environment/Props/Prop03_松·西北_Pine_4   mesh=Pine_4  size=(6.50, 8.50, 6.42)  scale=(0.83, 0.83, 0.83)  mat=M_Ink_Prop
+    Environment/Props/Prop04_松·东_Pine_5   mesh=Pine_5  size=(6.16, 7.00, 6.27)  scale=(0.80, 0.80, 0.80)  mat=M_Ink_Prop
+    Environment/Props/Prop05_松·西_Pine_1   mesh=Pine_1  size=(6.56, 7.50, 6.72)  scale=(1.03, 1.03, 1.03)  mat=M_Ink_Prop
+    Environment/Props/Prop06_枯·西南_DeadTree_2   mesh=DeadTree_2  size=(4.44, 6.00, 4.33)  scale=(0.52, 0.52, 0.52)  mat=M_Ink_Prop
+    Environment/Props/Prop07_枯·东北_DeadTree_4   mesh=DeadTree_4  size=(4.51, 5.50, 4.47)  scale=(0.43, 0.43, 0.43)  mat=M_Ink_Prop
+    Environment/Props/Prop08_虬·东南_TwistedTree_1   mesh=TwistedTree_1  size=(5.09, 6.20, 5.68)  scale=(0.37, 0.37, 0.37)  mat=M_Ink_Prop
+    Environment/Props/Prop09_虬·西北_TwistedTree_3   mesh=TwistedTree_3  size=(4.49, 5.80, 4.44)  scale=(0.36, 0.36, 0.36)  mat=M_Ink_Prop
+    Environment/Props/Prop10_石1_Rock_Medium_1   mesh=Rock_Medium_1  size=(1.50, 1.05, 1.39)  scale=(0.47, 0.47, 0.47)  mat=M_Ink_Prop
+    Environment/Props/Prop11_石2_Rock_Medium_2   mesh=Rock_Medium_2  size=(1.11, 0.60, 1.20)  scale=(0.31, 0.31, 0.31)  mat=M_Ink_Prop
+    Environment/Props/Prop12_石3_Rock_Medium_3   mesh=Rock_Medium_3  size=(1.70, 0.81, 1.70)  scale=(0.35, 0.35, 0.35)  mat=M_Ink_Prop
+    Environment/Props/Prop13_石4_Rock_Medium_1   mesh=Rock_Medium_1  size=(1.40, 0.78, 1.35)  scale=(0.35, 0.35, 0.35)  mat=M_Ink_Prop
+    Environment/Props/Prop14_石5_Rock_Medium_2   mesh=Rock_Medium_2  size=(1.60, 0.85, 1.42)  scale=(0.45, 0.45, 0.45)  mat=M_Ink_Prop
+    Environment/Props/Prop15_石6_Rock_Medium_3   mesh=Rock_Medium_3  size=(1.30, 0.71, 1.29)  scale=(0.31, 0.31, 0.31)  mat=M_Ink_Prop
+    Environment/Props/Prop16_灌1_Bush_Common   mesh=Bush_Common  size=(1.56, 1.29, 1.60)  scale=(0.81, 0.81, 0.81)  mat=M_Ink_Prop
+    Environment/Props/Prop17_灌2_Bush_Common   mesh=Bush_Common  size=(1.40, 0.98, 1.37)  scale=(0.62, 0.62, 0.62)  mat=M_Ink_Prop
+    Environment/Props/Prop18_灌3_Bush_Common   mesh=Bush_Common  size=(1.47, 1.05, 1.50)  scale=(0.66, 0.66, 0.66)  mat=M_Ink_Prop
+    Environment/Props/Prop19_灌4_Bush_Common   mesh=Bush_Common  size=(1.70, 1.07, 1.68)  scale=(0.68, 0.68, 0.68)  mat=M_Ink_Prop
+  root: Lighting
+  root: Main Camera
+  root: Player
+  root: VCam_Follow
+  root: NavMesh
+  root: Gates
+    Gates/Gate_N   mesh=Cube  size=(20.90, 2.50, 0.45)  scale=(20.90, 2.50, 0.45)  mat=M_Whitebox_Wall
+    Gates/Gate_S   mesh=Cube  size=(20.90, 2.50, 0.45)  scale=(20.90, 2.50, 0.45)  mat=M_Whitebox_Wall
+    Gates/Gate_E   mesh=Cube  size=(0.45, 2.50, 20.90)  scale=(0.45, 2.50, 20.90)  mat=M_Whitebox_Wall
+    Gates/Gate_W   mesh=Cube  size=(0.45, 2.50, 20.90)  scale=(0.45, 2.50, 20.90)  mat=M_Whitebox_Wall
+  root: Enemies
+  root: InkStyle
+  root: [Systems]
+  root: [InkVfx]
+
+================ end ================

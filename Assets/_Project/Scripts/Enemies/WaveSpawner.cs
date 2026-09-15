@@ -206,6 +206,15 @@ namespace InkWash.Enemies
 
             var go = Instantiate(prefab, pos, rot);
             go.name = prefab.name + "_" + _spawnedCount;
+
+            // ★★ 必须在这里补一次水墨化 —— 这是"怪物太丑"的真根因：
+            //   `InkMaterialForcer.ForceAll()` 只在 `AfterSceneLoad` 跑一次，只覆盖
+            //   **当时已存在**的对象；而本生成器是运行时产怪的 ⇒ 不补这一步，
+            //   后生成的怪一直穿着 KayKit 原始材质（亮蓝灰骨头 + 橙斗篷 + 发光眼），
+            //   在满屏水墨里是**唯一的高饱和色**，对比最强、抢走全部视线。
+            //   `InkMaterialForcer` 自己的文档注释早就写了这种状态是"像普通积木玩偶一样"——
+            //   而它恰恰没覆盖运行时生成这条路。
+            InkWash.Rendering.InkMaterialForcer.ForceInk(go, go.name, true);
             var enemy = go.GetComponent<EnemyBase>();
             if (enemy == null) enemy = go.GetComponentInChildren<EnemyBase>();
             if (enemy != null)

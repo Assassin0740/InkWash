@@ -1,0 +1,19 @@
+================ q_dash_verify ================
+  Dash 状态当前片段：
+    Rig|Idle_Loop  len=2.500
+    Feng_Walk_Loop  len=1.333
+    Run04_KI_Carry  len=0.600
+    Dash_Lunge  len=0.550
+    Armature|Sword_Regular_A  len=0.433
+    Armature|Sword_Regular_A_Rec  len=0.967
+    Armature|Sword_Regular_B  len=0.533
+    Armature|Sword_Regular_B_Rec  len=1.033
+    Armature|Sword_Regular_C  len=2.000
+
+---------- 分格 ----------
+  格0 t=0.05  hips=(0.079, 0.544, -0.098)  头Y=1.319  右手Y=1.483
+  格1 t=0.30  hips=(0.099, 0.560, -0.131)  头Y=1.272  右手Y=1.367
+  格2 t=0.55  hips=(0.116, 0.543, -0.147)  头Y=1.252  右手Y=1.337
+  格3 t=0.85  hips=(0.087, 0.537, -0.140)  头Y=1.294  右手Y=1.276
+
+================ end ================

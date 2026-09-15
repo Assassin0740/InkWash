@@ -1,0 +1,29 @@
+================ q_dash_shots ================
+
+---------- 控制器的全部片段 ----------
+  Feng_Idle_Loop  len=2.500
+  Feng_Walk_Loop  len=1.333
+  Run04_KI_Carry  len=0.600
+  Dash_Lunge  len=0.550
+  Armature|Sword_Regular_A  len=0.433
+  Armature|Sword_Regular_A_Rec  len=0.967
+  Armature|Sword_Regular_B  len=0.533
+  Armature|Sword_Regular_B_Rec  len=1.033
+  Armature|Sword_Regular_C  len=2.000
+
+  Dash 状态原片段 = Dash_Lunge  len=0.550
+
+  UAL2 片段数 = 172
+  候选 Armature|Sword_Dash  len=1.567
+
+---------- 接图分格（左上→右下）----------
+  格0  [Armature|Sword_Dash]  t=0.06  hipsY=0.954  头Y=1.713
+  格1  [Armature|Sword_Dash]  t=0.18  hipsY=0.962  头Y=1.639
+  格2  [Armature|Sword_Dash]  t=0.30  hipsY=0.980  头Y=1.638
+  格3  [Armature|Sword_Dash]  t=0.42  hipsY=0.973  头Y=1.645
+  格4  [Armature|Sword_Dash]  t=0.54  hipsY=0.968  头Y=1.646
+  格5  [Armature|Sword_Dash]  t=0.66  hipsY=0.968  头Y=1.660
+  格6  [Armature|Sword_Dash]  t=0.78  hipsY=0.957  头Y=1.790
+  格7  [Armature|Sword_Dash]  t=0.90  hipsY=0.975  头Y=1.930
+
+================ end ================

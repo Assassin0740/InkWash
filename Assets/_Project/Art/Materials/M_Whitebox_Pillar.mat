@@ -85,7 +85,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _StrokeAmp: 0.10
+    - _GrainScale: 20
+    - _StrokeScale: 1.8
+    - _StrokeStretch: 2
+    - _StrokeAmp: 0.24
     - _OutlineDistScale: 0.05
     - _OutlineScale: 0.55
     - _OutlineDry: 0.5
@@ -100,7 +103,7 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _BrushScale: 9
     - _BrushStrength: 0.08
-    - _GrainAmp: 0.12
+    - _GrainAmp: 0.11
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -118,7 +121,7 @@ Material:
     - _HeightFrom: 1
     - _HeightTo: 6
     - _InkDensity: 0.3
-    - _InkMottle: 0.04
+    - _InkMottle: 0.26
     - _LadderSkew: 0.42
     - _Metallic: 0
     - _MottleScale: 2.4

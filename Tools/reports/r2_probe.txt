@@ -1,0 +1,1428 @@
+=========== r2_probe ===========
+
+---------- ① 场景实体（带 Collider 或 Renderer 的） ----------
+  root: Gates  worldPos=(0.00, 0.00, 0.00)  lossyScale=(1.000, 1.000, 1.000)
+  root: Environment  worldPos=(0.00, 0.00, 0.00)  lossyScale=(1.000, 1.000, 1.000)
+  root: Player  worldPos=(0.00, 0.00, -3.00)  lossyScale=(1.000, 1.000, 1.000)
+
+  ---- 逐个 Renderer（前 80 个）----
+  总数 43
+  * Prop19_灌4_Bush_Common  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-12.50, 0.54, 16.48) size=(1.70, 1.07, 1.68)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop18_灌3_Bush_Common  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(12.52, 0.52, -16.50) size=(1.47, 1.05, 1.50)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop17_灌2_Bush_Common  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-15.50, 0.49, -12.48) size=(1.40, 0.98, 1.37)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop16_灌1_Bush_Common  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(15.47, 0.64, 12.51) size=(1.56, 1.29, 1.60)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop15_石6_Rock_Medium_3  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-8.74, 0.35, -18.90) size=(1.30, 0.71, 1.29)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop14_石5_Rock_Medium_2  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(8.59, 0.42, 19.01) size=(1.60, 0.85, 1.42)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop13_石4_Rock_Medium_1  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-19.28, 0.39, -8.60) size=(1.40, 0.78, 1.35)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop12_石3_Rock_Medium_3  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-18.80, 0.41, 9.28) size=(1.70, 0.81, 1.70)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop11_石2_Rock_Medium_2  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(19.25, 0.30, -7.54) size=(1.11, 0.60, 1.20)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop10_石1_Rock_Medium_1  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(19.05, 0.53, 8.66) size=(1.50, 1.05, 1.39)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop09_虬·西北_TwistedTree_3  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-12.24, 2.90, -15.05) size=(4.49, 5.80, 4.44)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop08_虬·东南_TwistedTree_1  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(12.64, 3.10, 13.89) size=(5.09, 6.20, 5.68)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop07_枯·东北_DeadTree_4  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-15.21, 2.75, 12.01) size=(4.51, 5.50, 4.47)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop06_枯·西南_DeadTree_2  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(15.11, 3.00, -11.49) size=(4.44, 6.00, 4.33)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop05_松·西_Pine_1  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-19.33, 3.75, -0.13) size=(6.56, 7.50, 6.72)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop04_松·东_Pine_5  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(18.94, 3.50, 0.03) size=(6.16, 7.00, 6.27)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop03_松·西北_Pine_4  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-12.86, 4.25, -12.84) size=(6.50, 8.50, 6.42)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop02_松·西南_Pine_2  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(12.91, 3.75, -12.97) size=(7.69, 7.50, 7.82)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop01_松·东北_Pine_3  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(-13.08, 4.50, 12.49) size=(6.51, 9.00, 6.39)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * Prop00_松·东南_Pine_1  mat=M_Ink_Prop  asset=Assets/_Project/Art/Materials/M_Ink_Prop.mat  matObjId=-479462
+      bounds center=(12.92, 4.00, 12.79) size=(6.51, 8.00, 6.19)
+      _Bands=1.000 _BandBias=0.100 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.160 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.022 _ContactInk=0.300
+  * EaveGate_W  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(-10.00, 2.94, 0.00) size=(1.20, 0.28, 21.80)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * EaveGate_E  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(10.00, 2.94, 0.00) size=(1.20, 0.28, 21.80)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * EaveGate_S  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(0.00, 2.94, -10.00) size=(21.80, 0.28, 1.20)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * EaveGate_N  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(0.00, 2.94, 10.00) size=(21.80, 0.28, 1.20)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * Eave_W  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(-22.00, 4.16, 0.00) size=(1.40, 0.32, 45.60)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * Eave_E  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(22.00, 4.16, 0.00) size=(1.40, 0.32, 45.60)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * Eave_S  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(0.00, 4.16, -22.00) size=(45.60, 0.32, 1.40)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * Eave_N  mat=M_Ink_Eave  asset=Assets/_Project/Art/Materials/M_Ink_Eave.mat  matObjId=-479448
+      bounds center=(0.00, 4.16, 22.00) size=(45.60, 0.32, 1.40)
+      _Bands=1.000 _BandBias=-0.220 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.030 _ContactInk=0.300
+  * Gate_W  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(-10.00, 1.55, 0.00) size=(0.45, 2.50, 20.90)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Gate_E  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(10.00, 1.55, 0.00) size=(0.45, 2.50, 20.90)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Gate_S  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(0.00, 1.55, -10.00) size=(20.90, 2.50, 0.45)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Gate_N  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(0.00, 1.55, 10.00) size=(20.90, 2.50, 0.45)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Mesh  mat=Material_Pbr  asset=Assets/Char_Feng/Fbx/Feng.fbx  matObjId=30826
+      bounds center=(0.00, 1.04, -2.98) size=(2.04, 2.27, 0.59)
+      _Bands=<无> _BandBias=<无> _BandSoftness=<无> _InkDensity=<无> _BrushStrength=<无> _StrokeAmp=<无> _StrokeScale=<无> _StrokeStretch=<无> _GrainAmp=<无> _GrainScale=<无> _InkMottle=<无> _MottleScale=<无> _AerialStrength=<无> _HeightFade=<无> _OutlineWidth=<无> _ContactInk=<无>
+  * Pillar_2  mat=M_Whitebox_Pillar  asset=Assets/_Project/Art/Materials/M_Whitebox_Pillar.mat  matObjId=30558
+      bounds center=(-14.00, 3.00, 14.00) size=(0.80, 6.00, 0.80)
+      _Bands=1.000 _BandBias=0.020 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.032 _ContactInk=0.300
+  * Wall_S  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(0.00, 2.00, -22.00) size=(44.60, 4.00, 0.60)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Pillar_1  mat=M_Whitebox_Pillar  asset=Assets/_Project/Art/Materials/M_Whitebox_Pillar.mat  matObjId=30558
+      bounds center=(14.00, 3.00, -14.00) size=(0.80, 6.00, 0.80)
+      _Bands=1.000 _BandBias=0.020 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.032 _ContactInk=0.300
+  * Pillar_0  mat=M_Whitebox_Pillar  asset=Assets/_Project/Art/Materials/M_Whitebox_Pillar.mat  matObjId=30558
+      bounds center=(14.00, 3.00, 14.00) size=(0.80, 6.00, 0.80)
+      _Bands=1.000 _BandBias=0.020 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.032 _ContactInk=0.300
+  * Arena  mat=M_Whitebox_Platform  asset=Assets/_Project/Art/Materials/M_Whitebox_Platform.mat  matObjId=30550
+      bounds center=(0.00, 0.15, 0.00) size=(10.00, 0.30, 10.00)
+      _Bands=1.000 _BandBias=-0.060 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.150 _StrokeAmp=0.220 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.420 _GrainScale=96.000 _InkMottle=0.100 _MottleScale=1.600 _AerialStrength=0.550 _HeightFade=0.100 _OutlineWidth=0.026 _ContactInk=0.300
+  * Pillar_3  mat=M_Whitebox_Pillar  asset=Assets/_Project/Art/Materials/M_Whitebox_Pillar.mat  matObjId=30558
+      bounds center=(-14.00, 3.00, -14.00) size=(0.80, 6.00, 0.80)
+      _Bands=1.000 _BandBias=0.020 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.240 _OutlineWidth=0.032 _ContactInk=0.300
+  * Wall_E  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(22.00, 2.00, 0.00) size=(0.60, 4.00, 44.60)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Ground  mat=M_Whitebox_Ground  asset=Assets/_Project/Art/Materials/M_Whitebox_Ground.mat  matObjId=30480
+      bounds center=(0.00, -0.25, 0.00) size=(44.00, 0.50, 44.00)
+      _Bands=1.000 _BandBias=0.180 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.150 _StrokeAmp=0.220 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.460 _GrainScale=96.000 _InkMottle=0.120 _MottleScale=1.600 _AerialStrength=0.550 _HeightFade=0.000 _OutlineWidth=0.020 _ContactInk=0.300
+  * Wall_N  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(0.00, 2.00, 22.00) size=(44.60, 4.00, 0.60)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+  * Wall_W  mat=M_Whitebox_Wall  asset=Assets/_Project/Art/Materials/M_Whitebox_Wall.mat  matObjId=30484
+      bounds center=(-22.00, 2.00, 0.00) size=(0.60, 4.00, 44.60)
+      _Bands=1.000 _BandBias=0.200 _BandSoftness=0.080 _InkDensity=0.300 _BrushStrength=0.080 _StrokeAmp=0.100 _StrokeScale=7.000 _StrokeStretch=3.000 _GrainAmp=0.120 _GrainScale=96.000 _InkMottle=0.040 _MottleScale=2.400 _AerialStrength=0.550 _HeightFade=0.160 _OutlineWidth=0.032 _ContactInk=0.300
+
+---------- ② 材质参数 ----------
+  M_Whitebox_Ground   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=0.180 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=5.500 _BrushStrength=0.150 _InkMottle=0.120 _MottleScale=1.600 _GrainScale=96.000 _GrainAmp=0.460 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.220 _HeightFade=0.000 _HeightFrom=0.000 _HeightTo=1.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.020 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.850 _OutlineDry=0.450 _OutlineScale=0.600 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Whitebox_Wall   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=0.200 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=7.000 _BrushStrength=0.080 _InkMottle=0.040 _MottleScale=2.400 _GrainScale=96.000 _GrainAmp=0.120 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.100 _HeightFade=0.160 _HeightFrom=1.000 _HeightTo=5.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.032 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.880 _OutlineDry=0.500 _OutlineScale=0.550 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Whitebox_Platform   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=-0.060 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=6.000 _BrushStrength=0.150 _InkMottle=0.100 _MottleScale=1.600 _GrainScale=96.000 _GrainAmp=0.420 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.220 _HeightFade=0.100 _HeightFrom=0.300 _HeightTo=2.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.026 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.850 _OutlineDry=0.420 _OutlineScale=0.700 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Whitebox_Pillar   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=0.020 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=9.000 _BrushStrength=0.080 _InkMottle=0.040 _MottleScale=2.400 _GrainScale=96.000 _GrainAmp=0.120 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.100 _HeightFade=0.240 _HeightFrom=1.000 _HeightTo=6.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.032 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.880 _OutlineDry=0.500 _OutlineScale=0.550 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Ink_Eave   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=-0.220 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=7.000 _BrushStrength=0.080 _InkMottle=0.040 _MottleScale=2.400 _GrainScale=96.000 _GrainAmp=0.120 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.100 _HeightFade=0.160 _HeightFrom=1.000 _HeightTo=5.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.030 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.880 _OutlineDry=0.500 _OutlineScale=0.550 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Ink_Prop   shader=InkWash/InkSurface
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=1.000 _BandSoftness=0.080 _BandBias=0.100 _InkDensity=0.300 _BaseColor=0.000 _BrushScale=9.000 _BrushStrength=0.080 _InkMottle=0.040 _MottleScale=2.400 _GrainScale=96.000 _GrainAmp=0.160 _StrokeScale=7.000 _StrokeStretch=3.000 _StrokeAmp=0.100 _HeightFade=0.240 _HeightFrom=1.000 _HeightTo=6.000 _AmbientTint=0.000 _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.022 _OutlineColor=0.000 _OutlineDistScale=0.050 _OutlineFacing=0.880 _OutlineDry=0.500 _OutlineScale=0.550 _ChromaKeep=<无> _InkDensity2=<无>
+  M_Character_Ink   shader=InkWash/InkCharacter
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=4.000 _BandSoftness=0.060 _BandBias=0.150 _InkDensity=0.620 _BaseColor=0.000 _BrushScale=26.000 _BrushStrength=0.600 _InkMottle=<无> _MottleScale=1.600 _GrainScale=64.000 _GrainAmp=0.180 _StrokeScale=8.000 _StrokeStretch=3.000 _StrokeAmp=0.160 _HeightFade=<无> _HeightFrom=<无> _HeightTo=<无> _AmbientTint=<无> _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.012 _OutlineColor=0.000 _OutlineDistScale=0.060 _OutlineFacing=0.720 _OutlineDry=0.550 _OutlineScale=5.000 _ChromaKeep=0.600 _InkDensity2=<无>
+  M_Ink_Enemy_MoTu_0   shader=InkWash/InkCharacter
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=4.000 _BandSoftness=0.060 _BandBias=-0.180 _InkDensity=0.480 _BaseColor=0.000 _BrushScale=26.000 _BrushStrength=0.600 _InkMottle=<无> _MottleScale=1.600 _GrainScale=64.000 _GrainAmp=0.180 _StrokeScale=8.000 _StrokeStretch=3.000 _StrokeAmp=0.160 _HeightFade=<无> _HeightFrom=<无> _HeightTo=<无> _AmbientTint=<无> _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.014 _OutlineColor=0.000 _OutlineDistScale=0.060 _OutlineFacing=0.720 _OutlineDry=0.500 _OutlineScale=5.000 _ChromaKeep=0.300 _InkDensity2=<无>
+  M_Ink_Enemy_MoOu_0   shader=InkWash/InkCharacter
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=4.000 _BandSoftness=0.060 _BandBias=-0.180 _InkDensity=0.480 _BaseColor=0.000 _BrushScale=26.000 _BrushStrength=0.600 _InkMottle=<无> _MottleScale=1.600 _GrainScale=64.000 _GrainAmp=0.180 _StrokeScale=8.000 _StrokeStretch=3.000 _StrokeAmp=0.160 _HeightFade=<无> _HeightFrom=<无> _HeightTo=<无> _AmbientTint=<无> _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.014 _OutlineColor=0.000 _OutlineDistScale=0.060 _OutlineFacing=0.720 _OutlineDry=0.500 _OutlineScale=5.000 _ChromaKeep=0.300 _InkDensity2=<无>
+  M_Ink_Enemy_MoYan_0   shader=InkWash/InkCharacter
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=4.000 _BandSoftness=0.060 _BandBias=-0.180 _InkDensity=0.480 _BaseColor=0.000 _BrushScale=26.000 _BrushStrength=0.600 _InkMottle=<无> _MottleScale=1.600 _GrainScale=64.000 _GrainAmp=0.180 _StrokeScale=8.000 _StrokeStretch=3.000 _StrokeAmp=0.160 _HeightFade=<无> _HeightFrom=<无> _HeightTo=<无> _AmbientTint=<无> _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.014 _OutlineColor=0.000 _OutlineDistScale=0.060 _OutlineFacing=0.720 _OutlineDry=0.500 _OutlineScale=5.000 _ChromaKeep=0.300 _InkDensity2=<无>
+  M_W_Sword_Ink   shader=InkWash/InkCharacter
+      _InkDark=0.000 _InkMid=0.000 _InkLight=0.000 _LadderSkew=0.420 _Bands=4.000 _BandSoftness=0.060 _BandBias=-0.150 _InkDensity=0.250 _BaseColor=0.000 _BrushScale=26.000 _BrushStrength=0.600 _InkMottle=<无> _MottleScale=0.550 _GrainScale=64.000 _GrainAmp=0.180 _StrokeScale=8.000 _StrokeStretch=3.000 _StrokeAmp=0.160 _HeightFade=<无> _HeightFrom=<无> _HeightTo=<无> _AmbientTint=<无> _ContactInk=0.300 _ContactHeight=0.450 _GroundY=0.000 _AerialFrom=12.000 _AerialTo=30.000 _AerialStrength=0.550 _OutlineWidth=0.009 _OutlineColor=0.000 _OutlineDistScale=0.060 _OutlineFacing=0.720 _OutlineDry=0.450 _OutlineScale=6.000 _ChromaKeep=0.200 _InkDensity2=<无>
+
+---------- ③ 敌人预制体 ----------
+  Enemy_MoTu  scale=(1.000, 1.000, 1.000)
+      层级: - Enemy_MoTu  [NavMeshAgent,CapsuleCollider,Animator,Hitbox,EnemyMelee,InkMaterialSwap] ls=(1.000, 1.000, 1.000)
+  - Visual  [] ls=(0.808, 0.808, 0.808)
+    - Rig_Medium  [] ls=(1.000, 1.000, 1.000)
+      - root  [] ls=(1.000, 1.000, 1.000)
+        - hips  [] ls=(1.000, 1.000, 1.000)
+          - spine  [] ls=(1.000, 1.000, 1.000)
+            - chest  [] ls=(1.000, 1.000, 1.000)
+              - head  [] ls=(1.000, 1.000, 1.000)
+              - upperarm.l  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.l  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.l  [] ls=(1.000, 1.000, 1.000)
+                    - hand.l  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.l  [] ls=(1.000, 1.000, 1.000)
+              - upperarm.r  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.r  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.r  [] ls=(1.000, 1.000, 1.000)
+                    - hand.r  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.r  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.l  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.l  [] ls=(1.000, 1.000, 1.000)
+              - foot.l  [] ls=(1.000, 1.000, 1.000)
+                - toes.l  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.r  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.r  [] ls=(1.000, 1.000, 1.000)
+              - foot.r  [] ls=(1.000, 1.000, 1.000)
+                - toes.r  [] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_ArmLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_ArmRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_Body  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_Cloak  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_Eyes  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_Head  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_Jaw  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_LegLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Minion_LegRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+
+      Animator ctrl=EnemyMelee avatar=Skeleton_MinionAvatar
+      BakeMesh 身高 = 1.750 m   宽(X) = 1.566
+      SMR 'Skeleton_Minion_ArmLeft'  verts=527  tris=644  mat=M_Ink_Enemy_MoTu_0
+      SMR 'Skeleton_Minion_ArmRight'  verts=527  tris=644  mat=skeleton
+      SMR 'Skeleton_Minion_Body'  verts=2112  tris=1768  mat=skeleton
+      SMR 'Skeleton_Minion_Cloak'  verts=325  tris=348  mat=skeleton
+      SMR 'Skeleton_Minion_Eyes'  verts=96  tris=132  mat=Glow
+      SMR 'Skeleton_Minion_Head'  verts=701  tris=442  mat=skeleton
+      SMR 'Skeleton_Minion_Jaw'  verts=197  tris=106  mat=skeleton
+      SMR 'Skeleton_Minion_LegLeft'  verts=574  tris=602  mat=skeleton
+      SMR 'Skeleton_Minion_LegRight'  verts=575  tris=602  mat=skeleton
+      field m_Script = EnemyMelee
+      field maxHealth = 42
+      field walkSpeed = 1.60000002384186
+      field chaseSpeed = 3.59999990463257
+      field acceleration = 14
+      field turnSpeedDeg = 720
+      field sightRange = 17
+      field loseSightRange = 26
+      field sightAngleDeg = 220
+      field eyeOffset.x = 0
+      field eyeOffset.y = 1.39999997615814
+      field eyeOffset.z = 0
+      field attackRange = 2.09999990463257
+      field attackCooldown = 1.35000002384186
+      field attackWindup = 0.340000003576279
+      field attackActive = 0.159999996423721
+      field attackRecover = 0.419999986886978
+      field speedDamp = 0.119999997317791
+      field spawnDelay = 0.25
+      field destroyAfterDeath = 2.40000009536743
+      field xpReward = 0
+      field _stateTime = 0
+      field _health = 0
+      field _distanceToPlayer = 0
+      field _attackCount = 0
+      field _damageTakenCount = 0
+      field pressFactor = 0.75
+      field windupJitter = 0.0799999982118607
+  Enemy_MoOu  scale=(1.000, 1.000, 1.000)
+      层级: - Enemy_MoOu  [NavMeshAgent,CapsuleCollider,Animator,Hitbox,EnemyRanged,InkMaterialSwap] ls=(1.000, 1.000, 1.000)
+  - Visual  [] ls=(0.785, 0.785, 0.785)
+    - Rig_Medium  [] ls=(1.000, 1.000, 1.000)
+      - root  [] ls=(1.000, 1.000, 1.000)
+        - hips  [] ls=(1.000, 1.000, 1.000)
+          - spine  [] ls=(1.000, 1.000, 1.000)
+            - chest  [] ls=(1.000, 1.000, 1.000)
+              - head  [] ls=(1.000, 1.000, 1.000)
+                - Skeleton_Mage_Hat  [MeshFilter,MeshRenderer] ls=(1.000, 1.000, 1.000)
+              - upperarm.l  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.l  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.l  [] ls=(1.000, 1.000, 1.000)
+                    - hand.l  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.l  [] ls=(1.000, 1.000, 1.000)
+              - upperarm.r  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.r  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.r  [] ls=(1.000, 1.000, 1.000)
+                    - hand.r  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.r  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.l  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.l  [] ls=(1.000, 1.000, 1.000)
+              - foot.l  [] ls=(1.000, 1.000, 1.000)
+                - toes.l  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.r  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.r  [] ls=(1.000, 1.000, 1.000)
+              - foot.r  [] ls=(1.000, 1.000, 1.000)
+                - toes.r  [] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_ArmLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_ArmRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_Body  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_Eyes  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_Jaw  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_LegLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_LegRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Mage_Skull  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+  - Muzzle  [] ls=(1.000, 1.000, 1.000)
+
+      Animator ctrl=EnemyRanged avatar=Skeleton_MageAvatar
+      BakeMesh 身高 = 2.064 m   宽(X) = 1.521
+      SMR 'Skeleton_Mage_ArmLeft'  verts=670  tris=748  mat=M_Ink_Enemy_MoOu_0
+      SMR 'Skeleton_Mage_ArmRight'  verts=665  tris=748  mat=skeleton
+      SMR 'Skeleton_Mage_Body'  verts=1154  tris=990  mat=skeleton
+      SMR 'Skeleton_Mage_Eyes'  verts=96  tris=132  mat=Glow
+      SMR 'Skeleton_Mage_Jaw'  verts=216  tris=124  mat=skeleton
+      SMR 'Skeleton_Mage_LegLeft'  verts=475  tris=558  mat=skeleton
+      SMR 'Skeleton_Mage_LegRight'  verts=474  tris=558  mat=skeleton
+      SMR 'Skeleton_Mage_Skull'  verts=548  tris=422  mat=skeleton
+      field m_Script = EnemyRanged
+      field maxHealth = 30
+      field walkSpeed = 1.39999997615814
+      field chaseSpeed = 2.90000009536743
+      field acceleration = 14
+      field turnSpeedDeg = 720
+      field sightRange = 20
+      field loseSightRange = 28
+      field sightAngleDeg = 250
+      field eyeOffset.x = 0
+      field eyeOffset.y = 1.39999997615814
+      field eyeOffset.z = 0
+      field attackRange = 10.5
+      field attackCooldown = 1.89999997615814
+      field attackWindup = 0.419999986886978
+      field attackActive = 0.140000000596046
+      field attackRecover = 0.5
+      field speedDamp = 0.119999997317791
+      field spawnDelay = 0.25
+      field destroyAfterDeath = 2.40000009536743
+      field xpReward = 0
+      field _stateTime = 0
+      field _health = 0
+      field _distanceToPlayer = 0
+      field _attackCount = 0
+      field _damageTakenCount = 0
+      field keepDistance = 7.5
+      field retreatDistance = 4.19999980926514
+      field retreatStep = 4.5
+      field projectilePrefab = Ink_Projectile
+      field muzzle = Muzzle
+      field projectileDamage = 9
+      field projectileSpeed = 13
+      field aimHeight = 1
+      field _projectilesSpawned = 0
+      field _retreatCount = 0
+  Enemy_MoYan  scale=(1.000, 1.000, 1.000)
+      层级: - Enemy_MoYan  [NavMeshAgent,CapsuleCollider,Animator,Hitbox,EnemyElite,InkMaterialSwap] ls=(1.000, 1.000, 1.000)
+  - Visual  [] ls=(0.603, 0.603, 0.603)
+    - Rig_Large  [] ls=(1.000, 1.000, 1.000)
+      - root  [] ls=(1.000, 1.000, 1.000)
+        - hips  [] ls=(1.000, 1.000, 1.000)
+          - spine  [] ls=(1.000, 1.000, 1.000)
+            - chest  [] ls=(1.000, 1.000, 1.000)
+              - head  [] ls=(1.000, 1.000, 1.000)
+              - upperarm.l  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.l  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.l  [] ls=(1.000, 1.000, 1.000)
+                    - hand.l  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.l  [] ls=(1.000, 1.000, 1.000)
+              - upperarm.r  [] ls=(1.000, 1.000, 1.000)
+                - lowerarm.r  [] ls=(1.000, 1.000, 1.000)
+                  - wrist.r  [] ls=(1.000, 1.000, 1.000)
+                    - hand.r  [] ls=(1.000, 1.000, 1.000)
+                      - handslot.r  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.l  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.l  [] ls=(1.000, 1.000, 1.000)
+              - foot.l  [] ls=(1.000, 1.000, 1.000)
+                - toes.l  [] ls=(1.000, 1.000, 1.000)
+          - upperleg.r  [] ls=(1.000, 1.000, 1.000)
+            - lowerleg.r  [] ls=(1.000, 1.000, 1.000)
+              - foot.r  [] ls=(1.000, 1.000, 1.000)
+                - toes.r  [] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_ArmLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_ArmRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_Body  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_Eyes  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_Head  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_Jaw  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_LegLeft  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+    - Skeleton_Golem_LegRight  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+
+      Animator ctrl=EnemyElite avatar=Skeleton_GolemAvatar
+      BakeMesh 身高 = 2.550 m   宽(X) = 3.514
+      SMR 'Skeleton_Golem_ArmLeft'  verts=987  tris=838  mat=M_Ink_Enemy_MoYan_0
+      SMR 'Skeleton_Golem_ArmRight'  verts=866  tris=784  mat=skeleton
+      SMR 'Skeleton_Golem_Body'  verts=1761  tris=1418  mat=skeleton
+      SMR 'Skeleton_Golem_Eyes'  verts=96  tris=132  mat=Glow
+      SMR 'Skeleton_Golem_Head'  verts=1812  tris=1358  mat=skeleton
+      SMR 'Skeleton_Golem_Jaw'  verts=287  tris=148  mat=skeleton
+      SMR 'Skeleton_Golem_LegLeft'  verts=545  tris=572  mat=skeleton
+      SMR 'Skeleton_Golem_LegRight'  verts=545  tris=572  mat=skeleton
+      field m_Script = EnemyElite
+      field maxHealth = 260
+      field walkSpeed = 1.5
+      field chaseSpeed = 3
+      field acceleration = 14
+      field turnSpeedDeg = 720
+      field sightRange = 22
+      field loseSightRange = 32
+      field sightAngleDeg = 260
+      field eyeOffset.x = 0
+      field eyeOffset.y = 1.39999997615814
+      field eyeOffset.z = 0
+      field attackRange = 3.40000009536743
+      field attackCooldown = 1.5
+      field attackWindup = 0.620000004768372
+      field attackActive = 0.259999990463257
+      field attackRecover = 0.720000028610229
+      field speedDamp = 0.119999997317791
+      field spawnDelay = 0.25
+      field destroyAfterDeath = 3.5
+      field xpReward = 0
+      field _stateTime = 0
+      field _health = 0
+      field _distanceToPlayer = 0
+      field _attackCount = 0
+      field _damageTakenCount = 0
+      field chargeSpeed = 9
+      field chargeMaxTime = 0.600000023841858
+      field parryWindow = 0.419999986886978
+      field parryDamageScale = 0.349999994039536
+      field parryStunScale = 3.20000004768372
+      field _parriedCount = 0
+      field _chargeCount = 0
+
+---------- ④ 主角预制体 ----------
+  Player.prefab 层级:
+  - Player  [Animator,CharacterController,PlayerController,SwordVfx,AudioDirector,FootIK,WeaponHandPose,CombatStance,PlayerHealth,PlayerStats,SkillInventory,LevelSystem,InkLandingBloom] ls=(1.000, 1.000, 1.000)
+    - Visual  [] ls=(2.213, 2.213, 2.213)
+      - Feng  [] ls=(1.000, 1.000, 1.000)
+        - Mesh  [SkinnedMeshRenderer] ls=(1.000, 1.000, 1.000)
+        - root  [] ls=(1.000, 1.000, 1.000)
+          - CC_Base_Hip  [] ls=(1.000, 1.000, 1.000)
+            - CC_Base_Pelvis  [] ls=(1.000, 1.000, 1.000)
+              - CC_Base_L_Thigh  [] ls=(1.000, 1.000, 1.000)
+                - CC_Base_L_Calf  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_CalfTwist01  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_L_CalfTwist02  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_Foot  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_L_ToeBase  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_BigToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_IndexToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_MidToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_PinkyToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_RingToe1  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_L_ToeBaseShareBone  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_KneeShareBone  [] ls=(1.000, 1.000, 1.000)
+                - CC_Base_L_ThighTwist01  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_ThighTwist02  [] ls=(1.000, 1.000, 1.000)
+              - CC_Base_R_Thigh  [] ls=(1.000, 1.000, 1.000)
+                - CC_Base_R_Calf  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_CalfTwist01  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_R_CalfTwist02  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_Foot  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_R_ToeBase  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_BigToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_IndexToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_MidToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_PinkyToe1  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_RingToe1  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_R_ToeBaseShareBone  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_KneeShareBone  [] ls=(1.000, 1.000, 1.000)
+                - CC_Base_R_ThighTwist01  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_ThighTwist02  [] ls=(1.000, 1.000, 1.000)
+            - CC_Base_Waist  [] ls=(1.000, 1.000, 1.000)
+              - CC_Base_Spine01  [] ls=(1.000, 1.000, 1.000)
+                - CC_Base_Spine02  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_Clavicle  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_L_Upperarm  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_Forearm  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_L_ElbowShareBone  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_L_ForearmTwist01  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_ForearmTwist02  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_L_Hand  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Index1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_L_Index2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_L_Index3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Mid1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_L_Mid2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_L_Mid3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Pinky1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_L_Pinky2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_L_Pinky3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Ring1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_L_Ring2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_L_Ring3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Thumb1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_L_Thumb2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_L_Thumb3  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_L_UpperarmTwist01  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_L_UpperarmTwist02  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_L_RibsTwist  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_L_Breast  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_NeckTwist01  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_NeckTwist02  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_Head  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_FacialBone  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_JawRoot  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_Teeth02  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_Tongue01  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_Tongue02  [] ls=(1.000, 1.000, 1.000)
+                                - CC_Base_Tongue03  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_L_Eye  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Eye  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_UpperJaw  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_Teeth01  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_Clavicle  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_R_Upperarm  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_Forearm  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_R_ElbowShareBone  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_R_ForearmTwist01  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_ForearmTwist02  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_R_Hand  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Index1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_R_Index2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_R_Index3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Mid1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_R_Mid2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_R_Mid3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Pinky1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_R_Pinky2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_R_Pinky3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Ring1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_R_Ring2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_R_Ring3  [] ls=(1.000, 1.000, 1.000)
+                          - CC_Base_R_Thumb1  [] ls=(1.000, 1.000, 1.000)
+                            - CC_Base_R_Thumb2  [] ls=(1.000, 1.000, 1.000)
+                              - CC_Base_R_Thumb3  [] ls=(1.000, 1.000, 1.000)
+                      - CC_Base_R_UpperarmTwist01  [] ls=(1.000, 1.000, 1.000)
+                        - CC_Base_R_UpperarmTwist02  [] ls=(1.000, 1.000, 1.000)
+                  - CC_Base_R_RibsTwist  [] ls=(1.000, 1.000, 1.000)
+                    - CC_Base_R_Breast  [] ls=(1.000, 1.000, 1.000)
+                  - BackSocket  [] ls=(1.000, 1.000, 1.000)
+    - SwordHitbox  [Hitbox,PlayerSwordHitbox] ls=(1.000, 1.000, 1.000)
+
+      SwordVfx.m_Script = SwordVfx (MonoScript)
+      SwordVfx.player = Player (PlayerController)
+      SwordVfx.inkShader = InkWash/InkSlash (Shader)
+      SwordVfx.flyingWhite = 0.220
+      SwordVfx.bladeLocalOffset.x = -0.005
+      SwordVfx.bladeLocalOffset.y = 0.062
+      SwordVfx.bladeLocalOffset.z = 0.300
+      SwordVfx.trailTime = 0.340
+      SwordVfx.trailStartWidth = 0.118
+      SwordVfx.trailEndWidth = 0.015
+      SwordVfx.enableArc = True
+      SwordVfx.arcRadius = 1.300
+      SwordVfx.arcThickness = 0.460
+      SwordVfx.arcSweepDeg = 128.000
+      SwordVfx.arcLifetime = 0.240
+      SwordVfx.arcTiltDeg = -10.000
+      SwordVfx.arcHeight = 1.250
+      SwordVfx.placeholderBlade = False
+      SwordVfx.bladeLength = 0.474
+      SwordVfx.bladeWidth = 0.034
+      SwordVfx.weaponPrefab = W_Sword (GameObject)
+      SwordVfx.trailMinSpeed = 0.150
+      SwordVfx.trailStartDelay = 0.040
+      SwordVfx.trailHoldMinSpeed = 0.050
+      SwordVfx.enableShake = True
+      SwordVfx.shakeAmplitude = 0.075
+      SwordVfx.shakeDuration = 0.130
+      CombatStance.m_Script = CombatStance (MonoScript)
+      CombatStance.animator = Player (Animator)
+      CombatStance.player = Player (PlayerController)
+      CombatStance.swordVfx = Player (SwordVfx)
+      CombatStance.backSocket = BackSocket (Transform)
+      CombatStance.handPose = Player (WeaponHandPose)
+      CombatStance.relaxedIdleClip = Rig|Idle_Loop (AnimationClip)
+      CombatStance.combatIdleClip = Idle_Carry_A (AnimationClip)
+      CombatStance.idleSlotClip = Feng_Idle_Loop (AnimationClip)
+      CombatStance.combatExitDelay = 6.000
+      CombatStance.startInCombat = False
+
+---------- ⑤ Run 片段取证 ----------
+  Run04_KI_Carry.anim  len=0.600  loop=True  legacy=False  curves=130
+      手臂/肩曲线 0 条，其中活动(range>0.02) 0 条
+      最大活动: 
+  Idle_Carry_A.anim  len=2.500  loop=True  legacy=False  curves=130
+      手臂/肩曲线 0 条，其中活动(range>0.02) 0 条
+      最大活动: 
+  Feng_Idle_Loop.anim  len=2.500  loop=True  legacy=False  curves=130
+      手臂/肩曲线 0 条，其中活动(range>0.02) 0 条
+      最大活动: 
+  Feng_Walk_Loop.anim  len=1.333  loop=True  legacy=False  curves=137
+      手臂/肩曲线 0 条，其中活动(range>0.02) 0 条
+      最大活动: 
+  Sword_Idle_Loop.anim  len=1.667  loop=True  legacy=False  curves=130
+      手臂/肩曲线 0 条，其中活动(range>0.02) 0 条
+      最大活动: 
+
+---------- ⑥ 全工程 AnimationClip（按 FBX） ----------
+  [Assets/Char_Feng/Fbx]
+      0_T-Pose (0.02s)
+      0_T-Pose(0) (0.02s)
+  [Assets/ThirdParty/KayKit/Animations/Rig_Large]
+      Death_A (1.67s)
+      Death_A_Pose (0.03s)
+      Dodge_Backwards (0.33s)
+      Dodge_Forward (0.33s)
+      Dodge_Left (0.33s)
+      Dodge_Right (0.33s)
+      EXPERIMENTAL_Large_Transform (1.67s)
+      Flexing (4.30s)
+      Hit_A (0.70s)
+      Idle_A (1.97s)
+      Idle_B (6.00s)
+      Melee_1H_Slash (1.57s)
+      Melee_1H_Stab (1.40s)
+      Melee_2H_Attack (1.33s)
+      Melee_2H_Idle (1.57s)
+      Melee_2H_Slam (2.83s)
+      Melee_Block (1.07s)
+      Melee_Block_Attack (1.03s)
+      Melee_Block_Hit (0.67s)
+      Melee_Blocking (1.07s)
+      Melee_Dualwield_Slash (1.03s)
+      Melee_Dualwield_SlashCombo (1.60s)
+      Melee_Unarmed_Idle (1.07s)
+      Melee_Unarmed_Kick (1.70s)
+      Melee_Unarmed_Punch (1.23s)
+      Melee_Unarmed_Smash (3.47s)
+      Running_A (1.07s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      Walking_A (1.07s)
+  [Assets/ThirdParty/KayKit/Animations/Rig_Medium]
+      Cheering (1.67s)
+      Chop (4.33s)
+      Chopping (1.33s)
+      Crawling (1.07s)
+      Crouching (1.07s)
+      Death_A (0.80s)
+      Death_A_Pose (0.03s)
+      Death_B (2.63s)
+      Death_B_Pose (0.03s)
+      Dig (4.67s)
+      Digging (1.40s)
+      Dodge_Backward (0.40s)
+      Dodge_Forward (0.40s)
+      Dodge_Left (0.40s)
+      Dodge_Right (0.40s)
+      EXPERIMENTAL_Medium_Transform (1.00s)
+      Fishing_Bite (2.23s)
+      Fishing_Cast (1.93s)
+      Fishing_Catch (3.23s)
+      Fishing_Idle (2.33s)
+      Fishing_Reeling (1.60s)
+      Fishing_Struggling (3.43s)
+      Fishing_Tug (1.90s)
+      Hammer (4.33s)
+      Hammering (2.67s)
+      Hit_A (0.67s)
+      Hit_B (0.87s)
+      Holding_A (1.00s)
+      Holding_B (1.00s)
+      Holding_C (1.00s)
+      Idle_A (1.07s)
+      Idle_B (2.13s)
+      Interact (1.30s)
+      Jump_Full_Long (2.33s)
+      Jump_Full_Short (1.17s)
+      Jump_Idle (1.07s)
+      Jump_Land (0.67s)
+      Jump_Start (0.60s)
+      Lie_Down (3.00s)
+      Lie_Idle (2.67s)
+      Lie_StandUp (2.33s)
+      Lockpick (3.00s)
+      Lockpicking (2.33s)
+      Melee_1H_Attack_Chop (1.07s)
+      Melee_1H_Attack_Jump_Chop (1.33s)
+      Melee_1H_Attack_Slice_Diagonal (1.00s)
+      Melee_1H_Attack_Slice_Horizontal (1.37s)
+      Melee_1H_Attack_Stab (1.60s)
+      Melee_2H_Attack_Chop (1.63s)
+      Melee_2H_Attack_Slice (1.10s)
+      Melee_2H_Attack_Spin (2.40s)
+      Melee_2H_Attack_Spinning (0.67s)
+      Melee_2H_Attack_Stab (1.60s)
+      Melee_2H_Idle (1.07s)
+      Melee_Block (1.07s)
+      Melee_Block_Attack (1.07s)
+      Melee_Block_Hit (1.07s)
+      Melee_Blocking (1.07s)
+      Melee_Dualwield_Attack_Chop (1.27s)
+      Melee_Dualwield_Attack_Slice (1.17s)
+      Melee_Dualwield_Attack_Stab (1.60s)
+      Melee_Unarmed_Attack_Kick (0.93s)
+      Melee_Unarmed_Attack_Punch_A (1.17s)
+      Melee_Unarmed_Idle (1.07s)
+      Pickaxe (6.03s)
+      Pickaxing (3.73s)
+      PickUp (1.30s)
+      Push_Ups (1.03s)
+      Ranged_1H_Aiming (1.07s)
+      Ranged_1H_Reload (1.17s)
+      Ranged_1H_Shoot (1.07s)
+      Ranged_1H_Shooting (1.60s)
+      Ranged_2H_Aiming (1.60s)
+      Ranged_2H_Reload (1.60s)
+      Ranged_2H_Shoot (1.07s)
+      Ranged_2H_Shooting (1.07s)
+      Ranged_Bow_Aiming_Idle (1.83s)
+      Ranged_Bow_Draw (1.33s)
+      Ranged_Bow_Draw_Up (1.33s)
+      Ranged_Bow_Idle (1.57s)
+      Ranged_Bow_Release (1.33s)
+      Ranged_Bow_Release_Up (1.37s)
+      Ranged_Magic_Raise (2.10s)
+      Ranged_Magic_Shoot (0.93s)
+      Ranged_Magic_Spellcasting (0.67s)
+      Ranged_Magic_Spellcasting_Long (2.53s)
+      Ranged_Magic_Summon (4.30s)
+      Running_A (0.80s)
+      Running_B (0.80s)
+      Running_HoldingBow (0.80s)
+      Running_HoldingRifle (0.80s)
+      Running_Strafe_Left (0.80s)
+      Running_Strafe_Right (0.80s)
+      Saw (2.40s)
+      Sawing (0.67s)
+      Sit_Chair_Down (0.80s)
+      Sit_Chair_Idle (3.60s)
+      Sit_Chair_StandUp (0.80s)
+      Sit_Floor_Down (1.00s)
+      Sit_Floor_Idle (4.00s)
+      Sit_Floor_StandUp (1.13s)
+      Sit_Ups (1.73s)
+      Skeletons_Awaken_Floor (2.30s)
+      Skeletons_Awaken_Floor_Long (3.83s)
+      Skeletons_Awaken_Standing (1.00s)
+      Skeletons_Death (2.00s)
+      Skeletons_Death_Pose (0.03s)
+      Skeletons_Death_Resurrect (2.70s)
+      Skeletons_Idle (4.27s)
+      Skeletons_Inactive_Floor_Pose (0.03s)
+      Skeletons_Inactive_Standing_Pose (0.03s)
+      Skeletons_Spawn_Ground (3.57s)
+      Skeletons_Taunt (1.03s)
+      Skeletons_Taunt_Longer (3.00s)
+      Skeletons_Walking (1.60s)
+      Slice_Diagonal_Rec (0.30s)
+      Slice_Horizontal_Rec (0.41s)
+      Sneaking (2.13s)
+      Spawn_Air (1.30s)
+      Spawn_Ground (1.30s)
+      Throw (1.37s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      T-Pose (0.03s)
+      Use_Item (1.60s)
+      Walking_A (1.07s)
+      Walking_B (1.07s)
+      Walking_Backwards (1.07s)
+      Walking_C (1.60s)
+      Waving (2.13s)
+      Work_A (2.53s)
+      Work_B (3.10s)
+      Work_C (3.67s)
+      Working_A (1.50s)
+      Working_B (2.53s)
+      Working_C (2.00s)
+  [Assets/ThirdParty/KevinIglesias/Animations/Male/Idles]
+      Idle01 (2.70s)
+  [Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Run]
+      Run01_Forward (0.60s)
+  [Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Walk]
+      Walk01_Forward (0.80s)
+  [Assets/ThirdParty/Quaternius/UltimateMonsters/Big/FBX]
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Death (0.77s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|Duck (1.67s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|HitReact (0.60s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Idle (1.00s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump (0.37s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Idle (0.50s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|Jump_Land (0.37s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|No (1.67s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Punch (0.87s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Run (0.57s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Walk (1.00s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Wave (1.67s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Weapon (0.87s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+      CharacterArmature|Yes (1.67s)
+  [Assets/ThirdParty/Quaternius/UltimateMonsters/Blob/FBX]
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Bite_Front (0.40s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Dance (0.67s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|Death (0.37s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|HitRecieve (0.30s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Idle (2.00s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|Jump (0.43s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|No (1.00s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Walk (0.43s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+      CharacterArmature|Yes (0.97s)
+  [Assets/ThirdParty/Quaternius/UltimateMonsters/Flying/FBX]
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Death (0.67s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Fast_Flying (0.83s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.17s)
+      CharacterArmature|Flying_Idle (1.50s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.17s)
+      CharacterArmature|Headbutt (1.50s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.47s)
+      CharacterArmature|HitReact (0.67s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|No (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.17s)
+      CharacterArmature|Punch (1.33s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+      CharacterArmature|Yes (1.17s)
+  [Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity]
+      Rig|A_TPose (0.17s)
+      Rig|Crouch_Fwd_Loop (2.00s)
+      Rig|Crouch_Idle_Loop (2.93s)
+      Rig|Dance_Loop (1.00s)
+      Rig|Death01 (2.40s)
+      Rig|Driving_Loop (1.67s)
+      Rig|Fixing_Kneeling (5.20s)
+      Rig|Hit_Chest (0.33s)
+      Rig|Hit_Head (0.43s)
+      Rig|Idle_Loop (2.50s)
+      Rig|Idle_Talking_Loop (2.93s)
+      Rig|Idle_Torch_Loop (1.27s)
+      Rig|Interact (2.00s)
+      Rig|Jog_Fwd_Loop (0.93s)
+      Rig|Jump_Land (1.27s)
+      Rig|Jump_Loop (2.50s)
+      Rig|Jump_Start (1.33s)
+      Rig|PickUp_Table (0.83s)
+      Rig|Pistol_Aim_Down (0.17s)
+      Rig|Pistol_Aim_Neutral (0.17s)
+      Rig|Pistol_Aim_Up (0.17s)
+      Rig|Pistol_Idle_Loop (1.67s)
+      Rig|Pistol_Reload (1.67s)
+      Rig|Pistol_Shoot (0.63s)
+      Rig|Punch_Cross (1.00s)
+      Rig|Punch_Enter (0.87s)
+      Rig|Punch_Jab (0.87s)
+      Rig|Push_Loop (2.67s)
+      Rig|Roll (1.47s)
+      Rig|Roll_RM (1.47s)
+      Rig|Sitting_Enter (1.30s)
+      Rig|Sitting_Exit (1.03s)
+      Rig|Sitting_Idle_Loop (1.67s)
+      Rig|Sitting_Talking_Loop (2.93s)
+      Rig|Spell_Simple_Enter (0.53s)
+      Rig|Spell_Simple_Exit (0.43s)
+      Rig|Spell_Simple_Idle_Loop (2.10s)
+      Rig|Spell_Simple_Shoot (0.50s)
+      Rig|Sprint_Loop (0.67s)
+      Rig|Swim_Fwd_Loop (1.33s)
+      Rig|Swim_Idle_Loop (3.33s)
+      Rig|Sword_Attack (1.53s)
+      Rig|Sword_Attack_RM (1.53s)
+      Rig|Sword_Idle (1.67s)
+      Rig|Walk_Formal_Loop (1.33s)
+      Rig|Walk_Loop (1.33s)
+  [Assets/ThirdParty/Quaternius/UniversalAnimationLibrary2/Unity]
+      Armature|A_TPose (2.50s)
+      Armature|A_TPose (2.50s)
+      Armature|Chest_Open (1.37s)
+      Armature|Chest_Open (1.37s)
+      Armature|ClimbUp_1m (0.67s)
+      Armature|ClimbUp_1m (0.67s)
+      Armature|Consume (1.33s)
+      Armature|Consume (1.33s)
+      Armature|Farm_Harvest (2.50s)
+      Armature|Farm_Harvest (2.50s)
+      Armature|Farm_PlantSeed (2.77s)
+      Armature|Farm_PlantSeed (2.77s)
+      Armature|Farm_Watering (3.80s)
+      Armature|Farm_Watering (3.80s)
+      Armature|Hit_Knockback (0.83s)
+      Armature|Hit_Knockback (0.83s)
+      Armature|Idle_FoldArms_Loop (2.50s)
+      Armature|Idle_FoldArms_Loop (2.50s)
+      Armature|Idle_Lantern_Loop (2.50s)
+      Armature|Idle_Lantern_Loop (2.50s)
+      Armature|Idle_No_Loop (2.50s)
+      Armature|Idle_No_Loop (2.50s)
+      Armature|Idle_Rail_Call (2.50s)
+      Armature|Idle_Rail_Call (2.50s)
+      Armature|Idle_Rail_Loop (2.50s)
+      Armature|Idle_Rail_Loop (2.50s)
+      Armature|Idle_Shield_Break (1.07s)
+      Armature|Idle_Shield_Break (1.07s)
+      Armature|Idle_Shield_Loop (2.50s)
+      Armature|Idle_Shield_Loop (2.50s)
+      Armature|Idle_TalkingPhone_Loop (2.93s)
+      Armature|Idle_TalkingPhone_Loop (2.93s)
+      Armature|LayToIdle (1.53s)
+      Armature|LayToIdle (1.53s)
+      Armature|Melee_Hook (0.47s)
+      Armature|Melee_Hook (0.47s)
+      Armature|Melee_Hook_Rec (0.60s)
+      Armature|Melee_Hook_Rec (0.60s)
+      Armature|NinjaJump_Idle_Loop (2.00s)
+      Armature|NinjaJump_Idle_Loop (2.00s)
+      Armature|NinjaJump_Land (1.27s)
+      Armature|NinjaJump_Land (1.27s)
+      Armature|NinjaJump_Start (0.97s)
+      Armature|NinjaJump_Start (0.97s)
+      Armature|OverhandThrow (1.33s)
+      Armature|OverhandThrow (1.33s)
+      Armature|Shield_Dash (1.10s)
+      Armature|Shield_Dash (1.10s)
+      Armature|Shield_OneShot (0.83s)
+      Armature|Shield_OneShot (0.83s)
+      Armature|Slide_Exit (0.50s)
+      Armature|Slide_Exit (0.50s)
+      Armature|Slide_Loop (2.00s)
+      Armature|Slide_Loop (2.00s)
+      Armature|Slide_Start (0.83s)
+      Armature|Slide_Start (0.83s)
+      Armature|Sword_Block (1.23s)
+      Armature|Sword_Block (1.23s)
+      Armature|Sword_Dash (1.57s)
+      Armature|Sword_Dash (1.57s)
+      Armature|Sword_Heavy_Combo (4.33s)
+      Armature|Sword_Heavy_Combo (4.33s)
+      Armature|Sword_Regular_A (0.43s)
+      Armature|Sword_Regular_A (0.43s)
+      Armature|Sword_Regular_A_Rec (0.97s)
+      Armature|Sword_Regular_A_Rec (0.97s)
+      Armature|Sword_Regular_B (0.53s)
+      Armature|Sword_Regular_B (0.53s)
+      Armature|Sword_Regular_B_Rec (1.03s)
+      Armature|Sword_Regular_B_Rec (1.03s)
+      Armature|Sword_Regular_C (2.00s)
+      Armature|Sword_Regular_C (2.00s)
+      Armature|Sword_Regular_Combo (3.00s)
+      Armature|Sword_Regular_Combo (3.00s)
+      Armature|TreeChopping_Loop (0.97s)
+      Armature|TreeChopping_Loop (0.97s)
+      Armature|Walk_Carry_Loop (2.00s)
+      Armature|Walk_Carry_Loop (2.00s)
+      Armature|Yes (2.50s)
+      Armature|Yes (2.50s)
+      Armature|Zombie_Idle_Loop (1.33s)
+      Armature|Zombie_Idle_Loop (1.33s)
+      Armature|Zombie_Scratch (1.80s)
+      Armature|Zombie_Scratch (1.80s)
+      Armature|Zombie_Walk_Fwd_Loop (1.33s)
+      Armature|Zombie_Walk_Fwd_Loop (1.33s)
+  [Assets/W_Sword]
+      Take 001 (0.03s)
+
+---------- ⑦ 技能 / Roguelike ----------
+      m_Script = SkillInventory
+      stats = Player
+      _acquireCount = 0
+      _distinctCount = 0
+  ScriptableObject 资产：
+      Assets/_Project/Data/Skills/Skill_skill_atkspd.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_crit.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_critdmg.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_damage.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_dash.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_health.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_killheal.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_knock.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_leech.asset  (SkillData)
+      Assets/_Project/Data/Skills/Skill_skill_speed.asset  (SkillData)
+
+=========== end ===========

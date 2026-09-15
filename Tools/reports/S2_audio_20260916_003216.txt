@@ -1,0 +1,22 @@
+﻿Sprint 2 音频链路冒烟测试
+生成时间: 2026-09-16 00:32:15
+判据: 验证 AudioKit 的运行时产物（AudioSource / clip / isPlaying），而不是「没报错」。
+
+-- 1) 资源可加载（Resources.Load，与 AudioKit 默认加载器同路径） --
+  [通过] 9 个战斗音效全部可取   9/9
+  [通过] BGM 可取（BGM/et11lx-chinese-ancient-style-music-love-etlx-247345）   时长 66.576s
+
+-- 2) 音效播放产物（AudioKit 内部建 AudioSource） --
+  [通过] 9 个音效都能真正播出去（isPlaying）   9/9 —— 第1段挥砍✓(Swing_A)  第2段挥砍✓(Swing_B)  第3段挥砍✓(Swing_Heavy)  冲刺✓(Dash)  拔刀✓(Draw)  硬目标命中✓(Hit_Blade)  软目标命中✓(Hit_Flesh)  脚步✓(Footstep)  UI 点击✓(UI_Click)
+
+-- 3) 音量 / 静音开关 --
+  [通过] SfxVolume=1 时 AudioSource.volume ≈ 1   volume 1.000，pitch 1.000
+  [通过] SfxEnabled=false 时不产生播放   静音前后在播数量 1 → 1
+
+-- 4) BGM --
+  [通过] BGM 在循环播放   clip et11lx-chinese-ancient-style-music-love-etlx-247345 loop=True
+
+----------------------------------------------------------------------
+结果: 通过 6 项 / 未通过 0 项
+>>> 音频链路可用：片段可加载、AudioSource 真在播、开关与音量生效
+----------------------------------------------------------------------

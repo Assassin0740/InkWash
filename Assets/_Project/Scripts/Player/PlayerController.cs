@@ -104,16 +104,19 @@ namespace InkWash.Player
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
-        public float dashSpeed = 7.4f;
+        public float dashSpeed = 11.7f;
 
-        [Tooltip("冲刺持续时间。必须与 Dash 动画（KayKit Dodge_Forward，0.40s）对齐：\n" +
-                 "状态机里 Dash 状态的播放速度就是按 Dodge_Forward.length / 本值 算出来的，\n" +
-                 "取 0.40 时倍率正好 1.0×（动作按原速播）。改这里要同步改 " +
-                 "Tools/cs/s3_build_animator_kaykit.cs 的 DashDuration，验收会核对。\n" +
-                 "位移 ≈ 7.4 × 0.40 × 0.85 ≈ 2.5m，仍满足「冲刺产生显著位移（> 2m）」的断言。")]
-        public float dashDuration = 0.40f;
+        [Tooltip("冲刺持续时间。必须与 Dash 动画对齐：状态机里 Dash 状态的播放速度就是按\n" +
+                 "「片段长度 / 本值」算出来的，取与片段等长时倍率正好 1.0×。\n" +
+                 "当前 Dash 挂的是 Assets/_Project/Animations/Baked/Dash_Lunge.anim（0.55s，\n" +
+                 "由 UAL2 Armature|Shield_Dash 按能量峰值窗口烘出），所以本值取 0.55 时原速播。\n" +
+                 "改本值要同步改 Dash_Lunge 的长度或 Dash 状态的 speed。\n" +
+                 "TickDash 里 speed = dashSpeed × lerp(1, 0.55, nd²)，nd 在 [0,1] 上均匀 ⇒\n" +
+                 "平均系数 = 1 − 0.45 × ∫nd² = 1 − 0.45/3 = 0.85：\n" +
+                 "位移 ≈ 11.7 × 0.55 × 0.85 ≈ 5.5m（旧值 7.4/0.40 只有 ≈2.5m，用户嫌太近）。")]
+        public float dashDuration = 0.55f;
 
-        public float dashCooldown = 0.55f;
+        public float dashCooldown = 0.85f;
 
         [Tooltip("冲刺起始的无敌窗口时长")]
         public float dashInvincibleWindow = 0.2f;
@@ -269,6 +272,8 @@ namespace InkWash.Player
         /// 「第 3 段收招 + 后摇混合」（实测 0.5s 以上），复用会让玩家这一次按键静默消失。
         /// </summary>
         private bool _restartQueued;
+        /// <summary>收招期间按过重击键 ⇒ 收完起手的是重击而不是普通第 1 段。</summary>
+        private bool _heavyQueued;
 
         /// <summary>
         /// 交给动画混合树的「移动意图速度」（m/s）。**不等于** <see cref="DesiredSpeed"/>。
@@ -293,6 +298,7 @@ namespace InkWash.Player
         private Vector2 _overrideMove;
         private bool _overrideRun;
         private bool _overrideDash;
+        private bool _overrideHeavy;
         private bool _overrideAttack;
 
         private static readonly int HashSpeed = Animator.StringToHash("Speed");
@@ -360,6 +366,7 @@ namespace InkWash.Player
                 _runHeld = _overrideRun;
                 if (_overrideDash) { _overrideDash = false; TryStartDash(); }
                 if (_overrideAttack) { _overrideAttack = false; TryAttack(); }
+                if (_overrideHeavy) { _overrideHeavy = false; TryStartHeavyAttack(); }
                 return;
             }
 
@@ -391,6 +398,10 @@ namespace InkWash.Player
 
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) TryStartDash();
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.J)) TryAttack();
+
+            // ---- 扩展招式键位 ----
+            // 说明见 TryStartHeavyAttack 的注释：先复用第三段的时间与判定。
+            if (Input.GetKeyDown(KeyCode.K)) TryStartHeavyAttack();
         }
 
         // ==================================================================
@@ -629,10 +640,61 @@ namespace InkWash.Player
             if (SwingStarted != null) SwingStarted(_comboStep);
         }
 
+        /// <summary>
+        /// 重击：**直接起手三段连击的第三段**（重型终结技）。
+        /// </summary>
+        /// <remarks>
+        /// 为什么不新增第四段动画：
+        ///   三段连击的时间口径（comboLungeDistance / comboSwingDuration / comboHitTime /
+        ///   comboRecCancelStart）是**逐段按片段长度标定**的，而且 Animator 侧的转移
+        ///   按列表顺序求值、`interruptionSource=None` 的过渡不可打断 —— 新增一段需要
+        ///   同步改状态机拓扑 + 动画片段 + 整套时间表，是一次**独立完整的改动**。
+        ///   本函数先给出"多一个进攻按键"的最小可用版本：复用第三段的全部时间与判定，
+        ///   只把起手点直接放到第三段上。行为上是一个不可衔接的重击终结技。
+        /// </remarks>
+        public bool TryStartHeavyAttack()
+        {
+            if (animator == null) return false;
+
+            // 攻击中不能立刻切重击：第 3 段收招按设计不可取消。
+            // 但**绝不能丢掉玩家的按键**（项目硬规矩）—— 记成"收完起手重击"，
+            // 由 EnterLocomotion 在复位完成后立刻兑现；同时置 _restartQueued，
+            // 复用已有的"收招重起手"通路，不新增时间口径。
+            if (_phase == ActionPhase.Attack)
+            {
+                _heavyQueued = true;
+                _restartQueued = true;
+                return true;
+            }
+
+            if (_phase == ActionPhase.Dash && _phaseTimer < dashDuration * 0.55f) return false;
+
+            StartHeavyNow();
+            return true;
+        }
+
+        /// <summary>重击的真正起手动作（不判断时机，调用方负责）。</summary>
+        private void StartHeavyNow()
+        {
+            _comboStep = 3;
+            _phase = ActionPhase.Attack;
+            Phase = ActionPhase.Attack;
+            _phaseTimer = 0f;
+            _hitFiredThisStep = false;
+            _attackStateSeen = false;
+            IsCancelWindowOpen = false;
+            _actionDir = ResolveAttackDir();
+            _atkSpeed = stats != null ? Mathf.Max(0.2f, stats.AttackSpeedMultiplier) : 1f;
+
+            animator.SetTrigger(HashAttack3);
+            if (SwingStarted != null) SwingStarted(3);
+        }
+
         private void EnterLocomotion(float brakeRate)
         {
             if (_phase == ActionPhase.Locomotion) return;
             bool restartWanted = _restartQueued;
+            if (!restartWanted) _heavyQueued = false;   // 防空标记漏到下一次起手
             _phase = ActionPhase.Locomotion;
             Phase = ActionPhase.Locomotion;
             _phaseTimer = 0f;
@@ -663,9 +725,14 @@ namespace InkWash.Player
             }
             BrakePlanar(Time.deltaTime, brakeRate * 25f);
 
-            // 收招期间按下的攻击在这里兑现：直接重新起手第 1 段。
-            // 放在最后是因为它会再次把阶段切成 Attack，前面几步的复位必须先做完。
-            if (restartWanted && animator != null) TryAttack();
+            // 收招期间按下的攻击在这里兑现。放在最后是因为它会再次把阶段切成 Attack，
+            // 前面几步的复位必须先做完。
+            // ★ 重击优先：K 键在收招里按下的，兑现的应该是重击而不是普通第 1 段。
+            if (restartWanted && animator != null)
+            {
+                if (_heavyQueued) { _heavyQueued = false; StartHeavyNow(); }
+                else TryAttack();
+            }
         }
 
         private void BrakePlanar(float dt, float rate)
@@ -837,6 +904,8 @@ namespace InkWash.Player
             _overrideMove = Vector2.zero;
             _overrideRun = false;
             _overrideDash = false;
+            _heavyQueued = false;
+            _overrideHeavy = false;
             _overrideAttack = false;
         }
 
@@ -846,12 +915,15 @@ namespace InkWash.Player
             _overrideMove = Vector2.zero;
             _overrideRun = false;
             _overrideDash = false;
+            _heavyQueued = false;
+            _overrideHeavy = false;
             _overrideAttack = false;
         }
 
         public void SetInjectedMove(Vector2 move, bool runHeld) { _overrideMove = move; _overrideRun = runHeld; }
         public void RequestInjectedDash() { _overrideDash = true; }
         public void RequestInjectedAttack() { _overrideAttack = true; }
+        public void RequestInjectedHeavyAttack() { _overrideHeavy = true; }
         public bool IsInputOverridden => _overrideActive;
 
         /// <summary>

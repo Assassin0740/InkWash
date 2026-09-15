@@ -113,6 +113,12 @@ sysinfo.txt
 /Tools/screenshots/outline/
 /Tools/screenshots/tonality/
 /Tools/screenshots/tune/
+# 「地板随视角变化」那轮排查（r1~r9 探针，含 v3/v4 两次中途推翻的尝试）：
+# 过程图 54MB，且留着会让人把中间态误读成当前状态 ⇒ 不入库。
+# 结论性对照已另存 /Tools/screenshots/ground_fix/：
+#   before_*（改前基线）+ v5_P1_0*（四变体分层定位「灰面」主因）+ v6_P1/P2/P3_0*（修复后三层视角复核）。
+/Tools/screenshots/ground/
+/Tools/screenshots/ground_before/
 
 # ---------- 操作系统杂项 ----------
 .DS_Store

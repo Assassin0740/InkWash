@@ -1,0 +1,9 @@
+================ q_look ================
+  场景内敌人根对象 0 个：
+
+---------- 主角 / 敌人 材质 ----------
+  M_Character_Ink            shader=InkWash/InkCharacter _Bands=4 _BandBias=0.150 _InkDensity=0.62 _OutlineWidth=0.012 _ChromaKeep=0.60
+  M_InkSlash(Runtime)        shader=InkWash/InkSlash _Bands=0 _BandBias=0.000 _InkDensity=0.00 _OutlineWidth=0.000 _ChromaKeep=-
+  M_W_Sword_Ink              shader=InkWash/InkCharacter _Bands=4 _BandBias=-0.150 _InkDensity=0.25 _OutlineWidth=0.009 _ChromaKeep=0.20
+
+================ end ================

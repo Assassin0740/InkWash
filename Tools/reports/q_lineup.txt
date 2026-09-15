@@ -1,0 +1,16 @@
+================ q_lineup ================
+  WaveSpawner 配置的敌人预制体 3 个：
+    Enemy_MoTu
+    Enemy_MoOu
+    Enemy_MoYan
+  已实例化 3 个
+
+---------- 包围盒尺寸（世界米）----------
+  Player                   高=2.439  宽=6.199  深=3.595  渲染器=3
+  Enemy_MoTu_shot          高=1.894  宽=1.566  深=0.737  渲染器=9
+  Enemy_MoOu_shot          高=2.204  宽=1.521  深=1.362  渲染器=9
+  Enemy_MoYan_shot         高=2.798  宽=3.514  深=1.162  渲染器=8
+
+  出图 4 格，顺序 = Player | Enemy_MoTu_shot | Enemy_MoOu_shot | Enemy_MoYan_shot
+
+================ end ================

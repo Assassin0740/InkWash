@@ -1,0 +1,37 @@
+================ r5_ground v2 ================
+被观测的渲染器 6 个：
+  Wall_S     mat=M_Whitebox_Wall instanceID=30484 rendererMat=30484  ✓同一份
+  Arena      mat=M_Whitebox_Platform (Instance) instanceID=-548546 rendererMat=-548546  ✓同一份
+  Wall_E     mat=M_Whitebox_Wall instanceID=30484 rendererMat=30484  ✓同一份
+  Ground     mat=M_Whitebox_Ground (Instance) instanceID=-548544 rendererMat=-548544  ✓同一份
+  Wall_N     mat=M_Whitebox_Wall instanceID=30484 rendererMat=30484  ✓同一份
+  Wall_W     mat=M_Whitebox_Wall instanceID=30484 rendererMat=30484  ✓同一份
+  Wall_S     bands=1.0 bias=0.200 grain=0.12 stroke=0.10 stretch=3.0 mottle=0.04
+  Arena      bands=1.0 bias=0.180 grain=0.46 stroke=0.22 stretch=3.0 mottle=0.12
+  Wall_E     bands=1.0 bias=0.200 grain=0.12 stroke=0.10 stretch=3.0 mottle=0.04
+  Ground     bands=1.0 bias=0.180 grain=0.46 stroke=0.22 stretch=3.0 mottle=0.12
+  Wall_N     bands=1.0 bias=0.200 grain=0.12 stroke=0.10 stretch=3.0 mottle=0.04
+  Wall_W     bands=1.0 bias=0.200 grain=0.12 stroke=0.10 stretch=3.0 mottle=0.04
+
+---------- ① 正向对照：整轮读数有效吗 ----------
+  基线                      对比度=0.01402  行std=0.02487  均值=0.6379
+  正向对照 _BandBias=-0.40   对比度=0.00397  行std=0.00745  均值=0.1150   Δ均值=-0.5229
+  ⇒ 探针**能**影响画面（读数有效）
+
+---------- ② 噪声层归因（2× 超采样，掠射机位 g_low）----------
+  00_基线                对比度=0.01331  行std=0.02476  均值=0.6409
+  01_关jitter           对比度=0.00961  行std=0.01636  均值=0.6416
+  02_关纸颗粒              对比度=0.00901  行std=0.02198  均值=0.6410
+  03_关笔触               对比度=0.01332  行std=0.02183  均值=0.6413
+  04_关积墨               对比度=0.01331  行std=0.02461  均值=0.6416
+  05_笔触各向同性            对比度=0.01342  行std=0.02390  均值=0.6429
+  06_笔触尺度×0.35         对比度=0.01327  行std=0.01772  均值=0.6392
+  07_全噪声关              对比度=0.00653  行std=0.01298  均值=0.6426
+
+---------- ③ 超采样对照（1× vs 2×）----------
+  g_low 1x  对比度=0.01402  行std=0.02487
+  g_low 2x  对比度=0.01331  行std=0.02476   变化 -5.0% / -0.4%
+  g_mid 1x  对比度=0.01931  行std=0.06443
+  g_mid 2x  对比度=0.01843  行std=0.06213   变化 -4.6% / -3.6%
+
+================ end ================

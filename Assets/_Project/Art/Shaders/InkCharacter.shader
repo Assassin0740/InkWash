@@ -312,6 +312,28 @@ Shader "InkWash/InkCharacter"
                 return saturate(ValueNoise(p) * 0.65h + ValueNoise(p * 2.17h + 11.3h) * 0.35h);
             }
 
+            /// 噪声采样点在**屏幕上**的足迹：取 x / y 两轴变化率的较大者。
+            /// 值 ≈ 1 的物理含义是"一个像素正好跨一个噪声周期"（Nyquist 极限）。
+            ///
+            /// ★ 为什么必须取两轴的 max（旧版只看一个轴，是「地板斜纹随视角变」的根因）：
+            ///   `fwidth(q) = |ddx(q)| + |ddy(q)|` 只描述 q **自己**把两轴加在一起；
+            ///   而噪声空间是二维的 —— 掠射视角下"沿视线方向"那一轴的世界足迹
+            ///   可以是另一轴的一到两个数量级（实测：地面 8 m 处横向 ≈2 cm/px、
+            ///   沿视线 ≈30 cm/px）。只盯一个轴 ⇒ **漏掉真正欠采样的那个方向**
+            ///   ⇒ 高频图案在掠射面上混叠成沿视线辐射的斜向条带。
+            half InkFootprint(float2 q)
+            {
+                float2 d = max(abs(ddx(q)), abs(ddy(q)));
+                return max(d.x, d.y);
+            }
+
+            /// Nyquist 淡出：足迹 ≤0.5 全保留、≥1.0 全淡出。返回 1 = 保留。
+            half InkNyquistFade(half footprint)
+            {
+                return saturate(2.0h - footprint * 2.0h);
+            }
+
+
             /// 三层纹理采样。三层各自有职责，不能混：
             ///   x = 纸颗粒  高频 + 轻微各向异性(1.6:1) —— 纸的纤维，**在纸白区也看得见**
             ///   y = 笔触    中频 + **方向性拉伸**          —— 皴法/笔痕，"一笔刷过"的方向感
@@ -330,21 +352,22 @@ Shader "InkWash/InkCharacter"
                 else if (an.x >= an.z)             p = float2(posWS.z, posWS.y);  // 朝左右
                 else                               p = posWS.xy;                  // 朝前后
 
-                // 纸颗粒：轻微各向异性 —— 真实的纸纤维是短的丝，不是圆点
-                float2 gp = float2(p.x * 0.62h, p.y);
-                half grain = Fbm2(gp * _GrainScale);
-                // 远处淡出高频颗粒：屏幕导数大 = 该像素跨了太多噪声周期 ⇒ 再高只会出摩尔纹
-                // ★ 阈值必须与"屏幕采样率"挂钩，而不是拍脑袋的 1.8/0.4：
-                //   fwidth ≈ 1 表示"一个像素正好跨一个噪声周期"，再高就是纯混叠。
-                //   旧值要 fwidth>4.5 才淡出 —— 任何实用距离都够不到 ⇒ 远处纸颗粒
-                //   混叠成均匀灰噪声（画面发脏、发灰）。新值在 fwidth=1 处全淡出。
-                half grainFade = saturate(2.0h - fwidth(gp.x * _GrainScale) * 2.0h);
-                grain = lerp(0.5h, grain, grainFade);
+                // ---- ★ 采样点先在**噪声空间**里算出来，才能对同一个量求屏幕足迹 ----
+                float2 qGrain = float2(p.x * 0.62h, p.y) * _GrainScale;
 
                 // _BrushUvFromWorld=1（默认）用世界坐标三平面：纹理不随角色动作滑动
                 // =0 时退回物体 UV：纹理贴着模型走（做"墨迹长在衣服上"时用）
                 float2 sp = lerp(p, uv * 0.5h, 1.0h - _BrushUvFromWorld);
-                half stroke = Fbm2(float2(sp.x / max(_StrokeStretch, 1.0h), sp.y) * _StrokeScale + 27.1h);
+                float2 qStroke = float2(sp.x / max(_StrokeStretch, 1.0h), sp.y) * _StrokeScale + 27.1h;
+
+                // ---- ★ 屏幕足迹 Nyquist 淡出（两轴都看，理由见 InkFootprint 注释）----
+                //   Fbm2 有 2.17× 的第二倍频 ⇒ 按 2.17 倍判 Nyquist。
+                //   淡出推向 0.5（常数）：三层噪声都是零均值使用的，推 0 会引入负偏置。
+                half fadeGrain  = InkNyquistFade(InkFootprint(qGrain)  * 2.17h);
+                half fadeStroke = InkNyquistFade(InkFootprint(qStroke) * 2.17h);
+
+                half grain  = lerp(0.5h, Fbm2(qGrain),  fadeGrain);
+                half stroke = lerp(0.5h, Fbm2(qStroke), fadeStroke);
                 half mottle = SAMPLE_TEXTURE2D(_BrushTex, sampler_BrushTex,
                                                p * _MottleScale * 0.21h + 3.7h).r;
                 return half3(grain, stroke, mottle);
@@ -393,7 +416,9 @@ Shader "InkWash/InkCharacter"
                 half3 nz = SampleInkNoise(input.positionWS, normalWS, input.uv);
 
                 // ① 抖阶边界：噪声必须加在 **saturate 之前**，否则被 Quantize 首句削掉。
-                half jitter = ((nz.y - 0.5h) * 0.75h + (nz.x - 0.5h) * 0.40h) * _BrushStrength;
+                //   ★ 与 InkSurface 同一口径：抖阶只在有阶可抖时才有意义（角色 _Bands=4 ⇒ 门=1，行为不变）。
+                half bandGate = saturate(_Bands - 1.0h);
+                half jitter = ((nz.y - 0.5h) * 0.75h + (nz.x - 0.5h) * 0.40h) * _BrushStrength * bandGate;
                 // ★ v2：`_BandBias` 是"这个物体用几号墨"的显式分配。
                 //   角色的墨色重不重，取决于这里，而不是取决于它有没有被太阳照到 ——
                 //   后者会让"背光的角色才黑"，而水墨画里的主体黑是画家选的墨。
@@ -407,8 +432,8 @@ Shader "InkWash/InkCharacter"
                 //    0.3 m 量级的大块深斑，读起来是"发霉"而不是"墨"——
                 //    因为同一个世界尺度噪声，在 2 m 高的角色身上映射成大斑，
                 //    在地面上却只映射成细纹。**尺度必须按物体尺寸调**。
-                ramp = saturate(ramp + (nz.y - 0.5h) * _StrokeAmp * 0.18h
-                                     + (nz.z - 0.5h) * _StrokeAmp * 0.05h);
+                ramp = saturate(ramp + bandGate * ((nz.y - 0.5h) * _StrokeAmp * 0.18h
+                                                 + (nz.z - 0.5h) * _StrokeAmp * 0.05h));
 
                 // ---- ★ 增量 G-1 接地墨渍：离地越近越浓，让物体"坐"在纸上 ----
                 //   ★ 必须乘 (1 - 朝上程度)：只按世界高度判会把**整块地面**也压暗

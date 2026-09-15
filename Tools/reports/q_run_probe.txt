@@ -1,0 +1,62 @@
+================ q_run_probe ================
+
+---------- ① 含 Run/Walk/Sprint/Carry 的片段：右臂活动量 ----------
+  Feng_Walk_Loop                     len= 1.333  右臂活动 6/9(Right Shoulder Front-Back) 最大range=0.5817   [Assets/_Project/Animations/Feng_Walk_Loop.anim]
+  Idle_Carry_A                       len= 2.500  右臂活动 0/9(-)                       最大range=0.0000   [Assets/_Project/Animations/Baked/Idle_Carry_A.anim]
+  RigLarge_Walking_A_Loop            len= 1.067  右臂活动 4/9(Right Forearm Stretch)   最大range=0.5013   [Assets/_Project/Animations/Enemies/Loops/RigLarge_Walking_A_Loop.anim]
+  Run01_Forward                      len= 0.600  右臂活动 9/9(Right Shoulder Front-Back) 最大range=1.9634   [Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Run/HumanM@Run01_Forward.fbx]
+  Run04_KI_Carry                     len= 0.600  右臂活动 0/9(-)                       最大range=0.0000   [Assets/_Project/Animations/Baked/Run04_KI_Carry.anim]
+  Running_A                          len= 1.067  右臂活动 4/9(Right Arm Down-Up)       最大range=0.8519   [Assets/ThirdParty/KayKit/Animations/Rig_Large/Rig_Large_MovementBasic.fbx]
+  Walk                               len= 1.333  右臂活动 6/9(Right Shoulder Front-Back) 最大range=0.5817   [Assets/Char_Feng/Animation/Walk.anim]
+  Walk01_Forward                     len= 0.800  右臂活动 9/9(Right Shoulder Front-Back) 最大range=1.3758   [Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Walk/HumanM@Walk01_Forward.fbx]
+
+---------- ② 目标片段 Run04_KI_Carry (len=0.600) ----------
+  全部肌肉通道的 24 点极值（只看右臂 + 少数参照）:
+    Left Shoulder Down-Up          min= -0.2592 max= -0.0687 range=0.1905
+    Left Shoulder Front-Back       min= -1.4613 max=  0.4992 range=1.9605
+    Left Arm Down-Up               min= -0.7919 max= -0.0708 range=0.7212
+    Left Arm Front-Back            min=  0.1078 max=  1.0001 range=0.8923
+    Left Arm Twist In-Out          min= -0.2834 max=  0.4880 range=0.7714
+    Left Forearm Stretch           min= -0.1319 max=  0.4155 range=0.5474
+    Left Forearm Twist In-Out      min=  0.6776 max=  0.9080 range=0.2304
+    Right Shoulder Down-Up         min= -0.3729 max= -0.3729 range=0.0000   ← **常数（冻结）**
+    Right Shoulder Front-Back      min=  1.7202 max=  1.7202 range=0.0000   ← **常数（冻结）**
+    Right Arm Down-Up              min= -0.3579 max= -0.3579 range=0.0000   ← **常数（冻结）**
+    Right Arm Front-Back           min=  0.1438 max=  0.1438 range=0.0000   ← **常数（冻结）**
+    Right Arm Twist In-Out         min=  0.1897 max=  0.1897 range=0.0000   ← **常数（冻结）**
+    Right Forearm Stretch          min=  0.5805 max=  0.5805 range=0.0000   ← **常数（冻结）**
+    Right Forearm Twist In-Out     min=  0.1500 max=  0.1500 range=0.0000   ← **常数（冻结）**
+    Right Hand Down-Up             min=  0.0286 max=  0.0286 range=0.0000   ← **常数（冻结）**
+    Right Hand In-Out              min= -0.0106 max= -0.0106 range=0.0000   ← **常数（冻结）**
+
+---------- ③ 候选源片段（KevinIglesias Run01 / Feng 自己的步伐）----------
+  Assets/ThirdParty/KevinIglesias/Animations/Male/Movement/Run/HumanM@Run01_Forward.fbx
+     __preview__HumanM@Run01_Forward len= 1.000 右臂 9/9(Right Shoulder Front-Back) range=1.9591
+     Run01_Forward                  len= 0.600 右臂 9/9(Right Shoulder Front-Back) range=1.9634
+  Assets/_Project/Animations/Feng_Walk_Loop.anim
+     Feng_Walk_Loop                 len= 1.333 右臂 6/9(Right Shoulder Front-Back) range=0.5817
+  Assets/_Project/Animations/Feng_Idle_Loop.anim
+     Feng_Idle_Loop                 len= 2.500 右臂 1/9(Right Shoulder Down-Up)  range=0.1843
+  Assets/_Project/Animations/Sword_Idle_Loop.anim
+     Sword_Idle_Loop                len= 1.667 右臂 2/9(Right Forearm Stretch)   range=0.1313
+
+---------- ④ 运行时：Run 状态下剑与右手的世界位移 ----------
+  剑的父链: W_Sword < BackSocket < CC_Base_Spine02 < CC_Base_Spine01 < CC_Base_Waist < CC_Base_Hip < root < Feng < Visual < Player
+  剑父节点是背部 socket? 是
+  右手骨=CC_Base_R_Hand  右下臂骨=CC_Base_R_Forearm
+  animator.runtimeAnimatorController=
+  剑  世界位移范围: (0.0669, 0.1137, 0.2033)
+  右手世界位移范围: (0.1574, 0.1046, 0.1666)
+  剑在右手局部系下的偏移范围: (0.0604, 0.1036, 0.1369)   ← 全 0 = 剑相对手完全焊死
+  右臂肌肉实时 range（手动推进 Run 120 帧）:
+    Right Shoulder Down-Up         range=0.0000   ← 冻结
+    Right Shoulder Front-Back      range=0.0000   ← 冻结
+    Right Arm Down-Up              range=0.0000   ← 冻结
+    Right Arm Front-Back           range=0.0000   ← 冻结
+    Right Arm Twist In-Out         range=0.0000   ← 冻结
+    Right Forearm Stretch          range=0.0000   ← 冻结
+    Right Forearm Twist In-Out     range=0.0000   ← 冻结
+    Right Hand Down-Up             range=0.0000   ← 冻结
+    Right Hand In-Out              range=0.0000   ← 冻结
+
+================ end ================

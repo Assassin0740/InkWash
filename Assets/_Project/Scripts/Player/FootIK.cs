@@ -89,9 +89,15 @@ namespace InkWash.Player
         [Header("开关")]
         public bool enableIk = true;
 
-        [Tooltip("这些状态不做『帧内贴地』：翻滚这类动作身体本来就贴地滚，按常规夹地面会把身体顶起来。" +
-                 "注意基准偏移(stateOffsets)在这些状态下**依然生效**")]
-        public string[] noGroundFixStates = { "Dash" };
+        [Tooltip("这些状态不做『帧内贴地』：身体本来就贴地滚的动作，按常规夹地面会把身体顶起来。\n" +
+                 "注意基准偏移(stateOffsets)在这些状态下**依然生效**。\n" +
+                 "⚠ 2026-09-16 清空：原来这里是 { Dash }，那是给 KayKit 的 Q 版翻滚 `Dodge_Forward` 留的豁免。\n" +
+                 "   Dash 的 motion 换成自建的 `Dash_Lunge`（UAL2 `Armature|Shield_Dash` 前 0.55s 的低姿态前冲）之后，\n" +
+                 "   这条豁免变成纯伤害：整段动画的网格最低点落在角色根下方 0.36~0.60m，豁免 ⇒ BodyLift 恒为 0 ⇒\n" +
+                 "   角色半截埋在地里冲刺（实机取证 Tools/reports/q_dash_ground.txt）。\n" +
+                 "   UAL2 的片段普遍把模型压得很低（Atk2Rec 实测 -0.85m），全靠帧内夹地逐帧拢回来，Dash 不该例外。\n" +
+                 "   将来若真的加入腾空/翻滚类状态，再往这里加。")]
+        public string[] noGroundFixStates = new string[0];
 
         [Tooltip("竖直偏移的输出节点。留空则自动取 Animator 下最靠上的蒙皮网格祖先（模型容器，本工程 = Visual）。\n" +
                  "⚠ 不要改成用 anim.bodyPosition 写偏移：那是 Animator 局部空间，模型带整体缩放时\n" +
@@ -129,7 +135,14 @@ namespace InkWash.Player
         [Tooltip("由 Tools/cs/f_calib_footik.cs 量、Tools/cs/f_apply_footik.cs 推送。\n" +
                  "值为『该段动画无 IK 时网格最低点相对地面』取负（**世界米**）—— 让最低点正好落到地面。\n" +
                  "直接按世界米填即可，不必手工折算模型缩放（输出通道是模型容器的 localPosition.y，1:1）。\n" +
-                 "换模型/换动画包（片段）后必须整表重测，否则脚会穿地或浮空。")]
+                 "换模型/换动画包（片段）后必须整表重测，否则脚会穿地或浮空。\n" +
+                 "⚠ 2026-09-16：`Dash` 项随片段一起重标（Dodge_Forward → Dash_Lunge），-0.0041 → **+0.05**。\n" +
+                 "   这个值是**扫出来的折中**，不是「按公式取最浅/最深」：`Dash_Lunge` 本体的最低点在\n" +
+                 "   [-0.231, +0.139] 之间快速摆动（低身前冲），而 `BodyLift` 只上抬、不下降 ⇒\n" +
+                 "   静态项偏小 ⇒ 深帧欠抬（实测 -0.139 时稳态穿地 0.21m）；偏大 ⇒ 浅帧浮空\n" +
+                 "   （实测 +0.25 时冲刺起手浮空 0.50m）。取 +0.05 让两边的误差都 < 0.1m：\n" +
+                 "   实测稳态最差 -0.015m、过渡最差 +0.005m（Tools/reports/q_dash_ground.txt）。\n" +
+                 "   根因仍是「总抬升 = BodyBase + BodyLift，二者互补」——静态项只决定 BodyLift 的起点。")]
         public StateYOffset[] stateOffsets;
 
         // ---------------- 只读探针（自动化验收用，勿删） ----------------

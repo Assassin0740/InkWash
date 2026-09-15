@@ -245,9 +245,9 @@ MonoBehaviour:
   runRefSpeed: 4.12
   motionSpeedMin: 0.6
   motionSpeedMax: 2.2
-  dashSpeed: 7.4
-  dashDuration: 0.4
-  dashCooldown: 0.55
+  dashSpeed: 11.7
+  dashDuration: 0.55
+  dashCooldown: 0.85
   dashInvincibleWindow: 0.2
   comboLungeDistance:
   - 1.2
@@ -349,8 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableIk: 1
-  noGroundFixStates:
-  - Dash
+  noGroundFixStates: []
   bodyOffsetTarget: {fileID: 0}
   groundClearance: 0.005
   probeUp: 0.5
@@ -368,7 +367,7 @@ MonoBehaviour:
   - state: Run
     y: 0.12
   - state: Dash
-    y: -0.0041
+    y: 0.05
   - state: Atk1
     y: 0.02
   - state: Atk1Rec

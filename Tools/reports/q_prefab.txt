@@ -1,0 +1,13 @@
+---------- ① 当前内存里的预制体 ----------
+    预制体 = Player
+    FootIK = 有
+    noGroundFixStates.len = 0   []
+---------- ② ForceUpdate 重导之后 ----------
+    预制体 = Player
+    FootIK = 有
+    noGroundFixStates.len = 0   []
+
+---------- ③ 场景里的实例 ----------
+    Player (场景 Main)  noGroundFixStates.len = 0   []
+      预制体源 = 有（是预制体实例）
+    共 1 个
