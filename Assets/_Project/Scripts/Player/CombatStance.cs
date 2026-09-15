@@ -56,7 +56,8 @@ namespace InkWash.Player
         [Tooltip("战斗（持剑）待机播的片段。留空则用控制器 Idle 状态槽位里原本挂的片段。\n" +
                  "★ 为什么要显式配置：旧实现靠「片段名 == \"Idle\"」去认槽位，一旦把控制器里的 Idle\n" +
                  "换成循环副本（名字变成 Feng_Idle_Loop），匹配就失效 —— 而且**整套战斗姿态会静默失效**\n" +
-                 "（武器不挂手、不握拳），控制台一条报错都没有。")]
+                 "（武器不挂手、不握拳），控制台一条报错都没有。\n" +
+                 "★ 运行期改这个字段**立即生效**（下次 ApplyStance 就会用新值）—— 便于活体 A/B 比对姿势。")]
         public AnimationClip combatIdleClip;
 
         [Tooltip("控制器里 Idle 状态**原本挂的片段**（本项目 = Feng_Idle_Loop）。\n" +
@@ -99,7 +100,6 @@ namespace InkWash.Player
         // ---------------- 内部 ----------------
         private AnimatorOverrideController _ovr;
         private AnimationClip _idleSlot;           // OverrideController 里 Idle 状态的槽位（必须由 GetOverrides 拿到的原始 key）
-        private AnimationClip _combatIdleClip;     // 战斗待机实际播的片段
         private GameObject _weapon;
         private Transform _handParent;             // 武器原本的父节点（右手挂点）
         private bool _ready;
@@ -219,9 +219,6 @@ namespace InkWash.Player
                         if (kv.Key != null && kv.Key.name.Contains("Idle")) { _idleSlot = kv.Key; break; }
                 }
                 if (_idleSlot == null) return false;   // 控制器里还没备好 Idle，下一帧再试
-
-                // 战斗待机片段：显式配置优先，否则用槽位自身挂的那个
-                _combatIdleClip = combatIdleClip != null ? combatIdleClip : _idleSlot;
             }
 
             // 2. 记下武器实例与它原本的父节点
@@ -257,11 +254,15 @@ namespace InkWash.Player
             if (combat) SwitchToCombatCount++; else SwitchToRelaxedCount++;
 
             // ① Idle 片段：只改 ovr 里那一条映射
+            // ⚠ 直接读 <see cref="combatIdleClip"/> 而**不是**缓存的副本 —— 旧实现把值缓存到
+            //   私有字段（只在 TryReady 里赋一次），于是运行期改 combatIdleClip 完全不生效，
+            //   做姿势 A/B 时会被误判成「这个片段没用」。缓存就是这里的坑，不再缓存。
             if (_ovr != null && _idleSlot != null)
             {
+                AnimationClip fallback = combatIdleClip != null ? combatIdleClip : _idleSlot;
                 AnimationClip clip = combat
-                    ? _combatIdleClip
-                    : (relaxedIdleClip != null ? relaxedIdleClip : _combatIdleClip);
+                    ? fallback
+                    : (relaxedIdleClip != null ? relaxedIdleClip : fallback);
                 _ovr[_idleSlot] = clip;
                 CurrentIdleClipName = clip != null ? clip.name : "<null>";
             }

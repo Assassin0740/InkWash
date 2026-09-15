@@ -1,0 +1,13 @@
+newRun  = Run02_Sprint_Carry len=0.667
+newIdle = Idle_Carry_A len=2.500
+
+=== ① Player.controller 的 Run 状态 ===
+  层 "Base Layer" 状态 Run: Run01_Carry  →  Run02_Sprint_Carry
+
+=== ② Player.prefab 的 CombatStance.combatIdleClip ===
+  combatIdleClip: Sword_Idle_Loop  →  Idle_Carry_A
+  已保存 Assets/_Project/Prefabs/Player/Player.prefab
+
+=== ③ 复核 ===
+  控制器 Run motion = Run02_Sprint_Carry   路径 Assets/_Project/Animations/Baked/Run02_Sprint_Carry.anim
+  prefab combatIdleClip = Idle_Carry_A   路径 Assets/_Project/Animations/Baked/Idle_Carry_A.anim

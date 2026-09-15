@@ -1,0 +1,88 @@
+=== ① 场景 Player 的 Animator 控制器 ===
+  runtimeAnimatorController =   (AnimatorOverrideController)
+  资产路径 = 
+  base = Player  路径 Assets/_Project/Animations/Player.controller
+  override 对 9 个：
+     Run01_Carry                        → Run02_Jog_Carry
+     Feng_Walk_Loop                     → <null>
+     Feng_Idle_Loop                     → Rig|Idle_Loop
+     Dodge_Forward                      → <null>
+     Armature|Sword_Regular_B           → <null>
+     Armature|Sword_Regular_C           → <null>
+     Armature|Sword_Regular_A           → <null>
+     Armature|Sword_Regular_A_Rec       → <null>
+     Armature|Sword_Regular_B_Rec       → <null>
+  FootIK(运行时实例，仅供参照) stateOffsets:
+     Idle                  0.0307
+     Walk                  -0.0554
+     Run                   0.1735
+     Dash                  -0.0041
+     Atk1                  0.0200
+     Atk1Rec               0.1800
+     Atk2                  0.0300
+     Atk2Rec               0.3600
+     Atk3                  0.1000
+     Rig|Idle_Loop         0.0307
+     Sword_Idle_Loop       0.0477
+     Feng_Walk_Loop        -0.0554
+     Run01_Carry           0.1735
+
+=== ② 项目内所有 AnimatorController 资产 ===
+  Assets/_Project/Animations/Player.controller
+    层 "Base Layer"  状态 9 个
+       Idle                   motion=Feng_Idle_Loop (AnimationClip)  speed=1.00
+       Walk                   motion=Feng_Walk_Loop (AnimationClip)  speed=1.00
+       Run                    motion=Run01_Carry (AnimationClip)  speed=1.00
+       Dash                   motion=Dodge_Forward (AnimationClip)  speed=1.00
+       Atk1                   motion=Armature|Sword_Regular_A (AnimationClip)  speed=1.25
+       Atk1Rec                motion=Armature|Sword_Regular_A_Rec (AnimationClip)  speed=1.70
+       Atk2                   motion=Armature|Sword_Regular_B (AnimationClip)  speed=1.25
+       Atk2Rec                motion=Armature|Sword_Regular_B_Rec (AnimationClip)  speed=1.70
+       Atk3                   motion=Armature|Sword_Regular_C (AnimationClip)  speed=1.25
+  Assets/Char_Feng/Animation/Feng.controller
+    层 "Base Layer"  状态 10 个
+       Idle                   motion=Idle (AnimationClip)  speed=1.00
+       Chest                  motion=Chest (AnimationClip)  speed=1.00
+       Release                motion=Release (AnimationClip)  speed=1.00
+       Walk                   motion=Walk (AnimationClip)  speed=1.00
+       PickUp                 motion=PickUp (AnimationClip)  speed=1.00
+       Death                  motion=Death (AnimationClip)  speed=1.00
+       Roll                   motion=Roll (AnimationClip)  speed=1.00
+       Dance                  motion=Dance (AnimationClip)  speed=1.00
+       BoxingR                motion=BoxingR (AnimationClip)  speed=1.00
+       BoxingL                motion=BoxingL (AnimationClip)  speed=1.00
+  Packages/com.unity.cinemachine/Tests/Runtime/TestController.controller
+    层 "Base Layer"  状态 2 个
+       State1                 motion=<null>  speed=1.00
+       State2                 motion=<null>  speed=1.00
+
+=== ③ Player.prefab 现值 ===
+  CombatStance.combatIdleClip = Sword_Idle_Loop  path=Assets/_Project/Animations/Sword_Idle_Loop.anim
+  FootIK 根上，stateOffsets 13 条：
+     Idle                  0.0307
+     Walk                  -0.0554
+     Run                   0.1735
+     Dash                  -0.0041
+     Atk1                  0.0200
+     Atk1Rec               0.1800
+     Atk2                  0.0300
+     Atk2Rec               0.3600
+     Atk3                  0.1000
+     Rig|Idle_Loop         0.0307
+     Sword_Idle_Loop       0.0477
+     Feng_Walk_Loop        -0.0554
+     Run01_Carry           0.1735
+
+=== ④ Assets/_Project/Animations/Baked 现存片段 ===
+  Idle_Carry_A.anim                  len=2.500 loop=True
+  Idle_Carry_AT.anim                 len=2.500 loop=True
+  Idle_Carry_B.anim                  len=2.500 loop=True
+  Idle_Carry_C.anim                  len=2.500 loop=True
+  Idle_Carry_F.anim                  len=2.500 loop=True
+  Idle_Carry_S.anim                  len=2.500 loop=True
+  Run01_Carry.anim                   len=0.600 loop=True
+  Run01_Carry_F2.anim                len=0.600 loop=True
+  Run01_Carry_F5.anim                len=0.600 loop=True
+  Run01_Ctrl.anim                    len=0.600 loop=True
+  Run02_Jog_Carry.anim               len=0.933 loop=True
+  Run02_Sprint_Carry.anim            len=0.667 loop=True

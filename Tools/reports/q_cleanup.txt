@@ -1,0 +1,44 @@
+=== ① 引用检查（删之前先确认 keep 列表真的在用）===
+  控制器在用：Feng_Idle_Loop, Feng_Walk_Loop, Run04_KI_Carry, Dodge_Forward, Armature|Sword_Regular_A, Armature|Sword_Regular_A_Rec, Armature|Sword_Regular_B, Armature|Sword_Regular_B_Rec, Armature|Sword_Regular_C
+  CombatStance.combatIdleClip = Idle_Carry_A
+  ✓ keep 列表与实际引用一致，可以删其余
+
+=== ② 删除未采用的烘焙变体 ===
+  保留 Idle_Carry_A
+  删除 Assets/_Project/Animations/Baked/Idle_Carry_AT.anim
+  删除 Assets/_Project/Animations/Baked/Idle_Carry_B.anim
+  删除 Assets/_Project/Animations/Baked/Idle_Carry_C.anim
+  删除 Assets/_Project/Animations/Baked/Idle_Carry_F.anim
+  删除 Assets/_Project/Animations/Baked/Idle_Carry_S.anim
+  删除 Assets/_Project/Animations/Baked/Run01_Carry.anim
+  删除 Assets/_Project/Animations/Baked/Run01_Carry_F2.anim
+  删除 Assets/_Project/Animations/Baked/Run01_Carry_F5.anim
+  删除 Assets/_Project/Animations/Baked/Run01_Ctrl.anim
+  删除 Assets/_Project/Animations/Baked/Run02_Jog_Carry.anim
+  删除 Assets/_Project/Animations/Baked/Run02_Sprint_Carry.anim
+  删除 Assets/_Project/Animations/Baked/Run03_KI_Carry.anim
+  保留 Run04_KI_Carry
+  共删除 12 个
+
+=== ③ stateOffsets 死条目清理 ===
+  丢弃死条目：Rig|Idle_Loop (0.0307)
+  丢弃死条目：Run02_Sprint_Carry (0.1200)
+  剩余 13 条：
+    Idle                  0.0307
+    Walk                  -0.0554
+    Run                   0.1200
+    Dash                  -0.0041
+    Atk1                  0.0200
+    Atk1Rec               0.1800
+    Atk2                  0.0300
+    Atk2Rec               0.3600
+    Atk3                  0.1000
+    Sword_Idle_Loop       0.0477
+    Feng_Walk_Loop        -0.0554
+    Run04_KI_Carry        0.1200
+    Idle_Carry_A          0.0307
+  已保存 Assets/_Project/Prefabs/Player/Player.prefab
+
+=== ④ 复核：Baked 目录剩余 ===
+  Idle_Carry_A.anim
+  Run04_KI_Carry.anim

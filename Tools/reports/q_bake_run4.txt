@@ -1,0 +1,27 @@
+src = Run01_Forward  len=0.600
+refSwordIdle = Rig|Sword_Idle  len=1.667
+
+=== ① 修改前：右脚 vs 左脚（同片段）===
+  Foot Twist In-Out                右 [ -4.012, -0.876] span 3.136 mean -2.623 ⇒ 角度 [ -120.4°,  -26.3°]
+  Foot Twist In-Out                左 [  0.016,  0.279] span 0.263 mean  0.137 ⇒ 角度 [    0.5°,    8.4°]
+  Foot Up-Down                     右 [ -1.802,  2.122] span 3.923 mean  1.177 ⇒ 角度 [  -90.1°,  106.1°]
+  Foot Up-Down                     左 [  0.263,  1.557] span 1.294 mean  0.924 ⇒ 角度 [   13.1°,   77.8°]
+  Lower Leg Twist In-Out           右 [  0.647,  1.892] span 1.245 mean  1.512 ⇒ 角度 [   58.2°,  170.3°]
+  Lower Leg Twist In-Out           左 [ -0.114,  0.022] span 0.136 mean -0.013 ⇒ 角度 [  -10.3°,    2.0°]
+
+=== ② 校准右脚（newVal = leftMean + (leftSpan/rightSpan)*(oldVal − rightMean)）===
+  Foot Twist In-Out                k=0.0840  新 span=0.263（目标左脚 0.263）
+  Foot Up-Down                     k=0.3298  新 span=1.294（目标左脚 1.294）
+  Lower Leg Twist In-Out           k=0.1093  新 span=0.136（目标左脚 0.136）
+
+=== ③ 右臂 ← Rig|Sword_Idle @ t=0.35 ===
+  右臂替换 36 条
+写出 Assets/_Project/Animations/Baked/Run03_KI_Carry.anim  len=0.600 loop=True
+
+=== ④ 复核：修改后右脚 vs 左脚 ===
+  Right Foot Twist In-Out          [  0.020,  0.283] span 0.263 ⇒ 角度 [    0.6°,    8.5°]
+  Left Foot Twist In-Out           [  0.016,  0.279] span 0.263 ⇒ 角度 [    0.5°,    8.4°]
+  Right Foot Up-Down               [ -0.058,  1.236] span 1.294 ⇒ 角度 [   -2.9°,   61.8°]
+  Left Foot Up-Down                [  0.263,  1.557] span 1.294 ⇒ 角度 [   13.1°,   77.8°]
+  Right Lower Leg Twist In-Out     [ -0.108,  0.029] span 0.136 ⇒ 角度 [   -9.7°,    2.6°]
+  Left Lower Leg Twist In-Out      [ -0.114,  0.022] span 0.136 ⇒ 角度 [  -10.3°,    2.0°]

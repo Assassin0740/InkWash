@@ -1,0 +1,18 @@
+--- ① 持剑待机（Idle_Carry_A）---
+  BodyBase = 0.0307   liftSmooth = 150.0
+=== 持剑待机（n=282 帧）===
+  live（鞋底−地面，含全部偏移） 最低   0.005  p10   0.005  中位   0.008  p90   0.015  最高  0.015
+  applied（BodyBase+BodyLift）    最低   0.031  中位   0.031  最高  0.034
+  raw = live − applied（动画本体）最低  -0.029  p10  -0.028  中位  -0.022  p90  -0.016  最高 -0.016
+  交叉验证：FootIK.LowestMeshY 与自算 BakeMesh 逐帧差  最大 0.0342 m（应≈0）
+
+--- ② 跑步（Roll → 控制器 Run）---
+  BodyBase = 0.1200   liftSmooth = 150.0
+=== 跑步（n=422 帧）===
+  live（鞋底−地面，含全部偏移） 最低  -0.017  p10   0.003  中位   0.053  p90   0.258  最高  0.359
+  applied（BodyBase+BodyLift）    最低   0.120  中位   0.120  最高  0.434
+  raw = live − applied（动画本体）最低  -0.252  p10  -0.190  中位  -0.072  p90   0.098  最高  0.239
+  交叉验证：FootIK.LowestMeshY 与自算 BakeMesh 逐帧差  最大 0.4337 m（应≈0）
+
+判读：raw 的中位 = 片段固有（与 BodyBase 无关）；live 的中位 = 用户看到的「高出来一格」。
+      若 live 中位 ≈ raw 中位 + BodyBase，说明查询与加法同源（旧脚本的 0.174 即由此得出），口径自洽。

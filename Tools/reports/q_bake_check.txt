@@ -1,0 +1,34 @@
+base  = Rig|Idle_Loop  len=2.500
+ref   = Rig|Sword_Idle  len=1.667
+baked = Idle_Carry_A  len=2.500
+
+base 通道数 = 130   ref 通道数 = 130
+base 有而 ref 没有的通道：
+ref 有而 base 没有的通道：
+
+=== 右臂通道值对比 ===
+通道名                          base@1.0    ref@0.583   bakedA常数  用refBinding取值
+Right Arm Down-Up                -0.4775    -0.3579     -0.3579   -0.3579 (keys=2)
+Right Arm Front-Back              0.2257     0.1438      0.1438   0.1438 (keys=2)
+Right Arm Twist In-Out           -0.1428     0.1897      0.1897   0.1897 (keys=6)
+Right Forearm Stretch             0.4620     0.5806      0.5805   0.5806 (keys=6)
+Right Forearm Twist In-Out       -0.0040     0.1500      0.1500   0.1500 (keys=7)
+Right Hand Down-Up               -0.0656     0.0286      0.0286   0.0286 (keys=15)
+Right Hand In-Out                -0.3598    -0.0108     -0.0106   -0.0108 (keys=16)
+Right Shoulder Down-Up           -0.4448    -0.3729     -0.3729   -0.3729 (keys=2)
+Right Shoulder Front-Back         1.7202     1.7202      1.7202   1.7202 (keys=2)
+
+=== baked 片段与 base 的曲线差异（key 数 / 常数？）===
+Right Arm Down-Up  base keys=5  baked keys=2
+    baked key t=0.000 v=-0.35793
+    baked key t=2.500 v=-0.35793
+    base  key t=0.000 v=-0.46573
+    base  key t=0.967 v=-0.47894
+    base  key t=1.567 v=-0.46730
+    base  key t=2.233 v=-0.47721
+
+=== Idle_Carry_AT 的 Torso 通道是否变成了常数 ===
+Spine Front-Back  AT keys=2  v=0.0000
+Spine Left-Right  AT keys=2  v=0.0000
+Spine Twist Left-Right  AT keys=2  v=0.0000
+Chest Front-Back  AT keys=2  v=-0.4686

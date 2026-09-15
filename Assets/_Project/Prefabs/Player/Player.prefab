@@ -253,7 +253,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 3072
-  liftSmooth: 14
+  liftSmooth: 150
   maxLift: 1.3
   stateOffsets:
   - state: Idle
@@ -261,7 +261,7 @@ MonoBehaviour:
   - state: Walk
     y: -0.0554
   - state: Run
-    y: 0.1735
+    y: 0.12
   - state: Dash
     y: -0.0041
   - state: Atk1
@@ -274,14 +274,14 @@ MonoBehaviour:
     y: 0.36
   - state: Atk3
     y: 0.1
-  - state: Rig|Idle_Loop
-    y: 0.0307
-  - state: Sword_Idle_Loop
-    y: 0.0477
   - state: Feng_Walk_Loop
     y: -0.0554
-  - state: Run01_Carry
-    y: 0.1735
+  - state: Run04_KI_Carry
+    y: 0.12
+  - state: Idle_Carry_A
+    y: 0.0307
+  - state: Rig|Idle_Loop
+    y: 0.0307
 --- !u!114 &5718752645052886692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ MonoBehaviour:
   handPose: {fileID: 5718752645052886692}
   relaxedIdleClip: {fileID: 4925837963642883786, guid: 09c96d4af43f0aa4ebb0859db9ad12f3,
     type: 3}
-  combatIdleClip: {fileID: 7400000, guid: 4605d53bc0c6e334284c0a9654e8a489, type: 2}
+  combatIdleClip: {fileID: 7400000, guid: f7e994863d31cd740b28e78148df34bb, type: 2}
   idleSlotClip: {fileID: 7400000, guid: fd8497b7ea07a4741a663a02f5856e53, type: 2}
   combatExitDelay: 6
   startInCombat: 0

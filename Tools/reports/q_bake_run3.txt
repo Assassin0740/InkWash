@@ -1,0 +1,18 @@
+refSwordIdle=Rig|Sword_Idle 1.667s
+baseSprint  =Rig|Sprint_Loop 0.667s
+baseJog     =Rig|Jog_Fwd_Loop 0.933s
+
+参考片段 Rig|Sword_Idle 通道数 = 130（右臂 36 条）
+
+写出 Assets/_Project/Animations/Baked/Run02_Sprint_Carry.anim  len=0.667 loop=True  右臂替换 36 条 / 保留 0 条
+写出 Assets/_Project/Animations/Baked/Run02_Jog_Carry.anim  len=0.933 loop=True  右臂替换 36 条 / 保留 0 条
+
+=== 自检：右脚脚部通道范围（对比 KI Run01_Forward 的 Twist [-4.012,-0.876] mean -2.623）===
+  Run02_Sprint_Carry       Left Foot Up-Down              [ -0.318,  0.445] mean  0.140
+  Run02_Sprint_Carry       Left Foot Twist In-Out         [ -0.093,  0.610] mean  0.050
+  Run02_Sprint_Carry       Right Foot Up-Down             [ -0.415,  0.576] mean  0.229
+  Run02_Sprint_Carry       Right Foot Twist In-Out        [ -0.063,  0.614] mean  0.067
+  Run02_Jog_Carry          Left Foot Up-Down              [ -0.454,  0.554] mean  0.093
+  Run02_Jog_Carry          Left Foot Twist In-Out         [ -0.111,  0.613] mean  0.051
+  Run02_Jog_Carry          Right Foot Up-Down             [ -0.455,  0.556] mean  0.062
+  Run02_Jog_Carry          Right Foot Twist In-Out        [ -0.613,  0.184] mean -0.064

@@ -1,0 +1,183 @@
+=== ① 非肌肉类通道的 binding 三元组（path / type / propertyName）===
+   path=""  type=Animator  prop="LeftFootT.x"
+   path=""  type=Animator  prop="LeftFootT.y"
+   path=""  type=Animator  prop="LeftFootT.z"
+   path=""  type=Animator  prop="LeftFootQ.x"
+   path=""  type=Animator  prop="LeftFootQ.y"
+   path=""  type=Animator  prop="LeftFootQ.z"
+   path=""  type=Animator  prop="LeftFootQ.w"
+   path=""  type=Animator  prop="RightFootT.x"
+   path=""  type=Animator  prop="RightFootT.y"
+   path=""  type=Animator  prop="RightFootT.z"
+   path=""  type=Animator  prop="RightFootQ.x"
+   path=""  type=Animator  prop="RightFootQ.y"
+   path=""  type=Animator  prop="RightFootQ.z"
+   path=""  type=Animator  prop="RightFootQ.w"
+   path=""  type=Animator  prop="LeftHandT.x"
+   path=""  type=Animator  prop="LeftHandT.y"
+   path=""  type=Animator  prop="LeftHandT.z"
+   path=""  type=Animator  prop="LeftHandQ.x"
+   path=""  type=Animator  prop="LeftHandQ.y"
+   path=""  type=Animator  prop="LeftHandQ.z"
+   path=""  type=Animator  prop="LeftHandQ.w"
+   path=""  type=Animator  prop="RightHandT.x"
+   path=""  type=Animator  prop="RightHandT.y"
+   path=""  type=Animator  prop="RightHandT.z"
+   path=""  type=Animator  prop="RightHandQ.x"
+   （共 130 条曲线）
+
+=== ② 脚部通道：UAL1/UAL2 候选跑步 vs KI（只看脚/脚趾）===
+  ── UAL1 Rig|Jog_Fwd_Loop   len=0.933
+      Left Foot Twist In-Out             keys= 27  [ -0.111,  0.613]  mean  0.051  跨度 0.724
+      Left Foot Up-Down                  keys= 26  [ -0.454,  0.554]  mean  0.093  跨度 1.007
+      Left Toes Up-Down                  keys= 28  [ -0.793,  0.000]  mean -0.102  跨度 0.793
+      LeftFootQ.w                        keys= 16  [ -0.860, -0.193]  mean -0.468  跨度 0.667
+      LeftFootQ.x                        keys= 23  [ -0.031,  0.836]  mean  0.281  跨度 0.867
+      LeftFootQ.y                        keys= 16  [ -0.757, -0.308]  mean -0.525  跨度 0.449
+      LeftFootQ.z                        keys= 23  [  0.009,  0.454]  mean  0.244  跨度 0.445
+      LeftFootT.x                        keys= 24  [ -0.104,  0.314]  mean  0.091  跨度 0.417
+      LeftFootT.y                        keys= 19  [ -0.868, -0.479]  mean -0.679  跨度 0.390
+      LeftFootT.z                        keys= 20  [ -0.695,  0.573]  mean -0.091  跨度 1.268
+      Right Foot Twist In-Out            keys= 26  [ -0.613,  0.184]  mean -0.064  跨度 0.797
+      Right Foot Up-Down                 keys= 27  [ -0.455,  0.556]  mean  0.062  跨度 1.011
+      Right Toes Up-Down                 keys= 28  [ -0.793,  0.000]  mean -0.102  跨度 0.793
+      RightFootQ.w                       keys= 17  [ -0.653, -0.289]  mean -0.502  跨度 0.364
+      RightFootQ.x                       keys= 24  [  0.010,  0.503]  mean  0.238  跨度 0.493
+      RightFootQ.y                       keys= 18  [ -0.857, -0.244]  mean -0.562  跨度 0.613
+      RightFootQ.z                       keys= 24  [ -0.032,  0.781]  mean  0.249  跨度 0.813
+      RightFootT.x                       keys= 23  [ -0.293,  0.092]  mean -0.092  跨度 0.384
+      RightFootT.y                       keys= 18  [ -0.858, -0.467]  mean -0.667  跨度 0.390
+      RightFootT.z                       keys= 19  [ -0.692,  0.573]  mean -0.136  跨度 1.265
+  ── UAL1 Rig|Sprint_Loop   len=0.667
+      Left Foot Twist In-Out             keys= 21  [ -0.093,  0.610]  mean  0.050  跨度 0.704
+      Left Foot Up-Down                  keys= 21  [ -0.318,  0.445]  mean  0.140  跨度 0.763
+      Left Toes Up-Down                  keys= 20  [ -0.793,  0.000]  mean -0.119  跨度 0.793
+      LeftFootQ.w                        keys= 15  [ -0.814, -0.188]  mean -0.485  跨度 0.626
+      LeftFootQ.x                        keys= 18  [  0.032,  0.825]  mean  0.398  跨度 0.793
+      LeftFootQ.y                        keys= 17  [ -0.720, -0.242]  mean -0.469  跨度 0.478
+      LeftFootQ.z                        keys= 18  [  0.121,  0.506]  mean  0.354  跨度 0.385
+      LeftFootT.x                        keys= 20  [ -0.105,  0.240]  mean  0.042  跨度 0.345
+      LeftFootT.y                        keys= 16  [ -0.992, -0.514]  mean -0.712  跨度 0.478
+      LeftFootT.z                        keys= 17  [ -0.494,  0.676]  mean  0.123  跨度 1.171
+      Right Foot Twist In-Out            keys= 20  [ -0.063,  0.614]  mean  0.067  跨度 0.676
+      Right Foot Up-Down                 keys= 21  [ -0.415,  0.576]  mean  0.229  跨度 0.990
+      Right Toes Up-Down                 keys= 20  [ -0.793,  0.000]  mean -0.139  跨度 0.793
+      RightFootQ.w                       keys= 19  [ -0.739, -0.199]  mean -0.498  跨度 0.540
+      RightFootQ.x                       keys= 20  [  0.115,  0.544]  mean  0.349  跨度 0.429
+      RightFootQ.y                       keys= 18  [ -0.809, -0.154]  mean -0.501  跨度 0.655
+      RightFootQ.z                       keys= 20  [  0.036,  0.829]  mean  0.346  跨度 0.793
+      RightFootT.x                       keys= 21  [ -0.242,  0.116]  mean -0.014  跨度 0.358
+      RightFootT.y                       keys= 16  [ -1.009, -0.540]  mean -0.725  跨度 0.468
+      RightFootT.z                       keys= 17  [ -0.500,  0.670]  mean  0.009  跨度 1.170
+  ── UAL1 Rig|Walk_Loop（已知正常，对照）   len=1.333
+      Left Foot Twist In-Out             keys= 28  [ -0.079,  0.064]  mean -0.018  跨度 0.143
+      Left Foot Up-Down                  keys= 34  [ -0.289,  0.680]  mean -0.012  跨度 0.969
+      Left Toes Up-Down                  keys= 34  [ -0.721,  0.000]  mean -0.104  跨度 0.721
+      LeftFootQ.w                        keys= 13  [ -0.736, -0.359]  mean -0.527  跨度 0.377
+      LeftFootQ.x                        keys= 17  [  0.023,  0.620]  mean  0.328  跨度 0.597
+      LeftFootQ.y                        keys= 13  [ -0.694, -0.417]  mean -0.533  跨度 0.276
+      LeftFootQ.z                        keys= 17  [  0.027,  0.560]  mean  0.317  跨度 0.533
+      LeftFootT.x                        keys= 16  [ -0.123,  0.001]  mean -0.041  跨度 0.123
+      LeftFootT.y                        keys=  9  [ -0.965, -0.668]  mean -0.842  跨度 0.297
+      LeftFootT.z                        keys= 18  [ -0.517,  0.254]  mean -0.117  跨度 0.771
+      Right Foot Twist In-Out            keys= 29  [ -0.096,  0.048]  mean -0.030  跨度 0.144
+      Right Foot Up-Down                 keys= 35  [ -0.288,  0.521]  mean -0.029  跨度 0.808
+      Right Toes Up-Down                 keys= 32  [ -0.721,  0.000]  mean -0.133  跨度 0.721
+      RightFootQ.w                       keys= 12  [ -0.700, -0.426]  mean -0.565  跨度 0.274
+      RightFootQ.x                       keys= 16  [  0.080,  0.522]  mean  0.311  跨度 0.441
+      RightFootQ.y                       keys= 13  [ -0.709, -0.355]  mean -0.588  跨度 0.354
+      RightFootQ.z                       keys= 16  [  0.079,  0.618]  mean  0.333  跨度 0.539
+      RightFootT.x                       keys= 14  [  0.002,  0.124]  mean  0.049  跨度 0.121
+      RightFootT.y                       keys=  8  [ -0.965, -0.668]  mean -0.849  跨度 0.297
+      RightFootT.z                       keys= 17  [ -0.520,  0.251]  mean -0.123  跨度 0.771
+  ── UAL1 Rig|Idle_Loop（已知正常，对照）   len=2.500
+      Left Foot Twist In-Out             keys=  5  [ -0.279, -0.261]  mean -0.266  跨度 0.018
+      Left Foot Up-Down                  keys= 11  [  0.022,  0.079]  mean  0.054  跨度 0.057
+      Left Toes Up-Down                  keys= 67  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      LeftFootQ.w                        keys=  4  [ -0.564, -0.560]  mean -0.562  跨度 0.005
+      LeftFootQ.x                        keys=  5  [  0.410,  0.421]  mean  0.416  跨度 0.011
+      LeftFootQ.y                        keys=  4  [ -0.483, -0.480]  mean -0.481  跨度 0.003
+      LeftFootQ.z                        keys=  4  [  0.527,  0.530]  mean  0.528  跨度 0.003
+      LeftFootT.x                        keys=  4  [ -0.259, -0.252]  mean -0.254  跨度 0.007
+      LeftFootT.y                        keys=  4  [ -0.946, -0.942]  mean -0.944  跨度 0.004
+      LeftFootT.z                        keys= 16  [ -0.019,  0.015]  mean -0.001  跨度 0.034
+      Right Foot Twist In-Out            keys=  6  [ -0.415, -0.366]  mean -0.394  跨度 0.049
+      Right Foot Up-Down                 keys=  8  [ -0.273, -0.189]  mean -0.221  跨度 0.084
+      Right Toes Up-Down                 keys= 60  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      RightFootQ.w                       keys=  5  [ -0.401, -0.391]  mean -0.397  跨度 0.010
+      RightFootQ.x                       keys=  4  [  0.575,  0.576]  mean  0.576  跨度 0.001
+      RightFootQ.y                       keys=  3  [ -0.628, -0.628]  mean -0.628  跨度 0.000
+      RightFootQ.z                       keys=  5  [  0.339,  0.346]  mean  0.342  跨度 0.007
+      RightFootT.x                       keys=  4  [  0.184,  0.192]  mean  0.189  跨度 0.007
+      RightFootT.y                       keys=  4  [ -0.928, -0.923]  mean -0.926  跨度 0.005
+      RightFootT.z                       keys=  6  [ -0.281, -0.251]  mean -0.267  跨度 0.030
+  ── UAL2 Armature|Sword_Dash   len=1.567
+      Left Foot Twist In-Out             keys= 30  [ -2.253, -0.115]  mean -0.703  跨度 2.139
+      Left Foot Up-Down                  keys= 31  [ -0.964,  0.074]  mean -0.441  跨度 1.038
+      Left Toes Up-Down                  keys= 23  [ -0.692,  0.000]  mean -0.171  跨度 0.692
+      LeftFootQ.w                        keys= 22  [ -0.670,  0.013]  mean -0.468  跨度 0.683
+      LeftFootQ.x                        keys= 24  [  0.374,  0.865]  mean  0.520  跨度 0.491
+      LeftFootQ.y                        keys= 26  [ -0.547, -0.036]  mean -0.297  跨度 0.511
+      LeftFootQ.z                        keys= 23  [  0.209,  0.667]  mean  0.514  跨度 0.458
+      LeftFootT.x                        keys= 34  [ -0.425,  0.170]  mean -0.072  跨度 0.595
+      LeftFootT.y                        keys= 17  [ -0.972, -0.449]  mean -0.769  跨度 0.523
+      LeftFootT.z                        keys= 31  [ -0.327,  0.625]  mean  0.021  跨度 0.951
+      Right Foot Twist In-Out            keys= 29  [ -1.690,  0.358]  mean -0.183  跨度 2.048
+      Right Foot Up-Down                 keys= 29  [ -0.911, -0.114]  mean -0.396  跨度 0.797
+      Right Toes Up-Down                 keys= 35  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      RightFootQ.w                       keys= 22  [ -0.391,  0.297]  mean -0.197  跨度 0.687
+      RightFootQ.x                       keys= 18  [  0.441,  0.851]  mean  0.629  跨度 0.410
+      RightFootQ.y                       keys= 19  [ -0.624, -0.230]  mean -0.405  跨度 0.394
+      RightFootQ.z                       keys= 19  [  0.096,  0.808]  mean  0.439  跨度 0.712
+      RightFootT.x                       keys= 30  [ -0.192,  0.380]  mean  0.090  跨度 0.572
+      RightFootT.y                       keys= 21  [ -0.950, -0.371]  mean -0.617  跨度 0.579
+      RightFootT.z                       keys= 27  [ -0.250,  0.492]  mean  0.125  跨度 0.742
+  ── UAL2 Armature|Walk_Carry_Loop   len=2.000
+      Left Foot Twist In-Out             keys= 42  [ -0.075,  0.173]  mean  0.004  跨度 0.249
+      Left Foot Up-Down                  keys= 24  [ -0.435,  0.738]  mean -0.110  跨度 1.173
+      Left Toes Up-Down                  keys= 43  [ -0.501,  0.000]  mean -0.031  跨度 0.501
+      LeftFootQ.w                        keys= 10  [ -0.732, -0.523]  mean -0.618  跨度 0.208
+      LeftFootQ.x                        keys= 19  [ -0.096,  0.459]  mean  0.202  跨度 0.555
+      LeftFootQ.y                        keys= 10  [ -0.690, -0.562]  mean -0.633  跨度 0.128
+      LeftFootQ.z                        keys= 18  [ -0.102,  0.446]  mean  0.181  跨度 0.548
+      LeftFootT.x                        keys= 18  [ -0.130, -0.001]  mean -0.047  跨度 0.129
+      LeftFootT.y                        keys= 12  [ -0.919, -0.494]  mean -0.707  跨度 0.425
+      LeftFootT.z                        keys= 14  [ -0.684, -0.152]  mean -0.375  跨度 0.532
+      Right Foot Twist In-Out            keys= 37  [ -0.090,  0.148]  mean -0.019  跨度 0.237
+      Right Foot Up-Down                 keys= 25  [ -0.526,  0.726]  mean -0.144  跨度 1.253
+      Right Toes Up-Down                 keys= 28  [ -0.333,  0.000]  mean -0.060  跨度 0.333
+      RightFootQ.w                       keys=  9  [ -0.703, -0.567]  mean -0.634  跨度 0.136
+      RightFootQ.x                       keys= 18  [ -0.103,  0.441]  mean  0.189  跨度 0.544
+      RightFootQ.y                       keys= 10  [ -0.733, -0.516]  mean -0.629  跨度 0.217
+      RightFootQ.z                       keys= 18  [ -0.097,  0.466]  mean  0.202  跨度 0.563
+      RightFootT.x                       keys= 14  [  0.010,  0.134]  mean  0.053  跨度 0.124
+      RightFootT.y                       keys=  9  [ -0.921, -0.488]  mean -0.676  跨度 0.434
+      RightFootT.z                       keys= 13  [ -0.702, -0.139]  mean -0.398  跨度 0.563
+  ── 现用 Baked/Run01_Carry   len=0.600
+      Left Foot Twist In-Out             keys= 19  [  0.016,  0.279]  mean  0.137  跨度 0.263
+      Left Foot Up-Down                  keys= 19  [  0.263,  1.557]  mean  0.924  跨度 1.294
+      Left Toes Up-Down                  keys= 19  [ -0.220,  0.543]  mean  0.160  跨度 0.764
+      LeftFootQ.w                        keys= 19  [  0.497,  0.754]  mean  0.612  跨度 0.257
+      LeftFootQ.x                        keys= 19  [ -0.508,  0.326]  mean -0.203  跨度 0.834
+      LeftFootQ.y                        keys= 19  [  0.506,  0.670]  mean  0.578  跨度 0.164
+      LeftFootQ.z                        keys= 19  [ -0.485,  0.386]  mean -0.201  跨度 0.871
+      LeftFootT.x                        keys= 19  [ -0.098,  0.021]  mean -0.042  跨度 0.119
+      LeftFootT.y                        keys= 19  [ -1.042, -0.452]  mean -0.762  跨度 0.590
+      LeftFootT.z                        keys= 19  [ -0.504,  0.520]  mean  0.007  跨度 1.024
+      Right Foot Twist In-Out            keys= 19  [ -4.012, -0.876]  mean -2.623  跨度 3.136
+      Right Foot Up-Down                 keys= 19  [ -1.802,  2.122]  mean  1.177  跨度 3.923
+      Right Toes Up-Down                 keys= 19  [ -0.197,  0.646]  mean  0.161  跨度 0.842
+      RightFootQ.w                       keys= 19  [ -0.681, -0.303]  mean -0.555  跨度 0.378
+      RightFootQ.x                       keys= 19  [ -0.612,  0.133]  mean -0.219  跨度 0.745
+      RightFootQ.y                       keys= 19  [  0.444,  0.770]  mean  0.656  跨度 0.326
+      RightFootQ.z                       keys= 19  [ -0.291,  0.579]  mean  0.055  跨度 0.870
+      RightFootT.x                       keys= 19  [ -0.064,  0.107]  mean  0.049  跨度 0.170
+      RightFootT.y                       keys= 19  [ -0.953, -0.565]  mean -0.751  跨度 0.387
+      RightFootT.z                       keys= 19  [ -0.505,  0.581]  mean  0.014  跨度 1.087
+
+=== ③ 片段整体活动量（用于估步频；只看 Upper Leg Front-Back 的过零次数）===
+  KI Run01_Forward                 len=0.600s  左大腿摆动[-0.53,0.82]  过中值 2 次  周期≈0.600s
+  UAL1 Rig|Jog_Fwd_Loop            len=0.933s  左大腿摆动[-0.59,1.29]  过中值 2 次  周期≈0.933s
+  UAL1 Rig|Sprint_Loop             len=0.667s  左大腿摆动[-0.73,0.93]  过中值 2 次  周期≈0.667s
+  UAL1 Rig|Walk_Loop               len=1.333s  左大腿摆动[-0.20,0.90]  过中值 2 次  周期≈1.333s
+  UAL1 Rig|Idle_Loop               len=2.500s  左大腿摆动[0.22,0.32]  过中值 4 次  周期≈1.250s

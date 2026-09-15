@@ -1,0 +1,10 @@
+src=Run01_Carry  总通道 130  脚/趾通道 6
+   Left Foot Twist In-Out  keys=19  范围[0.016, 0.279]
+   Left Foot Up-Down  keys=19  范围[0.263, 1.557]
+   Left Toes Up-Down  keys=19  范围[-0.220, 0.543]
+   Right Foot Twist In-Out  keys=19  范围[-4.012, -0.876]
+   Right Foot Up-Down  keys=19  范围[-1.802, 2.122]
+   Right Toes Up-Down  keys=19  范围[-0.197, 0.646]
+
+写出 Assets/_Project/Animations/Baked/Run01_Carry_F5.anim  keep=0.5  压缩通道 6  loop=True
+写出 Assets/_Project/Animations/Baked/Run01_Carry_F2.anim  keep=0.2  压缩通道 6  loop=True

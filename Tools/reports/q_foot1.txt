@@ -1,0 +1,308 @@
+=== ① 各包可用「移动」片段 ===
+  [KI-Run] 共 1 个片段，移动类：
+      Run01_Forward  len=0.600
+  [KI-Walk] 共 1 个片段，移动类：
+      Walk01_Forward  len=0.800
+  [UAL1] 共 46 个片段，移动类：
+      Rig|Jog_Fwd_Loop  len=0.933
+      Rig|Sprint_Loop  len=0.667
+      Rig|Walk_Formal_Loop  len=1.333
+      Rig|Walk_Loop  len=1.333
+  [UAL2] 共 43 个片段，移动类：
+      Armature|Shield_Dash  len=1.100
+      Armature|Sword_Dash  len=1.567
+      Armature|Walk_Carry_Loop  len=2.000
+      Armature|Zombie_Walk_Fwd_Loop  len=1.333
+
+=== ② 脚/腿肌肉通道范围（humanoid 肌肉值）===
+  ── 【基准】UAL1 Rig|Idle_Loop（自然站姿，用户认可）   脚/腿通道 30 条   len=2.500
+      Left Foot Twist In-Out               keys=  5  [ -0.279, -0.261]  mean -0.266  跨度 0.018
+      Left Foot Up-Down                    keys= 11  [  0.022,  0.079]  mean  0.054  跨度 0.057
+      Left Lower Leg Stretch               keys=  5  [  0.715,  0.786]  mean  0.757  跨度 0.071
+      Left Lower Leg Twist In-Out          keys= 19  [ -0.080, -0.078]  mean -0.079  跨度 0.003
+      Left Toes Up-Down                    keys= 67  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Left Upper Leg Front-Back            keys=  6  [  0.218,  0.321]  mean  0.276  跨度 0.102
+      Left Upper Leg In-Out                keys=  5  [  0.215,  0.228]  mean  0.221  跨度 0.014
+      Left Upper Leg Twist In-Out          keys= 12  [  0.152,  0.159]  mean  0.155  跨度 0.008
+      LeftFootQ.w                          keys=  4  [ -0.564, -0.560]  mean -0.562  跨度 0.005
+      LeftFootQ.x                          keys=  5  [  0.410,  0.421]  mean  0.416  跨度 0.011
+      LeftFootQ.y                          keys=  4  [ -0.483, -0.480]  mean -0.481  跨度 0.003
+      LeftFootQ.z                          keys=  4  [  0.527,  0.530]  mean  0.528  跨度 0.003
+      LeftFootT.x                          keys=  4  [ -0.259, -0.252]  mean -0.254  跨度 0.007
+      LeftFootT.y                          keys=  4  [ -0.946, -0.942]  mean -0.944  跨度 0.004
+      LeftFootT.z                          keys= 16  [ -0.019,  0.015]  mean -0.001  跨度 0.034
+      Right Foot Twist In-Out              keys=  6  [ -0.415, -0.366]  mean -0.394  跨度 0.049
+      Right Foot Up-Down                   keys=  8  [ -0.273, -0.189]  mean -0.221  跨度 0.084
+      Right Lower Leg Stretch              keys=  5  [  0.768,  0.876]  mean  0.830  跨度 0.108
+      Right Lower Leg Twist In-Out         keys=  9  [ -0.150, -0.117]  mean -0.133  跨度 0.033
+      Right Toes Up-Down                   keys= 60  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Right Upper Leg Front-Back           keys=  6  [  0.750,  0.841]  mean  0.803  跨度 0.091
+      Right Upper Leg In-Out               keys=  7  [  0.244,  0.295]  mean  0.263  跨度 0.051
+      Right Upper Leg Twist In-Out         keys=  6  [  0.588,  0.613]  mean  0.603  跨度 0.025
+      RightFootQ.w                         keys=  5  [ -0.401, -0.391]  mean -0.397  跨度 0.010
+      RightFootQ.x                         keys=  4  [  0.575,  0.576]  mean  0.576  跨度 0.001
+      RightFootQ.y                         keys=  3  [ -0.628, -0.628]  mean -0.628  跨度 0.000
+      RightFootQ.z                         keys=  5  [  0.339,  0.346]  mean  0.342  跨度 0.007
+      RightFootT.x                         keys=  4  [  0.184,  0.192]  mean  0.189  跨度 0.007
+      RightFootT.y                         keys=  4  [ -0.928, -0.923]  mean -0.926  跨度 0.005
+      RightFootT.z                         keys=  6  [ -0.281, -0.251]  mean -0.267  跨度 0.030
+  ── 现用持剑待机 UAL1 Rig|Sword_Idle   脚/腿通道 30 条   len=1.667
+      Left Foot Twist In-Out               keys=  5  [ -0.433, -0.300]  mean -0.349  跨度 0.133
+      Left Foot Up-Down                    keys=  7  [ -0.325, -0.273]  mean -0.303  跨度 0.052
+      Left Lower Leg Stretch               keys=  7  [  0.176,  0.273]  mean  0.210  跨度 0.096
+      Left Lower Leg Twist In-Out          keys= 28  [ -0.008,  0.010]  mean  0.001  跨度 0.017
+      Left Toes Up-Down                    keys= 37  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Left Upper Leg Front-Back            keys= 13  [ -0.002,  0.101]  mean  0.034  跨度 0.103
+      Left Upper Leg In-Out                keys=  5  [  0.288,  0.345]  mean  0.308  跨度 0.057
+      Left Upper Leg Twist In-Out          keys= 14  [  0.050,  0.089]  mean  0.073  跨度 0.039
+      LeftFootQ.w                          keys=  2  [ -0.634, -0.634]  mean -0.634  跨度 0.000
+      LeftFootQ.x                          keys=  4  [  0.306,  0.310]  mean  0.308  跨度 0.003
+      LeftFootQ.y                          keys=  3  [ -0.375, -0.375]  mean -0.375  跨度 0.001
+      LeftFootQ.z                          keys=  2  [  0.602,  0.602]  mean  0.602  跨度 0.000
+      LeftFootT.x                          keys=  3  [ -0.290, -0.255]  mean -0.267  跨度 0.035
+      LeftFootT.y                          keys=  5  [ -0.839, -0.829]  mean -0.834  跨度 0.010
+      LeftFootT.z                          keys=  6  [ -0.083, -0.049]  mean -0.060  跨度 0.033
+      Right Foot Twist In-Out              keys= 20  [ -0.012,  0.109]  mean  0.020  跨度 0.121
+      Right Foot Up-Down                   keys=  5  [ -0.637, -0.535]  mean -0.569  跨度 0.102
+      Right Lower Leg Stretch              keys=  7  [  0.164,  0.257]  mean  0.207  跨度 0.093
+      Right Lower Leg Twist In-Out         keys=  4  [ -0.345, -0.332]  mean -0.339  跨度 0.014
+      Right Toes Up-Down                   keys= 37  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Right Upper Leg Front-Back           keys=  7  [  0.422,  0.507]  mean  0.465  跨度 0.085
+      Right Upper Leg In-Out               keys=  5  [  0.607,  0.674]  mean  0.639  跨度 0.067
+      Right Upper Leg Twist In-Out         keys=  5  [  0.389,  0.430]  mean  0.409  跨度 0.041
+      RightFootQ.w                         keys=  2  [ -0.499, -0.499]  mean -0.499  跨度 0.000
+      RightFootQ.x                         keys=  3  [  0.498,  0.499]  mean  0.498  跨度 0.001
+      RightFootQ.y                         keys=  2  [ -0.551, -0.551]  mean -0.551  跨度 0.000
+      RightFootQ.z                         keys=  3  [  0.447,  0.448]  mean  0.447  跨度 0.001
+      RightFootT.x                         keys=  3  [  0.219,  0.255]  mean  0.243  跨度 0.036
+      RightFootT.y                         keys=  5  [ -0.834, -0.822]  mean -0.827  跨度 0.012
+      RightFootT.z                         keys=  6  [ -0.173, -0.141]  mean -0.150  跨度 0.032
+  ── 现用跑步源 KI Run01_Forward   脚/腿通道 30 条   len=0.600
+      Left Foot Twist In-Out               keys= 19  [  0.016,  0.279]  mean  0.137  跨度 0.263
+      Left Foot Up-Down                    keys= 19  [  0.263,  1.557]  mean  0.924  跨度 1.294
+      Left Lower Leg Stretch               keys= 19  [ -0.173,  1.152]  mean  0.574  跨度 1.325
+      Left Lower Leg Twist In-Out          keys= 19  [ -0.114,  0.022]  mean -0.013  跨度 0.136
+      Left Toes Up-Down                    keys= 19  [ -0.220,  0.543]  mean  0.160  跨度 0.764
+      Left Upper Leg Front-Back            keys= 19  [ -0.534,  0.822]  mean  0.117  跨度 1.356
+      Left Upper Leg In-Out                keys= 19  [ -0.437,  0.193]  mean -0.047  跨度 0.630
+      Left Upper Leg Twist In-Out          keys= 19  [ -0.574,  0.030]  mean -0.211  跨度 0.604
+      LeftFootQ.w                          keys= 19  [  0.497,  0.754]  mean  0.612  跨度 0.257
+      LeftFootQ.x                          keys= 19  [ -0.508,  0.326]  mean -0.203  跨度 0.834
+      LeftFootQ.y                          keys= 19  [  0.506,  0.670]  mean  0.578  跨度 0.164
+      LeftFootQ.z                          keys= 19  [ -0.485,  0.386]  mean -0.201  跨度 0.871
+      LeftFootT.x                          keys= 19  [ -0.098,  0.021]  mean -0.042  跨度 0.119
+      LeftFootT.y                          keys= 19  [ -1.042, -0.452]  mean -0.762  跨度 0.590
+      LeftFootT.z                          keys= 19  [ -0.504,  0.520]  mean  0.007  跨度 1.024
+      Right Foot Twist In-Out              keys= 19  [ -4.012, -0.876]  mean -2.623  跨度 3.136
+      Right Foot Up-Down                   keys= 19  [ -1.802,  2.122]  mean  1.177  跨度 3.923
+      Right Lower Leg Stretch              keys= 19  [ -0.234,  1.156]  mean  0.481  跨度 1.390
+      Right Lower Leg Twist In-Out         keys= 19  [  0.647,  1.892]  mean  1.512  跨度 1.245
+      Right Toes Up-Down                   keys= 19  [ -0.197,  0.646]  mean  0.161  跨度 0.842
+      Right Upper Leg Front-Back           keys= 19  [ -0.674,  0.726]  mean  0.043  跨度 1.400
+      Right Upper Leg In-Out               keys= 19  [ -0.118,  0.336]  mean  0.100  跨度 0.455
+      Right Upper Leg Twist In-Out         keys= 19  [ -0.085,  0.546]  mean  0.261  跨度 0.631
+      RightFootQ.w                         keys= 19  [ -0.681, -0.303]  mean -0.555  跨度 0.378
+      RightFootQ.x                         keys= 19  [ -0.612,  0.133]  mean -0.219  跨度 0.745
+      RightFootQ.y                         keys= 19  [  0.444,  0.770]  mean  0.656  跨度 0.326
+      RightFootQ.z                         keys= 19  [ -0.291,  0.579]  mean  0.055  跨度 0.870
+      RightFootT.x                         keys= 19  [ -0.064,  0.107]  mean  0.049  跨度 0.170
+      RightFootT.y                         keys= 19  [ -0.953, -0.565]  mean -0.751  跨度 0.387
+      RightFootT.z                         keys= 19  [ -0.505,  0.581]  mean  0.014  跨度 1.087
+  ── KI Walk01_Forward（对照：同作者同骨架）   脚/腿通道 30 条   len=0.800
+      Left Foot Twist In-Out               keys= 25  [ -0.205,  0.037]  mean -0.046  跨度 0.242
+      Left Foot Up-Down                    keys= 25  [  0.161,  1.205]  mean  0.572  跨度 1.044
+      Left Lower Leg Stretch               keys= 25  [  0.240,  1.000]  mean  0.757  跨度 0.760
+      Left Lower Leg Twist In-Out          keys= 25  [ -0.026,  0.024]  mean  0.000  跨度 0.050
+      Left Toes Up-Down                    keys= 25  [ -0.573,  0.407]  mean  0.004  跨度 0.981
+      Left Upper Leg Front-Back            keys= 25  [  0.031,  1.140]  mean  0.556  跨度 1.108
+      Left Upper Leg In-Out                keys= 25  [ -0.029,  0.144]  mean  0.027  跨度 0.173
+      Left Upper Leg Twist In-Out          keys= 25  [ -0.196, -0.013]  mean -0.108  跨度 0.183
+      LeftFootQ.w                          keys= 25  [  0.500,  0.814]  mean  0.677  跨度 0.314
+      LeftFootQ.x                          keys= 25  [ -0.500,  0.086]  mean -0.250  跨度 0.586
+      LeftFootQ.y                          keys= 25  [  0.500,  0.637]  mean  0.569  跨度 0.137
+      LeftFootQ.z                          keys= 25  [ -0.500,  0.111]  mean -0.266  跨度 0.611
+      LeftFootT.x                          keys= 25  [ -0.122,  0.055]  mean -0.052  跨度 0.177
+      LeftFootT.y                          keys= 25  [ -0.967, -0.689]  mean -0.869  跨度 0.278
+      LeftFootT.z                          keys= 25  [ -0.514,  0.299]  mean -0.117  跨度 0.812
+      Right Foot Twist In-Out              keys= 25  [ -0.015,  0.211]  mean  0.126  跨度 0.225
+      Right Foot Up-Down                   keys= 25  [ -0.747,  0.262]  mean -0.352  跨度 1.008
+      Right Lower Leg Stretch              keys= 25  [  0.123,  0.923]  mean  0.654  跨度 0.799
+      Right Lower Leg Twist In-Out         keys= 25  [ -0.030,  0.038]  mean -0.010  跨度 0.068
+      Right Toes Up-Down                   keys= 25  [ -0.140,  0.642]  mean  0.413  跨度 0.781
+      Right Upper Leg Front-Back           keys= 25  [ -0.281,  0.632]  mean  0.133  跨度 0.914
+      Right Upper Leg In-Out               keys= 25  [ -0.042,  0.030]  mean -0.003  跨度 0.071
+      Right Upper Leg Twist In-Out         keys= 25  [  0.015,  0.191]  mean  0.088  跨度 0.176
+      RightFootQ.w                         keys= 25  [  0.175,  0.671]  mean  0.429  跨度 0.496
+      RightFootQ.x                         keys= 25  [ -0.605, -0.290]  mean -0.509  跨度 0.315
+      RightFootQ.y                         keys= 25  [  0.119,  0.639]  mean  0.370  跨度 0.521
+      RightFootQ.z                         keys= 25  [ -0.770, -0.299]  mean -0.584  跨度 0.470
+      RightFootT.x                         keys= 25  [ -0.018,  0.137]  mean  0.074  跨度 0.154
+      RightFootT.y                         keys= 25  [ -0.977, -0.805]  mean -0.911  跨度 0.172
+      RightFootT.z                         keys= 25  [ -0.506,  0.417]  mean -0.039  跨度 0.923
+  ── Baked/Run01_Carry（现用跑步片段）   脚/腿通道 30 条   len=0.600
+      Left Foot Twist In-Out               keys= 19  [  0.016,  0.279]  mean  0.137  跨度 0.263
+      Left Foot Up-Down                    keys= 19  [  0.263,  1.557]  mean  0.924  跨度 1.294
+      Left Lower Leg Stretch               keys= 19  [ -0.173,  1.152]  mean  0.574  跨度 1.325
+      Left Lower Leg Twist In-Out          keys= 19  [ -0.114,  0.022]  mean -0.013  跨度 0.136
+      Left Toes Up-Down                    keys= 19  [ -0.220,  0.543]  mean  0.160  跨度 0.764
+      Left Upper Leg Front-Back            keys= 19  [ -0.534,  0.822]  mean  0.117  跨度 1.356
+      Left Upper Leg In-Out                keys= 19  [ -0.437,  0.193]  mean -0.047  跨度 0.630
+      Left Upper Leg Twist In-Out          keys= 19  [ -0.574,  0.030]  mean -0.211  跨度 0.604
+      LeftFootQ.w                          keys= 19  [  0.497,  0.754]  mean  0.612  跨度 0.257
+      LeftFootQ.x                          keys= 19  [ -0.508,  0.326]  mean -0.203  跨度 0.834
+      LeftFootQ.y                          keys= 19  [  0.506,  0.670]  mean  0.578  跨度 0.164
+      LeftFootQ.z                          keys= 19  [ -0.485,  0.386]  mean -0.201  跨度 0.871
+      LeftFootT.x                          keys= 19  [ -0.098,  0.021]  mean -0.042  跨度 0.119
+      LeftFootT.y                          keys= 19  [ -1.042, -0.452]  mean -0.762  跨度 0.590
+      LeftFootT.z                          keys= 19  [ -0.504,  0.520]  mean  0.007  跨度 1.024
+      Right Foot Twist In-Out              keys= 19  [ -4.012, -0.876]  mean -2.623  跨度 3.136
+      Right Foot Up-Down                   keys= 19  [ -1.802,  2.122]  mean  1.177  跨度 3.923
+      Right Lower Leg Stretch              keys= 19  [ -0.234,  1.156]  mean  0.481  跨度 1.390
+      Right Lower Leg Twist In-Out         keys= 19  [  0.647,  1.892]  mean  1.512  跨度 1.245
+      Right Toes Up-Down                   keys= 19  [ -0.197,  0.646]  mean  0.161  跨度 0.842
+      Right Upper Leg Front-Back           keys= 19  [ -0.674,  0.726]  mean  0.043  跨度 1.400
+      Right Upper Leg In-Out               keys= 19  [ -0.118,  0.336]  mean  0.100  跨度 0.455
+      Right Upper Leg Twist In-Out         keys= 19  [ -0.085,  0.546]  mean  0.261  跨度 0.631
+      RightFootQ.w                         keys= 19  [ -0.681, -0.303]  mean -0.555  跨度 0.378
+      RightFootQ.x                         keys= 19  [ -0.612,  0.133]  mean -0.219  跨度 0.745
+      RightFootQ.y                         keys= 19  [  0.444,  0.770]  mean  0.656  跨度 0.326
+      RightFootQ.z                         keys= 19  [ -0.291,  0.579]  mean  0.055  跨度 0.870
+      RightFootT.x                         keys= 19  [ -0.064,  0.107]  mean  0.049  跨度 0.170
+      RightFootT.y                         keys= 19  [ -0.953, -0.565]  mean -0.751  跨度 0.387
+      RightFootT.z                         keys= 19  [ -0.505,  0.581]  mean  0.014  跨度 1.087
+  ── Baked/Run01_Ctrl（跑步对照组）   脚/腿通道 30 条   len=0.600
+      Left Foot Twist In-Out               keys= 19  [  0.016,  0.279]  mean  0.137  跨度 0.263
+      Left Foot Up-Down                    keys= 19  [  0.263,  1.557]  mean  0.924  跨度 1.294
+      Left Lower Leg Stretch               keys= 19  [ -0.173,  1.152]  mean  0.574  跨度 1.325
+      Left Lower Leg Twist In-Out          keys= 19  [ -0.114,  0.022]  mean -0.013  跨度 0.136
+      Left Toes Up-Down                    keys= 19  [ -0.220,  0.543]  mean  0.160  跨度 0.764
+      Left Upper Leg Front-Back            keys= 19  [ -0.534,  0.822]  mean  0.117  跨度 1.356
+      Left Upper Leg In-Out                keys= 19  [ -0.437,  0.193]  mean -0.047  跨度 0.630
+      Left Upper Leg Twist In-Out          keys= 19  [ -0.574,  0.030]  mean -0.211  跨度 0.604
+      LeftFootQ.w                          keys= 19  [  0.497,  0.754]  mean  0.612  跨度 0.257
+      LeftFootQ.x                          keys= 19  [ -0.508,  0.326]  mean -0.203  跨度 0.834
+      LeftFootQ.y                          keys= 19  [  0.506,  0.670]  mean  0.578  跨度 0.164
+      LeftFootQ.z                          keys= 19  [ -0.485,  0.386]  mean -0.201  跨度 0.871
+      LeftFootT.x                          keys= 19  [ -0.098,  0.021]  mean -0.042  跨度 0.119
+      LeftFootT.y                          keys= 19  [ -1.042, -0.452]  mean -0.762  跨度 0.590
+      LeftFootT.z                          keys= 19  [ -0.504,  0.520]  mean  0.007  跨度 1.024
+      Right Foot Twist In-Out              keys= 19  [ -4.012, -0.876]  mean -2.623  跨度 3.136
+      Right Foot Up-Down                   keys= 19  [ -1.802,  2.122]  mean  1.177  跨度 3.923
+      Right Lower Leg Stretch              keys= 19  [ -0.234,  1.156]  mean  0.481  跨度 1.390
+      Right Lower Leg Twist In-Out         keys= 19  [  0.647,  1.892]  mean  1.512  跨度 1.245
+      Right Toes Up-Down                   keys= 19  [ -0.197,  0.646]  mean  0.161  跨度 0.842
+      Right Upper Leg Front-Back           keys= 19  [ -0.674,  0.726]  mean  0.043  跨度 1.400
+      Right Upper Leg In-Out               keys= 19  [ -0.118,  0.336]  mean  0.100  跨度 0.455
+      Right Upper Leg Twist In-Out         keys= 19  [ -0.085,  0.546]  mean  0.261  跨度 0.631
+      RightFootQ.w                         keys= 19  [ -0.681, -0.303]  mean -0.555  跨度 0.378
+      RightFootQ.x                         keys= 19  [ -0.612,  0.133]  mean -0.219  跨度 0.745
+      RightFootQ.y                         keys= 19  [  0.444,  0.770]  mean  0.656  跨度 0.326
+      RightFootQ.z                         keys= 19  [ -0.291,  0.579]  mean  0.055  跨度 0.870
+      RightFootT.x                         keys= 19  [ -0.064,  0.107]  mean  0.049  跨度 0.170
+      RightFootT.y                         keys= 19  [ -0.953, -0.565]  mean -0.751  跨度 0.387
+      RightFootT.z                         keys= 19  [ -0.505,  0.581]  mean  0.014  跨度 1.087
+  ── Baked/Idle_Carry_A（本轮选用的持剑待机）   脚/腿通道 30 条   len=2.500
+      Left Foot Twist In-Out               keys=  5  [ -0.279, -0.261]  mean -0.266  跨度 0.018
+      Left Foot Up-Down                    keys= 11  [  0.022,  0.079]  mean  0.054  跨度 0.057
+      Left Lower Leg Stretch               keys=  5  [  0.715,  0.786]  mean  0.757  跨度 0.071
+      Left Lower Leg Twist In-Out          keys= 19  [ -0.080, -0.078]  mean -0.079  跨度 0.003
+      Left Toes Up-Down                    keys= 67  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Left Upper Leg Front-Back            keys=  6  [  0.218,  0.321]  mean  0.276  跨度 0.102
+      Left Upper Leg In-Out                keys=  5  [  0.215,  0.228]  mean  0.221  跨度 0.014
+      Left Upper Leg Twist In-Out          keys= 12  [  0.152,  0.159]  mean  0.155  跨度 0.008
+      LeftFootQ.w                          keys=  4  [ -0.564, -0.560]  mean -0.562  跨度 0.005
+      LeftFootQ.x                          keys=  5  [  0.410,  0.421]  mean  0.416  跨度 0.011
+      LeftFootQ.y                          keys=  4  [ -0.483, -0.480]  mean -0.481  跨度 0.003
+      LeftFootQ.z                          keys=  4  [  0.527,  0.530]  mean  0.528  跨度 0.003
+      LeftFootT.x                          keys=  4  [ -0.259, -0.252]  mean -0.254  跨度 0.007
+      LeftFootT.y                          keys=  4  [ -0.946, -0.942]  mean -0.944  跨度 0.004
+      LeftFootT.z                          keys= 16  [ -0.019,  0.015]  mean -0.001  跨度 0.034
+      Right Foot Twist In-Out              keys=  6  [ -0.415, -0.366]  mean -0.394  跨度 0.049
+      Right Foot Up-Down                   keys=  8  [ -0.273, -0.189]  mean -0.221  跨度 0.084
+      Right Lower Leg Stretch              keys=  5  [  0.768,  0.876]  mean  0.830  跨度 0.108
+      Right Lower Leg Twist In-Out         keys=  9  [ -0.150, -0.117]  mean -0.133  跨度 0.033
+      Right Toes Up-Down                   keys= 60  [  0.000,  0.000]  mean  0.000  跨度 0.000
+      Right Upper Leg Front-Back           keys=  6  [  0.750,  0.841]  mean  0.803  跨度 0.091
+      Right Upper Leg In-Out               keys=  7  [  0.244,  0.295]  mean  0.263  跨度 0.051
+      Right Upper Leg Twist In-Out         keys=  6  [  0.588,  0.613]  mean  0.603  跨度 0.025
+      RightFootQ.w                         keys=  5  [ -0.401, -0.391]  mean -0.397  跨度 0.010
+      RightFootQ.x                         keys=  4  [  0.575,  0.576]  mean  0.576  跨度 0.001
+      RightFootQ.y                         keys=  3  [ -0.628, -0.628]  mean -0.628  跨度 0.000
+      RightFootQ.z                         keys=  5  [  0.339,  0.346]  mean  0.342  跨度 0.007
+      RightFootT.x                         keys=  4  [  0.184,  0.192]  mean  0.189  跨度 0.007
+      RightFootT.y                         keys=  4  [ -0.928, -0.923]  mean -0.926  跨度 0.005
+      RightFootT.z                         keys=  6  [ -0.281, -0.251]  mean -0.267  跨度 0.030
+
+=== ③ Humanoid 映射对比（脚/腿）===
+  ── Feng.fbx（主角，目标骨架）   isHuman=True
+      Hips                   → bone "CC_Base_Hip"
+      LeftFoot               → bone "CC_Base_L_Foot"
+      LeftLowerLeg           → bone "CC_Base_L_Calf"
+      LeftToes               → bone "CC_Base_L_ToeBase"
+      LeftUpperLeg           → bone "CC_Base_L_Thigh"
+      RightFoot              → bone "CC_Base_R_Foot"
+      RightLowerLeg          → bone "CC_Base_R_Calf"
+      RightToes              → bone "CC_Base_R_ToeBase"
+      RightUpperLeg          → bone "CC_Base_R_Thigh"
+  ── KI HumanM@Run01_Forward.fbx（跑步源）   isHuman=True
+      Hips                   → bone "B-hips"
+      LeftFoot               → bone "B-foot.L"
+      LeftLowerLeg           → bone "B-shin.L"
+      LeftToes               → bone "B-toe.L"
+      LeftUpperLeg           → bone "B-thigh.L"
+      RightFoot              → bone "B-foot.R"
+      RightLowerLeg          → bone "B-shin.R"
+      RightToes              → bone "B-toe.R"
+      RightUpperLeg          → bone "B-thigh.R"
+  ── UAL1（待机/走路源）   isHuman=True
+      Hips                   → bone "DEF-hips"
+      LeftFoot               → bone "DEF-foot.L"
+      LeftLowerLeg           → bone "DEF-shin.L"
+      LeftToes               → bone "DEF-toe.L"
+      LeftUpperLeg           → bone "DEF-thigh.L"
+      RightFoot              → bone "DEF-foot.R"
+      RightLowerLeg          → bone "DEF-shin.R"
+      RightToes              → bone "DEF-toe.R"
+      RightUpperLeg          → bone "DEF-thigh.R"
+
+=== ④ T-pose 中脚/腿骨定义 ===
+  ── Feng（目标） T-pose 骨架（脚/腿骨局部 pos/rot）
+      CC_Base_R_Foot               pos( 0.000, 0.191, 0.000)  rot(   0.6,  -0.1,   0.1,   0.8)
+      CC_Base_R_ToeBase            pos( 0.000, 0.072, 0.000)  rot(   0.2,   0.0,   0.0,   1.0)
+      CC_Base_R_PinkyToe1          pos(-0.013, 0.002,-0.002)  rot(  -0.2,   0.1,   0.0,   1.0)
+      CC_Base_R_BigToe1            pos( 0.018, 0.010, 0.000)  rot(  -0.1,   0.0,   0.0,   1.0)
+      CC_Base_R_IndexToe1          pos( 0.008, 0.011, 0.001)  rot(  -0.2,   0.1,   0.0,   1.0)
+      CC_Base_R_MidToe1            pos( 0.000, 0.011, 0.000)  rot(  -0.2,   0.1,   0.0,   1.0)
+      CC_Base_R_RingToe1           pos(-0.007, 0.006,-0.001)  rot(  -0.3,   0.1,   0.0,   1.0)
+      CC_Base_R_ToeBaseShareBone   pos( 0.000, 0.072, 0.000)  rot(   0.2,   0.0,   0.0,   1.0)
+      CC_Base_L_Foot               pos( 0.000, 0.189, 0.000)  rot(   0.6,   0.1,  -0.1,   0.8)
+      CC_Base_L_ToeBase            pos( 0.000, 0.072, 0.000)  rot(   0.2,   0.0,   0.0,   1.0)
+      CC_Base_L_MidToe1            pos( 0.000, 0.011, 0.000)  rot(  -0.2,  -0.1,   0.0,   1.0)
+      CC_Base_L_BigToe1            pos(-0.018, 0.010, 0.000)  rot(  -0.1,   0.0,   0.0,   1.0)
+      CC_Base_L_IndexToe1          pos(-0.008, 0.011, 0.001)  rot(  -0.2,  -0.1,   0.0,   1.0)
+      CC_Base_L_PinkyToe1          pos( 0.013, 0.002,-0.002)  rot(  -0.2,  -0.1,   0.0,   1.0)
+      CC_Base_L_RingToe1           pos( 0.007, 0.006,-0.001)  rot(  -0.3,  -0.1,   0.0,   1.0)
+      CC_Base_L_ToeBaseShareBone   pos( 0.000, 0.072, 0.000)  rot(   0.2,   0.0,   0.0,   1.0)
+  ── KI（源） T-pose 骨架（脚/腿骨局部 pos/rot）
+      B-foot.L                     pos( 0.000, 0.388, 0.000)  rot(  -0.8,   0.0,   0.0,   0.6)
+      B-toe.L                      pos( 0.000, 0.177, 0.000)  rot(   0.0,   0.9,  -0.4,   0.0)
+      B-foot.R                     pos( 0.000, 0.388, 0.000)  rot(  -0.1,   0.9,  -0.5,   0.1)
+      B-toe.R                      pos( 0.000, 0.177, 0.000)  rot(   0.0,   1.0,  -0.2,   0.0)
+
+=== ⑤ HumanTrait 肌肉默认上下限（脚/腿）===
+  Left Upper Leg Front-Back            min -90.00  max  50.00
+  Left Upper Leg In-Out                min -60.00  max  60.00
+  Left Upper Leg Twist In-Out          min -60.00  max  60.00
+  Left Lower Leg Stretch               min -80.00  max  80.00
+  Left Lower Leg Twist In-Out          min -90.00  max  90.00
+  Left Foot Up-Down                    min -50.00  max  50.00
+  Left Foot Twist In-Out               min -30.00  max  30.00
+  Left Toes Up-Down                    min -50.00  max  50.00
+  Right Upper Leg Front-Back           min -90.00  max  50.00
+  Right Upper Leg In-Out               min -60.00  max  60.00
+  Right Upper Leg Twist In-Out         min -60.00  max  60.00
+  Right Lower Leg Stretch              min -80.00  max  80.00
+  Right Lower Leg Twist In-Out         min -90.00  max  90.00
+  Right Foot Up-Down                   min -50.00  max  50.00
+  Right Foot Twist In-Out              min -30.00  max  30.00
+  Right Toes Up-Down                   min -50.00  max  50.00

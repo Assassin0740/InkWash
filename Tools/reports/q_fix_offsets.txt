@@ -1,0 +1,32 @@
+---- 旧 ----
+  Idle                  0.0307
+  Walk                  -0.0554
+  Run                   0.1200
+  Dash                  -0.0041
+  Atk1                  0.0200
+  Atk1Rec               0.1800
+  Atk2                  0.0300
+  Atk2Rec               0.3600
+  Atk3                  0.1000
+  Sword_Idle_Loop       0.0477
+  Feng_Walk_Loop        -0.0554
+  Run04_KI_Carry        0.1200
+  Idle_Carry_A          0.0307
+  丢弃已失效条目：Sword_Idle_Loop（combatIdleClip 已换成 Idle_Carry_A）
+  补回：Rig|Idle_Loop = 0.0307
+
+---- 新（13 条）----
+  Idle                  0.0307
+  Walk                  -0.0554
+  Run                   0.1200
+  Dash                  -0.0041
+  Atk1                  0.0200
+  Atk1Rec               0.1800
+  Atk2                  0.0300
+  Atk2Rec               0.3600
+  Atk3                  0.1000
+  Feng_Walk_Loop        -0.0554
+  Run04_KI_Carry        0.1200
+  Idle_Carry_A          0.0307
+  Rig|Idle_Loop         0.0307
+  liftSmooth = 150.0

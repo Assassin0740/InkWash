@@ -1,0 +1,17 @@
+baseIdle=Rig|Idle_Loop 2.50s
+swIdle=Rig|Sword_Idle 1.67s
+shIdle=Armature|Idle_Shield_Loop 2.50s
+faIdle=Armature|Idle_FoldArms_Loop 2.50s
+
+baseIdle 通道数 = 130
+  RArm = 9
+  LArm = 9
+  Legs = 16
+  Torso = 12
+
+写出 Assets/_Project/Animations/Baked/Idle_Carry_A.anim  len=2.500 loop=True  替换通道 9 / 保留 0
+写出 Assets/_Project/Animations/Baked/Idle_Carry_AT.anim  len=2.500 loop=True  替换通道 21 / 保留 0
+写出 Assets/_Project/Animations/Baked/Idle_Carry_B.anim  len=2.500 loop=True  替换通道 9 / 保留 0
+写出 Assets/_Project/Animations/Baked/Idle_Carry_C.anim  len=2.500 loop=True  替换通道 9 / 保留 0
+写出 Assets/_Project/Animations/Baked/Idle_Carry_S.anim  len=2.500 loop=True  替换通道 9 / 保留 0
+写出 Assets/_Project/Animations/Baked/Idle_Carry_F.anim  len=2.500 loop=True  替换通道 9 / 保留 0

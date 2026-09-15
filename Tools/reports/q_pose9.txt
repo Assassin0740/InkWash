@@ -1,0 +1,25 @@
+=== ① 持剑待机大图（左=斜后上游戏机位 / 右=正视）===
+  图行 0 = A 现用 Sword_Idle_Loop  实际播放 = Sword_Idle_Loop
+  图行 1 = B 烘焙 Idle_Carry_A     实际播放 = Idle_Carry_A
+  图行 2 = 【参照】非战斗待机       实际播放 = Rig|Idle_Loop
+
+=== ② 跑步：脚踝摆幅 keep=1.0 / 0.5 / 0.2 对照（活体）===
+override 槽位共 9 个：
+   key=Run01_Carry → value=<null>
+   key=Feng_Walk_Loop → value=<null>
+   key=Feng_Idle_Loop → value=Rig|Idle_Loop
+   key=Dodge_Forward → value=<null>
+   key=Armature|Sword_Regular_B → value=<null>
+   key=Armature|Sword_Regular_C → value=<null>
+   key=Armature|Sword_Regular_A → value=<null>
+   key=Armature|Sword_Regular_A_Rec → value=<null>
+   key=Armature|Sword_Regular_B_Rec → value=<null>
+Run 槽位 key = Run01_Carry  原 value = <null>
+变体                 实际片段       动画最低(去偏移) 中位    最高     建议偏移(贴最低) 建议偏移(贴中位)
+keep1.0 Run01_Carry    实际=Run01_Carry    最低  -0.142  中位  -0.009  最高  0.464  按最低贴地 偏移= 0.1475 按中位贴地 偏移= 0.0140
+keep0.5 Run01_Carry_F5  实际=Run01_Carry_F5 最低  -0.201  中位  -0.065  最高  0.306  按最低贴地 偏移= 0.2064 按中位贴地 偏移= 0.0700
+keep0.2 Run01_Carry_F2  实际=Run01_Carry_F2 最低  -0.221  中位  -0.108  最高  0.256  按最低贴地 偏移= 0.2262 按中位贴地 偏移= 0.1133
+现值偏移 = 0.0307
+判读：压摆幅的目标是让「最低」与「中位」靠拢 —— 两者越近，越能同时满足
+      体检「脚不穿地(≥−0.02)」与「不浮空(≤+0.05)」，也不会整段飘。
+跑步图 = _run_vars.png（行 0=keep1.0 / 1=keep0.5 / 2=keep0.2）
