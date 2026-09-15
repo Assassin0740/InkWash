@@ -42,12 +42,12 @@ MonoBehaviour:
     enabled: 1
     paperTex: {fileID: 2800000, guid: 65672027f37e20744a0641f8555a810b, type: 3}
     paperTiling: 2
-    paperStrength: 0.26
+    paperStrength: 0.55
     paperContrast: 1.1
-    grainStrength: 0.15
+    grainStrength: 0.3
     paperTint: {r: 0.98, g: 0.972, b: 0.95, a: 1}
     tintStrength: 0.12
-    vignette: 0.14
+    vignette: 0.18
     vignetteSharp: 2.4
     inkDeepen: 0.2
   paperOn: 1

@@ -22,14 +22,14 @@ namespace InkWash.Rendering
             public bool enabled = true;
             public Texture2D paperTex;
             [Range(0.25f, 12f)] public float paperTiling = 2f;
-            [Range(0f, 1f)] public float paperStrength = 0.45f;
-            [Range(0.2f, 3f)] public float paperContrast = 1.15f;
-            [Range(0f, 1f)] public float grainStrength = 0.18f;
-            public Color paperTint = new Color(0.949f, 0.925f, 0.867f, 1f);
-            [Range(0f, 1f)] public float tintStrength = 0.3f;
-            [Range(0f, 1f)] public float vignette = 0.32f;
+            [Range(0f, 1f)] public float paperStrength = 0.55f;
+            [Range(0.2f, 3f)] public float paperContrast = 1.10f;
+            [Range(0f, 1f)] public float grainStrength = 0.30f;
+            public Color paperTint = new Color(0.98f, 0.972f, 0.95f, 1f);
+            [Range(0f, 1f)] public float tintStrength = 0.12f;
+            [Range(0f, 1f)] public float vignette = 0.18f;
             [Range(0.5f, 6f)] public float vignetteSharp = 2.4f;
-            [Range(0f, 1f)] public float inkDeepen = 0.25f;
+            [Range(0f, 1f)] public float inkDeepen = 0.20f;
 
             /// <summary>全量浅拷贝。理由与 <see cref="InkEdgeFeature.Settings.Clone"/> 完全一致：
             /// 拷贝必须与字段在同一个类里，否则加字段时必然漏。验收会用反射逐字段比对。</summary>

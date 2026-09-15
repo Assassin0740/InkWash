@@ -61,8 +61,12 @@ namespace InkWash.UI
         // ---------------- Shader 属性 ID ----------------
         private static readonly int IdBands = Shader.PropertyToID("_Bands");
         private static readonly int IdSoftness = Shader.PropertyToID("_BandSoftness");
-        private static readonly int IdInkColor = Shader.PropertyToID("_InkColor");
-        private static readonly int IdPaperColor = Shader.PropertyToID("_PaperColor");
+        // 墨分五色：三个锚点色（与 InkSurface / InkCharacter 的属性名保持一致）
+        private static readonly int IdInkDark  = Shader.PropertyToID("_InkDark");
+        private static readonly int IdInkMid   = Shader.PropertyToID("_InkMid");
+        private static readonly int IdInkLight = Shader.PropertyToID("_InkLight");
+        private static readonly int IdLadderSkew = Shader.PropertyToID("_LadderSkew");
+        private static readonly int IdBandBias   = Shader.PropertyToID("_BandBias");
         private static readonly int IdInkDensity = Shader.PropertyToID("_InkDensity");
         private static readonly int IdBrushStrength = Shader.PropertyToID("_BrushStrength");
         private static readonly int IdBrushScale = Shader.PropertyToID("_BrushScale");
@@ -74,10 +78,11 @@ namespace InkWash.UI
 
         private static readonly int[] FloatProps =
         {
-            IdBands, IdSoftness, IdInkDensity, IdBrushStrength, IdBrushScale, IdBrushWorld,
+            IdBands, IdSoftness, IdBandBias, IdLadderSkew, IdInkDensity,
+            IdBrushStrength, IdBrushScale, IdBrushWorld,
             IdRimStrength, IdRimPower, IdSpecBands, IdSpecStrength,
         };
-        private static readonly int[] ColorProps = { IdInkColor, IdPaperColor };
+        private static readonly int[] ColorProps = { IdInkDark, IdInkMid, IdInkLight };
 
         // ==================================================================
         // 自注册接口
@@ -235,12 +240,17 @@ namespace InkWash.UI
             var m = _edit;
             if (m != null && m.HasProperty(IdBands))
             {
-                Section("角色 · 量化光照");
+                Section("量化光照 · 墨分五色");
                 S(m, "墨阶数（少=大写意）", IdBands, 1, 8);
                 S(m, "阶间柔度", IdSoftness, 0.001f, 0.4f);
-                S(m, "墨的浓度", IdInkDensity, 0, 1);
-                C(m, "墨色（暗部）", IdInkColor);
-                C(m, "纸色（受光）", IdPaperColor);
+                // ★ _BandBias 是本轮最重要的旋钮：它决定"这个物体用几号墨"。
+                //   画面有没有主次、明度带宽能不能撑开，全靠它在各材质间的分配。
+                S(m, "基础墨阶偏移（负=更浓）", IdBandBias, -0.8f, 0.6f);
+                S(m, "中间两级位置", IdLadderSkew, 0.1f, 0.9f);
+                S(m, "贴图信息量", IdInkDensity, 0, 1);
+                C(m, "焦墨（最暗）", IdInkDark);
+                C(m, "重墨（中间）", IdInkMid);
+                C(m, "清墨（近纸白）", IdInkLight);
                 S(m, "轮廓墨强度", IdRimStrength, 0, 2);
                 S(m, "轮廓收束", IdRimPower, 0.5f, 12);
                 S(m, "高光阶数", IdSpecBands, 1, 6);

@@ -209,6 +209,12 @@ namespace InkWash.Enemies
 
         protected virtual void Start()
         {
+            // ★ 增量 F：把"漏在水墨管线之外"的子渲染器纳入水墨。
+            //   骷髅有 8 个子渲染器（Body/Head/Jaw/Cloak/Arm×2/Leg×2/Eyes），
+            //   而 InkMaterialSwap 只覆盖一个 target ⇒ 其余 7 个保持 KayKit 的 URP/Lit 原材质
+            //   （亮蓝灰骨 + 橙斗篷 = 画面上唯一的高饱和色）。这就是"像塑料玩偶"的根因。
+            InkWash.Rendering.InkMaterialForcer.ForceInk(gameObject, gameObject.name, true);
+
             if (_agent != null)
             {
                 _agent.speed = walkSpeed;

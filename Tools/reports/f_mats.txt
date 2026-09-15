@@ -1,0 +1,106 @@
+========== f_mats 材质引用诊断 ==========
+
+---- 玩家 Player ----
+  SkinnedMeshRenderer Mesh  active=True
+     材质: M_Character_Ink
+     Shader: InkWash/InkCharacter
+  TrailRenderer BladeTrail_Anchor  active=True
+     材质: M_InkSlash(Runtime)
+     Shader: InkWash/InkSlash
+  MeshRenderer W_Sword  active=True
+     材质: M_W_Sword_Ink
+     Shader: InkWash/InkCharacter
+---- 敌人 x3 ----
+  [Enemy_MoTu_2]
+    SkinnedMeshRenderer Skeleton_Minion_ArmLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_ArmRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Body  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Cloak  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Eyes  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Head  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Jaw  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+  [Enemy_MoTu_1]
+    SkinnedMeshRenderer Skeleton_Minion_ArmLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_ArmRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Body  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Cloak  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Eyes  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Head  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Jaw  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+  [Enemy_MoTu_0]
+    SkinnedMeshRenderer Skeleton_Minion_ArmLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_ArmRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Body  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Cloak  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Eyes  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Head  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_Jaw  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegLeft  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+    SkinnedMeshRenderer Skeleton_Minion_LegRight  active=True
+       材质: M_Ink_Enemy_MoTu_0
+       Shader: InkWash/InkCharacter
+
+---- 全场景非水墨 Shader 的渲染器 ----
+
+---- InkMaterialSwap 条目 ----
+  共 4 个
+  · Enemy_MoTu_2  target=Skeleton_Minion_ArmLeft  lit=1  ink=1
+  · Enemy_MoTu_1  target=Skeleton_Minion_ArmLeft  lit=1  ink=1
+  · Enemy_MoTu_0  target=Skeleton_Minion_ArmLeft  lit=1  ink=1
+  · Player  target=Mesh  lit=1  ink=1

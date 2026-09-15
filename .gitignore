@@ -107,6 +107,12 @@ sysinfo.txt
 /Tools/screenshots/arcverify/
 /Tools/screenshots/edge/
 /Tools/screenshots/fx/
+# 水墨视觉整改那轮的探针 scratch（`d_metrics` / `e_outline` / `e_tonality` / `c_tune` 各自重跑即再生成）。
+# 结论性证据已另存到具名目录 /Tools/screenshots/ink/（改前↔改后对比 + 轮廓宽度定标 + 演示录屏）。
+/Tools/screenshots/metrics/
+/Tools/screenshots/outline/
+/Tools/screenshots/tonality/
+/Tools/screenshots/tune/
 
 # ---------- 操作系统杂项 ----------
 .DS_Store

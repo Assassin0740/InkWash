@@ -33,12 +33,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _OutlineWidth: 0.055
+    - _MottleScale: 1.6
+    - _BandBias: 0.15
     - _BandSoftness: 0.06
     - _Bands: 4
     - _BrushScale: 26
     - _BrushStrength: 0.6
     - _BrushUvFromWorld: 1
-    - _InkDensity: 0.75
+    - _InkDensity: 0.62
+    - _LadderSkew: 0.42
     - _RimPower: 3
     - _RimStrength: 0.95
     - _SpecBands: 2
@@ -46,7 +50,8 @@ Material:
     - _SpecStrength: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _InkColor: {r: 0.058, g: 0.068, b: 0.094, a: 1}
-    - _PaperColor: {r: 0.96, g: 0.951, b: 0.925, a: 1}
+    - _InkDark: {r: 0.075, g: 0.085, b: 0.12, a: 1}
+    - _InkLight: {r: 0.98, g: 0.976, b: 0.955, a: 1}
+    - _InkMid: {r: 0.3, g: 0.315, b: 0.35, a: 1}
     - _RimColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
   m_BuildTextureStacks: []

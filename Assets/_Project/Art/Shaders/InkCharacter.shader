@@ -29,18 +29,55 @@ Shader "InkWash/InkCharacter"
         [MainTexture] _BaseMap ("基础贴图（漫反射）", 2D) = "white" {}
         [MainColor]   _BaseColor ("基础色", Color) = (1, 1, 1, 1)
 
-        // ---- Ink 墨色与阶数 ----
-        _InkColor ("墨色（暗部，忌纯黑）", Color) = (0.055, 0.063, 0.086, 1)
-        _PaperColor ("纸色（受光，忌纯白）", Color) = (0.847, 0.812, 0.741, 1)
+        // ---- 墨分五色：与 InkSurface **共用同一套墨阶表** ----
+        // 全画面只有一个调色板是水墨成立的硬条件：两套墨色叠在一起，
+        // 角色会"贴"在背景上。改这里的值时必须同步改 InkSurface。
+        _InkDark  ("焦墨（最暗、忌纯黑）", Color) = (0.075, 0.085, 0.12, 1)
+        _InkMid   ("重墨（中间锚点）",     Color) = (0.30, 0.315, 0.35, 1)
+        _InkLight ("清墨（近纸白）",       Color) = (0.98, 0.976, 0.955, 1)
+        _LadderSkew ("中间两级的位置（小=浓墨区更宽）", Range(0.1, 0.9)) = 0.42
         _Bands ("墨阶数（少=大写意）", Range(1, 8)) = 4
         _BandSoftness ("阶间柔度", Range(0.001, 0.5)) = 0.06
-        _InkDensity ("墨的浓度（越大越留白，越接近纯纸色）", Range(0, 1)) = 0.75
+        _BandBias ("基础墨阶偏移（负=整体更浓。★主体整体压向浓墨靠它、不靠光照）", Range(-0.8, 0.6)) = -0.40
+        _InkDensity ("贴图信息量（越大越用贴图的明暗做形体）", Range(0, 1)) = 0.88
+
+        // ---- ★ 增量 F：去色 ----
+        // 病 5：底层贴图的色相泄漏。KayKit 骨骼是亮蓝灰、斗篷是橙 ——
+        // 它们是画面上**唯一的高饱和色**，对比最强，于是抢走全部视线（M4b 1.5% vs 目标 ≤0.5%）。
+        // 保留 8% 原色相：明暗关系全保留（骨头与袍子的明度差仍在、形态可辨），只消灭色相差。
+        _ChromaKeep ("保留原色相（0=全灰、1=原色）", Range(0, 1)) = 0.08
+
+        // ---- ★ 参照《大神》：**几何轮廓**（反向外扩壳），不是屏幕空间细线 ----
+        // 为什么必须走几何：屏幕空间等宽细线本质是"边缘检测"，改来改去都是制图描边。
+        // 几何壳能做三件屏幕空间做不到的事：
+        //   ① 掠射边更粗：正对相机的面几乎不外扩 ⇒ 轮廓被"描"在结构转折处
+        //   ② 距离补偿：线宽在屏幕空间恒定
+        //   ③ 飞白断笔：与身上的纹理同源，整段收笔
+        // 只加在角色/敌人/剑上：白盒是硬边盒子，逐面外扩会在棱角开裂，且地面不该有轮廓。
+        _OutlineWidth ("轮廓宽度（世界米）", Range(0, 0.15)) = 0.055
+        _OutlineColor ("轮廓墨色", Color) = (0.035, 0.04, 0.055, 1)
+        _OutlineDistScale ("距离补偿（每米增量）", Range(0, 0.3)) = 0.06
+        _OutlineFacing ("掠射加权（0=等宽、1=掠射边才粗）", Range(0, 1)) = 0.72
+        _OutlineDry ("飞白断笔强度", Range(0, 1)) = 0.55
+        _OutlineScale ("飞白尺度", Float) = 5
 
         // ---- Brush 飞白 ----
         _BrushTex ("飞白噪声（灰度图）", 2D) = "gray" {}
         _BrushScale ("飞白尺度（越大越细）", Float) = 26
         _BrushStrength ("飞白强度（0=光滑卡通）", Range(0, 1)) = 0.6
         _BrushUvFromWorld ("飞白按世界坐标（关=按 UV）", Range(0, 1)) = 1
+
+        // ---- ★ v3 纹理管线：与 InkSurface **同一套纹理语言** ----
+        // 角色与场景若用两套纹理，角色会"贴"在背景上（同两套墨色一样是致命的）。
+        _GrainScale ("纸颗粒尺度（高频，越大越细）", Float) = 64
+        _GrainAmp ("纸颗粒强度（直接调制颜色）", Range(0, 1)) = 0.18
+        // ↑ 角色的颗粒**必须比场景弱**：同一个 1 cm 颗粒，在 2 m 高的角色身上
+        //   映射到 4~6 px（读成"砂纸"），在地面上只映射到 2~3 px（读成"纸纹"）。
+        //   计划 §5 风险表里的「重墨导致画面脏」说的就是这个，实测确认成立。
+        _StrokeScale ("笔触尺度（中频皴法，越大越细）", Float) = 8.0
+        _StrokeStretch ("笔触方向性拉伸比（1=各向同性=噪点）", Range(1, 12)) = 3.0
+        _StrokeAmp ("笔触强度（阶内浓度调制）", Range(0, 1)) = 0.16
+        _MottleScale ("积墨尺度（低频浓淡不均）", Float) = 0.55
 
         // ---- Rim 轮廓墨 ----
         _RimColor ("轮廓墨色", Color) = (0.08, 0.09, 0.12, 1)
@@ -51,6 +88,18 @@ Shader "InkWash/InkCharacter"
         _SpecBands ("高光阶数", Range(1, 6)) = 2
         _SpecStrength ("高光强度", Range(0, 2)) = 0.5
         _SpecSize ("高光收束", Range(1, 200)) = 48
+
+        // ---- ★ 增量 G：接地墨渍 + 大气透视 ----
+        // 病 6：没有接地与环境关系 —— 东西都"浮"在纸上，而且没有纵深。
+        // 接地墨渍：离地面 _ContactHeight 米以内的面染一层淡墨。它是让物体"坐"在纸上的
+        //   最省事手段，也对角色的脚生效（角色脚在 y≈0 ⇒ 脚下自然积墨）。
+        // 大气透视：越远整体越推向清墨（远山淡墨）。参考图里的纵深就来自这里。
+        _ContactInk ("接地墨渍强度", Range(0, 1)) = 0.30
+        _ContactHeight ("接地墨渍高度（米）", Float) = 0.45
+        _GroundY ("地面高度（世界 Y）", Float) = 0
+        _AerialFrom ("大气透视起点距离（米）", Float) = 12
+        _AerialTo ("大气透视终点距离（米）", Float) = 30
+        _AerialStrength ("大气透视强度（远处推向清墨）", Range(0, 1)) = 0.55
     }
 
     SubShader
@@ -96,15 +145,37 @@ Shader "InkWash/InkCharacter"
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;
                 half4  _BaseColor;
-                half4  _InkColor;
-                half4  _PaperColor;
+                half4  _InkDark;
+                half4  _InkMid;
+                half4  _InkLight;
+                half   _LadderSkew;
                 half   _Bands;
                 half   _BandSoftness;
+                half   _BandBias;
                 half   _InkDensity;
+                half   _ChromaKeep;
                 float4 _BrushTex_ST;
                 half   _BrushScale;
                 half   _BrushStrength;
                 half   _BrushUvFromWorld;
+                half   _GrainScale;
+                half   _GrainAmp;
+                half   _StrokeScale;
+                half   _StrokeStretch;
+                half   _StrokeAmp;
+                half   _MottleScale;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
+                half   _ContactInk;
+                half   _ContactHeight;
+                half   _GroundY;
+                half   _AerialFrom;
+                half   _AerialTo;
+                half   _AerialStrength;
                 half4  _RimColor;
                 half   _RimPower;
                 half   _RimStrength;
@@ -176,13 +247,98 @@ Shader "InkWash/InkCharacter"
                 return saturate((lower + k) / steps);
             }
 
-            /// 飞白噪声：叠两层不同尺度的哈希噪声，避免看出来是"一张贴图在滑动"
-            half BrushNoise(float3 posWS, float2 uv)
+            /// ★ 墨分五色：归一化阶位置 → 墨色。与 InkSurface 里的实现**逐字相同** ——
+            /// 这是刻意的：两处必须共用同一个调色板，任一处改了另一处要跟着改。
+            /// （帽子函数分段线性，五段权重和恒为 1；详见 InkSurface.shader 的注释。）
+            half3 InkLadderColor(half t)
             {
-                float2 coord = lerp(uv * _BrushScale, posWS.xz * _BrushScale * 0.35h + posWS.y * _BrushScale * 0.31h, _BrushUvFromWorld);
-                half a = SAMPLE_TEXTURE2D(_BrushTex, sampler_BrushTex, coord * 0.31h).r;
-                half b = SAMPLE_TEXTURE2D(_BrushTex, sampler_BrushTex, coord * 0.73h + 0.37h).r;
-                return saturate(a * 0.65h + b * 0.35h);
+                t = saturate(t);
+                half k = saturate(_LadderSkew);
+
+                half3 c0 = _InkDark.rgb;                                         // 焦墨
+                half3 c1 = lerp(_InkDark.rgb, _InkMid.rgb, k * 0.55h);            // 浓墨
+                half3 c2 = _InkMid.rgb;                                          // 重墨
+                half3 c3 = lerp(_InkMid.rgb, _InkLight.rgb, 0.35h + k * 0.40h);   // 淡墨
+                half3 c4 = _InkLight.rgb;                                        // 清墨
+
+                half w0 = 1.0h - saturate(t * 4.0h);
+                half w1 = saturate(t * 4.0h)           - saturate((t - 0.25h) * 4.0h);
+                half w2 = saturate((t - 0.25h) * 4.0h) - saturate((t - 0.50h) * 4.0h);
+                half w3 = saturate((t - 0.50h) * 4.0h) - saturate((t - 0.75h) * 4.0h);
+                half w4 = saturate((t - 0.75h) * 4.0h);
+                return w0 * c0 + w1 * c1 + w2 * c2 + w3 * c3 + w4 * c4;
+            }
+
+            // ==============================================================
+            // ★ v3 纹理管线：三层噪声（程序化，不走贴图）
+            // ==============================================================
+            // 为什么不继续用 _BrushTex：T_InkBrushNoise 是 256² 的**低频平滑**图案
+            // （相邻像素相关 0.994，1/8 降采样后方差不变 ⇒ 内容频率约 32 个特征/整图）。
+            // 它按 _BrushScale 采样时，屏幕取样率远超内容频率 ⇒ GPU 取到高 mip
+            // ⇒ 平均成 mean≈0.483 的常数 ⇒ (n-0.5)≈-0.017 ⇒ **噪声贡献归零**。
+            // 所以"纹理看不见"有两个并列的结构性原因：
+            //   (a) 噪声被 Quantize 首句的 saturate 削掉（只在阶边界附近有残余）
+            //   (b) 噪声被 mip 平均成常数（整个画面）
+            // 程序化噪声没有 mip，频率/对比度/各向异性全部由我们直接控制。
+            half Hash21(float2 p)
+            {
+                p = frac(p * float2(123.34h, 345.45h));
+                p += dot(p, p + 34.345h);
+                return frac(p.x * p.y);
+            }
+
+            /// 值噪声：格点哈希 + 平滑插值。
+            /// 不用纯白噪声 —— 白噪声读起来是"电视雪花"，值噪声才有"纸"的织理。
+            half ValueNoise(float2 p)
+            {
+                float2 i = floor(p);
+                float2 f = frac(p);
+                f = f * f * (3.0h - 2.0h * f);
+                half a = Hash21(i);
+                half b = Hash21(i + float2(1.0h, 0.0h));
+                half c = Hash21(i + float2(0.0h, 1.0h));
+                half d = Hash21(i + float2(1.0h, 1.0h));
+                return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+            }
+
+            /// 两层值噪声：单层有明显的方格感，两层才能读成"织理"
+            half Fbm2(float2 p)
+            {
+                return saturate(ValueNoise(p) * 0.65h + ValueNoise(p * 2.17h + 11.3h) * 0.35h);
+            }
+
+            /// 三层纹理采样。三层各自有职责，不能混：
+            ///   x = 纸颗粒  高频 + 轻微各向异性(1.6:1) —— 纸的纤维，**在纸白区也看得见**
+            ///   y = 笔触    中频 + **方向性拉伸**          —— 皴法/笔痕，"一笔刷过"的方向感
+            ///   z = 积墨    低频 各向同性                  —— 大块的浓淡不均，破平涂感
+            ///
+            /// **方向性拉伸是"像笔触"的关键**：中频各向同性噪声只会被读成"噪点/脏"。
+            /// 做法是把横向坐标除以拉伸比 ⇒ 特征沿横向被拉长约 4.5 倍。
+            ///
+            /// 投影用**轻量三平面**（按法线主轴挑两个世界轴）：若一律用 xz，
+            /// 竖直墙面会因为 z 沿墙不变而出现"竖直拉丝"，是肉眼可见的贴图错误。
+            half3 SampleInkNoise(float3 posWS, half3 normalWS, float2 uv)
+            {
+                half3 an = abs(normalWS);
+                float2 p;
+                if (an.y >= an.x && an.y >= an.z)  p = posWS.xz;                  // 朝上 / 朝下
+                else if (an.x >= an.z)             p = float2(posWS.z, posWS.y);  // 朝左右
+                else                               p = posWS.xy;                  // 朝前后
+
+                // 纸颗粒：轻微各向异性 —— 真实的纸纤维是短的丝，不是圆点
+                float2 gp = float2(p.x * 0.62h, p.y);
+                half grain = Fbm2(gp * _GrainScale);
+                // 远处淡出高频颗粒：屏幕导数大 = 该像素跨了太多噪声周期 ⇒ 再高只会出摩尔纹
+                half grainFade = saturate(1.80h - fwidth(gp.x * _GrainScale) * 0.40h);
+                grain = lerp(0.5h, grain, grainFade);
+
+                // _BrushUvFromWorld=1（默认）用世界坐标三平面：纹理不随角色动作滑动
+                // =0 时退回物体 UV：纹理贴着模型走（做"墨迹长在衣服上"时用）
+                float2 sp = lerp(p, uv * 0.5h, 1.0h - _BrushUvFromWorld);
+                half stroke = Fbm2(float2(sp.x / max(_StrokeStretch, 1.0h), sp.y) * _StrokeScale + 27.1h);
+                half mottle = SAMPLE_TEXTURE2D(_BrushTex, sampler_BrushTex,
+                                               p * _MottleScale * 0.21h + 3.7h).r;
+                return half3(grain, stroke, mottle);
             }
 
             half4 InkFragment(Varyings input) : SV_Target
@@ -190,6 +346,11 @@ Shader "InkWash/InkCharacter"
                 UNITY_SETUP_INSTANCE_ID(input);
 
                 half3 albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv).rgb * _BaseColor.rgb;
+                // ★ 去色：只留 _ChromaKeep 的原色相。明暗全保留、色相被消灭。
+                {
+                    half grey = dot(albedo, half3(0.2126h, 0.7152h, 0.0722h));
+                    albedo = lerp(half3(grey, grey, grey), albedo, _ChromaKeep);
+                }
                 half3 normalWS = normalize(input.normalWS);
                 half3 viewDirWS = normalize(GetWorldSpaceViewDir(input.positionWS));
 
@@ -217,19 +378,55 @@ Shader "InkWash/InkCharacter"
                 half3 sh = SampleSH(normalWS);
                 half ambient = saturate(dot(sh, half3(0.333h, 0.333h, 0.333h)));
 
-                // ---- ★ 飞白：抖动**阈值**，不是抖动颜色 ----
-                half noise = BrushNoise(input.positionWS, input.uv);
-                half jitter = (noise - 0.5h) * _BrushStrength * 0.55h;
-                half lit = saturate(lambert + ambient * 0.35h + jitter);
+                // ---- 取三层噪声（纸颗粒 / 笔触 / 积墨）----
+                half3 nz = SampleInkNoise(input.positionWS, normalWS, input.uv);
+
+                // ① 抖阶边界：噪声必须加在 **saturate 之前**，否则被 Quantize 首句削掉。
+                half jitter = ((nz.y - 0.5h) * 0.75h + (nz.x - 0.5h) * 0.40h) * _BrushStrength;
+                // ★ v2：`_BandBias` 是"这个物体用几号墨"的显式分配。
+                //   角色的墨色重不重，取决于这里，而不是取决于它有没有被太阳照到 ——
+                //   后者会让"背光的角色才黑"，而水墨画里的主体黑是画家选的墨。
+                half lit = saturate(lambert * 0.80h + ambient * 0.42h + _BandBias + jitter);
                 half ramp = Quantize(lit, _Bands, _BandSoftness);
 
-                // ---- 着色：墨色（暗） → 纸色×固有色的墨韵（亮） ----
-                // ★ 固有色的掺入量直接由 _InkDensity 控制（浓度越高越接近纯纸色 = 留白）。
-                //   上一版写成 `lerp(1, albedo, 1 - _InkDensity*0.35)` 之后**又乘了一次 albedo**，
-                //   等于把贴图算成 albedo²：亮部整体发暗、而且无论怎么调色都"不像水墨"。
-                half3 paperTint = _PaperColor.rgb * lerp(half3(1,1,1), albedo, saturate(1.0h - _InkDensity));
-                half3 shadowColor = lerp(_InkColor.rgb, _InkColor.rgb * 0.85h + albedo * 0.18h, _InkDensity * 0.6h);
-                half3 color = lerp(shadowColor, paperTint, ramp);
+                // ② ★ 阶内浓度调制（新增）—— 同一墨阶内部有浓淡。
+                //    ① 只在阶边界附近有效，而画面 80% 的面积是阶内部 ⇒ 正解在这里。
+                //    幅度比场景小：角色是"写字的主体"，纹理过强会让轮廓读不出来。
+                //    低频积墨权重从 0.15 降到 0.05：实测 0.15 时角色头骨上会出现
+                //    0.3 m 量级的大块深斑，读起来是"发霉"而不是"墨"——
+                //    因为同一个世界尺度噪声，在 2 m 高的角色身上映射成大斑，
+                //    在地面上却只映射成细纹。**尺度必须按物体尺寸调**。
+                ramp = saturate(ramp + (nz.y - 0.5h) * _StrokeAmp * 0.18h
+                                     + (nz.z - 0.5h) * _StrokeAmp * 0.05h);
+
+                // ---- ★ 增量 G-1 接地墨渍：离地越近越浓，让物体"坐"在纸上 ----
+                //   ★ 必须乘 (1 - 朝上程度)：只按世界高度判会把**整块地面**也压暗
+                //     （地面 y=0 ⇒ contact 恒为 1），那等于把留白亲手涂掉。
+                //     乘上法线因子后：地面/平台顶面 contact=0（不受影响），
+                //     墙脚、柱脚、角色的脚（法线接近水平或朝下）才积墨。
+                half contact = saturate(1.0h - (input.positionWS.y - _GroundY) / max(_ContactHeight, 0.01h))
+                             * (1.0h - saturate(normalWS.y));
+                ramp = saturate(ramp - contact * _ContactInk);
+
+                // ---- ★ 增量 G-2 大气透视：远处整体推向清墨（远山淡墨）----
+                //   注意它和 _HeightFade 不是一回事：高度留白治"远山"，大气透视治"物距"。
+                //   这也解释了参考图里的纵深：同一面墙，近处是墨、远处是纸。
+                float camDist = distance(input.positionWS, _WorldSpaceCameraPos);
+                half aerial = saturate((camDist - _AerialFrom) / max(_AerialTo - _AerialFrom, 0.01h));
+                ramp = lerp(ramp, 1.0h, aerial * _AerialStrength);
+
+                // ---- 着色：光照 → 墨阶位置 → 墨色 ----
+                // 与 InkSurface 同一张表。因此角色和场景的墨阶天然对得上，
+                // 不会出现"角色是暖灰、场景是冷灰"这种两个调色板打架的情况。
+                half3 color = InkLadderColor(ramp);
+
+                // 贴图只提供**低幅度**的形体信息（衣纹、骨节）。它不再是"颜色来源"，
+                // 只是让同阶内部有细节 —— 水墨的形体靠墨阶，不靠固有色。
+                color *= lerp(half3(1,1,1), albedo, _InkDensity);
+
+                // ③ ★ 直接调制最终颜色（新增）—— 零均值噪声 ⇒ 均值≈1，不会把主体整体压暗。
+                half texMod = (nz.x - 0.5h) * _GrainAmp + (nz.y - 0.5h) * _StrokeAmp * 0.20h;
+                color *= (1.0h + texMod);
 
                 // ---- 轮廓墨（Fresnel）：让角色在任何背景上都有"剪纸边" ----
                 half fresnel = pow(saturate(1.0h - dot(normalWS, viewDirWS)), _RimPower);
@@ -241,10 +438,127 @@ Shader "InkWash/InkCharacter"
                 spec *= mainLight.shadowAttenuation * atten;
                 half specStep = Quantize(spec, _SpecBands, 0.02h);
                 // 只给"亮部"加高光：暗部加高光会变成塑料
-                color += specStep * _SpecStrength * smoothstep(0.55h, 1.0h, ramp) * _PaperColor.rgb;
+                color += specStep * _SpecStrength * smoothstep(0.55h, 1.0h, ramp) * _InkLight.rgb;
 
                 color = MixFog(color, input.fogFactor);
                 return half4(color, 1.0h);
+            }
+            ENDHLSL
+        }
+
+        // ==================================================================
+        // ★ 墨线轮廓（参照《大神》的几何外扩壳 / inverted hull）
+        // ==================================================================
+        // 渲染顺序：URP 按 ShaderTagId 分批绘制，`SRPDefaultUnlit` 这一批
+        // **先于** `UniversalForward`。轮廓先写深度、物体再盖上去，天然正确，
+        // 不需要改渲染队列，也不需要额外的 renderer feature。
+        Pass
+        {
+            Name "InkOutline"
+            Tags { "LightMode" = "SRPDefaultUnlit" }
+
+            Cull Front      // 只画背面 —— 外扩壳的背面正好落在物体轮廓之外
+            ZWrite On
+            ZTest LEqual
+
+            HLSLPROGRAM
+            #pragma target 3.0
+            #pragma vertex OutlineVertex
+            #pragma fragment OutlineFragment
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseMap_ST;
+                half4  _BaseColor;
+                half4  _InkDark; half4 _InkMid; half4 _InkLight;
+                half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias;
+                half   _InkDensity;
+                half   _ChromaKeep;
+                float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
+                half   _GrainScale; half _GrainAmp; half _StrokeScale; half _StrokeStretch; half _StrokeAmp;
+                half   _MottleScale;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
+                half   _ContactInk; half _ContactHeight; half _GroundY;
+                half   _AerialFrom; half   _AerialTo; half   _AerialStrength;
+                half4  _RimColor; half _RimPower; half _RimStrength;
+                half   _SpecBands; half _SpecStrength; half _SpecSize;
+            CBUFFER_END
+
+            struct OutlineAttrs { float4 positionOS : POSITION; float3 normalOS : NORMAL; };
+
+            struct OutlineVary
+            {
+                float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
+            };
+
+            // 与主着色**同源**的噪声（轮廓的断笔要跟身上的纹理由同一套噪声驱动，
+            // 否则会出现"轮廓断了但身上没断"的错位感）
+            half OHash21(float2 p)
+            {
+                p = frac(p * float2(123.34h, 345.45h));
+                p += dot(p, p + 34.345h);
+                return frac(p.x * p.y);
+            }
+            half OValueNoise(float2 p)
+            {
+                float2 i = floor(p), f = frac(p);
+                f = f * f * (3.0h - 2.0h * f);
+                half a = OHash21(i);
+                half b = OHash21(i + float2(1.0h, 0.0h));
+                half c = OHash21(i + float2(0.0h, 1.0h));
+                half d = OHash21(i + float2(1.0h, 1.0h));
+                return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+            }
+
+            OutlineVary OutlineVertex(OutlineAttrs v)
+            {
+                OutlineVary o;
+                float3 posWS = TransformObjectToWorld(v.positionOS.xyz);
+                float3 nrmWS = TransformObjectToWorldNormal(v.normalOS);
+                float3 viewDir = normalize(GetWorldSpaceViewDir(posWS));
+
+                // ① 掠射边更粗：正对相机的面几乎不外扩 ⇒ 轮廓被"描"在转折处。
+                //    这是《大神》轮廓线的核心观感 —— 它不是等宽描边。
+                //    pow(.,0.7) 提中段：让"半掠射"的过渡区也起笔，否则转折处会突然断细。
+                half graze = saturate(1.0h - abs(dot(nrmWS, viewDir)));
+                graze = pow(graze, 0.7h);
+                half facing = lerp(1.0h, graze, _OutlineFacing);
+
+                // ② 飞白断笔：低频噪声做长距离开断。
+                //    ★ 采样点必须用**物体空间**而不是世界空间 —— 世界空间会让飞白图案
+                //      随角色移动"流过"轮廓，走起来整条线在沸腾。
+                //      物体空间（蒙皮前静置坐标）与体表是稳定映射，图案等于**画在皮肤上**。
+                float2 np = v.positionOS.xy * _OutlineScale;
+                half dry = OValueNoise(np);
+                half dryMask = lerp(1.0h, saturate((dry - 0.28h) * 3.2h), _OutlineDry);
+
+                // ③ 距离补偿：屏幕空间线宽恒定
+                float dist = distance(posWS, _WorldSpaceCameraPos);
+                half w = _OutlineWidth * (1.0h + dist * _OutlineDistScale);
+
+                // ④ 积墨：墨在低处积（与 G-1 接地墨渍同一套"重力"逻辑）。
+                //    复用既有的 _ContactInk/_ContactHeight/_GroundY，
+                //    不新增 uniform —— 新增 uniform 要同步改 4 个 CBUFFER，是已知事故源。
+                half pool = saturate(1.0h - (posWS.y - _GroundY) / max(_ContactHeight, 0.01h));
+                w *= (1.0h + pool * _ContactInk);
+
+                posWS += nrmWS * (w * max(facing, 0.12h) * dryMask);
+
+                o.positionWS = posWS;
+                o.positionCS = TransformWorldToHClip(posWS);
+                return o;
+            }
+
+            half4 OutlineFragment(OutlineVary i) : SV_Target
+            {
+                return half4(_OutlineColor.rgb, 1.0h);
             }
             ENDHLSL
         }
@@ -277,9 +591,28 @@ Shader "InkWash/InkCharacter"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;
-                half4  _BaseColor; half4 _InkColor; half4 _PaperColor;
-                half   _Bands; half _BandSoftness; half _InkDensity;
+                half4  _BaseColor; half4 _InkDark; half4 _InkMid; half4 _InkLight;
+                half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias; half _InkDensity;
+                half   _ChromaKeep;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
+                half   _GrainScale;
+                half   _GrainAmp;
+                half   _StrokeScale;
+                half   _StrokeStretch;
+                half   _StrokeAmp;
+                half   _MottleScale;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
+                half   _ContactInk;
+                half   _ContactHeight;
+                half   _GroundY;
+                half   _AerialFrom;
+                half   _AerialTo;
+                half   _AerialStrength;
                 half4  _RimColor; half _RimPower; half _RimStrength;
                 half   _SpecBands; half _SpecStrength; half _SpecSize;
             CBUFFER_END
@@ -334,9 +667,28 @@ Shader "InkWash/InkCharacter"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;
-                half4  _BaseColor; half4 _InkColor; half4 _PaperColor;
-                half   _Bands; half _BandSoftness; half _InkDensity;
+                half4  _BaseColor; half4 _InkDark; half4 _InkMid; half4 _InkLight;
+                half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias; half _InkDensity;
+                half   _ChromaKeep;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
+                half   _GrainScale;
+                half   _GrainAmp;
+                half   _StrokeScale;
+                half   _StrokeStretch;
+                half   _StrokeAmp;
+                half   _MottleScale;
+                half   _OutlineWidth;
+                half4  _OutlineColor;
+                half   _OutlineDistScale;
+                half   _OutlineFacing;
+                half   _OutlineDry;
+                half   _OutlineScale;
+                half   _ContactInk;
+                half   _ContactHeight;
+                half   _GroundY;
+                half   _AerialFrom;
+                half   _AerialTo;
+                half   _AerialStrength;
                 half4  _RimColor; half _RimPower; half _RimStrength;
                 half   _SpecBands; half _SpecStrength; half _SpecSize;
             CBUFFER_END
