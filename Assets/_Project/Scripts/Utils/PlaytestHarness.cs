@@ -869,8 +869,8 @@ namespace InkWash.Utils
                 check("攻击全程两手都握着（不是五指摊开）",
                     ctx.maxFistRatioRight > 0f && ctx.maxFistRatioRight < 1.7f
                     && ctx.maxFistRatioLeft > 0f && ctx.maxFistRatioLeft < 1.7f,
-                    "握拳度峰值 右 " + F(ctx.maxFistRatioRight) + " / 左 " + F(ctx.maxFistRatioLeft)
-                    + "（五指摊开≈2.2，握成拳≈1.2）");
+                    "攻击帧握拳度峰值 右 " + F(ctx.maxFistRatioRight) + " / 左 " + F(ctx.maxFistRatioLeft)
+                    + "（五指摊开≈2.2，握成拳≈1.2；只统计攻击状态帧）");
             if (one != null)
             {
                 check("[D 单段挥砍] 生成刀光弧光", one.arcSpawnDelta >= 1,
@@ -1605,6 +1605,18 @@ namespace InkWash.Utils
             sink.Add(AnalyzeCombat(name, samples, move, ctx, bl));
         }
 
+        /// <summary>当前是否处于某个攻击状态。用于把「事件型指标」的采样窗口裁到事件边界。</summary>
+        private static readonly string[] AttackStates = { "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3" };
+
+        private static bool IsAttackState(Animator anim)
+        {
+            if (anim == null) return false;
+            var st = anim.GetCurrentAnimatorStateInfo(0);
+            for (int i = 0; i < AttackStates.Length; i++)
+                if (st.IsName(AttackStates[i])) return true;
+            return false;
+        }
+
         private static CombatSample CaptureCombatSample(CombatContext ctx, float t, TickIntent want)
         {
             var cam = ctx.cam;
@@ -1621,9 +1633,14 @@ namespace InkWash.Utils
             float pitch = ctx.rig != null ? ctx.rig.Pitch : cam.transform.eulerAngles.x;
 
             // 握拳度峰值：摊开≈2.2 / 握拳≈1.2。
-            // 只在「补丁这一帧确实跑过」时采信 —— 探针都是 LateUpdate 末尾写的，
-            // 刚进战斗那一帧读到的还是上一帧的陈旧值（组件 disabled 时 CurledBoneCount 不再刷新）。
-            if (ctx.pose != null && ctx.pose.enabled && ctx.pose.CurledBoneCount > 0)
+            // 两个条件都要：
+            //   ① 只在「补丁这一帧确实跑过」时采信 —— 探针都是 LateUpdate 末尾写的，
+            //      刚进战斗那一帧读到的还是上一帧的陈旧值（组件 disabled 时 CurledBoneCount 不再刷新）。
+            //   ② **窗口裁到攻击状态**。判据名是「攻击全程两手都握着」，而采样是整个战斗 stage
+            //      逐帧跑的：战斗中的跑步帧（KI Run01 的基础手姿势是半张开的）会把峰值抬到 1.70+，
+            //      和「攻击时手张开」根本不是一回事（实测右手攻击帧恒为 1.547、跑步帧 1.701）。
+            //      —— 与「事件型指标的窗口必须裁到事件边界」是同一条规矩，这里第二次踩。
+            if (ctx.pose != null && ctx.pose.enabled && ctx.pose.CurledBoneCount > 0 && IsAttackState(anim))
             {
                 if (ctx.pose.RightFistRatio > ctx.maxFistRatioRight) ctx.maxFistRatioRight = ctx.pose.RightFistRatio;
                 if (ctx.pose.LeftFistRatio > ctx.maxFistRatioLeft) ctx.maxFistRatioLeft = ctx.pose.LeftFistRatio;

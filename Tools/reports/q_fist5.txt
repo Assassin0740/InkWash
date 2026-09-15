@@ -1,0 +1,24 @@
+=== WeaponHandPose 解析结果 ===
+rightHand(开关)=True   leftHand(开关)=True
+onlyWhenArmed=True   Armed=False
+RightCurlSign=0   LeftCurlSign=0
+_rightRoots=0 []   _rightBones=0
+_leftRoots =0 []   _leftBones =0
+_rightSpread=1   _leftSpread=1
+_rightMidTip=<null>   _leftMidTip=<null>
+fingerCurl=(70.00, 85.00, 55.00)  leftFingerCurl=(70.00, 85.00, 55.00)
+
+== 各状态下右手/左手握拳度的最大值 ==
+   Idle      R=1.547   L=1.462
+   Walk      R=1.547   L=1.462
+   Run       R=1.701   L=1.611
+   Dash      R=1.546   L=1.461
+   Atk1      R=1.547   L=1.293
+   Atk1Rec   R=1.547   L=1.286
+   Atk2      R=1.547   L=1.582
+   Atk2Rec   R=1.547   L=1.538
+   Atk3      R=1.547   L=1.577
+
+右手峰值 1.701 @ t=12.0s [Run]
+左手峰值 1.611 @ t=12.0s [Run]
+（五指摊开≈2.2 / 握成拳≈1.2，验收阈值 1.7）

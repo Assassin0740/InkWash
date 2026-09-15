@@ -130,15 +130,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a468c70d8de050d43a205de31ce96178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 1
+  walkSpeed: 1.4
   runSpeed: 4
   runAnimEnterSpeed: 3
   runAnimExitSpeed: 2.5
   acceleration: 26
   deceleration: 34
   turnSpeedDeg: 900
-  walkRefSpeed: 0.69
-  runRefSpeed: 3.03
+  walkRefSpeed: 0.91
+  runRefSpeed: 4.12
   motionSpeedMin: 0.6
   motionSpeedMax: 2.2
   dashSpeed: 7.4
@@ -150,17 +150,17 @@ MonoBehaviour:
   - 1.5
   - 2.6
   comboLungeDuration:
-  - 0.22
-  - 0.24
-  - 0.42
+  - 0.176
+  - 0.192
+  - 0.336
   comboSwingDuration:
-  - 1.233
-  - 1.384
-  - 1.44
+  - 0.916
+  - 1.032
+  - 1.152
   comboHitTime:
-  - 0.24
-  - 0.24
-  - 0.6
+  - 0.19
+  - 0.19
+  - 0.48
   comboRecCancelStart:
   - 0.3
   - 0.3
@@ -259,9 +259,9 @@ MonoBehaviour:
   - state: Idle
     y: 0.0307
   - state: Walk
-    y: 0.0569
+    y: -0.0554
   - state: Run
-    y: -0.2294
+    y: 0.1735
   - state: Dash
     y: -0.0041
   - state: Atk1

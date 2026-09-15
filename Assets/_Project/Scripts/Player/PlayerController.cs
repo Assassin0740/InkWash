@@ -38,13 +38,13 @@ namespace InkWash.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("移动")]
-        [Tooltip("走路速度（米/秒）。对应动画 Walk（KayKit Walking_A）\n" +
-                 "Walking_A 原生地面速度只有 0.69 m/s，取 1.0 已经是 1.45× —— 再快腿就倒腾得不像走路了。\n" +
+        [Tooltip("走路速度（米/秒）。对应动画 Walk（Feng 自带 Walk）。\n" +
+                 "Feng Walk 原生地面速度 0.91 m/s（脚踝法实测），取 1.4 → 1.54× → 步频 2.31 步/秒。\n" +
                  "上限由验收的步频断言把关（≤ 3.0 步/秒）。")]
-        public float walkSpeed = 1.0f;
+        public float walkSpeed = 1.4f;
 
-        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（KayKit Running_A）\n" +
-                 "Running_A 原生 3.03 m/s，取 4.0 → 1.32× → 步频 3.30 步/秒，落在真人跑步区间。\n" +
+        [Tooltip("按住 Shift 时的跑步速度。对应动画 Run（Kevin Iglesias Run01_Forward）。\n" +
+                 "Run01_Forward 原生 4.12 m/s（脚踝法实测），取 4.0 → 0.97× → 步频 3.23 步/秒，落在真人跑步区间。\n" +
                  "默认值必须与预制体上的序列化值一致（4.0）。曾经默认 5.6、预制体 4.2，\n" +
                  "两边不一致很容易让人误判\"实际生效的是哪个\"。")]
         public float runSpeed = 4.0f;
@@ -65,35 +65,32 @@ namespace InkWash.Player
         public float turnSpeedDeg = 900f;
 
         [Header("步伐同步（消除脚滑）")]
-        // 此前三套来源（UAL1 移动 / UAL2 攻击 / KiAnim 跑步）靠 Humanoid 重定向黏合，
-        // 髋高基准天然不一致、步子长度也对不上，只能靠改播放倍率硬凑，怎么调都有一处滑步。
-        // 现在模型与动画出自 KayKit 的**同一套 Rig_Medium 骨架**，重定向是恒等变换，
-        // 参考速度可以直接取素材的原生地面速度，倍率贴着 1.0 就能对上。
+        // 参考速度是**片段自身的属性**，而且必须与**当前骨架**一起量 —— 换片段要重标，
+        // 换骨架（腿长比例变了）同样要重标。本轮就栽在这：换成 Feng 骨架后，连 KayKit 的
+        // Walking_A 都不是 0.69 了（腿变长 → 重定向把步伐一起放大），实测 1.32，
+        // 旧值让播放倍率虚高到 1.45 → 腿倒腾得比真人快 50%。
         //
-        // 注意「播放倍率落在 1.0~1.8 是健康的」这个旧结论是错的：倍率只说明片段被拉伸多少，
-        // 真正的观感指标是**步频**（2 步 / 片段时长 × 倍率）。1.8 倍摊到一段 0.93s 的慢跑上
-        // 就是 3.9 步/秒，已经超过真人冲刺；腿看起来自然与否看的是这个数，
-        // 验收里的「疾跑步频」断言现在就是这么算的。
-        // 参考值用 Tools/cs/s3_probe_refspeed_kaykit.cs 实测标定：锁住接触点，只取「竖直速度≈0」
-        // （真正踩在地上）的帧，量它相对角色根节点的水平后移速度。
-        // 实测：Walking_A 0.69 m/s（步频 1.88）、Running_A 3.03 m/s（步频 2.50）。
+        // 「播放倍率落在 1.0~1.8 是健康的」这个旧结论是错的：倍率只说明片段被拉伸多少，
+        // 真正的观感指标是**步频**（步/循环 ÷ 片段时长 × 倍率）。腿看起来自然与否看的是这个数。
         //
-        // 关键：参考速度是**片段自身的属性**，换片段必须重量。旧值 1.55 / 4.49 是给
-        // UAL1 Walk_Loop 与 Kevin Iglesias Run01_Forward 标的，套在 KayKit 上会让脚后滑。
-        [Tooltip("走路片段（KayKit Walking_A）自身的地面速度参考值（米/秒）。实测 0.69")]
-        public float walkRefSpeed = 0.69f;
+        // 标定用 Tools/cs/q_refspeed2.cs：逐脚取**脚踝骨骼**，只在「脚踝进入该脚最低点 +4cm」的
+        // 着地帧量它的水平后移速度。**不要用网格最低点** —— 真人比例模型走路时脚掌会
+        // 「脚跟→脚尖」滚动，最低点在着地相内部平移了约一个脚掌长（0.25m），速度会虚高一倍
+        // （v1 用网格最低点把 Feng Walk 量成 2.25 m/s，实际 0.91）。
+        [Tooltip("走路片段（Feng 自带 Walk）自身的地面速度参考值（米/秒）。\n" +
+                 "Tools/cs/q_refspeed2.cs 脚踝法实测 0.91（步频 1.50、单步 0.61m）。")]
+        public float walkRefSpeed = 0.91f;
 
-        [Tooltip("跑步片段（KayKit Running_A）自身的地面速度参考值（米/秒）。\n" +
-                 "Tools/cs/s3_probe_refspeed_kaykit.cs 实测 3.03（单步 1.21m、150 步/分）。\n" +
-                 "取这个值 → 倍率 4.0/3.03 = 1.32×，脚不再打滑，步频 3.30 步/秒落在正常跑步区间。")]
-        public float runRefSpeed = 3.03f;
+        [Tooltip("跑步片段（Kevin Iglesias Run01_Forward）自身的地面速度参考值（米/秒）。\n" +
+                 "脚踝法实测 4.12（步频 3.33、单步 1.24m）。取这个值 → 倍率 4.0/4.12 = 0.97×。")]
+        public float runRefSpeed = 4.12f;
 
         [Tooltip("播放速度下限，防止慢走时腿部僵住")]
         public float motionSpeedMin = 0.6f;
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
                  "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
-                 "当前：走路 1.0/0.69 = 1.45，跑步 4.0/3.03 = 1.32，上限取 2.2 留足余量。")]
+                 "当前：走路 1.4/0.91 = 1.54，跑步 4.0/4.12 = 0.97，上限取 2.2 留足余量。")]
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
@@ -115,20 +112,22 @@ namespace InkWash.Player
         [Tooltip("各段的前冲位移距离（米）—— 由代码施加，不是滑行")]
         public float[] comboLungeDistance = { 1.2f, 1.5f, 2.6f };
 
-        [Tooltip("各段位移持续时长（秒）")]
-        public float[] comboLungeDuration = { 0.22f, 0.24f, 0.42f };
+        [Tooltip("各段位移持续时长（秒）。随攻击提速同步按 1.25 缩：距离不变、加速度更干脆")]
+        public float[] comboLungeDuration = { 0.176f, 0.192f, 0.336f };
 
         [Tooltip("各段挥砍动作总时长（秒），与 Player.controller 里的状态时长一致。\n" +
                  "Quaternius UAL2 的剑术片段是「斩击 + 收招」两段式，控制器里对应\n" +
-                 "AtkN 与 AtkNRec 两个状态，所以这里的总时长 = 主段 × 其 exitTime + 收招段 × 其 exitTime：\n" +
-                 "A 0.433×0.95 + A_Rec 0.967×0.85 = 1.233\n" +
-                 "B 0.533×0.95 + B_Rec 1.033×0.85 = 1.384\n" +
-                 "C 2.000×0.72 = 1.440")]
-        public float[] comboSwingDuration = { 1.233f, 1.384f, 1.44f };
+                 "AtkN 与 AtkNRec 两个状态，所以这里的总时长 =\n" +
+                 "主段 × exitTime / 主段speed + 收招段 × exitTime / 收招speed（speed 见 Player.controller）：\n" +
+                 "A 0.433×0.95/1.25 + 0.967×0.85/1.40 = 0.916\n" +
+                 "B 0.533×0.95/1.25 + 1.033×0.85/1.40 = 1.032\n" +
+                 "C 2.000×0.72/1.25 = 1.152")]
+        public float[] comboSwingDuration = { 0.916f, 1.032f, 1.152f };
 
-        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近：\n" +
-                 "A 0.279s / B 0.258s / C 0.656s（Tools/cs/q_atktiming.cs 标定）")]
-        public float[] comboHitTime = { 0.24f, 0.24f, 0.6f };
+        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近、略提前：\n" +
+                 "A 0.279s / B 0.258s / C 0.656s（Tools/cs/q_atktiming.cs 标定）\n" +
+                 "攻击提速后按「峰值时刻 ÷ 主段 speed」重算、沿用原有的绝对提前量 → 0.19 / 0.19 / 0.48")]
+        public float[] comboHitTime = { 0.19f, 0.19f, 0.48f };
 
         [Tooltip("各段后摇的取消窗口起点（归一化时间），与动画状态机的 exitTime 对应")]
         public float[] comboRecCancelStart = { 0.3f, 0.3f, 0.45f };
