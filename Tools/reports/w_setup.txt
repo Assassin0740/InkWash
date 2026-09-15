@@ -1,0 +1,46 @@
+========== 一、贴图导入设置 ==========
+  roughness: textureType=Default sRGB=False maxSize=2048
+  → sRGB 已是 false，无需改
+  base:      textureType=Default sRGB=True maxSize=2048
+  normal:    textureType=NormalMap sRGB=False maxSize=2048
+
+========== 二、建材质 M_W_Sword.mat ==========
+  复用已存在的 Assets/_Project/Art/Materials/M_W_Sword.mat
+  shader = Universal Render Pipeline/Lit
+  _BaseMap = texture_pbr_20250901  _BumpMap = texture_pbr_20250901_normal
+  _Metallic = 0.30  _Smoothness = 0.38  keywords = _NORMALMAP
+
+========== 三、建武器预制体 W_Sword.prefab ==========
+  对齐参数：
+    挂点（模型本地 Y）  0.3945
+    缩放                0.4900
+    Align.localPosition (0, 0.213639, 0)
+    Align.localEuler    (180, 0, 0)   ← 模型剑尖在 -Y，翻过来才沿手骨 +Y 指出去
+
+  换算出的世界观感：
+    总长        1.299 m  = 身高的 59.8%（真剑 ~57-60%）
+    剑身        0.975 m
+    剑格展      0.252 m
+    腕→剑格柄侧 0.147 m
+    腕→剑尖     1.122 m
+    剑首端在腕后 0.177 m  （< 前臂长 0.25 m → 整段落在前臂+宽袖内部，视觉上被遮住）
+
+  model node normalized: localPos=(0.0000, 0.0000, 0.0000) localEuler=(0.00, 0.00, 0.00) localScale=(1.0000, 1.0000, 1.0000)
+  已把 Assets/_Project/Art/Materials/M_W_Sword.mat 指到模型渲染器（覆盖 FBX 内嵌的 Material.002）
+  shadowCastingMode = On  receiveShadows = True
+  已保存 Assets/_Project/Prefabs/Weapons/W_Sword.prefab
+
+========== 四、重新读盘复核 ==========
+  W_Sword
+    localPos=(0.0000, 0.0000, 0.0000) localEuler=(0.00, 0.00, 0.00) localScale=(1.0000, 1.0000, 1.0000)
+    Align
+      localPos=(0.0000, 0.2136, 0.0000) localEuler=(0.00, 180.00, 180.00) localScale=(0.4900, 0.4900, 0.4900)
+      W_Sword [MeshRenderer]
+        localPos=(0.0000, 0.0000, 0.0000) localEuler=(0.00, 0.00, 0.00) localScale=(1.0000, 1.0000, 1.0000)
+  渲染器材质 = M_W_Sword
+  网格顶点 29959 / 三角 50000
+  挂点空间包围盒 X -0.0569..0.0569  Y -0.0798..0.5071  Z -0.0236..0.0236
+  → 世界观感：腕→剑尖 1.1221 m，剑首端在腕后 0.1765 m，剑格左右展 0.2520 m，剑身前后厚 0.1044 m
+  验证 剑尖       挂点空间 ( 0.0000,  0.5071,  0.0000) → 沿手骨 +Y 的世界距离  1.1221 m  （腕前方，符合预期）
+  验证 剑格柄侧     挂点空间 ( 0.0000,  0.0666,  0.0000) → 沿手骨 +Y 的世界距离  0.1475 m  （腕前方，符合预期）
+  验证 剑首端      挂点空间 ( 0.0000, -0.0798,  0.0000) → 沿手骨 +Y 的世界距离 -0.1765 m  （腕后方）

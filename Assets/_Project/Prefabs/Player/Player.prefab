@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2483706807998641495}
   - component: {fileID: 4642661093928065823}
   - component: {fileID: 4669033096784831669}
+  - component: {fileID: 5718752645052886692}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -155,7 +156,7 @@ MonoBehaviour:
   bladeAnchor: {fileID: 0}
   inkShader: {fileID: 4800000, guid: 6feba9f04ac3067488d382171e669422, type: 3}
   flyingWhite: 0.35
-  bladeLocalOffset: {x: 0, y: 0.28016266, z: 0}
+  bladeLocalOffset: {x: -0.0054918, y: 0.06228616, z: 0.2997596}
   trailTime: 0.16
   trailStartWidth: 0.15363759
   trailEndWidth: 0.009037505
@@ -168,9 +169,11 @@ MonoBehaviour:
   arcLifetime: 0.26
   arcTiltDeg: -28
   arcHeight: 1.15
-  placeholderBlade: 1
+  placeholderBlade: 0
   bladeLength: 0.474469
   bladeWidth: 0.033890646
+  weaponPrefab: {fileID: 461136590825770978, guid: 61ab47f461cd03c48bae03518ebf2e6c,
+    type: 3}
   trailMinSpeed: 3
   trailStartDelay: 0.05
   trailHoldMinSpeed: 1.6
@@ -239,6 +242,24 @@ MonoBehaviour:
     y: 0.0022
   - state: Atk3
     y: 0.0129
+--- !u!114 &5718752645052886692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a32da13b0d673ec4590b837155b3c9ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onlyWhenArmed: 1
+  rightHand: 1
+  leftHand: 0
+  fingerCurl: {x: 70, y: 85, z: 55}
+  thumbCurl: {x: 30, y: 30, z: 25}
+  palmOffset: 0.015
 --- !u!1001 &6319620012404730793
 PrefabInstance:
   m_ObjectHideFlags: 0

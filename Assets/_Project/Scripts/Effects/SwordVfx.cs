@@ -19,6 +19,10 @@ namespace InkWash.Effects
     ///
     /// 拖尾默认关闭，只在挥砍窗口内发射，否则角色待机时也会拖出一条线。
     ///
+    /// 武器：`weaponPrefab` 有值就挂真实模型（F3「古代宝剑」），否则退回程序化占位剑。
+    /// 真实模型的挂点对齐**全部烘在预制体里**（Assets/_Project/Prefabs/Weapons/W_Sword.prefab），
+    /// 本组件只负责 Instantiate 到右手骨下 —— 刻意不在代码里再存一份挂点偏移/缩放。
+    ///
     /// 材质用自研的 `InkWash/InkSlash`（见 Assets/_Project/Shaders/InkSlash.shader）：
     /// URP 内置 Unlit **不读顶点色**，会导致拖尾的墨色渐隐与弧光的收笔全部失效，
     /// 所以必须换成读 COLOR 语义的着色器。
@@ -68,10 +72,10 @@ namespace InkWash.Effects
         [Tooltip("弧光生成点相对角色原点的高度")]
         public float arcHeight = 1.15f;
 
-        [Header("占位刀身")]
-        [Tooltip("角色手上目前没有武器模型，是空手挥刀，动作读不出来。\n" +
-                 "打开后挂一把程序化生成的三维直剑做占位，等有正式武器模型再关掉\n" +
-                 "（正式模型可直接挂到 bladeAnchor（右手骨）下）。")]
+        [Header("占位刀身（仅在 weaponPrefab 留空时使用）")]
+        [Tooltip("角色手上没有武器模型时，挥砍动作会读不出来（看着像空手摆姿势）。\n" +
+                 "打开后挂一把程序化生成的三维直剑兜底。\n" +
+                 "⚠ 一旦 weaponPrefab 有值，本项**自动失效** —— 真实模型优先。")]
         public bool placeholderBlade = true;
 
         [Tooltip("剑身长度。⚠ 单位是**模型容器空间**（即 Visual.localScale 生效前的空间），\n" +
@@ -82,6 +86,13 @@ namespace InkWash.Effects
                  "⚠ 本项目换 Feng 时漏折算了这一项，世界宽被撑到 0.166 m（1 m 长的剑宽 16.6 cm）\n" +
                  "→ 剑看起来是块平板。折算是 0.075 / 2.213 = 0.03389。")]
         public float bladeWidth = 0.075f;
+
+        [Header("正式武器")]
+        [Tooltip("有正式武器模型就赋值。赋值后优先用真实模型，placeholderBlade 只在留空时兜底。\n" +
+                 "预制体请遵循 socket 约定：**根节点保持 identity**（根原点 = 挂载点），\n" +
+                 "对齐用的位移/旋转/缩放放在子节点里。这样本组件就不需要再存「挂点偏移 / 缩放」\n" +
+                 "之类的序列化字段 —— 少一个字段就少一次「换模型漏折算」。")]
+        public GameObject weaponPrefab;
 
         [Header("拖尾发射门控")]
         // 问题：挥砍事件一到就开拖尾，可这时候刀还在抬手准备、几乎没速度，
@@ -124,8 +135,13 @@ namespace InkWash.Effects
         /// <summary>拖尾当前的顶点数 —— 大于 0 才说明屏幕上真的有那道笔触，而不只是"开关打开了"。</summary>
         public int TrailPositionCount => _trail != null ? _trail.positionCount : 0;
 
-        /// <summary>占位刀身是否已生成（用于确认手上不是空手挥空气）。</summary>
-        public bool HasPlaceholderBlade => _bladeMesh != null && bladeAnchor != null;
+        /// <summary>手上是否真的有武器：正式模型或程序化占位剑，二者其一。验收判据。</summary>
+        public bool HasWeapon => _weapon != null || (_bladeMesh != null && bladeAnchor != null);
+
+        /// <summary>当前挂的是哪把武器（验收报告直接打印，免得看不出是真实模型还是占位剑）。</summary>
+        public string WeaponName => _weapon != null
+            ? _weapon.name
+            : (_bladeMesh != null ? "PlaceholderBlade(程序化占位)" : "无");
 
         /// <summary>右手骨骼是否解析成功（拖尾挂点）。</summary>
         public bool HasBladeAnchor => bladeAnchor != null;
@@ -145,6 +161,7 @@ namespace InkWash.Effects
         private Material _bladeMat;
         private Mesh _arcMesh;
         private Mesh _bladeMesh;
+        private GameObject _weapon;      // 运行时克隆出来的正式武器（weaponPrefab）
         private ThirdPersonCamera _cam;
 
         // 拖尾发射窗口（由 Update 逐帧按刀刃速度开关，不再用协程定时）
@@ -174,7 +191,7 @@ namespace InkWash.Effects
             _arcMesh = BuildArcMesh(arcRadius, arcThickness, arcSweepDeg, 28);
 
             SetupTrail();
-            BuildPlaceholderBlade();
+            BuildWeapon();
 
             if (player != null)
             {
@@ -198,6 +215,7 @@ namespace InkWash.Effects
             if (_bladeMat != null) Destroy(_bladeMat);
             if (_arcMesh != null) Destroy(_arcMesh);
             if (_bladeMesh != null) Destroy(_bladeMesh);
+            if (_weapon != null) Destroy(_weapon);
         }
 
         // ------------------------------------------------------------------
@@ -279,6 +297,27 @@ namespace InkWash.Effects
         /// 这里挂一把程序化生成的**三维**直剑做占位（菱形截面剑身 + 剑格，见 BuildBladeMesh）。
         /// 有正式武器模型后把 placeholderBlade 关掉，或直接把模型挂到 bladeAnchor（右手骨）下。
         /// </summary>
+        /// <summary>
+        /// 挂武器：有正式模型优先，否则退回程序化占位剑。
+        ///
+        /// ⚠ 用 <c>Instantiate(prefab, parent, false)</c>：第三个参数 false 表示**保留预制体自身的
+        ///   local 变换**、不按世界变换去反算。socket 约定下预制体根是 identity 所以看起来无所谓，
+        ///   但传 true 会拿角色当前的姿态去反算根节点，凭空引入一次无意义的补偿。
+        /// </summary>
+        private void BuildWeapon()
+        {
+            if (bladeAnchor == null) return;
+
+            if (weaponPrefab != null)
+            {
+                _weapon = Instantiate(weaponPrefab, bladeAnchor, false);
+                _weapon.name = weaponPrefab.name;
+                return;
+            }
+
+            BuildPlaceholderBlade();
+        }
+
         private void BuildPlaceholderBlade()
         {
             if (!placeholderBlade || bladeAnchor == null) return;

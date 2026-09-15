@@ -1,0 +1,15 @@
+========== 接线前 ==========
+  weaponPrefab      = NULL
+  placeholderBlade  = True
+  bladeAnchor 解析  = (留空，运行时自动找右手骨)
+
+========== 接线后（重新读盘复核）==========
+  weaponPrefab      = W_Sword
+  weaponPrefab 路径 = Assets/_Project/Prefabs/Weapons/W_Sword.prefab
+  placeholderBlade  = False
+  其余刀光参数（应保持上一轮验证过的值）：
+    bladeLocalOffset = (0.000000, 0.280163, 0.000000)
+    bladeLength      = 0.474469  bladeWidth = 0.033891  （占位剑用，本次失效）
+    trailStartWidth  = 0.153638  trailEndWidth = 0.009038
+    trailMinSpeed    = 3.00  trailHoldMinSpeed = 1.60
+    arcRadius=1.45 arcThickness=0.85 arcSweepDeg=130

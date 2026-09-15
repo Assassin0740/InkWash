@@ -857,8 +857,8 @@ namespace InkWash.Utils
                 check("右手骨骼解析成功（拖尾有挂点）", ctx.vfx.HasBladeAnchor,
                     ctx.vfx.HasBladeAnchor ? "已解析" : "未解析");
             if (ctx.vfx != null)
-                check("占位刀身已生成（不是空手挥空气）", ctx.vfx.HasPlaceholderBlade,
-                    ctx.vfx.HasPlaceholderBlade ? "已生成" : "未生成");
+                check("手上武器已就位（不是空手挥空气）", ctx.vfx.HasWeapon,
+                    ctx.vfx.WeaponName);
             if (one != null)
             {
                 check("[D 单段挥砍] 生成刀光弧光", one.arcSpawnDelta >= 1,

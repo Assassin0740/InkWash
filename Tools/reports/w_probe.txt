@@ -1,0 +1,47 @@
+========== W_Sword（F3 古代宝剑）素材探针 ==========
+资产路径：Assets/W_Sword/W_Sword.FBX
+
+=== 一、FBX 子资产清单 ===
+  [AnimationClip   ] __preview__Take 001
+  [GameObject      ] W_Sword  子节点数=0
+  [Material        ] Material.002  shader=Universal Render Pipeline/Lit  路径=Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader
+  [Mesh            ] node_0  顶点29959 三角50000 subMesh1
+  [AnimationClip   ] Take 001
+  [Transform       ] W_Sword
+  [MeshRenderer    ] W_Sword
+  [MeshFilter      ] W_Sword
+
+=== 二、网格几何（局部空间，未旋转未缩放）===
+网格 "node_0"：顶点 29959 / 三角 50000 / subMesh 1
+  bounds.center = (0.0000, 0.0000, 0.0000)
+  bounds.size   = (0.2324, 1.1976, 0.0963)
+  bounds.min    = (-0.1162, -0.5988, -0.0482)
+  bounds.max    = (0.1162, 0.5988, 0.0482)
+  normals=29959  tangents=29959  uv=29959  uv2=0  colors=0  bones=0
+  → 长轴 = Y（1.1976）  次轴 X=0.2324 Y=1.1976 Z=0.0963
+  沿 Y 轴 12 段剖面（看哪端收尖 = 剑尖）：
+    [-0.5988 .. -0.4990]  顶点841    侧向跨 0.0697  另一向跨 0.0400
+    [-0.4990 .. -0.3992]  顶点411    侧向跨 0.0713  另一向跨 0.0418
+    [-0.3992 .. -0.2994]  顶点369    侧向跨 0.0702  另一向跨 0.0390
+    [-0.2994 .. -0.1996]  顶点699    侧向跨 0.0708  另一向跨 0.0372
+    [-0.1996 .. -0.0998]  顶点597    侧向跨 0.0727  另一向跨 0.0356
+    [-0.0998 .. 0.0000]  顶点596    侧向跨 0.0748  另一向跨 0.0351
+    [0.0000 .. 0.0998]  顶点769    侧向跨 0.0781  另一向跨 0.0368
+    [0.0998 .. 0.1996]  顶点3878   侧向跨 0.0967  另一向跨 0.0521
+    [0.1996 .. 0.2994]  顶点11452  侧向跨 0.2324  另一向跨 0.0963
+    [0.2994 .. 0.3992]  顶点2403   侧向跨 0.0717  另一向跨 0.0629
+    [0.3992 .. 0.4990]  顶点3167   侧向跨 0.0533  另一向跨 0.0513
+    [0.4990 .. 0.5988]  顶点4775   侧向跨 0.0982  另一向跨 0.0575
+
+=== 三、实例化后的世界朝向（root 无旋转时）===
+节点层级：
+  W_Sword [Renderer] [Mesh v=29959 sub=1]  localPos=(0.0000, 0.0000, 0.0000) localScale=(1.0000, 1.0000, 1.0000)
+渲染器数量 = 1
+  W_Sword  (MeshRenderer)
+    sharedMaterial = Material.002
+    shader         = Universal Render Pipeline/Lit
+    bounds(世界)   size=(0.2324, 1.1976, 0.0963) center=(0.0000, 0.0000, 0.0000)
+    lossyScale     = 1.0000   localPos = (0.0000, 0.0000, 0.0000)  localRot = (0.00, 0.00, 0.00)
+整体世界包围盒 size = (0.2324, 1.1976, 0.0963)  center = (0.0000, 0.0000, 0.0000)
+→ 实例后长轴 = Y  原生长度 = 1.1976 m
+→ 缩到世界 1.05 m 需要 scale = 0.8768

@@ -66,6 +66,13 @@ sysinfo.txt
 /Assets/Char_Feng/
 /Assets/Char_Feng.meta
 
+# 主角兵器「古代宝剑」（Unity 中国资源商店，发布者：冰凛橙夏，包 ID 20003228，¥0）。
+# 授权同 Char_Feng：Unity 商店标准 EULA，**不可再分发素材本体**。
+# 复原方式：Tools/install_w_sword.py（同样从本机 Asset Store 缓存解包，保 GUID）。
+# 注意：工程自有的 M_W_Sword.mat / W_Sword.prefab 是入库的，它们只引用这里的 GUID。
+/Assets/W_Sword/
+/Assets/W_Sword.meta
+
 # QFramework 的生成目录：由 CodeGenKit 在运行时/编辑器里产出，
 # 且产出它的 QFramework 本身就在 /Assets/ThirdParty/ 里（不入库）。
 # 放进版本控制只会造成"克隆下来有个空壳目录"的困惑。
