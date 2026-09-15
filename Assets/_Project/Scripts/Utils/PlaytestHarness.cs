@@ -268,6 +268,12 @@ namespace InkWash.Utils
             public Camera cam;
             public ThirdPersonCamera rig;
             public SwordVfx vfx;
+            public WeaponHandPose pose;
+            /// <summary>
+            /// 战斗全程观察到的**最大**握拳度（右 / 左）。尺度无关：中指指尖到腕 ÷ 食指根到小指根距离。
+            /// 五指摊开 ≈ 2.2，握成拳 ≈ 1.2。用来抓「攻击时手是张开的」这个回归。
+            /// </summary>
+            public float maxFistRatioRight = -1f, maxFistRatioLeft = -1f;
             public GameObject playerGo;
             public int upperLayerIndex = 1;
             /// <summary>躯干倾角用的两根骨骼（髋、胸/头）。没有它们就没法量化「仰着身子走」。</summary>
@@ -859,6 +865,12 @@ namespace InkWash.Utils
             if (ctx.vfx != null)
                 check("手上武器已就位（不是空手挥空气）", ctx.vfx.HasWeapon,
                     ctx.vfx.WeaponName);
+            if (ctx.pose != null)
+                check("攻击全程两手都握着（不是五指摊开）",
+                    ctx.maxFistRatioRight > 0f && ctx.maxFistRatioRight < 1.7f
+                    && ctx.maxFistRatioLeft > 0f && ctx.maxFistRatioLeft < 1.7f,
+                    "握拳度峰值 右 " + F(ctx.maxFistRatioRight) + " / 左 " + F(ctx.maxFistRatioLeft)
+                    + "（五指摊开≈2.2，握成拳≈1.2）");
             if (one != null)
             {
                 check("[D 单段挥砍] 生成刀光弧光", one.arcSpawnDelta >= 1,
@@ -1608,6 +1620,15 @@ namespace InkWash.Utils
             float yaw = ctx.rig != null ? ctx.rig.Yaw : cam.transform.eulerAngles.y;
             float pitch = ctx.rig != null ? ctx.rig.Pitch : cam.transform.eulerAngles.x;
 
+            // 握拳度峰值：摊开≈2.2 / 握拳≈1.2。
+            // 只在「补丁这一帧确实跑过」时采信 —— 探针都是 LateUpdate 末尾写的，
+            // 刚进战斗那一帧读到的还是上一帧的陈旧值（组件 disabled 时 CurledBoneCount 不再刷新）。
+            if (ctx.pose != null && ctx.pose.enabled && ctx.pose.CurledBoneCount > 0)
+            {
+                if (ctx.pose.RightFistRatio > ctx.maxFistRatioRight) ctx.maxFistRatioRight = ctx.pose.RightFistRatio;
+                if (ctx.pose.LeftFistRatio > ctx.maxFistRatioLeft) ctx.maxFistRatioLeft = ctx.pose.LeftFistRatio;
+            }
+
             return new CombatSample
             {
                 t = t,
@@ -2027,7 +2048,8 @@ namespace InkWash.Utils
                 anim = playerGo.GetComponentInChildren<Animator>(),
                 cam = cam,
                 rig = cam != null ? cam.GetComponent<ThirdPersonCamera>() : null,
-                vfx = playerGo.GetComponent<SwordVfx>()
+                vfx = playerGo.GetComponent<SwordVfx>(),
+                pose = playerGo.GetComponentInChildren<WeaponHandPose>(true)
             };
             if (ctx.ctl == null || ctx.anim == null || cam == null) return null;
             ctx.upperLayerIndex = FindLayerIndex(ctx.anim, "UpperBody");

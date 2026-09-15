@@ -288,9 +288,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onlyWhenArmed: 1
   rightHand: 1
-  leftHand: 0
+  leftHand: 1
   fingerCurl: {x: 70, y: 85, z: 55}
   thumbCurl: {x: 30, y: 30, z: 25}
+  leftFingerCurl: {x: 58, y: 70, z: 45}
+  leftThumbCurl: {x: 25, y: 25, z: 20}
   palmOffset: 0.015
 --- !u!114 &1038111662515904894
 MonoBehaviour:

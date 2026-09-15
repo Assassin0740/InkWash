@@ -1,0 +1,20 @@
+========== 改前 ==========
+  rightHand      = True
+  leftHand       = False
+  fingerCurl     = (70.00, 85.00, 55.00)
+  thumbCurl      = (30.00, 30.00, 25.00)
+  leftFingerCurl = (58.00, 70.00, 45.00)   (新增字段，取 C# 默认)
+  leftThumbCurl  = (25.00, 25.00, 20.00)
+
+已写入并保存。
+
+========== 重新读盘复核 ==========
+  rightHand      = True
+  leftHand       = True
+  fingerCurl     = (70.00, 85.00, 55.00)
+  thumbCurl      = (30.00, 30.00, 25.00)
+  leftFingerCurl = (58.00, 70.00, 45.00)
+  leftThumbCurl  = (25.00, 25.00, 20.00)
+  路径 = Assets/_Project/Prefabs/Player/Player.prefab
+  CombatStance.handPose = Player
+  CombatStance.backSocket = BackSocket

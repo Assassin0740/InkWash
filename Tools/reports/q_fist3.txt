@@ -1,0 +1,32 @@
+InCombat=True  武器挂点=手:CC_Base_R_Hand
+组件已临时关闭（pose.enabled=false），下面全部由本脚本自己算。
+
+==================== 右手（持剑） (CC_Base_R_Hand) ====================
+  链: CC_Base_R_Index1 > CC_Base_R_Index2 > CC_Base_R_Index3   （共 4 条）
+  hand.up(世界)=(-0.812, 0.559, 0.167)   spreadDir(小指−食指)=(-0.572, -0.820, -0.011)   palmN=(0.130, -0.105, 0.986)
+  指纹: 食指根=(-0.138, 2.010, -2.807)  小指根=(-0.185, 1.942, -2.808)  食指到小指距离=0.083m
+  [基线·不卷]            近节= 161.0°   中指指尖到腕=0.128m
+  [ +70° 绕 spreadDir ] 近节= 127.5°   中指指尖到腕=0.108m   Δ指尖=-0.020m
+  [ −70° 绕 spreadDir ] 近节=  92.1°   中指指尖到腕=0.125m   Δ指尖=-0.003m
+  [ +70° 绕 palmN(normal)] 近节= 122.3°   中指指尖到腕=0.119m   Δ指尖=-0.009m
+  -- 局部轴正交性自检（|cos| 应接近 0；接近 1 = 在拧麻花，屈不起来）--
+     CC_Base_R_Index1       |cos(骨向, spreadDir)|=0.025
+     CC_Base_R_Mid1         |cos(骨向, spreadDir)|=0.001
+     CC_Base_R_Ring1        |cos(骨向, spreadDir)|=0.017
+     CC_Base_R_Pinky1       |cos(骨向, spreadDir)|=0.113
+
+==================== 左手（空手） (CC_Base_L_Hand) ====================
+  链: CC_Base_L_Index1 > CC_Base_L_Index2 > CC_Base_L_Index3   （共 4 条）
+  hand.up(世界)=(0.848, -0.282, -0.448)   spreadDir(小指−食指)=(0.272, -0.513, 0.814)   palmN=(-0.460, -0.812, -0.359)
+  指纹: 食指根=(0.144, 1.921, -2.914)  小指根=(0.167, 1.878, -2.846)  食指到小指距离=0.083m
+  [基线·不卷]            近节=  77.2°   中指指尖到腕=0.124m
+  [ +70° 绕 spreadDir ] 近节=   8.3°   中指指尖到腕=0.214m   Δ指尖=+0.090m
+  [ −70° 绕 spreadDir ] 近节= 146.6°   中指指尖到腕=0.114m   Δ指尖=-0.010m
+  [ +70° 绕 palmN(normal)] 近节=  71.0°   中指指尖到腕=0.174m   Δ指尖=+0.049m
+  -- 局部轴正交性自检（|cos| 应接近 0；接近 1 = 在拧麻花，屈不起来）--
+     CC_Base_L_Index1       |cos(骨向, spreadDir)|=0.026
+     CC_Base_L_Mid1         |cos(骨向, spreadDir)|=0.003
+     CC_Base_L_Ring1        |cos(骨向, spreadDir)|=0.007
+     CC_Base_L_Pinky1       |cos(骨向, spreadDir)|=0.117
+
+>>> 诊断完毕；组件已还原启用。
