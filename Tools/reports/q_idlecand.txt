@@ -1,0 +1,33 @@
+[候选] KayKit_Idle_A(现状)  clip=Idle_A  len=1.07s  human=True
+[候选] Feng_Idle  clip=Idle  len=2.50s  human=True
+[候选] KI_Idle01  clip=Idle01  len=2.70s  human=True
+[候选] KayKit_Melee2H_Idle  clip=Melee_2H_Idle  len=1.07s  human=True
+[候选] UAL2_Idle_Shield_Loop  clip=Armature|Idle_Shield_Loop  len=2.50s  human=True
+[候选] UAL2_Idle_No_Loop  clip=Armature|Idle_No_Loop  len=2.50s  human=True
+
+── KayKit_Idle_A(现状)
+   当前实际播放 = Idle_A
+   剑身世界方向 = (-0.455, 0.028, 0.890)  与「竖直向下」夹角 = 91.6°  与「正后方」夹角 = 152.9°
+── Feng_Idle
+   当前实际播放 = Idle
+   剑身世界方向 = (0.557, 0.830, 0.026)  与「竖直向下」夹角 = 146.1°  与「正后方」夹角 = 91.5°
+── KI_Idle01
+   当前实际播放 = Idle01
+   剑身世界方向 = (0.253, 0.340, 0.906)  与「竖直向下」夹角 = 109.9°  与「正后方」夹角 = 154.9°
+── KayKit_Melee2H_Idle
+   当前实际播放 = Melee_2H_Idle
+   剑身世界方向 = (-0.975, 0.220, 0.009)  与「竖直向下」夹角 = 102.7°  与「正后方」夹角 = 90.5°
+── UAL2_Idle_Shield_Loop
+   当前实际播放 = Armature|Idle_Shield_Loop
+   剑身世界方向 = (0.031, 0.580, 0.814)  与「竖直向下」夹角 = 125.5°  与「正后方」夹角 = 144.5°
+── UAL2_Idle_No_Loop
+   当前实际播放 = Armature|Idle_No_Loop
+   剑身世界方向 = (-0.262, 0.540, 0.800)  与「竖直向下」夹角 = 122.7°  与「正后方」夹角 = 143.1°
+      [腕部扭转] 需绕前臂轴 96.9° → 之后与向下夹角 = 59.1°
+      [腕部扭转] 需绕前臂轴 -179.8° → 之后与向下夹角 = 13.4°
+      [腕部扭转] 需绕前臂轴 168.2° → 之后与向下夹角 = 64.3°
+      [腕部扭转] 需绕前臂轴 105.7° → 之后与向下夹角 = 23.1°
+      [腕部扭转] 需绕前臂轴 150.0° → 之后与向下夹角 = 74.9°
+      [腕部扭转] 需绕前臂轴 144.9° → 之后与向下夹角 = 76.4°
+
+对比图（行 = B 背后 / S 右侧 / S+腕部扭转；列 = 候选顺序）→ D:\Unity Project\InkWash\Tools/screenshots/idle_cand

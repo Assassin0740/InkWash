@@ -1,0 +1,23 @@
+EditorApplication.isPlaying = false ✓
+---- 旧值（KayKit 时代）----
+  Idle  -0.0003
+  Walk  0.0569
+  Run  -0.2294
+  Dash  -0.0041
+  Atk1  0.0446
+  Atk1Rec  -0.0030
+  Atk2  0.0494
+  Atk2Rec  0.0022
+  Atk3  0.0129
+---- 新值（Feng）----
+  Idle  0.0307
+  Walk  0.0569
+  Run  -0.2294
+  Dash  -0.0041
+  Atk1  0.0446
+  Atk1Rec  -0.0030
+  Atk2  0.0494
+  Atk2Rec  0.0022
+  Atk3  0.0129
+Visual.localPosition = (0.0000, 0.0000, 0.0000)  localScale = (2.2130, 2.2130, 2.2130)
+已保存 Assets/_Project/Prefabs/Player/Player.prefab

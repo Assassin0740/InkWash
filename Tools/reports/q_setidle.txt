@@ -1,0 +1,4 @@
+controller = Player  →  目标片段 = Idle (2.50s)
+
+Idle 状态原片段 = Idle_A  时长 1.07s
+重新读盘确认 = Idle  src=Assets/Char_Feng/Animation/Idle.anim
