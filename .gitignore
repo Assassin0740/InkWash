@@ -133,3 +133,7 @@ sysinfo.txt
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Python 字节码缓存
+__pycache__/
+*.pyc
