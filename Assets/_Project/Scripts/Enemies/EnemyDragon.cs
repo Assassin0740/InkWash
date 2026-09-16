@@ -88,14 +88,49 @@ namespace InkWash.Enemies
         public float hoverHeight = 3.6f;
         public float hoverOrbitRadius = 11f;
         public float hoverOrbitSpeedDeg = 55f;
-        [Tooltip("★ 沿链的弯曲振幅（度/节）。旧值 11 太小 ⇒ 实测每节只弯 0.2~9.7°，龙是僵的")]
-        public float hoverAmplitudeDeg = 10f;
+        [Tooltip("★ 沿链的弯曲振幅（度/节）。旧值 11 太小 ⇒ 实测每节只弯 0.2~9.7°，龙是僵的。\n" +
+                 "16 = 按交接文档 §3.3 的建议值上调（修好轴向后再上调到 14~18 看观感）。\n" +
+                 "★ 改这个值必须同时改 Z_Enemy_MoLong.prefab —— prefab 里序列化了同名键。")]
+        public float hoverAmplitudeDeg = 16f;
         [Tooltip("★ 游动频率（Hz）。真实蛇形游动是**低频**，旧值 0.55 偏快但可接受")]
         public float hoverFrequency = 0.45f;
         [Tooltip("★ 相位步进（度/节）。这是决定「波长」的关键：波长(节数) = 360 / 此值。旧值 40 ⇒ 每 9 节一个完整波（24 节里塞 2.7 个波，像搓衣板）；新值 15 ⇒ 约每 24 节一个完整波，即身体长 ≈ 一个波长 —— 这才是真实蛇/龙的游动")]
         public float hoverPhaseStepDeg = 15f;
         [Tooltip("★ 垂直面弯曲振幅（度/节）。真实游动不是纯水平摆尾，身体会上下起伏；只做水平摆动是「扁片在转」，加上这个才有立体游动感")]
         public float hoverPitchAmplitudeDeg = 1.5f;
+        [Tooltip("★ 整体横向摆幅（m）—— 用户的「让它跟着正弦波移动」。" +
+                 "只转骨骼时 i=0（尾/根侧）是支点、位移恒为 0（探针实测 0.000）⇒ 看着像「只有中间在动」。\n" +
+                 "给模型容器叠一个横向正弦，整条龙（含尾端）才真的都在动。")]
+        public float bodySwayAmp = 1.6f;
+        [Tooltip("整体横向正弦的频率（Hz）。与 hoverFrequency 同频最自然（身体摆 = 路径摆）")]
+        public float bodySwayFreq = 0.45f;
+        // ── 四肢 / 分支骨 ──
+        // 实测骨架：24 节脊柱单链之外还有 **77 个分支节点**（龙身共 280 个 Transform），
+        //   其中 `脊柱[0] drgon_03` 下挂 3 条大链（后代 27 / 19 / 19 根骨），
+        //   `脊柱[1..10]` 各挂 1 根单骨（背鳍）。
+        //   旧代码只驱动脊柱 ⇒ **四肢从头到尾没动过**，这就是"很虚假"的来源。
+        [Tooltip("★ 四肢（脊柱之外的分支骨）摆动幅度（度）。0 = 关闭")]
+        public float limbSwingDeg = 14f;
+        [Tooltip("四肢摆动频率（Hz）")]
+        public float limbSwingFreq = 0.45f;
+        [Tooltip("分支骨至少要有多少个后代才当成「肢体」来驱动 —— 用来滤掉背鳍那种单骨")]
+        public int limbMinDescendants = 2;
+        [Tooltip("相邻肢体之间的相位差（度），让四肢像划水一样依次摆动")]
+        public float limbPhaseStepDeg = 60f;
+        // ── 头部引导 ──
+        [Tooltip("★ 头部引导偏航上限（度）：转弯时头先转、身体再跟，别让头被身体拖着走。\n" +
+                 "★ 实测：18° 会**长期顶满**（头一直歪着，比不引导更难看），收敛到 8°。")]
+        public float headLeadYawDeg = 8f;
+        [Tooltip("转向速率 → 头部偏航 的增益。\n" +
+                 "★ 实测教训：0.35 会**一直顶满 18°**，头长期歪着比不引导更难看。\n" +
+                 "  0.08 时直线巡航接近 0、只在真转弯时才甩头。")]
+        public float headLeadGain = 0.03f;
+
+        private readonly List<Transform> _limbRoots = new List<Transform>();
+        private readonly List<int> _limbParentIndex = new List<int>();
+        private readonly List<Quaternion> _limbBaseRel = new List<Quaternion>();
+        private Vector3 _prevSwimDir = Vector3.forward;
+        private float _headYaw;
         [Header("★ 拉直基准（覆盖骨架自带的 C/S 弯姿）")]
         [Tooltip("龙的骨架**原生姿态是一条大 C/S 曲线** —— 实测 dg_chain：折线总长 8.266 m，" +
                  "首尾直线只有 4.179 m，逐节弯角 7.9°~65.6°。\n" +
@@ -118,6 +153,35 @@ namespace InkWash.Enemies
         public float waveAmpRootGain = 1.30f;
         [Tooltip("链尾（_spine[Count-1] = 头侧）的摆幅增益。头要稳，所以小")]
         public float waveAmpHeadGain = 0.30f;
+
+        // ================= 判定盒（兜底 + 逐帧贴合骨链）=================
+        // ★★ 先更正一条**我踩过的结论**（留在这里防复发）：
+        //   `Z_Enemy_MoLong.prefab` 里**搜不到** `Hitbox` 的脚本 guid，也搜不到字面量 `damage: 22`，
+        //   于是我曾误判"龙没有判定盒、撕咬 0 伤害"。**这是错的。**
+        //   运行时实测（`GetComponents<Component>()`）：龙的**根节点**组件为
+        //     Transform, NavMeshAgent, CapsuleCollider, Animator, **Hitbox**, InkMaterialSwap, EnemyDragon
+        //   且 `radius = 1.2 / damage = 22 / pointA = (0,1,-1.5) / pointB = (0,1.2,2.5)` ——
+        //   与策划案 §3.2「咬击半径 1.2 / 命中伤害 22 | 现有 prefab」**完全一致**。
+        //
+        //   为什么静态搜不到：**`Z_Enemy_MoLong` 是 prefab 变体**，`Hitbox` 声明在变体的**基**里，
+        //   数值是变体用 `propertyPath: damage` + `value: 22` 这种**覆盖**语法写的。
+        //   所以"按 guid 反 grep .meta/prefab 文本"这类判据对**变体**会给出假阴性。
+        //   ⇒ 教训：判"组件在不在"要**实例化后看组件表**，不要只 grep 文本。
+        //
+        //   因此下面的 `EnsureHitbox()` 只是**兜底**（prefab 里已有 ⇒ 直接提前返回，不会执行到），
+        //   真正生效的是 prefab 自己那个 Hitbox。它的参数**不要在代码里覆写** ——
+        //   本项目硬规矩：prefab 序列化值优先，代码改默认值不生效。
+        [Header("★ 判定盒兜底（prefab 已有则不生效；仅当 prefab 缺失时才自建）")]
+        [Tooltip("兜底判定胶囊半径（m）。策划案 §3.2：1.2")]
+        public float hitRadius = 1.2f;
+        [Tooltip("兜底判定线段是否覆盖整条身体（含尾）")]
+        public bool hitCoversWholeBody = true;
+        public float biteDamageFallback = 22f;
+        public float hitKnockback = 6f;
+        public float hitStunSeconds = 0.4f;
+        public float hitStopSeconds = 0.06f;
+
+        private Hitbox _dragonHitbox;
 
         [Header("攻击选择门槛")]
         [Tooltip("超过这个距离才有机会选龙息（远程）")]
@@ -246,6 +310,18 @@ namespace InkWash.Enemies
         // ---- 运行时状态 ----
         private readonly List<Transform> _spine = new List<Transform>();
         private readonly List<Quaternion> _baseRot = new List<Quaternion>();
+
+        /// <summary>
+        /// 拉直后的基准姿态，表达为**模型容器局部系**（不是每节自己的局部系）。
+        ///
+        /// ★★ 为什么必须这样存：`StraightenSpineBase()` 用 `FromToRotation(段方向, fwd)` 拉直，
+        ///   那是**最小旋转** —— 它把每节对到直线上之后，**绕链方向的 roll 不受控、且逐节不同**。
+        ///   于是"骨骼局部 Y"在拉直后不再指"上"：`localRotation * Euler(0, yaw, 0)`
+        ///   实际变成了**上下摆**（实测垂直跨度 10.787 m，见 Tools/reports/dg_axis2.txt）。
+        ///   换成容器局部系后，绕 (0,1,0) 转就**一定**是左右摆，与骨骼 roll 完全无关。
+        /// </summary>
+        private readonly List<Quaternion> _baseRel = new List<Quaternion>();
+
         private DragonAttack _attack;
         private float _orbitAngle;
         private Transform _modelRoot;
@@ -257,6 +333,7 @@ namespace InkWash.Enemies
         private DivePhase _dive = DivePhase.None;
         private Vector3 _diveTarget;            // 俯冲的预判落点（水平）
         private Vector3 _diveStart;             // 俯冲起点（水平）
+        private Vector3 _passDir = Vector3.forward;   // 俯冲方向（"穿过主角"沿它继续滑出）
         private float _airFrames, _totalFrames; // A1 统计
         private bool _circleHoldPose;           // 盘旋期是否已经摆好姿态
         private float _circleCd;                // 盘旋→选招的剩余冷却
@@ -265,6 +342,8 @@ namespace InkWash.Enemies
         {
             base.Awake();
             ResolveSpine();
+            EnsureHitbox();
+            ResolveLimbs();      // 必须在 ResolveSpine（含拉直）之后：基准要取拉直后的姿态
         }
 
         /// <summary>
@@ -283,6 +362,7 @@ namespace InkWash.Enemies
         {
             _spine.Clear();
             _baseRot.Clear();
+            _baseRel.Clear();
 
             Transform start = spineRoot;
             if (start == null)
@@ -367,6 +447,8 @@ namespace InkWash.Enemies
             }
 
             if (straightenSpine) StraightenSpineBase();
+            // ★ 不开拉直时也要采一次，保证 _baseRel 与 _spine 等长（驱动写世界旋转要靠它）。
+            else CaptureBaseRel();
         }
 
         /// <summary>
@@ -390,7 +472,7 @@ namespace InkWash.Enemies
         /// </summary>
         private void StraightenSpineBase()
         {
-            if (_spine.Count < 2) return;
+            if (_spine.Count < 2) { CaptureBaseRel(); return; }
 
             Vector3 fwd = _modelRoot != null ? _modelRoot.forward : Vector3.forward;
             if (fwd.sqrMagnitude < 1e-8f) fwd = Vector3.forward;
@@ -405,6 +487,182 @@ namespace InkWash.Enemies
 
             // 拉直后的姿态成为新基准：之后所有偏移都叠在"直线"上
             for (int i = 0; i < _spine.Count; i++) _baseRot[i] = _spine[i].localRotation;
+
+            // ★ 额外记一份「相对模型容器」的基准旋转（形状描述，与容器朝向解耦）
+            CaptureBaseRel();
+        }
+
+        /// <summary>
+        /// 把当前脊骨姿态记成**相对模型容器**的基准旋转 `_baseRel`。
+        ///
+        /// ★★ 为什么不直接用骨骼局部旋转 `_baseRot` 当基准（本轮根因）：
+        ///   `StraightenSpineBase()` 的 `FromToRotation(段方向, fwd)` 是**最小旋转**，
+        ///   拉直后"骨骼局部 Y"不再指"上"、且逐节不同。用局部轴做弯曲，几何上就
+        ///   不是"绕上轴左右摆"了 —— 实测垂直跨度 10.787 m、水平只有 2.123 m。
+        ///   存成容器局部系后，写入时用
+        ///     `rotation = _modelRoot.rotation * AngleAxis(角, 语义轴) * _baseRel[i]`
+        ///   就能保证"绕 up ⇒ 一定左右、绕 right ⇒ 一定俯仰"。
+        /// </summary>
+        private void CaptureBaseRel()
+        {
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            _baseRel.Clear();
+            for (int i = 0; i < _spine.Count; i++)
+            {
+                if (_spine[i] == null) { _baseRel.Add(Quaternion.identity); continue; }
+                _baseRel.Add(Quaternion.Inverse(rootRot) * _spine[i].rotation);
+            }
+        }
+
+        /// <summary>
+        /// 运行时补一个跟着骨链走的判定盒（prefab 里没有，缘由见字段区注释）。
+        /// `Hitbox` 是**纯脚本**：自己用 `Physics.OverlapCapsuleNonAlloc` 做线段胶囊扫描，
+        /// 不需要 Collider、也不需要 Rigidbody ⇒ 建起来没有任何物理副作用。
+        /// </summary>
+        private void EnsureHitbox()
+        {
+            if (_hitbox != null) return;                        // 将来 prefab 补了就用它自己的
+            if (_spine.Count == 0 || _modelRoot == null) return;
+            if (_dragonHitbox != null) return;
+
+            var host = new GameObject("DragonHitbox");
+            host.transform.SetParent(_modelRoot, false);
+            host.transform.localPosition = Vector3.zero;
+            host.transform.localRotation = Quaternion.identity;
+            host.transform.localScale = Vector3.one;
+
+            _dragonHitbox = host.AddComponent<Hitbox>();
+            _dragonHitbox.owner = gameObject;
+            _dragonHitbox.ownerFaction = Faction.Enemy;
+            _dragonHitbox.radius = hitRadius;
+            _dragonHitbox.damage = biteDamageFallback;
+            _dragonHitbox.knockback = hitKnockback;
+            _dragonHitbox.hitStun = hitStunSeconds;
+            _dragonHitbox.hitStop = hitStopSeconds;
+            _dragonHitbox.oncePerTargetInWindow = true;
+            _dragonHitbox.targetMask = ~0;
+            _hitbox = _dragonHitbox;                            // 基类/PerformHit 走同一条路
+
+            // 诊断用：让探针能确认"确实建起来了"
+            _spineLinksFound = _spine.Count;
+        }
+
+        /// <summary>
+        /// 每帧把判定线段贴到骨链上。
+        ///
+        /// 端点写的是**模型容器（`_modelRoot`）局部坐标**，而判定盒自己也挂在 `_modelRoot` 下、
+        /// 本地变换是单位阵 ⇒ `Hitbox` 内部 `transform.TransformPoint(pointA/B)` 正好还原成世界坐标，
+        /// 于是胶囊与身体严格重合（含蛇形波的摆动）。只在判定窗口开着时才同步，常态零开销。
+        /// </summary>
+        private void SyncHitboxToSpine()
+        {
+            if (_dragonHitbox == null || _modelRoot == null) return;
+            if (!_dragonHitbox.IsActive) return;
+            if (_spine.Count < 2) return;
+
+            int last = _spine.Count - 1;
+            int first = hitCoversWholeBody ? 0 : Mathf.Max(0, _spine.Count - biteHeadLinks);
+            var a = _spine[first];
+            var b = _spine[last];
+            if (a == null || b == null) return;
+
+            _dragonHitbox.pointA = _modelRoot.InverseTransformPoint(a.position);
+            _dragonHitbox.pointB = _modelRoot.InverseTransformPoint(b.position);
+        }
+
+        /// <summary>
+        /// 收集**脊柱之外**的分支骨（四肢 / 鳍 / 爪），并记下它们的容器系基准姿态。
+        ///
+        /// 为什么必须单独收集：`ResolveSpine()` 每层只取「第一个非 SMR 子节点」，
+        /// 采到的是纯脊柱单链；四肢是**旁挂的分支**，旧代码从来没碰过它们 ⇒ 龙游动时爪子纹丝不动。
+        /// 判据用「后代数量 ≥ limbMinDescendants」：背鳍那种单骨会被滤掉，只驱动真正的肢体链。
+        /// </summary>
+        private void ResolveLimbs()
+        {
+            _limbRoots.Clear();
+            _limbParentIndex.Clear();
+            _limbBaseRel.Clear();
+            if (_spine.Count == 0) return;
+
+            var inSpine = new HashSet<Transform>();
+            for (int i = 0; i < _spine.Count; i++) if (_spine[i] != null) inSpine.Add(_spine[i]);
+
+            for (int i = 0; i < _spine.Count; i++)
+            {
+                var t = _spine[i];
+                if (t == null) continue;
+                for (int k = 0; k < t.childCount; k++)
+                {
+                    var c = t.GetChild(k);
+                    if (c == null || inSpine.Contains(c)) continue;
+                    if (CountDescendants(c) < limbMinDescendants) continue;
+                    _limbRoots.Add(c);
+                    _limbParentIndex.Add(i);
+                }
+            }
+
+            // 基准同样存成「容器局部系」，与 §3 的 `_baseRel` 同一套约定（不依赖骨骼局部轴）
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            for (int k = 0; k < _limbRoots.Count; k++)
+                _limbBaseRel.Add(Quaternion.Inverse(rootRot) * _limbRoots[k].rotation);
+        }
+
+        private static int CountDescendants(Transform t)
+        {
+            if (t == null) return 0;
+            int n = 0;
+            for (int i = 0; i < t.childCount; i++) n += 1 + CountDescendants(t.GetChild(i));
+            return n;
+        }
+
+        /// <summary>
+        /// 四肢正弦摆动：绕**容器 right** 前后划（像划水/蹬腿），相位沿身体依次错开，
+        /// 左右两侧（同一父节点的第 1、2 个分支）反相，避免"同手同脚"。
+        /// </summary>
+        private void ApplyLimbMotion(float phase)
+        {
+            if (_limbRoots.Count == 0 || limbSwingDeg <= 0f) return;
+            if (_modelRoot == null) return;
+
+            Quaternion rootRot = _modelRoot.rotation;
+            float lp = 2f * Mathf.PI * limbSwingFreq * Time.time;
+            float step = limbPhaseStepDeg * Mathf.Deg2Rad;
+
+            for (int k = 0; k < _limbRoots.Count && k < _limbBaseRel.Count; k++)
+            {
+                var b = _limbRoots[k];
+                if (b == null) continue;
+                float ph = lp - _limbParentIndex[k] * step + (k % 2 == 0 ? 0f : Mathf.PI);
+                float swing = limbSwingDeg * Mathf.Sin(ph);
+                b.rotation = rootRot * Quaternion.AngleAxis(swing, Vector3.right) * _limbBaseRel[k];
+            }
+        }
+
+        /// <summary>
+        /// 头部引导：转弯时给头颈叠一个**绕容器 up** 的偏航，越靠头端权重越大。
+        ///
+        /// 为什么要：真实的蛇/鳗是**头先转向、身体再扫过去**；旧实现只有 `transform.LookRotation(_swimDir)`
+        /// 转整个根节点，头本身没有任何额外朝向 ⇒ 转弯时看着像"整条龙被硬掰过去"。
+        /// 注意与"头要稳"不冲突：`waveAmpHeadGain` 管的是**抖动**，这里管的是**朝向**。
+        /// </summary>
+        private void ApplyHeadSteer()
+        {
+            if (_spine.Count == 0) return;
+            if (Mathf.Abs(_headYaw) < 0.01f) return;
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
+            int span = Mathf.Max(1, _spine.Count - start);
+
+            for (int i = start; i < _spine.Count; i++)
+            {
+                if (_spine[i] == null) continue;
+                float w = (i - start + 1f) / span;                       // 越靠头越强
+                // 在世界系里绕「容器 up」额外转一点，叠加到当前（波驱动后的）姿态上
+                Quaternion add = rootRot * Quaternion.AngleAxis(_headYaw * w, Vector3.up)
+                                 * Quaternion.Inverse(rootRot);
+                _spine[i].rotation = add * _spine[i].rotation;
+            }
         }
 
         protected override void OnEnterState(EnemyState s)
@@ -600,6 +858,14 @@ namespace InkWash.Enemies
             float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
             ApplySpineOffsetsRaw(hoverAmplitudeDeg, hoverPitchAmplitudeDeg, _spine.Count,
                                  hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase);
+
+            // ── 头部引导：按转向速率给头颈叠一个偏航，让头「领」着走 ──
+            float dyaw = Vector3.SignedAngle(Flat(_prevSwimDir), Flat(_swimDir), Vector3.up);
+            float rate = dyaw / Mathf.Max(1e-4f, Time.deltaTime);
+            float wantYaw = Mathf.Clamp(rate * headLeadGain, -headLeadYawDeg, headLeadYawDeg);
+            _headYaw = Mathf.Lerp(_headYaw, wantYaw, 1f - Mathf.Exp(-8f * Time.deltaTime));
+            _prevSwimDir = _swimDir;
+            ApplyHeadSteer();
         }
 
         /// <summary>盘旋高度由 Update 里的 MoveTowards 负责；这里只保证目标高度正确。</summary>
@@ -760,10 +1026,20 @@ namespace InkWash.Enemies
             float step = Mathf.Max(
                 Mathf.Abs(diff) * 12f * Time.deltaTime,          // 指数逼近（末段收敛平滑）
                 liftSpeed * Time.deltaTime);                     // 恒定速度下限（保证起飞不拖）
+            // ★ 整体横向正弦 —— 用户的「让它跟着正弦波移动」。
+            //   为什么需要：脊骨驱动写的是**世界旋转**，i=0（尾/根侧）是支点，
+            //   它的位置由父节点决定 ⇒ 位移恒为 0（探针实测逐节 X 跨度 i=0 → 0.000），
+            //   观感就是「只有中段在扭，尾巴钉在原地」。给模型容器叠一层横向正弦，
+            //   整条龙（含尾端）就真的都在动。
+            //   基准必须用 _modelRootBaseLocalPos 而不是当前值 —— 否则每帧累加会漂走。
+            float sway = 0f;
+            if (_airborne && bodySwayAmp > 0f)
+                sway = bodySwayAmp * Mathf.Sin(2f * Mathf.PI * bodySwayFreq * Time.time);
+
             _modelRoot.localPosition = new Vector3(
-                _modelRoot.localPosition.x,
+                _modelRootBaseLocalPos.x + sway,
                 Mathf.MoveTowards(cur, want, step),
-                _modelRoot.localPosition.z);
+                _modelRootBaseLocalPos.z);
         }
 
         private float _currentLift;
@@ -860,11 +1136,16 @@ namespace InkWash.Enemies
             // 头颈下压俯角（越靠末端越明显）
             float pitch = 26f * u;
             int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
+            // ★ 俯仰必须绕**容器 right**，不能用骨骼局部 X —— 拉直后局部 X 与链方向近乎平行，
+            //   绕它转是"拧麻花"而不是"低头"（dg_axis 实测夹角 164.5°）。
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
             for (int i = 0; i < _spine.Count; i++)
             {
                 if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
                 int k = i - start;
-                _spine[i].localRotation = _baseRot[i] * Quaternion.Euler(pitch * (1f + 0.12f * k), 0f, 0f);
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(pitch * (1f + 0.12f * k), Vector3.right)
+                    * _baseRel[i];
             }
             FacePlayer(Time.deltaTime);
         }
@@ -874,6 +1155,11 @@ namespace InkWash.Enemies
         {
             _diveStart = transform.position;
             _diveTarget = ComputeDiveTarget();
+
+            // "穿过"用的方向：从俯冲起点指向落点（退化为自身前方时也安全）
+            Vector3 pd = Flat(_diveTarget - _diveStart);
+            _passDir = pd.sqrMagnitude > 0.01f ? pd.normalized : Flat(transform.forward).normalized;
+            if (_passDir.sqrMagnitude < 0.01f) _passDir = Vector3.forward;
             // A4/I4：**按"俯冲开始"计间隔**。
             //   原先记在 Recover 进入时，而 Recover 只占收招的一半 ⇒ 量出来的间隔偏小、
             //   判据形同虚设（实测 0.36 s 也过）。判定时刻才是玩家真正感知到的压迫节奏。
@@ -919,18 +1205,37 @@ namespace InkWash.Enemies
                     Quaternion.LookRotation(Flat(delta).normalized, Vector3.up), 8f * Time.deltaTime);
         }
 
+        /// <summary>
+        /// "唰一下**穿过**主角"：打击 / 拉起相位沿俯冲方向继续前冲，速度随相位线性衰减到 0。
+        ///
+        /// 为什么必须有：一次俯冲的水平行程只够"龙头够到玩家"，龙随即**停在玩家身上**，
+        /// 读起来是"俯冲到脚下咬一口"，而不是用户点名要的"冲过去、穿过去"（策划案 §3.2）。
+        /// 让 Strike(0.22 s) + Recover(0.58 s) 沿同方向继续滑出，
+        /// 总行程 ≈ 15.6×0.22 + 15.6/2×0.58 ≈ 8 m ≈ **一个身长**，
+        /// 于是整条龙越过玩家、从另一侧冲出之后才拉起。
+        /// </summary>
+        private void PassThroughStep(float mul)
+        {
+            if (mul <= 0f) return;
+            MoveHorizontal(_passDir * (circleMoveSpeed * diveSpeedMul * mul * Time.deltaTime));
+        }
+
         /// <summary>咬击：头颈前俯咬合（判定由 PerformHit 开 hitbox）。</summary>
         private void DoStrikeBite(float u)
         {
             _currentLift = strikeLift;
+            PassThroughStep(1f);                 // 穿过：判定帧之后继续沿俯冲方向滑出
             float snap = Mathf.Sin(Mathf.PI * Mathf.Clamp01(u * 1.4f));   // 快速咬一下
             float pitch = -biteAmplitudeDeg * (1f - snap * 0.5f);
             int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
             for (int i = 0; i < _spine.Count; i++)
             {
                 if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
                 int k = i - start;
-                _spine[i].localRotation = _baseRot[i] * Quaternion.Euler(pitch * (1f + 0.15f * k), 0f, 0f);
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(pitch * (1f + 0.15f * k), Vector3.right)
+                    * _baseRel[i];
             }
         }
 
@@ -950,6 +1255,7 @@ namespace InkWash.Enemies
         private void DoStrikeSweep(float u)
         {
             _currentLift = sweepLift;
+            PassThroughStep(1f);                 // 穿过：与撕咬共用俯冲段，同样继续滑出
             float phase = 2f * Mathf.PI * sweepFrequency * (u * sweepGroundDuration);
             // ★ 传 phase 而不是 sin(phase)：内部会再取一次 sin，两个正弦相乘会把振幅压扁
             ApplySpineOffsetsRaw(sweepAmplitudeDeg, 0f, _spine.Count,
@@ -964,12 +1270,16 @@ namespace InkWash.Enemies
         private void DoRecover(float u)
         {
             _currentLift = Mathf.Lerp(strikeLift, DesiredHoverY, Mathf.SmoothStep(0f, 1f, u));
+            PassThroughStep(1f - u);             // 穿过收尾：随拉起把前冲速度线性收掉
             float pitch = -18f * (1f - u);      // 头颈上抬的余韵
             int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
             for (int i = 0; i < _spine.Count; i++)
             {
                 if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
-                _spine[i].localRotation = _baseRot[i] * Quaternion.Euler(0f, 0f, pitch);
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(pitch, Vector3.right)
+                    * _baseRel[i];
             }
         }
 
@@ -991,17 +1301,24 @@ namespace InkWash.Enemies
 
             float pitch = -breathAmplitudeDeg * rise;
             int start = Mathf.Max(0, _spine.Count - breathHeadLinks);
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            // 头颈抬起：绕**容器 right** 俯仰（局部轴在拉直后不再指横轴）
             for (int i = 0; i < _spine.Count; i++)
             {
                 if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
                 int k = i - start;
-                _spine[i].localRotation = _baseRot[i] * Quaternion.Euler(pitch * (1f + 0.2f * k), 0f, 0f);
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(pitch * (1f + 0.2f * k), Vector3.right)
+                    * _baseRel[i];
             }
 
             float phase = 2f * Mathf.PI * breathFrequency * t;
             float sway = 8f * rise * Mathf.Sin(phase);
+            // 尾段随吐息左右摆：绕**容器 up**（与蛇形同一"左右"约定）
             for (int i = 0; i < Mathf.Min(_spine.Count, start); i++)
-                _spine[i].localRotation = _baseRot[i] * Quaternion.Euler(0f, sway * (i / (float)Mathf.Max(1, start)), 0f);
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(sway * (i / (float)Mathf.Max(1, start)), Vector3.up)
+                    * _baseRel[i];
 
             FacePlayer(Time.deltaTime * 1.5f);
         }
@@ -1018,6 +1335,26 @@ namespace InkWash.Enemies
         protected override void Update()
         {
             base.Update();
+
+            // ★★ 关键修复：把"想飞多高"（`_currentLift`）每帧写进容器 localPosition.y。
+            //
+            //   为什么必须放在这里、而不能只留在 `AttackMovement` 里：
+            //   `UpdateBodyLift()` 原本**只有 `AttackMovement` 一个调用点**，而
+            //   `AttackMovement` 只在 Attack 状态被 `EnemyBase.TickAttack` 调用（EnemyBase.cs:367）
+            //   ⇒ 龙在常态 **Chase/盘旋** 期间根本没有人写高度，`TickCircling` 里那句
+            //   `_currentLift = PhaseHoverHeight;` 等于「只设不用」。
+            //   实测（演示场条目 17 盘旋）：`_modelRoot.position.y = 0.05 m` —— 龙是**贴着地面飞**的，
+            //   与 I1「龙的默认态就是在天上盘旋」直接矛盾，也让 `ActionShowcase.DriveDragon`
+            //   里「高度不要自己设，交给 `_currentLift`」的设计前提落空。
+            //   （交接文档 §2.1 那句「实测首节世界 Y ≈ 4.43 m」是高度收口到 `_currentLift` **之前**量的。）
+            //
+            //   ★ 放在 `base.Update()` **之后**：Attack 态里 `AttackMovement` 已经写过一次，
+            //     而 `UpdateBodyLift` 内部是幂等的 `MoveTowards(cur, want, step)`，重复调用无副作用；
+            //     放这个位置还能让下面的 A1 统计（`_airborneRatio`）读到**本帧**的真实高度。
+            UpdateBodyLift();
+
+            // 判定线段每帧贴合骨链（只在判定窗口开着时才有开销）
+            SyncHitboxToSpine();
 
             bool agentOk = _agent != null && _agent.enabled && _agent.isOnNavMesh;
 
@@ -1122,31 +1459,45 @@ namespace InkWash.Enemies
                                           float phase)
         {
             if (_spine.Count == 0) return;
+            if (_baseRel.Count < _spine.Count) CaptureBaseRel();   // 防御：基准未就绪则补采
             int n = links <= 0 ? _spine.Count : Mathf.Min(links, _spine.Count);
             float step = phaseStepDeg * Mathf.Deg2Rad;
+
+            // ★★ 弯曲轴：一律用**模型容器空间的语义轴**，绝不用骨骼局部轴。
+            //
+            //   历史坑（务必别再踩）：`dg_axis` 曾测得「绕局部 Y = 水平弯、绕局部 Z = 垂直弯」，
+            //   那条结论是在**未拉直的大 C 形基准**上量的。加上 `StraightenSpineBase()` 之后
+            //   （`FromToRotation` 的最小旋转带来**逐节不同的 roll**），"局部 Y"不再指"上" ——
+            //   继续用局部轴的结果就是**上下蜿蜒**：`dg_axis2` 实测垂直跨度 10.787 m、
+            //   水平只有 2.123 m。换成容器轴后同一探针测得水平 2.395 m、垂直 0.000 m。
+            //
+            //   ⇒ 绕容器 `up` 一定是左右；绕容器 `right` 一定是俯仰。与骨骼 roll 无关。
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
 
             for (int i = 0; i < n; i++)
             {
                 float ph = phase - i * step;
                 float env = Mathf.Lerp(headGain, tailGain, n <= 1 ? 0f : i / (float)(n - 1));
 
-                // ★★ 弯曲轴实测（dg_axis，每节统一叠 15° 偏移，量"偏移旋转轴 ↔ 该节链方向"的夹角）：
-                //     绕局部 X  → 夹角 164.5°（≈ 与链方向平行）⇒ **自转/扭转，根本不弯**
-                //     绕局部 Y  → 夹角  76.8°（⊥ 链方向），末端位移 y=-0.70 ⇒ **弯曲，且在水平面**
-                //     绕局部 Z  → 夹角  82.0°（⊥ 链方向），末端位移 y=+1.75 ⇒ **弯曲，且在垂直面**
-                //   所以：Euler(pitch, yaw, 0) 里的那个 pitch 其实是**把头拧一圈**，
-                //   这正是"摆动很奇怪、像麻花"的直接来源。正确写法是
-                //     水平蛇形 → 绕局部 Y；垂直起伏 → 绕局部 Z。
+                // 水平行波（左右蛇形）
                 float yaw = yawMaxDeg * env * Mathf.Sin(ph);
                 // ★ 垂直分量**相位错开 90°**：同相位会让每节沿 45° 斜向弯 ⇒ 整条龙拧成螺旋。
                 //   错开后 = 水平行波 + 正交的垂直起伏，才是真实鳗/蛇的立体游动。
                 float pitch = pitchMaxDeg * env * Mathf.Sin(ph + Mathf.PI * 0.5f);
 
-                _spine[i].localRotation = _baseRot[i] *
-                    (Quaternion.Euler(0f, yaw, 0f) * Quaternion.Euler(0f, 0f, pitch));
+                // ★ 写**世界旋转**（`rotation`）而非 `localRotation`：每节的角度是"相对基准的绝对角"，
+                //   不受父节点影响 ⇒ 波形严格是 sin(phase − i·φ)，正是"行波"；
+                //   逐节累加的弯曲由链式父子关系自然产生（与原来的"逐节增量"等价）。
+                _spine[i].rotation = rootRot
+                                     * Quaternion.AngleAxis(yaw, Vector3.up)      // 左右
+                                     * Quaternion.AngleAxis(pitch, Vector3.right) // 俯仰
+                                     * _baseRel[i];
             }
             // 未驱动的节保持基准姿态
             for (int i = n; i < _spine.Count; i++) _spine[i].localRotation = _baseRot[i];
+
+            // 四肢（脊柱之外的分支骨）跟着一起摆 —— 否则只有身子在动、爪子钉着不动
+            ApplyLimbMotion(phase);
         }
 
         /// <summary>回落到地面（只在旧行为 aerialLoop=false 时用到）。</summary>
@@ -1185,6 +1536,21 @@ namespace InkWash.Enemies
         /// </summary>
         public void ForceBeginHoverForTest() { BeginHover(); }
 
+        /// <summary>
+        /// 验收 / 演示专用：**直接推进到攻击态**（`ActionShowcase` 的 18/19/20 条目靠它开招）。
+        ///
+        /// ★★ 这个方法曾经**根本不存在**：`ActionShowcase.TickDragon` 用反射拿它 ——
+        ///   `GetMethod("ForceEnterAttackForTest")` + `if (pEnter != null) pEnter.Invoke(...)`，
+        ///   而 `EnemyDragon` 里从没有过这个名字 ⇒ `!= null` 把 null **静默吞掉**，
+        ///   于是**演示场 18（俯冲撕咬）/ 19（俯冲扫尾）/ 20（吐息）三个条目永远不会开招**，
+        ///   采样窗口里龙一直在盘旋。
+        ///   （作者注释里"只调一次 ForceNextAttack 然后马上出图 ⇒ 三招出图完全一样"记录的就是这个症状，
+        ///    当时被归因成"冷却没走完"。反射式 API 的这个坑：**名字写错不报错，只是永远不生效**。）
+        ///   顺序要求：调用方要**先** `ForceNextAttackForTest(招名)`、**再**调本方法 —— 因为
+        ///   `Enter(Attack)` 会触发 `ChooseAttack()` 消费那个"下一招"标记。
+        /// </summary>
+        public void ForceEnterAttackForTest() { Enter(EnemyState.Attack); }
+
         /// <summary>验收专用：读当前是否在盘旋（`_airborne` 是私有字段）。</summary>
         public bool IsAirborneForTest => _airborne;
 
@@ -1200,6 +1566,9 @@ namespace InkWash.Enemies
             {
                 case DragonAttack.Bite:
                 case DragonAttack.TailSweep:
+                    // 伤害/击退/硬直**全部走 prefab**（龙的 Hitbox 是 prefab 自带，radius 1.2 / damage 22，
+                    // 与策划案 §3.2 一致）。这里**不要**在代码里覆写：本项目硬规矩是 prefab 序列化值优先，
+                    // 代码赋值会把策划在 Inspector 里调好的数值悄悄改掉。
                     if (_hitbox != null) _hitbox.Activate(Mathf.Max(0.08f, attackActive));
                     break;
 

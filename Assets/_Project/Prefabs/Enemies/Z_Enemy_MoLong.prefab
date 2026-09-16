@@ -388,7 +388,7 @@ MonoBehaviour:
   hoverHeight: 3.6
   hoverOrbitRadius: 11
   hoverOrbitSpeedDeg: 55
-  hoverAmplitudeDeg: 10
+  hoverAmplitudeDeg: 16
   swimSpeed: 8
   swimTurnRate: 1.1
   swimRadiusGain: 0.12
