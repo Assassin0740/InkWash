@@ -206,6 +206,14 @@ namespace InkWash.Player
         public bool AttackStateSeen => _attackStateSeen;
 
         /// <summary>
+        /// 自动化验收用：把「阶段 / 连击段」压成一个短字符串。
+        /// 探针每帧都会读它一次，单独读两个属性再拼串会在每次采样里产生
+        /// 两次装箱；更重要的是报告里"Locomotion/0"这种写法一眼能看出
+        /// 「连按三次到底接成了几段」—— 这是连招是否真的串起来的关键证据。
+        /// </summary>
+        public string PhaseTag => Phase + "/" + _comboStep;
+
+        /// <summary>
         /// 本帧步伐同步所用的片段参考速度（走路用的 walkRefSpeed 还是跑步用的 runRefSpeed）。
         /// 验收靠它把「实际速度 / MotionSpeed」反推回片段速度，核对是否等于所选的参考值。
         /// </summary>

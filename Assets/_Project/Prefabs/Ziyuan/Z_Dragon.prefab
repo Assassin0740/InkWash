@@ -1773,7 +1773,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1691847228807154889}
-  litMaterials: []
+  litMaterials:
+  - {fileID: 2100000, guid: 133c9d49a0a22204b844af2f6195c70d, type: 2}
   inkMaterials:
   - {fileID: 2100000, guid: 133c9d49a0a22204b844af2f6195c70d, type: 2}
 --- !u!1 &1732909675318309163

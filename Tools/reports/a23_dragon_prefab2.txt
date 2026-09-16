@@ -1,0 +1,19 @@
+========== a23 造龙 Boss prefab v2 ==========
+模板 = Enemy_MoYan  源 = Z_Dragon  材质 = M_Ink_Boss_Dragon
+
+  [1] 清空 Visual ×9 → Skeleton_Golem_LegRight, Skeleton_Golem_LegLeft, Skeleton_Golem_Jaw, Skeleton_Golem_Head, Skeleton_Golem_Eyes, Skeleton_Golem_Body, Skeleton_Golem_ArmRight, Skeleton_Golem_ArmLeft, Rig_Large
+  [2] 克隆搬入 ×3 → Object_6, Object_281, Object_282
+  [2b] Visual 下非 Model 残留 = 0
+  [3] 搬入后包围盒 X=4.326 Y=1.719 Z=4.235  长轴=4.326
+  [4] Model.localRotation = (0,-90,0)
+  [5] k = 7 / 4.326 = 1.61806
+  [6] 落地: 1分位=-7000.005 → holder.localPosition=(0.0000, 7000.0050, 0.0000)
+  [7] ★复核(go 空间): X=4.326 Y=1.719 Z=4.235  体长=4.326  脚底偏离0=-7000.0310
+  [8] 移除 EnemyElite
+  [8] 已加 EnemyDragon
+  [9] 材质换上 ×2  inkMaterials=[M_Ink_Boss_Dragon]
+  [10] hp=620 spd=4.4 sight=30 atkRange=7 cd=0.9 xp=120
+  [10] Capsule h=2.6 r=1.6
+  [10] Hitbox (0,1.2,0.5)→(0,1.6,4.5) r=1.6 dmg=22
+  [10] Muzzle (0,2.0,3.0)
+  [11] 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab

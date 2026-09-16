@@ -1,0 +1,310 @@
+================ 1) 敌人 prefab ================
+
+--- Enemy_MoOu.prefab ---
+  层级（共 36 个 Transform）:
+    Enemy_MoOu  <Transform NavMeshAgent CapsuleCollider Animator [ctrl=EnemyRanged avatar=Skeleton_MageAvatar human=Y] Hitbox EnemyRanged {hp=30 sight=20 atkRange=10.5 windup=0.42 spd=2.9/1.4} InkMaterialSwap >
+      Visual  <Transform >
+        Rig_Medium  <Transform >
+          root  <Transform >
+            hips  <Transform >
+              spine  <Transform >
+                chest  <Transform >
+                  head  <Transform >
+                    Skeleton_Mage_Hat  <Transform MeshFilter MeshRenderer >
+                  upperarm.l  <Transform >
+                    lowerarm.l  <Transform >
+                      wrist.l  <Transform >
+                        hand.l  <Transform >
+                          handslot.l  <Transform >
+                  upperarm.r  <Transform >
+                    lowerarm.r  <Transform >
+                      wrist.r  <Transform >
+                        hand.r  <Transform >
+                          handslot.r  <Transform >
+              upperleg.l  <Transform >
+                lowerleg.l  <Transform >
+                  foot.l  <Transform >
+                    toes.l  <Transform >
+              upperleg.r  <Transform >
+                lowerleg.r  <Transform >
+                  foot.r  <Transform >
+                    toes.r  <Transform >
+        Skeleton_Mage_ArmLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_ArmRight  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_Body  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_Eyes  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_Jaw  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_LegLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_LegRight  <Transform SkinnedMeshRenderer >
+        Skeleton_Mage_Skull  <Transform SkinnedMeshRenderer >
+      Muzzle  <Transform >
+  渲染器材质:
+    Skeleton_Mage_Hat -> skeleton
+    Skeleton_Mage_ArmLeft -> M_Ink_Enemy_MoOu_0
+    Skeleton_Mage_ArmRight -> skeleton
+    Skeleton_Mage_Body -> skeleton
+    Skeleton_Mage_Eyes -> Glow
+    Skeleton_Mage_Jaw -> skeleton
+    Skeleton_Mage_LegLeft -> skeleton
+    Skeleton_Mage_LegRight -> skeleton
+    Skeleton_Mage_Skull -> skeleton
+
+--- Enemy_MoTu.prefab ---
+  层级（共 35 个 Transform）:
+    Enemy_MoTu  <Transform NavMeshAgent CapsuleCollider Animator [ctrl=EnemyMelee avatar=Skeleton_MinionAvatar human=Y] Hitbox EnemyMelee {hp=42 sight=17 atkRange=2.1 windup=0.34 spd=3.6/1.6} InkMaterialSwap >
+      Visual  <Transform >
+        Rig_Medium  <Transform >
+          root  <Transform >
+            hips  <Transform >
+              spine  <Transform >
+                chest  <Transform >
+                  head  <Transform >
+                  upperarm.l  <Transform >
+                    lowerarm.l  <Transform >
+                      wrist.l  <Transform >
+                        hand.l  <Transform >
+                          handslot.l  <Transform >
+                  upperarm.r  <Transform >
+                    lowerarm.r  <Transform >
+                      wrist.r  <Transform >
+                        hand.r  <Transform >
+                          handslot.r  <Transform >
+              upperleg.l  <Transform >
+                lowerleg.l  <Transform >
+                  foot.l  <Transform >
+                    toes.l  <Transform >
+              upperleg.r  <Transform >
+                lowerleg.r  <Transform >
+                  foot.r  <Transform >
+                    toes.r  <Transform >
+        Skeleton_Minion_ArmLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_ArmRight  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_Body  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_Cloak  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_Eyes  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_Head  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_Jaw  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_LegLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Minion_LegRight  <Transform SkinnedMeshRenderer >
+  渲染器材质:
+    Skeleton_Minion_ArmLeft -> M_Ink_Enemy_MoTu_0
+    Skeleton_Minion_ArmRight -> skeleton
+    Skeleton_Minion_Body -> skeleton
+    Skeleton_Minion_Cloak -> skeleton
+    Skeleton_Minion_Eyes -> Glow
+    Skeleton_Minion_Head -> skeleton
+    Skeleton_Minion_Jaw -> skeleton
+    Skeleton_Minion_LegLeft -> skeleton
+    Skeleton_Minion_LegRight -> skeleton
+
+--- Enemy_MoYan.prefab ---
+  层级（共 34 个 Transform）:
+    Enemy_MoYan  <Transform NavMeshAgent CapsuleCollider Animator [ctrl=EnemyElite avatar=Skeleton_GolemAvatar human=Y] Hitbox EnemyElite {hp=260 sight=22 atkRange=3.4 windup=0.62 spd=3/1.5} InkMaterialSwap >
+      Visual  <Transform >
+        Rig_Large  <Transform >
+          root  <Transform >
+            hips  <Transform >
+              spine  <Transform >
+                chest  <Transform >
+                  head  <Transform >
+                  upperarm.l  <Transform >
+                    lowerarm.l  <Transform >
+                      wrist.l  <Transform >
+                        hand.l  <Transform >
+                          handslot.l  <Transform >
+                  upperarm.r  <Transform >
+                    lowerarm.r  <Transform >
+                      wrist.r  <Transform >
+                        hand.r  <Transform >
+                          handslot.r  <Transform >
+              upperleg.l  <Transform >
+                lowerleg.l  <Transform >
+                  foot.l  <Transform >
+                    toes.l  <Transform >
+              upperleg.r  <Transform >
+                lowerleg.r  <Transform >
+                  foot.r  <Transform >
+                    toes.r  <Transform >
+        Skeleton_Golem_ArmLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_ArmRight  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_Body  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_Eyes  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_Head  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_Jaw  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_LegLeft  <Transform SkinnedMeshRenderer >
+        Skeleton_Golem_LegRight  <Transform SkinnedMeshRenderer >
+  渲染器材质:
+    Skeleton_Golem_ArmLeft -> M_Ink_Enemy_MoYan_0
+    Skeleton_Golem_ArmRight -> skeleton
+    Skeleton_Golem_Body -> skeleton
+    Skeleton_Golem_Eyes -> Glow
+    Skeleton_Golem_Head -> skeleton
+    Skeleton_Golem_Jaw -> skeleton
+    Skeleton_Golem_LegLeft -> skeleton
+    Skeleton_Golem_LegRight -> skeleton
+
+================ 2) 敌人 AnimatorController ================
+
+--- EnemyMelee.controller ---
+  参数:
+    [Float] Speed
+    [Trigger] Attack
+    [Trigger] Attack2
+    [Trigger] Hit
+    [Trigger] Dead
+  层级:
+    Layer 'Base Layer' (default=Idle)
+      STATE 'Idle'  motion=Idle_A  speed=1
+      STATE 'Run'  motion=Running_A  speed=1
+      STATE 'Attack'  motion=Melee_1H_Attack_Slice_Diagonal  speed=1
+      STATE 'Hit'  motion=Hit_A  speed=1
+      STATE 'Dead'  motion=Death_A  speed=1
+      ANY-> 'Attack' cond=Attack[If] 
+      ANY-> 'Hit' cond=Hit[If] 
+      ANY-> 'Dead' cond=Dead[If] 
+      'Idle' -> 'Run' cond=Speed[Greater]  hasExit=N
+      'Run' -> 'Idle' cond=Speed[Less]  hasExit=N
+      'Attack' -> 'Run' cond=(none) hasExit=Y
+      'Hit' -> 'Run' cond=(none) hasExit=Y
+
+--- EnemyElite.controller ---
+  参数:
+    [Float] Speed
+    [Trigger] Attack
+    [Trigger] Attack2
+    [Trigger] Hit
+    [Trigger] Dead
+  层级:
+    Layer 'Base Layer' (default=Idle)
+      STATE 'Idle'  motion=RigLarge_Idle_A_Loop  speed=1
+      STATE 'Run'  motion=RigLarge_Walking_A_Loop  speed=1
+      STATE 'Attack'  motion=Melee_2H_Slam  speed=1
+      STATE 'Hit'  motion=Hit_A  speed=1
+      STATE 'Dead'  motion=Death_A  speed=1
+      STATE 'Attack2'  motion=Melee_2H_Attack  speed=1
+      ANY-> 'Attack' cond=Attack[If] 
+      ANY-> 'Attack2' cond=Attack2[If] 
+      ANY-> 'Hit' cond=Hit[If] 
+      ANY-> 'Dead' cond=Dead[If] 
+      'Idle' -> 'Run' cond=Speed[Greater]  hasExit=N
+      'Run' -> 'Idle' cond=Speed[Less]  hasExit=N
+      'Attack' -> 'Run' cond=(none) hasExit=Y
+      'Hit' -> 'Run' cond=(none) hasExit=Y
+      'Attack2' -> 'Run' cond=(none) hasExit=Y
+
+--- EnemyRanged.controller ---
+  参数:
+    [Float] Speed
+    [Trigger] Attack
+    [Trigger] Attack2
+    [Trigger] Hit
+    [Trigger] Dead
+  层级:
+    Layer 'Base Layer' (default=Idle)
+      STATE 'Idle'  motion=Idle_B  speed=1
+      STATE 'Run'  motion=Walking_B  speed=1
+      STATE 'Attack'  motion=Ranged_Magic_Spellcasting  speed=1
+      STATE 'Hit'  motion=Hit_B  speed=1
+      STATE 'Dead'  motion=Death_B  speed=1
+      ANY-> 'Attack' cond=Attack[If] 
+      ANY-> 'Hit' cond=Hit[If] 
+      ANY-> 'Dead' cond=Dead[If] 
+      'Idle' -> 'Run' cond=Speed[Greater]  hasExit=N
+      'Run' -> 'Idle' cond=Speed[Less]  hasExit=N
+      'Attack' -> 'Run' cond=(none) hasExit=Y
+      'Hit' -> 'Run' cond=(none) hasExit=Y
+
+================ 3) WaveSpawner 场景实例 ================
+找到 1 个 WaveSpawner
+--- Enemies (active=Y) ---
+  autoStart=N interval=0.45 center=(0.00, 0.00, 0.00) radius=7.5 minDist=4.5
+  Wave[0] '第一波·墨徒' delay=1.2
+      Enemy_MoTu x3
+  Wave[1] '第二波·墨徒+墨偶' delay=2
+      Enemy_MoTu x3
+      Enemy_MoOu x2
+  Wave[2] '第三波·墨魇' delay=2.5
+      Enemy_MoTu x3
+      Enemy_MoYan x1
+
+================ 4) Ziyuan prefab 的 Animator / 骨骼 ================
+--- Z_Orge ---
+  controller=null
+  avatar=mountain_orgeAvatar isHuman=Y valid=Y
+  骨骼数=26，前 20 个名字:
+      _rootJoint mixamorig:Hips_00 mixamorig:Spine_01 mixamorig:Spine1_02 mixamorig:Spine2_03 mixamorig:Neck_04 mixamorig:Head_05 mixamorig:HeadTop_End_06 mixamorig:LeftShoulder_07 mixamorig:LeftArm_08 mixamorig:LeftForeArm_09 mixamorig:LeftHand_010 mixamorig:RightShoulder_011 mixamorig:RightArm_012 mixamorig:RightForeArm_013 mixamorig:RightHand_014 mixamorig:LeftUpLeg_015 mixamorig:LeftLeg_016 mixamorig:LeftFoot_017 mixamorig:LeftToeBase_018 
+  可用片段（从 FBX 读）:
+--- Z_Orc ---
+  controller=null
+  avatar=low-poly_orcAvatar isHuman=Y valid=Y
+  骨骼数=97，前 20 个名字:
+      _rootJoint Bip001_01 Bip001 Pelvis_02 Bip001 Spine_03 Bip001 Spine1_04 Bip001 Spine2_05 Bip001 Neck_06 Bip001 L Clavicle_07 Bip001 L UpperArm_08 Bip001 L Forearm_09 Bip001 Arm_armor_L_010 Bip001 Arm_armor_LNub_011 Bip001 Arm_armor_L_010_0 Bip001 Shoulder_012 Bip001 ShoulderNub_013 Bip001 Shoulder_012_0 Bip001 R Clavicle_014 Bip001 R UpperArm_015 Bip001 R Forearm_016 Bip001 R Hand_017 
+  可用片段（从 FBX 读）:
+--- Z_Undead ---
+  controller=null
+  avatar=cursed_undead_soldier_rigAvatar isHuman=Y valid=Y
+  骨骼数=80，前 20 个名字:
+      GLTF_created_0_rootJoint Root Bone_94 Pelvis_52 Spine_13 Spine Target_12 Thigh Base.L_21 Thigh.L_17 Knee.L_15 Lower Leg.L_14 Leg POLE IK.l_20 Leg POLE IK Rotation.l_19 LegPOLE.l_18 Thigh Base.R_29 Thigh.R_25 Knee.R_23 Lower Leg.R_22 Leg POLE IK.r_28 Leg POLE IK Rotation.r_27 LegPOLE.r_26 Torso IK_50 
+  可用片段（从 FBX 读）:
+--- Z_Dragon ---
+  (无 Animator)
+  骨骼数=273，前 20 个名字:
+      _rootJoint drgon_03 drgon_04 drgon_05 drgon_06 drgon_07 drgon_08 drgon_09 drgon_010 drgon_011 drgon_012 drgon_013 drgon_014 drgon_015 drgon_016 drgon_017 drgon_018 drgon_019 drgon_020 drgon_021 
+  可用片段（从 FBX 读）:
+--- Z_Dragon_LP ---
+  (无 Animator)
+  (无 SkinnedMeshRenderer)
+  可用片段（从 FBX 读）:
+
+================ 5) Ziyuan FBX 内片段清单 ================
+--- chinese_dragon.fbx ---
+    clip '__preview__Object_6|Take 001_Object_6'  len=57.500s  legacy=N  loop=N
+    clip 'Object_6|Take 001_Object_6'  len=57.500s  legacy=N  loop=N
+--- cursed_undead_soldier_rig.fbx ---
+    clip '__preview__GLTF_created_0|Slash_GLTF_created_0'  len=1.625s  legacy=N  loop=N
+    clip 'GLTF_created_0|Slash_GLTF_created_0'  len=1.625s  legacy=N  loop=N
+--- low-poly_orc.fbx ---
+    clip '__preview__Object_4|ANM_ATTACK_CRIT_Object_4'  len=2.000s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_DAMAGED_Object_4'  len=1.083s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_DEATH_Object_4'  len=1.000s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_IDLE_Object_4'  len=1.667s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_LIGHT_ATTACK_2_Object_4'  len=2.000s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_ORC_LIGHT_ATTACK_Object_4'  len=1.667s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_ORC_Roar_Object_4'  len=3.000s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_RUN_Object_4'  len=1.333s  legacy=N  loop=N
+    clip '__preview__Object_4|ANM_WALK_Object_4'  len=1.667s  legacy=N  loop=N
+    clip 'Object_4|ANM_ATTACK_CRIT_Object_4'  len=2.000s  legacy=N  loop=N
+    clip 'Object_4|ANM_DAMAGED_Object_4'  len=1.067s  legacy=N  loop=N
+    clip 'Object_4|ANM_DEATH_Object_4'  len=1.000s  legacy=N  loop=N
+    clip 'Object_4|ANM_IDLE_Object_4'  len=1.667s  legacy=N  loop=N
+    clip 'Object_4|ANM_LIGHT_ATTACK_2_Object_4'  len=2.000s  legacy=N  loop=N
+    clip 'Object_4|ANM_ORC_LIGHT_ATTACK_Object_4'  len=1.667s  legacy=N  loop=N
+    clip 'Object_4|ANM_ORC_Roar_Object_4'  len=3.000s  legacy=N  loop=N
+    clip 'Object_4|ANM_RUN_Object_4'  len=1.333s  legacy=N  loop=N
+    clip 'Object_4|ANM_WALK_Object_4'  len=1.667s  legacy=N  loop=N
+--- lowpoly_textured_chinese_dragon.fbx ---
+--- mountain_orge.fbx ---
+    clip '__preview__Object_5|Armature|Death2_Object_5'  len=3.625s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Death_Object_5'  len=3.500s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Ideal3_Object_5'  len=13.375s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Ideal_Object_5'  len=10.542s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Jump1_Object_5'  len=2.958s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Launch_Jump_attack_Object_5'  len=3.333s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Punch_Object_5'  len=1.083s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Roar2_Object_5'  len=4.458s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Run_Object_5'  len=1.000s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Slam_Object_5'  len=2.500s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|T_Right_45_Object_5'  len=1.958s  legacy=N  loop=N
+    clip '__preview__Object_5|Armature|Walk_Object_5'  len=1.417s  legacy=N  loop=N
+    clip 'Object_5|Armature|Death2_Object_5'  len=3.625s  legacy=N  loop=N
+    clip 'Object_5|Armature|Death_Object_5'  len=3.500s  legacy=N  loop=N
+    clip 'Object_5|Armature|Ideal3_Object_5'  len=13.375s  legacy=N  loop=N
+    clip 'Object_5|Armature|Ideal_Object_5'  len=10.542s  legacy=N  loop=N
+    clip 'Object_5|Armature|Jump1_Object_5'  len=2.958s  legacy=N  loop=N
+    clip 'Object_5|Armature|Launch_Jump_attack_Object_5'  len=3.333s  legacy=N  loop=N
+    clip 'Object_5|Armature|Punch_Object_5'  len=1.083s  legacy=N  loop=N
+    clip 'Object_5|Armature|Roar2_Object_5'  len=4.417s  legacy=N  loop=N
+    clip 'Object_5|Armature|Run_Object_5'  len=0.833s  legacy=N  loop=N
+    clip 'Object_5|Armature|Slam_Object_5'  len=2.458s  legacy=N  loop=N
+    clip 'Object_5|Armature|T_Right_45_Object_5'  len=1.958s  legacy=N  loop=N
+    clip 'Object_5|Armature|Walk_Object_5'  len=1.417s  legacy=N  loop=N

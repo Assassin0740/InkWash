@@ -3137,8 +3137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65e50cb6be8be2409c9f0460ac7f34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  litMaterials: []
+  target: {fileID: 6767407241090606846}
+  litMaterials:
+  - {fileID: 2100000, guid: a7dfc26836f067d4bb44658e53ad850e, type: 2}
   inkMaterials:
   - {fileID: 2100000, guid: a7dfc26836f067d4bb44658e53ad850e, type: 2}
 --- !u!1 &8844440668689706432

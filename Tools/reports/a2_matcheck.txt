@@ -1,0 +1,120 @@
+========== Ziyuan prefab 的材质分布 ==========
+
+--- Z_Orge ---
+  Object_33 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_35 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_37 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_39 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_41 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_43 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_45 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_47 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_49 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_51 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_53 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_55 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_57 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  Object_59 → M_Ink_Enemy_MoShan(InkWash/InkCharacter) tex=Orge_LP_baseColor 
+  ** 该 prefab 用到的不同贴图数 = 1
+      · Orge_LP_baseColor
+  InkMaterialSwap: 存在
+    litMaterials[0] inkMaterials[1]
+    ink[0] = M_Ink_Enemy_MoShan
+
+--- Z_Orc ---
+  Box001_08 - Default_0 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_7 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_9 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_11 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_13 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_15 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_17 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_19 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_21 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_23 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  Object_25 → M_Ink_Enemy_MoGuai(InkWash/InkCharacter) tex=07_-_Default_diffuse 
+  ** 该 prefab 用到的不同贴图数 = 1
+      · 07_-_Default_diffuse
+  InkMaterialSwap: 存在
+    litMaterials[0] inkMaterials[1]
+    ink[0] = M_Ink_Enemy_MoGuai
+
+--- Z_Undead ---
+  Object_21 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_23 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_24 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_28 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_34 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_43 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  Object_90 → M_Ink_Enemy_MoGu(InkWash/InkCharacter) tex=Undead_Material_baseColor 
+  ** 该 prefab 用到的不同贴图数 = 1
+      · Undead_Material_baseColor
+  InkMaterialSwap: 存在
+    litMaterials[0] inkMaterials[1]
+    ink[0] = M_Ink_Enemy_MoGu
+
+--- Z_Dragon ---
+  Object_281 → M_Ink_Boss_Dragon(InkWash/InkCharacter) tex=MI_b09_00_drg_hair_clearcoat 
+  Object_282 → M_Ink_Boss_Dragon(InkWash/InkCharacter) tex=MI_b09_00_drg_hair_clearcoat 
+  ** 该 prefab 用到的不同贴图数 = 1
+      · MI_b09_00_drg_hair_clearcoat
+  InkMaterialSwap: 存在
+    litMaterials[0] inkMaterials[1]
+    ink[0] = M_Ink_Boss_Dragon
+
+--- Z_Dragon_LP ---
+  Z_Dragon_LP → M_Ink_Boss_Dragon(InkWash/InkCharacter) tex=MI_b09_00_drg_hair_clearcoat 
+  ** 该 prefab 用到的不同贴图数 = 1
+      · MI_b09_00_drg_hair_clearcoat
+  InkMaterialSwap: 存在
+    litMaterials[0] inkMaterials[1]
+    ink[0] = M_Ink_Boss_Dragon
+
+========== 现有 KayKit 敌人对照 ==========
+
+--- Enemy_MoOu ---
+  Skeleton_Mage_Hat → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_ArmLeft → M_Ink_Enemy_MoOu_0 tex=skeleton_texture_A 
+  Skeleton_Mage_ArmRight → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_Body → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_Eyes → Glow 
+  Skeleton_Mage_Jaw → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_LegLeft → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_LegRight → skeleton tex=skeleton_texture_A 
+  Skeleton_Mage_Skull → skeleton tex=skeleton_texture_A 
+  ** 不同贴图数 = 1
+  InkMaterialSwap ink[1] lit[1]
+
+--- Enemy_MoTu ---
+  Skeleton_Minion_ArmLeft → M_Ink_Enemy_MoTu_0 tex=skeleton_texture_A 
+  Skeleton_Minion_ArmRight → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_Body → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_Cloak → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_Eyes → Glow 
+  Skeleton_Minion_Head → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_Jaw → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_LegLeft → skeleton tex=skeleton_texture_A 
+  Skeleton_Minion_LegRight → skeleton tex=skeleton_texture_A 
+  ** 不同贴图数 = 1
+  InkMaterialSwap ink[1] lit[1]
+
+--- Enemy_MoYan ---
+  Skeleton_Golem_ArmLeft → M_Ink_Enemy_MoYan_0 tex=skeleton_texture_A 
+  Skeleton_Golem_ArmRight → skeleton tex=skeleton_texture_A 
+  Skeleton_Golem_Body → skeleton tex=skeleton_texture_A 
+  Skeleton_Golem_Eyes → Glow 
+  Skeleton_Golem_Head → skeleton tex=skeleton_texture_A 
+  Skeleton_Golem_Jaw → skeleton tex=skeleton_texture_A 
+  Skeleton_Golem_LegLeft → skeleton tex=skeleton_texture_A 
+  Skeleton_Golem_LegRight → skeleton tex=skeleton_texture_A 
+  ** 不同贴图数 = 1
+  InkMaterialSwap ink[1] lit[1]
+
+========== 已建的水墨敌人材质 ==========
+  M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  _BaseMap=Undead_Material_baseColor
+  M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  _BaseMap=07_-_Default_diffuse
+  M_Ink_Enemy_MoOu_0  shader=InkWash/InkCharacter  _BaseMap=skeleton_texture_A
+  M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  _BaseMap=Orge_LP_baseColor
+  M_Ink_Enemy_MoTu_0  shader=InkWash/InkCharacter  _BaseMap=skeleton_texture_A
+  M_Ink_Enemy_MoYan_0  shader=InkWash/InkCharacter  _BaseMap=skeleton_texture_A
+  M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  _BaseMap=MI_b09_00_drg_hair_clearcoat

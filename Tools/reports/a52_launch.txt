@@ -1,0 +1,6 @@
+========== a52 多波次实战 ==========
+玩家回位 = (0.00, 0.30, -3.00)
+玩家血量已满 = 120
+WaveSpawner 已 Begin，波数 = 4
+BattleCam 已挂，相机 = Main Camera
+BattleProbe 已挂，时长 = 80 s

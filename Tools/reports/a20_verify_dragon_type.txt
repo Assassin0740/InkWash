@@ -1,0 +1,84 @@
+========== a20 验证 EnemyDragon 类型已加载 ==========
+Type.GetType('InkWash.Enemies.EnemyDragon, Assembly-CSharp') = InkWash.Enemies.EnemyDragon
+基类 = InkWash.Enemies.EnemyBase
+是 abstract = False
+
+---- 公开字段默认值 ----
+  Transform        spineRoot                    = null
+  Int32            spineLinkCount               = 0
+  Int32            driveStartIndex              = 2
+  Single           bodyLift                     = 0
+  Single           sweepAmplitudeDeg            = 34
+  Single           sweepFrequency               = 1.15
+  Single           sweepPhaseStepDeg            = 26
+  Single           sweepYawAssist               = 22
+  Single           biteAmplitudeDeg             = 30
+  Single           biteFrequency                = 1.9
+  Single           bitePhaseStepDeg             = 34
+  Single           biteLungeDistance            = 3.4
+  Int32            biteHeadLinks                = 5
+  Single           breathAmplitudeDeg           = 22
+  Single           breathFrequency              = 1.5
+  Single           breathPhaseStepDeg           = 18
+  Int32            breathHeadLinks              = 4
+  GameObject       breathProjectilePrefab       = null
+  Single           breathProjectileSpeed        = 15
+  Single           breathProjectileDamage       = 14
+  Int32            breathProjectileCount        = 3
+  Single           breathSpreadDeg              = 9
+  Single           hoverHeight                  = 3.6
+  Single           hoverOrbitRadius             = 6.5
+  Single           hoverOrbitSpeedDeg           = 55
+  Single           hoverAmplitudeDeg            = 11
+  Single           hoverFrequency               = 0.55
+  Single           breathMinRange               = 5.5
+  Single           biteMaxRange                 = 7
+  Single           hoverDuration                = 4.5
+  String           enemyName                    = 墨徒
+  Single           maxHealth                    = 40
+  Single           walkSpeed                    = 1.5
+  Single           chaseSpeed                   = 3.4
+  Single           acceleration                 = 14
+  Single           turnSpeedDeg                 = 720
+  Single           sightRange                   = 16
+  Single           loseSightRange               = 24
+  Single           sightAngleDeg                = 200
+  Boolean          requireLineOfSight           = True
+  Vector3          eyeOffset                    = (0.00, 1.40, 0.00)
+  Single           attackRange                  = 2
+  Single           attackCooldown               = 1.6
+  Single           attackWindup                 = 0.32
+  Single           attackActive                 = 0.16
+  Single           attackRecover                = 0.45
+  Animator         animator                     = null
+  Single           speedDamp                    = 0.12
+  Single           spawnDelay                   = 0.25
+  Single           destroyAfterDeath            = 2.4
+  Int32            xpReward                     = 10
+
+---- 重写的方法（应当只有 ChooseAttack / AttackMovement / PerformHit / TakeDamage / OnDied / OnEnterState / Awake）----
+  String     get_CurrentAttackName
+  Int32      get_TailSweepCount
+  Int32      get_BiteCount
+  Int32      get_BreathCount
+  Int32      get_HoverCount
+  Int32      get_SpineLinksFound
+  Boolean    get_Airborne
+  Void       Awake
+  Void       ResolveSpine
+  Void       OnEnterState
+  Void       ChooseAttack
+  Void       AttackMovement
+  Void       DoTailSweep
+  Void       DoBite
+  Void       DoBreath
+  Void       DoHoverOrbit
+  Void       ApplySpineOffsets
+  Void       EndHover
+  Void       BeginHover
+  Void       PerformHit
+  Void       SpawnBreath
+  Vector3    GetHeadPosition
+  Vector3    GetTailPosition
+  Boolean    TakeDamage
+  Void       OnDied

@@ -260,6 +260,21 @@ namespace InkWash.Enemies
             OnEnterState(s);
         }
 
+        /// <summary>
+        /// 验收专用：绕过"看得见吗 / 到距离了吗 / 冷却好了吗"三道判定，直接进入攻击状态。
+        ///
+        /// 为什么需要它：Boss 的多套招式是按距离/视野分档的，而验收要**逐个确认每一招
+        /// 真的动起来了**。靠"把玩家摆到合适的位置等它自己出手"太脆：
+        /// 龙的朝向来自 `drgon_00` 在 +Z，玩家一旦站到它视野锥(220°)边缘外，
+        /// `CanSeePlayer()` 就返回 false，于是**一等就是几十秒什么都不发生**，
+        /// 而控制台干干净净 —— 这正是本轮踩到的坑。
+        /// 直接推进状态是确定性的，且不改动任何正常游玩路径。
+        /// </summary>
+        public void ForceEnterAttackForTest()
+        {
+            Enter(EnemyState.Attack);
+        }
+
         protected virtual void OnEnterState(EnemyState s)
         {
             switch (s)
@@ -312,7 +327,7 @@ namespace InkWash.Enemies
 
             if (dist > loseSightRange) { Enter(EnemyState.Idle); return; }
 
-            if (dist <= attackRange && _cooldownTimer <= 0f && CanSeePlayer())
+            if (dist <= EffectiveAttackRange && _cooldownTimer <= 0f && CanSeePlayer())
             {
                 Enter(EnemyState.Attack);
                 return;
@@ -447,6 +462,21 @@ namespace InkWash.Enemies
         // ---------------- 工具 ----------------
         /// <summary>它想跟玩家保持的距离。近战 = 贴到攻击距离，远程 = 拉开。</summary>
         protected virtual float PreferredRange => attackRange * 0.8f;
+
+        /// <summary>
+        /// 实际用来判断"该出手了"的距离。
+        ///
+        /// 默认就是 <see cref="attackRange"/>，但**多招式的敌人必须能覆写它**。
+        /// 踩过的坑：龙的招是按"距离分档"选的（撕咬 ≤ `biteMaxRange` 7 m、
+        /// 龙息 ≥ `breathMinRange` 5.5 m、甩尾全程），可基类只用 `attackRange`(2 m)
+        /// 决定「要不要进 Attack 状态」⇒ 龙必须贴到 2 m 内才会开始出手，
+        /// 它那套 5.5~7 m 的距离分档**永远轮不到**，实战里表现为"BOSS 站着不动、偶尔才咬一下"。
+        /// 把门槛交回给子类，让「什么时候出手」和「出手用哪招」用的是同一个距离口径。
+        /// </summary>
+        protected virtual float EffectiveAttackRange => attackRange;
+
+        /// <summary>子类可以据此把"选招用的最远距离"报上来（默认与出手门槛一致）。</summary>
+        protected float ChaseStopDistance => EffectiveAttackRange;
 
         protected bool CanSeePlayer()
         {

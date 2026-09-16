@@ -1,0 +1,52 @@
+========== A) 基线：各怪吃自己的片段 ==========
+
+--- Orge  avatar=mountain_orgeAvatar isHuman=True ---
+  [自有]            Object_5|Armature|Death2_Object_5                髋=  2.521 手=  4.649 髋Y跨= 0.930  ✓ 动起来了
+  [自有]            Object_5|Armature|Death_Object_5                 髋=  2.302 手=  2.365 髋Y跨= 0.805  ✓ 动起来了
+  [自有]            Object_5|Armature|Ideal3_Object_5                髋=  0.355 手=  0.568 髋Y跨= 0.084  ✓ 动起来了
+  [自有]            Object_5|Armature|Ideal_Object_5                 髋=  2.902 手=  5.356 髋Y跨= 0.094  ✓ 动起来了
+  [自有]            Object_5|Armature|Jump1_Object_5                 髋=  3.832 手=  4.251 髋Y跨= 1.324  ✓ 动起来了
+  [自有]            Object_5|Armature|Launch_Jump_attack_Object_5    髋=  9.250 手=  9.720 髋Y跨= 3.528  ✓ 动起来了
+  [自有]            Object_5|Armature|Punch_Object_5                 髋=  0.614 手=  4.585 髋Y跨= 0.214  ✓ 动起来了
+  [自有]            Object_5|Armature|Roar2_Object_5                 髋=  1.317 手=  1.813 髋Y跨= 0.258  ✓ 动起来了
+  [自有]            Object_5|Armature|Run_Object_5                   髋=  3.048 手=  3.047 髋Y跨= 0.205  ✓ 动起来了
+  [自有]            Object_5|Armature|Slam_Object_5                  髋=  3.388 手=  5.916 髋Y跨= 0.405  ✓ 动起来了
+  [自有]            Object_5|Armature|T_Right_45_Object_5            髋=  0.888 手=  2.281 髋Y跨= 0.064  ✓ 动起来了
+  [自有]            Object_5|Armature|Walk_Object_5                  髋=  1.162 手=  1.519 髋Y跨= 0.238  ✓ 动起来了
+
+--- Orc  avatar=low-poly_orcAvatar isHuman=True ---
+  [自有]            Object_4|ANM_ATTACK_CRIT_Object_4                髋=  1.902 手=  3.236 髋Y跨= 0.385  ✓ 动起来了
+  [自有]            Object_4|ANM_DAMAGED_Object_4                    髋=  0.797 手=  1.508 髋Y跨= 0.193  ✓ 动起来了
+  [自有]            Object_4|ANM_DEATH_Object_4                      髋=  2.659 手=  2.598 髋Y跨= 1.071  ✓ 动起来了
+  [自有]            Object_4|ANM_IDLE_Object_4                       髋=  0.023 手=  0.012 髋Y跨= 0.003  ★★ 完全静止（重定向失败）
+  [自有]            Object_4|ANM_LIGHT_ATTACK_2_Object_4             髋=  1.859 手=  1.291 髋Y跨= 0.132  ✓ 动起来了
+  [自有]            Object_4|ANM_ORC_LIGHT_ATTACK_Object_4           髋=  0.540 手=  1.710 髋Y跨= 0.193  ✓ 动起来了
+  [自有]            Object_4|ANM_ORC_Roar_Object_4                   髋=  0.803 手=  0.734 髋Y跨= 0.140  ✓ 动起来了
+  [自有]            Object_4|ANM_RUN_Object_4                        髋=  0.268 手=  0.389 髋Y跨= 0.037  ✓ 动起来了
+  [自有]            Object_4|ANM_WALK_Object_4                       髋=  0.457 手=  0.661 髋Y跨= 0.101  ✓ 动起来了
+
+--- Undead  avatar=cursed_undead_soldier_rigAvatar isHuman=True ---
+  [自有]            GLTF_created_0|Slash_GLTF_created_0              髋=  0.946 手=  1.800 髋Y跨= 0.180  ✓ 动起来了
+
+========== B) Z_Undead 吃 Orge/Orc 的片段（Humanoid 重定向）==========
+  [Orge→Undead]   Object_5|Armature|Death2_Object_5                髋=  1.648 手=  1.923 髋Y跨= 0.594  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Death_Object_5                 髋=  1.468 手=  1.464 髋Y跨= 0.513  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Ideal3_Object_5                髋=  0.232 手=  0.226 髋Y跨= 0.053  ○ 动作很轻微
+  [Orge→Undead]   Object_5|Armature|Ideal_Object_5                 髋=  1.945 手=  2.085 髋Y跨= 0.060  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Jump1_Object_5                 髋=  2.455 手=  2.423 髋Y跨= 0.844  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Launch_Jump_attack_Object_5    髋=  5.893 手=  5.975 髋Y跨= 2.250  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Punch_Object_5                 髋=  0.452 手=  1.041 髋Y跨= 0.136  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Roar2_Object_5                 髋=  0.840 手=  0.914 髋Y跨= 0.164  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Run_Object_5                   髋=  1.943 手=  1.941 髋Y跨= 0.131  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Slam_Object_5                  髋=  2.255 手=  1.930 髋Y跨= 0.258  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|T_Right_45_Object_5            髋=  0.554 手=  0.824 髋Y跨= 0.041  ✓ 动起来了
+  [Orge→Undead]   Object_5|Armature|Walk_Object_5                  髋=  0.756 手=  0.750 髋Y跨= 0.152  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_ATTACK_CRIT_Object_4                髋=  1.698 手=  2.385 髋Y跨= 0.293  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_DAMAGED_Object_4                    髋=  0.719 手=  1.093 髋Y跨= 0.147  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_DEATH_Object_4                      髋=  2.010 手=  1.980 髋Y跨= 0.815  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_IDLE_Object_4                       髋=  0.014 手=  0.009 髋Y跨= 0.002  ★★ 完全静止（重定向失败）
+  [Orc→Undead]    Object_4|ANM_LIGHT_ATTACK_2_Object_4             髋=  1.290 手=  1.060 髋Y跨= 0.100  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_ORC_LIGHT_ATTACK_Object_4           髋=  0.439 手=  1.216 髋Y跨= 0.147  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_ORC_Roar_Object_4                   髋=  0.551 手=  0.535 髋Y跨= 0.106  ✓ 动起来了
+  [Orc→Undead]    Object_4|ANM_RUN_Object_4                        髋=  0.113 手=  0.265 髋Y跨= 0.028  ○ 动作很轻微
+  [Orc→Undead]    Object_4|ANM_WALK_Object_4                       髋=  0.308 手=  0.476 髋Y跨= 0.077  ✓ 动起来了

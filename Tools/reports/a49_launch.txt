@@ -1,0 +1,2 @@
+========== a49 盘旋升空 Play 模式验证 ==========
+已生成 HoverTestDragon + HoverProbe

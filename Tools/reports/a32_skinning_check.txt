@@ -1,0 +1,17 @@
+========== a32 龙蒙皮有效性三重判定 ==========
+
+---- ① 源 prefab（LoadPrefabContents，无实例间接）----
+  SkinnedMeshRenderer 2 个
+    Object_281  bones=273  非null=273  rootBone=_rootJoint  顶点=28082
+    Object_282  bones=273  非null=273  rootBone=_rootJoint  顶点=804
+
+---- ② 场景实例（InstantiatePrefab）----
+  SkinnedMeshRenderer 2 个
+    Object_281  bones=273  非null=273  rootBone=_rootJoint  顶点=28082
+    Object_282  bones=273  非null=273  rootBone=_rootJoint  顶点=804
+
+---- ③ ★蒙皮有效性：人为转骨骼，看顶点跟不跟 ----
+  旋转目标骨骼: drgon_03  (世界位置 (-1.16, 0.55, -1.80))
+  顶点位移: 最大=1480.47000  平均=1015.62700  （顶点数 28082）
+  判定: ✓ 蒙皮生效 —— 程序驱动骨骼**会**反映到画面上
+  再试末端骨骼 drgon_00（无子节点）: 最大位移=6.78713  ✓ 蒙皮生效

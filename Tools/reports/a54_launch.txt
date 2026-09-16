@@ -1,0 +1,5 @@
+========== a54 分主题战斗展示 ==========
+玩家 = Player  HP = 120
+ShowcaseCam 已挂
+WaveSpawner 已临时禁用
+ShowcaseDirector 已挂

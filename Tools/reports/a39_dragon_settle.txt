@@ -1,0 +1,24 @@
+========== a39 龙定尺寸/落地/朝向（终版）==========
+  克隆搬入 ×3 → Object_6, Object_281, Object_282
+  基线(scale=1, rot=0) 世界尺寸=(6.044, 5.871, 2.588)
+    Y[-3.689, 2.182]
+  长轴对+Z 后 世界尺寸=(2.588, 5.871, 6.044)
+  落地后 Y[0.000, 5.871]
+  ★ 体长(Z)=6.04 m  高(Y)=5.87 m  宽(X)=2.59 m
+  （主角 2.17 m ⇒ 龙高 = 2.71 个主角高）
+  Model.localPos=(0.0000, 3.6891, 0.0000)  localRot=(0.0, 270.0, 0.0)  localScale=(1.0000, 1.0000, 1.0000)
+  材质 → M_Ink_Boss_Dragon ✓
+
+  回读 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab = 存在 ✓
+  模板 Enemy_MoYan 污染检查: drgon_* = 0 ✓ 干净
+
+---- 渲染 ----
+  A0_0deg
+  A1_45deg
+  A2_90deg
+  A3_135deg
+  A4_180deg
+  A5_225deg
+  A6_270deg
+  A7_315deg
+  A8_俯视

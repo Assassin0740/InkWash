@@ -43,6 +43,9 @@ namespace InkWash.Enemies
         [Tooltip("黄金角取点：最多试几个候选（要过「在导航网格上 + 有路到玩家」两道校验）")]
         public int spawnAttempts = 24;
 
+        [Tooltip("出生点与玩家的最大高度差（m）。超过就丢弃该候选 —— 防止怪被刷到玩家上不去的高台上")]
+        public float maxSpawnHeightDelta = 1.0f;
+
         /// <summary>黄金角 137.5°：连续取点会自然铺开成一圈，不会聚在同一个方向。</summary>
         private const float GoldenAngleDeg = 137.5f;
 
@@ -232,6 +235,8 @@ namespace InkWash.Enemies
 
         private Vector3 PickSpawnPosition()
         {
+            Vector3 playerPos0 = Combat.PlayerRef.Exists ? Combat.PlayerRef.Position : spawnCenter;
+
             if (spawnPoints != null && spawnPoints.Length > 0)
             {
                 var t = spawnPoints[_pointCursor % spawnPoints.Length];
@@ -240,13 +245,24 @@ namespace InkWash.Enemies
                 p.y = spawnCenter.y;
                 NavMeshHit ph;
                 if (NavMesh.SamplePosition(p, out ph, 2.5f, NavMesh.AllAreas))
-                    return ph.position + Vector3.up * 0.05f;
+                {
+                    // 同一条高度规矩：固定出生点也不许比玩家高出一层
+                    if (Combat.PlayerRef.Exists
+                        && Mathf.Abs(ph.position.y - playerPos0.y) > maxSpawnHeightDelta)
+                    {
+                        _spawnFailedCount++;
+                        Debug.LogWarning("[WaveSpawner] 预设出生点与玩家高度差过大（"
+                                         + Mathf.Abs(ph.position.y - playerPos0.y).ToString("F2")
+                                         + " m > " + maxSpawnHeightDelta + " m），已丢弃: " + p);
+                    }
+                    else return ph.position + Vector3.up * 0.05f;
+                }
                 _spawnFailedCount++;
                 Debug.LogWarning("[WaveSpawner] 预设出生点不在导航网格上: " + p);
                 return p;
             }
 
-            Vector3 playerPos = Combat.PlayerRef.Exists ? Combat.PlayerRef.Position : spawnCenter;
+            Vector3 playerPos = playerPos0;
 
             // 绕**房间中心**取点，而不是绕玩家画圈。
             //
@@ -273,6 +289,20 @@ namespace InkWash.Enemies
                 // 得到"在导航网格上但过不来"的假通过。
                 if (!NavMesh.SamplePosition(want, out h, 2.0f, NavMesh.AllAreas)) continue;
                 Vector3 pos = h.position;
+
+                // ★★ 必须与玩家**同一层**。
+                //
+                //   这里踩过一个很难看的坑：本关有个 ±5 m 的 `Arena` 高台，而 spawnRadius 是 7.5 m
+                //   —— 圆上总有几个点落在**高台顶面**上。`SamplePosition` 会老老实实把它们吸到台面上，
+                //   于是那几只怪站在高台上、玩家在地面**永远够不到**：
+                //   录像里表现为「场上还剩 1 只怪，玩家原地挥空 70 秒」，控制台一条报错都没有，
+                //   `HasPathTo` 也判"有路"（导航网格是连通的，只是要绕远）。
+                //   判据不能只看 2D 距离，要看**高度**：玩家在 y≈0、台面在 y≈1.2+。
+                if (Combat.PlayerRef.Exists)
+                {
+                    float dy = Mathf.Abs(pos.y - playerPos.y);
+                    if (dy > maxSpawnHeightDelta) continue;
+                }
 
                 // 真正要验的不是"在导航网格上"，而是"**能不能走到玩家**"。
                 // 隔着一堵墙的另一侧同样在导航网格上，但敌人永远过不来（贴着墙原地打转）。

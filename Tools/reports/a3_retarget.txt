@@ -1,0 +1,51 @@
+Z_Undead avatar = cursed_undead_soldier_rigAvatar isHuman=True valid=True
+
+========== 候选片段 → 重定向到 Z_Undead 后的髋部总路径 ==========
+（接近 0 = 重定向失败；明显 > 0 = 动起来了）
+
+  [Orge] Ideal_Object_5                     len=10.542s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Walk_Object_5                      len=1.417s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Run_Object_5                       len=0.833s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Punch_Object_5                     len=1.083s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Slam_Object_5                      len=2.458s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Death_Object_5                     len=3.500s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orge] Roar2_Object_5                     len=4.417s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_IDLE_Object_4                  len=1.667s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_WALK_Object_4                  len=1.667s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_RUN_Object_4                   len=1.333s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_ORC_LIGHT_ATTACK_Object_4      len=1.667s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_DAMAGED_Object_4               len=1.067s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Orc] ANM_DEATH_Object_4                 len=1.000s  髋部路径=-2.000 m   ★ 取不到髋骨
+  [Undead] Slash_GLTF_created_0               len=1.625s  髋部路径=-2.000 m   ★ 取不到髋骨
+
+--- 各 FBX 实际片段名（复核用）---
+  [Orge]
+      'Object_5|Armature|Death2_Object_5'  len=3.625
+      'Object_5|Armature|Death_Object_5'  len=3.500
+      'Object_5|Armature|Ideal3_Object_5'  len=13.375
+      'Object_5|Armature|Ideal_Object_5'  len=10.542
+      'Object_5|Armature|Jump1_Object_5'  len=2.958
+      'Object_5|Armature|Launch_Jump_attack_Object_5'  len=3.333
+      'Object_5|Armature|Punch_Object_5'  len=1.083
+      'Object_5|Armature|Roar2_Object_5'  len=4.417
+      'Object_5|Armature|Run_Object_5'  len=0.833
+      'Object_5|Armature|Slam_Object_5'  len=2.458
+      'Object_5|Armature|T_Right_45_Object_5'  len=1.958
+      'Object_5|Armature|Walk_Object_5'  len=1.417
+  [Orc]
+      'Object_4|ANM_ATTACK_CRIT_Object_4'  len=2.000
+      'Object_4|ANM_DAMAGED_Object_4'  len=1.067
+      'Object_4|ANM_DEATH_Object_4'  len=1.000
+      'Object_4|ANM_IDLE_Object_4'  len=1.667
+      'Object_4|ANM_LIGHT_ATTACK_2_Object_4'  len=2.000
+      'Object_4|ANM_ORC_LIGHT_ATTACK_Object_4'  len=1.667
+      'Object_4|ANM_ORC_Roar_Object_4'  len=3.000
+      'Object_4|ANM_RUN_Object_4'  len=1.333
+      'Object_4|ANM_WALK_Object_4'  len=1.667
+  [Undead]
+      'GLTF_created_0|Slash_GLTF_created_0'  len=1.625
+  [Dragon]
+      'Object_6|Take 001_Object_6'  len=57.500
+
+========== 对照：Orge 片段重定向到 Orge 自己的 avatar ==========
+Z_Orge avatar = mountain_orgeAvatar

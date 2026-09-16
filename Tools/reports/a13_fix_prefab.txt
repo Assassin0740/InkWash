@@ -1,0 +1,38 @@
+========== a13 修 prefab（删 KayKit 残留 + 按 Model 容器重定尺寸）==========
+
+================ Z_Enemy_MoShan（山怪，目标 2.80 m）================
+  [1] 删 Visual 下非 Model 子节点 ×8  → Skeleton_Golem_LegRight(1smr), Skeleton_Golem_LegLeft(1smr), Skeleton_Golem_Jaw(1smr), Skeleton_Golem_Head(1smr), Skeleton_Golem_Eyes(1smr), Skeleton_Golem_Body(1smr), Skeleton_Golem_ArmRight(1smr), Skeleton_Golem_ArmLeft(1smr)
+      Visual 剩余子节点 1 个
+  [2] holder = Z_Enemy_MoShan/Visual/Model  scale=(1.0000, 1.0000, 1.0000) posY=0.0000
+  [3] 复位后顶点 9814  Y范围=[-0.007,2.383]  1~99分位=[0.005,2.279]  分位高=2.274
+  [4] k = 2.80 / 2.274 = 1.2311  → 缩放后分位高 = 2.274（应 ≈ 2.80，证明缩放确实生效）
+  [5] 脚底(1分位)=0.005 ⇒ holder.localPosition.y = -0.0048
+  [6] ★复核(go 空间): Y范围=[-0.008,1.767]  分位高=1.689  脚底偏离0 = 0.0007
+      身高 ★  落地 ✓
+  [7] CapsuleCollider: h 2.55→2.58  r 0.48→0.62  centerY 1.28→1.40
+  [8] 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+
+================ Z_Enemy_MoGuai（兽人，目标 2.10 m）================
+  [1] 删 Visual 下非 Model 子节点 ×9  → Skeleton_Minion_LegRight(1smr), Skeleton_Minion_LegLeft(1smr), Skeleton_Minion_Jaw(1smr), Skeleton_Minion_Head(1smr), Skeleton_Minion_Eyes(1smr), Skeleton_Minion_Cloak(1smr), Skeleton_Minion_Body(1smr), Skeleton_Minion_ArmRight(1smr), Skeleton_Minion_ArmLeft(1smr)
+      Visual 剩余子节点 1 个
+  [2] holder = Z_Enemy_MoGuai/Visual/Model  scale=(1.0000, 1.0000, 1.0000) posY=0.0000
+  [3] 复位后顶点 13323  Y范围=[-4.756,1.288]  1~99分位=[-4.454,1.024]  分位高=5.478
+  [4] k = 2.10 / 5.478 = 0.3834  → 缩放后分位高 = 5.478（应 ≈ 2.10，证明缩放确实生效）
+  [5] 脚底(1分位)=-4.455 ⇒ holder.localPosition.y = 4.4546
+  [6] ★复核(go 空间): Y范围=[2.126,3.998]  分位高=1.697  脚底偏离0 = 2.2192
+      身高 ★  落地 ★
+  [7] CapsuleCollider: h 1.75→1.93  r 0.33→0.46  centerY 0.88→1.05
+  [8] 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+
+================ Z_Enemy_MoGu（不死兵，目标 1.90 m）================
+  [1] 删 Visual 下非 Model 子节点 ×8  → Skeleton_Mage_Skull(1smr), Skeleton_Mage_LegRight(1smr), Skeleton_Mage_LegLeft(1smr), Skeleton_Mage_Jaw(1smr), Skeleton_Mage_Eyes(1smr), Skeleton_Mage_Body(1smr), Skeleton_Mage_ArmRight(1smr), Skeleton_Mage_ArmLeft(1smr)
+      Visual 剩余子节点 1 个
+  [2] holder = Z_Enemy_MoGu/Visual/Model  scale=(1.0000, 1.0000, 1.0000) posY=0.0000
+  [3] 复位后顶点 9686  Y范围=[-0.188,4.071]  1~99分位=[-0.167,3.848]  分位高=4.014
+  [4] k = 1.90 / 4.014 = 0.4733  → 缩放后分位高 = 4.015（应 ≈ 1.90，证明缩放确实生效）
+  [5] 脚底(1分位)=-0.166 ⇒ holder.localPosition.y = 0.1662
+  [6] ★复核(go 空间): Y范围=[0.061,1.643]  分位高=1.491  脚底偏离0 = 0.0686
+      身高 ★  落地 ★
+  [7] CapsuleCollider: h 1.70→1.75  r 0.32→0.42  centerY 0.85→0.95
+  [7] Muzzle.localPosition.y 1.250→1.178
+  [8] 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab

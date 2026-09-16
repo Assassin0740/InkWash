@@ -1,0 +1,175 @@
+================ Z_Dragon ================
+根组件: Transform, InkMaterialSwap
+顶点 28886 个  高=1.720 m  宽/深=4.326  Y范围=[4999.968,5001.688]
+
+层级（深度 ≤6）：
+Z_Dragon  Transform InkMaterialSwap 
+  Object_6  Transform 
+    _rootJoint  Transform 
+      drgon_03  Transform 
+        drgon_04  Transform 
+          drgon_05  Transform 
+            drgon_06  Transform 
+            drgon_0204  Transform 
+          drgon_0205  Transform 
+        drgon_0206  Transform 
+          drgon_0207  Transform 
+            drgon_0208  Transform 
+            drgon_0232  Transform 
+          drgon_0233  Transform 
+        drgon_0234  Transform 
+          drgon_0235  Transform 
+            drgon_0236  Transform 
+        drgon_0253  Transform 
+          drgon_0254  Transform 
+            drgon_0255  Transform 
+  Object_281  Transform SkinnedMeshRenderer[v=28082] 
+  Object_282  Transform SkinnedMeshRenderer[v=804] 
+
+================ Z_Dragon_LP ================
+根组件: Transform, MeshFilter, MeshRenderer, InkMaterialSwap
+顶点 6337 个  高=1.472 m  宽/深=6.999  Y范围=[4998.711,5000.183]
+
+层级（深度 ≤6）：
+Z_Dragon_LP  Transform MeshFilter MeshRenderer[MeshR] InkMaterialSwap 
+
+================ 龙源 FBX 的片段 ================
+
+--- Assets/ThirdParty/Ziyuan/_fbx/chinese_dragon.fbx ---
+  [0] 'Object_6|Take 001_Object_6'  len=57.500 s
+
+--- Assets/ThirdParty/Ziyuan/_fbx/lowpoly_textured_chinese_dragon.fbx ---
+  （无片段）
+
+================ 可复用基建（读源码摘出公共成员）================
+
+--- EnemyBase.cs ---
+  public enum EnemyState
+  public abstract class EnemyBase : MonoBehaviour, IDamageable
+  public string enemyName = "墨徒";
+  public float maxHealth = 40f;
+  public float walkSpeed = 1.5f;
+  public float chaseSpeed = 3.4f;
+  public float acceleration = 14f;
+  public float turnSpeedDeg = 720f;
+  public float sightRange = 16f;
+  public float loseSightRange = 24f;
+  public bool requireLineOfSight = true;
+  public Vector3 eyeOffset = new Vector3(0f, 1.4f, 0f);
+  public float attackRange = 2.0f;
+  public float attackCooldown = 1.6f;
+  public float attackWindup = 0.32f;
+  public float attackActive = 0.16f;
+  public float attackRecover = 0.45f;
+  public Animator animator;
+  public float speedDamp = 0.12f;
+  public float spawnDelay = 0.25f;
+  public float destroyAfterDeath = 2.4f;
+  public int xpReward = 10;
+  [SerializeField] protected EnemyState _state = EnemyState.Spawning;
+  [SerializeField] protected float _stateTime;
+  [SerializeField] protected float _health;
+  [SerializeField] protected float _distanceToPlayer;
+  [SerializeField] protected int _attackCount;
+  [SerializeField] protected int _damageTakenCount;
+  public static int AliveCount;
+  public static int TotalKills;
+  public static int TotalSpawned;
+  public static event Action<EnemyBase> AnyDied;
+  public EnemyState State => _state;
+  public float StateTime => _stateTime;
+  public float Health => _health;
+  public float HealthRatio => maxHealth > 0f ? Mathf.Clamp01(_health / maxHealth) : 0f;
+  public float DistanceToPlayer => _distanceToPlayer;
+  public int AttackCount => _attackCount;
+  public int DamageTakenCount => _damageTakenCount;
+  public bool IsAlive => _health > 0f && _state != EnemyState.Dead;
+  public Faction Faction => Faction.Enemy;
+  public Transform Transform => transform;
+  public virtual bool TakeDamage(DamageInfo info)
+  protected virtual void OnDamaged(DamageInfo info) { }
+  protected virtual float DamageMultiplier(DamageInfo info) => 1f;
+  protected virtual float StunMultiplier(DamageInfo info) => 1f;
+  protected virtual void ChooseAttack() { _useSecondAttack = false; }
+  protected virtual void AttackMovement(float t, float hitAt) { }
+  protected NavMeshAgent _agent;
+  protected Animator _anim;
+  protected Collider _collider;
+  protected Hitbox _hitbox;
+  protected Vector3 _knockVelocity;
+  protected float _knockTimer;
+  protected float _cooldownTimer;
+  protected float _repathTimer;
+  protected float _speedForAnim;
+  protected bool _deadHandled;
+  protected bool _useSecondAttack;
+  protected static readonly int HashSpeed = Animator.StringToHash("Speed");
+  protected static readonly int HashAttack = Animator.StringToHash("Attack");
+  protected static readonly int HashAttack2 = Animator.StringToHash("Attack2");
+  protected static readonly int HashHit = Animator.StringToHash("Hit");
+  protected static readonly int HashDead = Animator.StringToHash("Dead");
+  protected virtual void Awake()
+  protected virtual void OnEnable()
+  protected virtual void OnDisable()
+  protected virtual void Start()
+  protected virtual void Update()
+  protected void Enter(EnemyState s)
+  protected virtual void OnEnterState(EnemyState s)
+  protected virtual void TickSpawning()
+  protected virtual void TickIdle()
+  protected virtual void TickChase()
+  protected virtual void TickAttack()
+  protected virtual void TickHitStun()
+  protected virtual void TickDead()
+  protected virtual void PerformHit()
+  protected virtual void EnterHitStun(float duration, DamageInfo info)
+  protected virtual void Die()
+  protected virtual void OnDied() { }
+  public event Action<EnemyBase> DiedEvent;
+  protected virtual float PreferredRange => attackRange * 0.8f;
+  protected bool CanSeePlayer()
+  protected void SetAgentSpeed(float v)
+  protected void StopAgent()
+  protected void ResumeAgent()
+  protected void FacePlayer(float dt)
+  protected void FacePlayerTowardAgent(float dt)
+  protected void FacePlayerInstant()
+  protected void TickKnockback()
+  protected void UpdateDistance()
+  protected void DriveAnimation()
+  protected bool HasParam(int hash)
+  public bool SnapToNavMesh(float maxDist = 4f)
+
+--- EnemyRanged.cs ---
+  public class EnemyRanged : EnemyBase
+  public float keepDistance = 7.5f;
+  public float retreatDistance = 4.0f;
+  public float retreatStep = 4.0f;
+  public GameObject projectilePrefab;
+  public Transform muzzle;
+  public float projectileDamage = 10f;
+  public float projectileSpeed = 13f;
+  public float aimHeight = 1.0f;
+  [SerializeField] private int _projectilesSpawned;
+  [SerializeField] private int _retreatCount;
+  public int ProjectilesSpawned => _projectilesSpawned;
+  public int RetreatCount => _retreatCount;
+  protected override float PreferredRange => keepDistance;
+  protected override void PerformHit()
+  protected override void TickChase()
+
+--- InkProjectile.cs ---
+  public class InkProjectile : MonoBehaviour
+  public Faction ownerFaction = Faction.Enemy;
+  public GameObject owner;
+  public float speed = 12f;
+  public float damage = 10f;
+  public float knockback = 3.5f;
+  public float hitStun = 0.3f;
+  public float hitStop = 0.04f;
+  public float lifetime = 5f;
+  public float radius = 0.33f;
+  public LayerMask blockMask = ~0;
+  [SerializeField] private int _bouncesOffWalls;
+  public int WallsHit => _bouncesOffWalls;
+  public void Launch(Vector3 direction)

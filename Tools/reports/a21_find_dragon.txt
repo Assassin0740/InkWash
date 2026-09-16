@@ -1,0 +1,25 @@
+========== a21 枚举所有含 'Enemy' 的类型 ==========
+
+--- 程序集 Assembly-CSharp（9 个命中）---
+    InkWash.Enemies.EnemyState
+    InkWash.Enemies.EnemyBase
+    InkWash.Enemies.EnemyDragon
+    InkWash.Enemies.EnemyElite
+    InkWash.Enemies.EnemyMelee
+    InkWash.Enemies.EnemyRanged
+    InkWash.Enemies.EnemySpawnEntry
+    InkWash.Utils.PlaytestHarness+<S3EnemyFlow>d__73
+    InkWash.Enemies.EnemyDragon+DragonAttack
+
+--- 程序集 Unity.PlasticSCM.Editor（1 个命中）---
+    Unity.PlasticSCM.Editor.Views.BranchExplorer.Game.BranchRunnerGame+Enemy
+
+扫描程序集总数 = 202  命中类型 = 10
+含命中的程序集: Assembly-CSharp, Unity.PlasticSCM.Editor
+
+---- 专门找 EnemyDragon ----
+  ✓ 找到: InkWash.Enemies.EnemyDragon  在程序集 Assembly-CSharp
+
+---- 项目相关程序集 ----
+  Assembly-CSharp  类型数=118
+  Assembly-CSharp-Editor  类型数=11

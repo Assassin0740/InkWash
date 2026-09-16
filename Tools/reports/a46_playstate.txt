@@ -1,0 +1,25 @@
+========== a46 试玩台状态体检 ==========
+场景 = Main (isLoaded=True, isDirty=False)
+Time.timeScale = 1   Time.time = 317.13
+
+玩家 = Player  pos=(12.293, -628158.800, 23.821)  activeInHierarchy=True
+  CharacterController enabled=True isGrounded=False
+
+---- 所有敌人实例 ----
+  Z_Enemy_MoLong_Test pos=(12.29, -538886.30, 32.82) hp=620.0/620 agent=★offNavMesh
+  Z_Enemy_MoLong_Test pos=(12.29, -518163.30, 32.82) hp=620.0/620 agent=★offNavMesh
+  共 2 个
+
+---- NavMesh 数据 ----
+  顶点=235 三角=95
+  NavMesh 范围 [(-21.15, 0.03, -21.15)] ~ [(21.20, 0.33, 21.20)]
+
+---- 从几个关键点采样 NavMesh ----
+  (0.0, 0.1, -8.0) → 命中 (0.00, 0.04, -8.00)
+  (0.0, 0.5, 0.0) → 命中 (0.00, 0.33, 0.00)
+  (0.0, 0.3, 6.0) → 命中 (0.00, 0.05, 6.00)
+  (5.0, 0.3, 5.0) → 命中 (5.00, 0.05, 5.00)
+  (20.0, 0.5, 0.0) → 命中 (20.00, 0.03, 0.00)
+
+---- StageAnchor / PlaytestHarness ----
+  StageAnchor = 无

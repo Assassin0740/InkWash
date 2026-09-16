@@ -1,0 +1,22 @@
+========== a15 把波次换到新敌人 ==========
+场景 = Main（path=Assets/_Project/Scenes/Main.unity）
+
+WaveSpawner 在对象: Enemies  autoStart=False  interval=0.45  center=(0.00, 0.00, 0.00)  r=7.5  minDist=4.5
+
+---- 改前 ----
+  [0] '第一波·墨徒' delay=1.2  → Enemy_MoTu x3
+  [1] '第二波·墨徒+墨偶' delay=2  → Enemy_MoTu x3 + Enemy_MoOu x2
+  [2] '第三波·墨魇' delay=2.5  → Enemy_MoTu x3 + Enemy_MoYan x1
+
+---- 改后 ----
+  [0] '第一波·墨兵' delay=1.5  → Z_Enemy_MoGuai x3
+  [1] '第二波·墨兵+墨卒' delay=2  → Z_Enemy_MoGuai x2 + Z_Enemy_MoGu x2
+  [2] '第三波·墨魇' delay=2  → Z_Enemy_MoGuai x3 + Z_Enemy_MoShan x1
+
+---- 复核：场景文件里能找到的敌人 prefab GUID ----
+  Z_Enemy_MoShan     guid=eb839b84968d5a14da27e08395d39eb6  在场景文件里=—
+  Z_Enemy_MoGuai     guid=9edbbc313186f3c479965af17b9d33f9  在场景文件里=—
+  Z_Enemy_MoGu       guid=475b207b7b83d4a48b924b12cc14dfa8  在场景文件里=—
+  Enemy_MoTu         guid=089908d18e9ba8a40b23574ae5e66804  在场景文件里=—
+  Enemy_MoOu         guid=491faf5113156fb49b4eca2a43a5875b  在场景文件里=—
+  Enemy_MoYan        guid=85f247e87b3926549b4b89cc4295f8d4  在场景文件里=—

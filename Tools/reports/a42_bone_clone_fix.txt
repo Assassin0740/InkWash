@@ -1,0 +1,28 @@
+========== a42 龙 prefab：修 bones 引用（重绑）==========
+  源实例化完成: Z_Dragon
+  源 prefab 实例 → 命名为 Model，挂在 Visual 下
+  [搬入后] Object_281 bones=273 非null=273 null=0 rootBone=_rootJoint
+  [搬入后] Object_282 bones=273 非null=273 null=0 rootBone=_rootJoint
+  基线(scale=1) 世界尺寸=(6.04, 2.59, 5.87)  Y[-0.06,2.53]
+  长轴对+Z 后 世界尺寸=(5.87, 2.59, 6.04)
+  落地后 Y[0.000, 2.588]
+  ★ 体长(Z)=6.04 m  高(Y)=2.59 m  宽(X)=5.87 m
+
+---- 回读审计 ----
+  Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab = 存在 ✓
+  Object_281 bones=273 非null=273 null=0 rootBone=_rootJoint
+  Object_282 bones=273 非null=273 null=0 rootBone=_rootJoint
+  骨骼数=546  世界范围 [(-2.00, 0.03, -4.21)] ~ [(3.66, 2.20, 1.59)]
+  尺寸=(5.66, 2.17, 5.80)
+  模板污染检查: drgon_* = 0 ✓
+
+---- 渲染 ----
+  A0_0deg
+  A1_45deg
+  A2_90deg
+  A3_135deg
+  A4_180deg
+  A5_225deg
+  A6_270deg
+  A7_315deg
+  A8_俯视

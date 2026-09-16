@@ -1,0 +1,32 @@
+========== a35 龙不可见原因排查 ==========
+
+---- ① 渲染器状态 ----
+  Z_Enemy_MoLong/Visual/Model/Object_281
+     type=SkinnedMeshRenderer  enabled=True  go.activeInHierarchy=True  layer=0(Default)
+     materials=1
+       [0] M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  renderQueue=2000
+           ShaderUtil 消息: （无）
+     bounds center=(1.434, 3.400, -1.068) size=(2.997, 6.800, 7.000)
+  Z_Enemy_MoLong/Visual/Model/Object_282
+     type=SkinnedMeshRenderer  enabled=True  go.activeInHierarchy=True  layer=0(Default)
+     materials=1
+       [0] M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  renderQueue=2000
+           ShaderUtil 消息: （无）
+     bounds center=(0.954, 6.328, -0.051) size=(0.176, 0.183, 0.340)
+
+---- ② 网格数据健康度 ----
+  Object_281  mesh=Object_281
+     顶点=28082  子网格=1  indexFormat=UInt16
+     mesh.bounds=(0.010, -447.498, 246.679) size=(779.800, 4969.382, 542.049)
+     bind pose 顶点范围: [(-389.89, -2932.19, -24.35)] ~ [(389.91, 2037.19, 517.70)]  NaN=0 Inf=0
+     BakeMesh(渲染器局部) 范围: [(-36565.17, -102062.20, -36926.49)] ~ [(41759.59, 28480.51, 33852.59)]  NaN=0
+     骨骼（长度 273）异常数=273
+  Object_282  mesh=Object_282
+     顶点=804  子网格=1  indexFormat=UInt16
+     mesh.bounds=(-0.003, -2769.783, 389.514) size=(120.130, 43.200, 43.200)
+     bind pose 顶点范围: [(-60.07, -2791.38, 367.91)] ~ [(60.06, -2748.18, 411.11)]  NaN=0 Inf=0
+     BakeMesh(渲染器局部) 范围: [(-7390.94, -7772.45, -9307.52)] ~ [(8150.44, 7770.83, 6233.77)]  NaN=0
+     骨骼（长度 273）异常数=273
+
+---- ③ 相机可见性模拟（用 Unity 自己的 CullingResults 不现实，这里只报关键项）----
+  默认相机 cullingMask = 一切（-1），所以 layer 不是原因（除非被改）

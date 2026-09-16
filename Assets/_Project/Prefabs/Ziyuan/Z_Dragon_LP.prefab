@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 5470934409006839133}
-  litMaterials: []
+  litMaterials:
+  - {fileID: 2100000, guid: 133c9d49a0a22204b844af2f6195c70d, type: 2}
   inkMaterials:
   - {fileID: 2100000, guid: 133c9d49a0a22204b844af2f6195c70d, type: 2}

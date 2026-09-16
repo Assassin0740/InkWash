@@ -1,0 +1,37 @@
+========== 以现有敌人为模板，换模型层 ==========
+
+--- Z_Enemy_MoShan（模板 Enemy_MoYan + 模型 Z_Orge）---
+  controller = Z_Orge.controller
+  材质 = M_Ink_Enemy_MoShan
+  旧模型根 = Rig_Large  scale=(1.00, 1.00, 1.00) pos=(0.00, 0.00, 0.00)
+  源模型子对象 15 个: Object_5, Object_33, Object_35, Object_37, Object_39, Object_41, Object_43, Object_45, Object_47, Object_49, Object_51, Object_53, Object_55, Object_57, Object_59
+  Animator.avatar = mountain_orgeAvatar (isHuman=True)
+  Animator.controller = Z_Orge.controller
+  Animator 所在节点 = Enemy_MoYan（是否根=True）
+  InkMaterialSwap.inkMaterials = [M_Ink_Enemy_MoShan]
+  渲染器材质已设水墨 ×22
+  已存 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+
+--- Z_Enemy_MoGuai（模板 Enemy_MoTu + 模型 Z_Orc）---
+  controller = Z_Orc.controller
+  材质 = M_Ink_Enemy_MoGuai
+  旧模型根 = Rig_Medium  scale=(1.00, 1.00, 1.00) pos=(0.00, 0.00, 0.00)
+  源模型子对象 12 个: Box001_08 - Default_0, Object_4, Object_7, Object_9, Object_11, Object_13, Object_15, Object_17, Object_19, Object_21, Object_23, Object_25
+  Animator.avatar = low-poly_orcAvatar (isHuman=True)
+  Animator.controller = Z_Orc.controller
+  Animator 所在节点 = Enemy_MoTu（是否根=True）
+  InkMaterialSwap.inkMaterials = [M_Ink_Enemy_MoGuai]
+  渲染器材质已设水墨 ×20
+  已存 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+
+--- Z_Enemy_MoGu（模板 Enemy_MoOu + 模型 Z_Undead）---
+  controller = Z_Undead.controller
+  材质 = M_Ink_Enemy_MoGu
+  旧模型根 = Rig_Medium  scale=(1.00, 1.00, 1.00) pos=(0.00, 0.00, 0.00)
+  源模型子对象 8 个: GLTF_created_0, Object_21, Object_23, Object_24, Object_28, Object_34, Object_43, Object_90
+  Animator.avatar = cursed_undead_soldier_rigAvatar (isHuman=True)
+  Animator.controller = Z_Undead.controller
+  Animator 所在节点 = Enemy_MoOu（是否根=True）
+  InkMaterialSwap.inkMaterials = [M_Ink_Enemy_MoGu]
+  渲染器材质已设水墨 ×15
+  已存 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab

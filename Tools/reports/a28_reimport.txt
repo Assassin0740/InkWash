@@ -1,0 +1,6 @@
+========== a28 强制重新导入 ==========
+目标 = Assets/_Project/Prefabs/Enemies/Enemy_MoYan.prefab
+导入前 drgon_* 节点数 = 272
+导入后 drgon_* 节点数 = 0
+
+（0 = 干净；非 0 = 缓存仍未失效，需要重启 Unity）

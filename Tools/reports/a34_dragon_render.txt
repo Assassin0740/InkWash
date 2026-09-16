@@ -1,0 +1,9 @@
+========== a34 渲染判定 ==========
+网格 AABB: X[-0.06,2.93] Y[0.00,6.80] Z[-4.57,2.43]
+  已渲染 D:\Unity Project\InkWash\Tools/screenshots/dragon\V1_侧视_左.png
+  已渲染 D:\Unity Project\InkWash\Tools/screenshots/dragon\V2_侧视_右.png
+  已渲染 D:\Unity Project\InkWash\Tools/screenshots/dragon\V3_正视.png
+  已渲染 D:\Unity Project\InkWash\Tools/screenshots/dragon\V4_俯视.png
+  已渲染 D:\Unity Project\InkWash\Tools/screenshots/dragon\V5_近景头.png
+
+Y 高 = 6.800 m（体长 7 m 的龙，这个高偏大 ⇒ 大概率是鳍/须散开撑的）

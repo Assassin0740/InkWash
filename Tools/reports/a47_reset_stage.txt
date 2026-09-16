@@ -1,0 +1,22 @@
+========== a47 试玩台复位 ==========
+当前不在 Play
+销毁残留 = 0
+重开场景 = Main  isDirty=False
+
+玩家 = Player pos=(0.000, 0.000, -3.000)
+StageAnchor = 无
+场景内敌人数 = 0
+
+---- WaveSpawner 序列化真值 ----
+  对象 = Enemies
+  spawnCenter = (0.000, 0.000, 0.000)
+  spawnRadius = 7.50   minDistanceToPlayer = 4.50   spawnAttempts = 24
+  spawnPoints = 0 个
+  autoStart = False   spawnInterval = 0.45
+  波数 = 4
+    [0] '第一波·墨兵' delay=1.5 → Z_Enemy_MoGuai x3  
+    [1] '第二波·墨兵+墨卒' delay=2 → Z_Enemy_MoGuai x2  Z_Enemy_MoGu x2  
+    [2] '第三波·墨魇' delay=2 → Z_Enemy_MoGuai x3  Z_Enemy_MoShan x1  
+    [3] '第四波·墨龙' delay=3 → Z_Enemy_MoLong x1  
+
+NavMesh: 顶点=235 三角=95

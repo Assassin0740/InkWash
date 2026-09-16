@@ -1,0 +1,93 @@
+========== a55 龙息吐弹诊断 ==========
+累计看到的新生墨弹 = 3
+
+=== 触发前状态 ===
+  breathProjectilePrefab = Ink_Projectile
+  SpineLinks = 24
+  已 ForceNextAttackForTest(Breath) + ForceEnterAttackForTest()
+
+=== 逐帧追踪（t 相对触发时刻）===
+  +1.503s  state=Idle       stateTime=0.90  windup=0.32 active=0.16  cd=0.00  attack=龙息  proj=0
+  +1.512s  state=Attack     stateTime=0.01  windup=0.62 active=0.34  cd=2.55  attack=龙息  proj=0
+  +1.520s  state=Attack     stateTime=0.02  windup=0.62 active=0.34  cd=2.54  attack=龙息  proj=0
+  +1.525s  state=Attack     stateTime=0.02  windup=0.62 active=0.34  cd=2.54  attack=龙息  proj=0
+  +1.531s  state=Attack     stateTime=0.03  windup=0.62 active=0.34  cd=2.53  attack=龙息  proj=0
+  +1.539s  state=Attack     stateTime=0.04  windup=0.62 active=0.34  cd=2.52  attack=龙息  proj=0
+  +1.546s  state=Attack     stateTime=0.04  windup=0.62 active=0.34  cd=2.52  attack=龙息  proj=0
+  +1.553s  state=Attack     stateTime=0.05  windup=0.62 active=0.34  cd=2.51  attack=龙息  proj=0
+  +1.560s  state=Attack     stateTime=0.06  windup=0.62 active=0.34  cd=2.50  attack=龙息  proj=0
+  +1.568s  state=Attack     stateTime=0.07  windup=0.62 active=0.34  cd=2.49  attack=龙息  proj=0
+  +1.576s  state=Attack     stateTime=0.07  windup=0.62 active=0.34  cd=2.49  attack=龙息  proj=0
+  +1.584s  state=Attack     stateTime=0.08  windup=0.62 active=0.34  cd=2.48  attack=龙息  proj=0
+  +1.590s  state=Attack     stateTime=0.09  windup=0.62 active=0.34  cd=2.47  attack=龙息  proj=0
+  +1.597s  state=Attack     stateTime=0.09  windup=0.62 active=0.34  cd=2.47  attack=龙息  proj=0
+  +1.605s  state=Attack     stateTime=0.10  windup=0.62 active=0.34  cd=2.46  attack=龙息  proj=0
+  +1.613s  state=Attack     stateTime=0.11  windup=0.62 active=0.34  cd=2.45  attack=龙息  proj=0
+  +1.619s  state=Attack     stateTime=0.12  windup=0.62 active=0.34  cd=2.44  attack=龙息  proj=0
+  +1.626s  state=Attack     stateTime=0.12  windup=0.62 active=0.34  cd=2.44  attack=龙息  proj=0
+  +1.634s  state=Attack     stateTime=0.13  windup=0.62 active=0.34  cd=2.43  attack=龙息  proj=0
+  +1.642s  state=Attack     stateTime=0.14  windup=0.62 active=0.34  cd=2.42  attack=龙息  proj=0
+  +1.649s  state=Attack     stateTime=0.15  windup=0.62 active=0.34  cd=2.41  attack=龙息  proj=0
+  +1.656s  state=Attack     stateTime=0.15  windup=0.62 active=0.34  cd=2.41  attack=龙息  proj=0
+  +1.664s  state=Attack     stateTime=0.16  windup=0.62 active=0.34  cd=2.40  attack=龙息  proj=0
+  +1.671s  state=Attack     stateTime=0.17  windup=0.62 active=0.34  cd=2.39  attack=龙息  proj=0
+  +1.679s  state=Attack     stateTime=0.18  windup=0.62 active=0.34  cd=2.38  attack=龙息  proj=0
+  +1.686s  state=Attack     stateTime=0.18  windup=0.62 active=0.34  cd=2.38  attack=龙息  proj=0
+  +1.697s  state=Attack     stateTime=0.19  windup=0.62 active=0.34  cd=2.37  attack=龙息  proj=0
+  +1.704s  state=Attack     stateTime=0.20  windup=0.62 active=0.34  cd=2.36  attack=龙息  proj=0
+  +1.711s  state=Attack     stateTime=0.21  windup=0.62 active=0.34  cd=2.35  attack=龙息  proj=0
+  +1.715s  state=Attack     stateTime=0.21  windup=0.62 active=0.34  cd=2.35  attack=龙息  proj=0
+  +1.721s  state=Attack     stateTime=0.22  windup=0.62 active=0.34  cd=2.34  attack=龙息  proj=0
+  +1.730s  state=Attack     stateTime=0.23  windup=0.62 active=0.34  cd=2.33  attack=龙息  proj=0
+  +1.736s  state=Attack     stateTime=0.23  windup=0.62 active=0.34  cd=2.33  attack=龙息  proj=0
+  +1.743s  state=Attack     stateTime=0.24  windup=0.62 active=0.34  cd=2.32  attack=龙息  proj=0
+  +1.751s  state=Attack     stateTime=0.25  windup=0.62 active=0.34  cd=2.31  attack=龙息  proj=0
+  +1.762s  state=Attack     stateTime=0.26  windup=0.62 active=0.34  cd=2.30  attack=龙息  proj=0
+  +1.771s  state=Attack     stateTime=0.27  windup=0.62 active=0.34  cd=2.29  attack=龙息  proj=0
+  +1.776s  state=Attack     stateTime=0.27  windup=0.62 active=0.34  cd=2.29  attack=龙息  proj=0
+  +1.780s  state=Attack     stateTime=0.28  windup=0.62 active=0.34  cd=2.28  attack=龙息  proj=0
+  +1.787s  state=Attack     stateTime=0.28  windup=0.62 active=0.34  cd=2.28  attack=龙息  proj=0
+  +1.794s  state=Attack     stateTime=0.29  windup=0.62 active=0.34  cd=2.27  attack=龙息  proj=0
+  +1.802s  state=Attack     stateTime=0.30  windup=0.62 active=0.34  cd=2.26  attack=龙息  proj=0
+  +1.810s  state=Attack     stateTime=0.31  windup=0.62 active=0.34  cd=2.25  attack=龙息  proj=0
+  +1.817s  state=Attack     stateTime=0.31  windup=0.62 active=0.34  cd=2.25  attack=龙息  proj=0
+  +1.823s  state=Attack     stateTime=0.32  windup=0.62 active=0.34  cd=2.24  attack=龙息  proj=0
+  +1.830s  state=Attack     stateTime=0.33  windup=0.62 active=0.34  cd=2.23  attack=龙息  proj=0
+  +1.838s  state=Attack     stateTime=0.34  windup=0.62 active=0.34  cd=2.22  attack=龙息  proj=0
+  +1.844s  state=Attack     stateTime=0.34  windup=0.62 active=0.34  cd=2.22  attack=龙息  proj=0
+  +1.852s  state=Attack     stateTime=0.35  windup=0.62 active=0.34  cd=2.21  attack=龙息  proj=0
+  +1.859s  state=Attack     stateTime=0.36  windup=0.62 active=0.34  cd=2.20  attack=龙息  proj=0
+  +1.866s  state=Attack     stateTime=0.36  windup=0.62 active=0.34  cd=2.20  attack=龙息  proj=0
+  +1.873s  state=Attack     stateTime=0.37  windup=0.62 active=0.34  cd=2.19  attack=龙息  proj=0
+  +1.882s  state=Attack     stateTime=0.38  windup=0.62 active=0.34  cd=2.18  attack=龙息  proj=0
+  +1.889s  state=Attack     stateTime=0.39  windup=0.62 active=0.34  cd=2.17  attack=龙息  proj=0
+  +1.895s  state=Attack     stateTime=0.39  windup=0.62 active=0.34  cd=2.17  attack=龙息  proj=0
+  +1.904s  state=Attack     stateTime=0.40  windup=0.62 active=0.34  cd=2.16  attack=龙息  proj=0
+  +1.910s  state=Attack     stateTime=0.41  windup=0.62 active=0.34  cd=2.15  attack=龙息  proj=0
+  +1.918s  state=Attack     stateTime=0.41  windup=0.62 active=0.34  cd=2.15  attack=龙息  proj=0
+  +1.924s  state=Attack     stateTime=0.42  windup=0.62 active=0.34  cd=2.14  attack=龙息  proj=0
+  +1.932s  state=Attack     stateTime=0.43  windup=0.62 active=0.34  cd=2.13  attack=龙息  proj=0
+  +1.939s  state=Attack     stateTime=0.44  windup=0.62 active=0.34  cd=2.12  attack=龙息  proj=0
+  +1.946s  state=Attack     stateTime=0.44  windup=0.62 active=0.34  cd=2.12  attack=龙息  proj=0
+  +1.954s  state=Attack     stateTime=0.45  windup=0.62 active=0.34  cd=2.11  attack=龙息  proj=0
+  +1.964s  state=Attack     stateTime=0.46  windup=0.62 active=0.34  cd=2.10  attack=龙息  proj=0
+  +1.970s  state=Attack     stateTime=0.47  windup=0.62 active=0.34  cd=2.09  attack=龙息  proj=0
+  +1.976s  state=Attack     stateTime=0.47  windup=0.62 active=0.34  cd=2.09  attack=龙息  proj=0
+  +1.983s  state=Attack     stateTime=0.48  windup=0.62 active=0.34  cd=2.08  attack=龙息  proj=0
+  +1.992s  state=Attack     stateTime=0.49  windup=0.62 active=0.34  cd=2.07  attack=龙息  proj=0
+  +1.999s  state=Attack     stateTime=0.50  windup=0.62 active=0.34  cd=2.06  attack=龙息  proj=0
+  +2.006s  state=Attack     stateTime=0.50  windup=0.62 active=0.34  cd=2.06  attack=龙息  proj=0
+  +2.014s  state=Attack     stateTime=0.51  windup=0.62 active=0.34  cd=2.05  attack=龙息  proj=0
+  +2.020s  state=Attack     stateTime=0.52  windup=0.62 active=0.34  cd=2.04  attack=龙息  proj=0
+  +2.028s  state=Attack     stateTime=0.53  windup=0.62 active=0.34  cd=2.03  attack=龙息  proj=0
+  +2.037s  state=Attack     stateTime=0.53  windup=0.62 active=0.34  cd=2.03  attack=龙息  proj=0
+  +2.042s  state=Attack     stateTime=0.54  windup=0.62 active=0.34  cd=2.02  attack=龙息  proj=0
+  +2.049s  state=Attack     stateTime=0.55  windup=0.62 active=0.34  cd=2.01  attack=龙息  proj=0
+  +2.057s  state=Attack     stateTime=0.55  windup=0.62 active=0.34  cd=2.01  attack=龙息  proj=0
+  +2.064s  state=Attack     stateTime=0.56  windup=0.62 active=0.34  cd=2.00  attack=龙息  proj=0
+  +2.073s  state=Attack     stateTime=0.57  windup=0.62 active=0.34  cd=1.99  attack=龙息  proj=0
+  +2.079s  state=Attack     stateTime=0.58  windup=0.62 active=0.34  cd=1.98  attack=龙息  proj=0
+  +2.086s  state=Attack     stateTime=0.58  windup=0.62 active=0.34  cd=1.98  attack=龙息  proj=0
+  +2.093s  state=Attack     stateTime=0.59  windup=0.62 active=0.34  cd=1.97  attack=龙息  proj=0
+  +2.102s  state=Attack     stateTime=0.60  windup=0.62 active=0.34  cd=1.96  attack=龙息  proj=0
+  +2.108s  state=Attack     stateTime=0.61  windup=0.62 active=0.34  cd=1.95  attack=龙息  proj=0

@@ -1,0 +1,4 @@
+========== 建三个新怪的 controller ==========
+  建好 Z_Orge.controller.controller: 状态 6 个，片段 Idle=Object_5|Armature|Ideal3_Object_5 / Run=Object_5|Armature|Run_Object_5 / Attack=Object_5|Armature|Punch_Object_5 / Attack2=Object_5|Armature|Slam_Object_5 / Hit=Object_5|Armature|Roar2_Object_5 / Dead=Object_5|Armature|Death_Object_5
+  建好 Z_Orc.controller.controller: 状态 6 个，片段 Idle=Object_4|ANM_ORC_Roar_Object_4 / Run=Object_4|ANM_RUN_Object_4 / Attack=Object_4|ANM_ORC_LIGHT_ATTACK_Object_4 / Attack2=Object_4|ANM_ATTACK_CRIT_Object_4 / Hit=Object_4|ANM_DAMAGED_Object_4 / Dead=Object_4|ANM_DEATH_Object_4
+  建好 Z_Undead.controller.controller: 状态 5 个，片段 Idle=Object_5|Armature|Ideal3_Object_5 / Run=Object_5|Armature|Walk_Object_5 / Attack=GLTF_created_0|Slash_GLTF_created_0 / Attack2=null / Hit=Object_4|ANM_DAMAGED_Object_4 / Dead=Object_4|ANM_DEATH_Object_4

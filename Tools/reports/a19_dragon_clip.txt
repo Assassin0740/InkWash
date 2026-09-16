@@ -1,0 +1,65 @@
+========== 龙的片段分析 ==========
+片段 'Object_6|Take 001_Object_6'  len=57.500 s  frameRate=24  isLooping=False  legacy=False
+绑定曲线总数 = 1800  对象曲线 = 0
+
+被动画的路径数 = 272
+  Object_6/_rootJoint/drgon_03  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022/drgon_023  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022/drgon_023/drgon_024  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022/drgon_023/drgon_024/drgon_025  ← 7 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022/drgon_023/drgon_024/drgon_025/drgon_026  ← 4 条曲线
+  Object_6/_rootJoint/drgon_03/drgon_04/drgon_05/drgon_06/drgon_07/drgon_08/drgon_09/drgon_010/drgon_011/drgon_012/drgon_013/drgon_014/drgon_015/drgon_016/drgon_017/drgon_018/drgon_019/drgon_020/drgon_021/drgon_022/drgon_023/drgon_024/drgon_025/drgon_027  ← 4 条曲线
+  ...（还有 247 条）
+
+---- 沿时间扫描（每 2 s 一格，找动作拐点）----
+  t(s)   位移最大骨骼路径                                     该时刻总位移(m)
+    0.0   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            996.3918
+    1.9   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1215.2910
+    3.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1271.8150
+    5.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1272.4150
+    7.7   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1020.2730
+    9.6   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            979.6702
+   11.5   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            3407.3430
+   13.4   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            2009.7520
+   15.3   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            989.3224
+   17.3   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            970.3219
+   19.2   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1001.5740
+   21.1   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            997.7841
+   23.0   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1010.0410
+   24.9   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1336.2380
+   26.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1527.6360
+   28.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1499.0950
+   30.7   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1083.5380
+   32.6   Object_6/_rootJoint/drgon_03.m_LocalPosition.x            762.2056
+   34.5   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            991.7892
+   36.4   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1163.5980
+   38.3   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1147.5770
+   40.3   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            993.1302
+   42.2   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            981.3199
+   44.1   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1253.4470
+   46.0   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1018.5410
+   47.9   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1073.3640
+   49.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.y            1058.3620
+   51.8   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            1013.0600
+   53.7   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            992.2783
+   55.6   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            979.3776
+   57.5   Object_6/_rootJoint/drgon_03.m_LocalPosition.z            992.8268

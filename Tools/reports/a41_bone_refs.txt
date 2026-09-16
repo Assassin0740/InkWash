@@ -1,0 +1,36 @@
+========== a41 龙的 bones 引用在哪一步丢的 ==========
+
+---- ① 源 FBX 资产 ----
+  FBX 内 Mesh 数 = 2
+  Object_281  vertexCount=28082  bindposes=273
+  Object_282  vertexCount=804  bindposes=273
+  FBX 内 GameObject 数 = 277
+  [chinese_dragon] SMR Object_281 bones=273 非null=273 null=0 rootBone=_rootJoint
+  [chinese_dragon] SMR Object_282 bones=273 非null=273 null=0 rootBone=_rootJoint
+  [Object_281] SMR Object_281 bones=273 非null=273 null=0 rootBone=_rootJoint
+  [Object_282] SMR Object_282 bones=273 非null=273 null=0 rootBone=_rootJoint
+
+---- ② Z_Dragon.prefab（LoadPrefabContents）----
+  Object_281 bones=273 非null=273 null=0 rootBone=_rootJoint mesh.bindposes=273
+  Object_282 bones=273 非null=273 null=0 rootBone=_rootJoint mesh.bindposes=273
+  层级（前 3 层）：
+    Z_Dragon
+      Object_6
+        _rootJoint
+      Object_281
+      Object_282
+
+---- ③ Z_Enemy_MoLong.prefab（我建的）----
+  Object_281 bones=273 非null=0 null=273 rootBone=NULL mesh.bindposes=273
+  Object_282 bones=273 非null=0 null=273 rootBone=NULL mesh.bindposes=273
+  层级（前 3 层）：
+    Z_Enemy_MoLong
+      Visual
+        Model
+      Muzzle
+
+---- ④ 文本层面对照 ----
+  Assets/_Project/Prefabs/Ziyuan/Z_Dragon.prefab
+    SkinnedMeshRenderer 块 = 2   m_Bones 引用总数 = 546   rootBone=0 的块 = 0
+  Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab
+    SkinnedMeshRenderer 块 = 2   m_Bones 引用总数 = 546   rootBone=0 的块 = 2

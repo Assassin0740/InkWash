@@ -1,0 +1,36 @@
+========== a50 InkMaterialSwap 槽位审计 ==========
+
+  Enemy_MoOu.prefab  /  Enemy_MoOu   lit=1 ink=1
+       target = Enemy_MoOu/Visual/Skeleton_Mage_ArmLeft  槽数 = 1
+  Enemy_MoTu.prefab  /  Enemy_MoTu   lit=1 ink=1
+       target = Enemy_MoTu/Visual/Skeleton_Minion_ArmLeft  槽数 = 1
+  Enemy_MoYan.prefab  /  Enemy_MoYan   lit=1 ink=1
+       target = Enemy_MoYan/Visual/Skeleton_Golem_ArmLeft  槽数 = 1
+  Z_Enemy_MoGu.prefab  /  Z_Enemy_MoGu   lit=1 ink=1
+       target = Z_Enemy_MoGu/Visual/Model/Object_21  槽数 = 1
+  Z_Enemy_MoGuai.prefab  /  Z_Enemy_MoGuai   lit=1 ink=1
+       target = Z_Enemy_MoGuai/Visual/Model/Box001_08 - Default_0  槽数 = 1
+  Z_Enemy_MoLong.prefab  /  Z_Enemy_MoLong   lit=1 ink=1
+       target = Z_Enemy_MoLong/Visual/Model/Object_281  槽数 = 1
+  Z_Enemy_MoLong.prefab  /  Z_Enemy_MoLong/Visual/Model   lit=1 ink=1
+       target = Z_Enemy_MoLong/Visual/Model/Object_281  槽数 = 1
+  Z_Enemy_MoShan.prefab  /  Z_Enemy_MoShan   lit=1 ink=1
+       target = Z_Enemy_MoShan/Visual/Model/Object_33  槽数 = 1
+  Z_Dragon.prefab  /  Z_Dragon   lit=1 ink=1
+       target = Z_Dragon/Object_281  槽数 = 1
+  Z_Dragon_LP.prefab  /  Z_Dragon_LP   lit=1 ink=1
+       target = Z_Dragon_LP  槽数 = 1
+  Z_Orc.prefab  /  Z_Orc   lit=1 ink=1
+       target = Z_Orc/Box001_08 - Default_0  槽数 = 1
+  Z_Orge.prefab  /  Z_Orge   lit=1 ink=1
+       target = Z_Orge/Object_33  槽数 = 1
+  Z_Undead.prefab  /  Z_Undead   lit=1 ink=1
+       target = Z_Undead/Object_21  槽数 = 1
+
+prefab 总数 = 15   InkMaterialSwap 总数 = 13   ★ 不合格 = 0
+
+---- 场景内（Main） ----
+  Player  lit=1 ink=1  ✓
+  HoverTestDragon  lit=1 ink=1  ✓
+  Model  lit=1 ink=1  ✓
+  共 3 个

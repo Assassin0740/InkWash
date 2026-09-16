@@ -1,0 +1,17 @@
+========== a51 修 InkMaterialSwap 配置 ==========
+
+[Z_Enemy_MoGu.prefab] Z_Enemy_MoGu：填 target = Object_21
+[Z_Enemy_MoGuai.prefab] Z_Enemy_MoGuai：填 target = Box001_08 - Default_0
+[Z_Enemy_MoLong.prefab] Z_Enemy_MoLong：填 target = Object_281
+[Z_Enemy_MoLong.prefab] Model：填 litMaterials = [M_Ink_Boss_Dragon]  (ink 对应 [M_Ink_Boss_Dragon])
+[Z_Enemy_MoShan.prefab] Z_Enemy_MoShan：填 target = Object_33
+[Z_Dragon.prefab] Z_Dragon：填 litMaterials = [M_Ink_Boss_Dragon]  (ink 对应 [M_Ink_Boss_Dragon])
+[Z_Dragon_LP.prefab] Z_Dragon_LP：填 litMaterials = [M_Ink_Boss_Dragon]  (ink 对应 [M_Ink_Boss_Dragon])
+[Z_Orc.prefab] Z_Orc：填 litMaterials = [M_Ink_Enemy_MoGuai]  (ink 对应 [M_Ink_Enemy_MoGuai])
+[Z_Orge.prefab] Z_Orge：填 litMaterials = [M_Ink_Enemy_MoShan]  (ink 对应 [M_Ink_Enemy_MoShan])
+[Z_Undead.prefab] Z_Undead：填 target = Object_21
+[Z_Undead.prefab] Z_Undead：填 litMaterials = [M_Ink_Enemy_MoGu]  (ink 对应 [M_Ink_Enemy_MoGu])
+
+修 target = 5 处
+修 litMaterials = 6 处
+改动 prefab = 9：Z_Enemy_MoGu.prefab, Z_Enemy_MoGuai.prefab, Z_Enemy_MoLong.prefab, Z_Enemy_MoShan.prefab, Z_Dragon.prefab, Z_Dragon_LP.prefab, Z_Orc.prefab, Z_Orge.prefab, Z_Undead.prefab

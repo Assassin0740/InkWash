@@ -1,0 +1,16 @@
+========== a48 盘旋升空独立验证 ==========
+prefab = Z_Enemy_MoLong
+EnemyDragon = 有
+SMR=Object_281 bones=273 非null=273 rootBone=_rootJoint
+脊骨链节数 = 0
+hoverHeight = 3.6
+_modelRoot = ★null
+已调用 BeginHover
+
+---- 立即量（同一帧，EnterHover 后） ----
+  modelRoot.localPosition.y = ?
+  transform.y = 0.200
+
+---- 所有 SkinnedMeshRenderer ----
+  HoverTestDragon/Visual/Model/Object_281 bones=273 非null=273 rootBone=_rootJoint shader=InkWash/InkCharacter
+  HoverTestDragon/Visual/Model/Object_282 bones=273 非null=273 rootBone=_rootJoint shader=InkWash/InkCharacter

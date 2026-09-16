@@ -1,0 +1,29 @@
+========== a49 盘旋升空逐帧记录 ==========
+脊骨链节数 = 24
+_modelRoot = HoverTestDragon/Visual
+baseLocalY = 0.0000
+hoverHeight = 3.60 m
+
+---- 逐帧采样 ----
+  t=1.00  rootLocalY=0.0000  worldY=0.3250
+  t=1.50  rootLocalY=3.6000  worldY=0.3250
+  t=2.00  rootLocalY=3.6000  worldY=0.3250
+  t=2.50  rootLocalY=3.6000  worldY=0.3250
+  t=3.00  rootLocalY=3.6000  worldY=0.3250
+  t=3.50  rootLocalY=3.6000  worldY=0.3250
+  t=4.00  rootLocalY=3.6000  worldY=0.3250
+  t=4.51  rootLocalY=3.6000  worldY=0.3250
+  t=5.01  rootLocalY=3.6000  worldY=0.3250
+  t=5.50  rootLocalY=3.6000  worldY=0.3250
+  t=6.00  rootLocalY=3.6000  worldY=0.3250
+  t=6.50  rootLocalY=3.6000  worldY=0.3250
+  t=7.00  rootLocalY=3.6000  worldY=0.3250
+  t=7.50  rootLocalY=3.6000  worldY=0.3250
+  t=8.00  rootLocalY=3.6000  worldY=0.3250
+  t=8.50  rootLocalY=3.6000  worldY=0.3250
+  t=9.00  rootLocalY=3.6000  worldY=0.3250
+
+---- 结论 ----
+  modelRoot.localY 范围 [0.0000, 3.6000]  升幅 = 3.6000 m
+  transform.worldY 范围 [0.3250, 0.3250]
+  ★ 目标升幅 3.60 m

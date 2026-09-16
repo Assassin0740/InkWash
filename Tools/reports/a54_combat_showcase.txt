@@ -1,0 +1,33 @@
+========== a54 分主题战斗展示报告 ==========
+
+① 三段连招（Atk1 → Atk2 → Atk3）
+  三段各自的状态快照 = Attack/1  →  Attack/2  →  Attack/3
+  期间最大期望速度 = 15.48 m/s（攻击前冲峰值 ~11）
+
+② 敌群围攻（3 只墨兵）
+  7 s 内：HP 120 → 72（掉 48）
+  命中玩家次数 = 4   被无敌帧挡下 = 3
+
+③ 重击（K 键 / RequestInjectedHeavyAttack）
+  重击过程中最后状态 = Locomotion/0（Attack/3 表示走的是第三段）
+
+④ 冲刺（Dash 低身前冲 + 无敌帧）
+  冲刺位移 = 5.65 m   过程状态 = Locomotion/0   期间出现无敌帧 = True
+
+⑤ 墨龙四招（逐招强制触发）
+  龙 HP = 620   SpineLinks = 24   龙位置 = (0.0, 0.3, 4.0)   玩家位置 = (0.0, 0.0, 10.6)
+  ── TailSweep   招式名=[甩尾]  最大脊骨偏移=  33.7°  升空=否  墨弹(新生=0/同屏峰值=0)
+  ── Bite        招式名=[撕咬]  最大脊骨偏移=  44.1°  升空=否  墨弹(新生=0/同屏峰值=0)
+  ── Breath      招式名=[龙息,甩尾]  最大脊骨偏移=  35.2°  升空=否  墨弹(新生=3/同屏峰值=3)
+  ── HoverOrbit  招式名=[盘旋]  最大脊骨偏移=  11.0°  升空=是  墨弹(新生=0/同屏峰值=0)
+
+---- 截图 ----
+  共 8 张 → D:\Unity Project\InkWash\Tools/screenshots/showcase54
+    00_1_combo.png
+    01_2_gank.png
+    02_3_heavy.png
+    03_4_dash.png
+    04_5_TailSweep.png
+    05_5_Bite.png
+    06_5_Breath.png
+    07_5_HoverOrbit.png

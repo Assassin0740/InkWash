@@ -1,0 +1,52 @@
+========== a40 龙渲染空白的逐个排除 ==========
+prefab = ok
+mat    = M_Ink_Boss_Dragon shader=InkWash/InkCharacter
+
+---- ④ 骨骼清单 ----
+  SkinnedMeshRenderer 数 = 2
+  Object_281: bones=273 非null=0 null=273
+     rootBone=NULL
+     smr.lossyScale=(0.00240, 0.00240, 0.00240)
+     smr.bounds 世界 center=(1.238, 2.936, -0.922) size=(2.588, 5.871, 6.044)
+     smr.localBounds center=(-384.341, 515.916, -313.953) size=(2518.266, 1078.275, 2446.141)
+     mesh.bounds size=(779.80, 4969.38, 542.05)
+     updateWhenOffscreen=False  quality=Auto
+     enabled=True  activeInHierarchy=True
+     layer=0
+     materials=1 → M_Ink_Boss_Dragon
+     shader=InkWash/InkCharacter passCount=4 isSupported=True
+     vertexCount=28082 subMeshCount=1
+       subMesh[0] indexCount=147096
+  Object_282: bones=273 非null=0 null=273
+     rootBone=NULL
+     smr.lossyScale=(0.00240, 0.00240, 0.00240)
+     smr.bounds 世界 center=(0.823, 5.464, -0.044) size=(0.152, 0.158, 0.294)
+     smr.localBounds center=(-18.223, 343.025, 739.610) size=(122.418, 63.163, 65.961)
+     mesh.bounds size=(120.13, 43.20, 43.20)
+     updateWhenOffscreen=False  quality=Auto
+     enabled=True  activeInHierarchy=True
+     layer=0
+     materials=1 → M_Ink_Boss_Dragon
+     shader=InkWash/InkCharacter passCount=4 isSupported=True
+     vertexCount=804 subMeshCount=1
+       subMesh[0] indexCount=4560
+
+---- 基线拍摄（原样，材质 = M_Ink_Boss_Dragon）----
+  已存 B0_原位_侧.png  (相机 (-14.0, 6.0, 0.0) → (0.0, 1.5, 0.0) fov40)
+  已存 B1_原位_俯.png  (相机 (0.0, 18.0, 0.0) → (0.0, 0.0, 0.0) fov46)
+
+---- ② 换 URP/Unlit 品红（把 shader 从疑点里剃掉）----
+  Shader.Find(URP/Unlit) = ok
+  已存 C0_品红_侧.png  (相机 (-14.0, 6.0, 0.0) → (0.0, 1.5, 0.0) fov40)
+  已存 C1_品红_俯.png  (相机 (0.0, 18.0, 0.0) → (0.0, 0.0, 0.0) fov46)
+
+---- ③ 静态 MeshRenderer 挂同一 Mesh（剔除蒙皮/骨骼）----
+  StaticProbe: mesh=Object_281 vertexCount=28082 scale=0.001811 位置=(6.0, 4.5, 0.0)
+  已存 D0_静态网格_侧.png  (相机 (-14.0, 6.0, 0.0) → (0.0, 1.5, 0.0) fov40)
+  已存 D1_静态网格_近.png  (相机 (6.0, 6.0, -12.0) → (6.0, 4.5, 0.0) fov40)
+
+---- ① 复位到相机正前方 + 统一放大 10 倍（排除位置/尺度）----
+  Object_281 放大后 bounds size=(862.98, 280.94, 323.09) center=(-14.95, 0.00, -4.24)
+  Object_282 放大后 bounds size=(43.21, 43.20, 43.20) center=(0.00, 0.00, 1.06)
+  已存 E0_放大10x_侧.png  (相机 (-40.0, 14.0, 0.0) → (0.0, 6.0, 0.0) fov40)
+  已存 E1_放大10x_俯.png  (相机 (0.0, 45.0, 0.0) → (0.0, 0.0, 0.0) fov46)

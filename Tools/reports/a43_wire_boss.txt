@@ -1,0 +1,26 @@
+========== a43 加第四波·墨龙 Boss ==========
+  Z_Enemy_MoLong = ok
+  Ink_Projectile = ok
+  已把 Ink_Projectile 绑到 EnemyDragon.breathProjectilePrefab ✓
+
+场景 = Main
+
+---- 改前 ----
+  波数 = 3
+  [0] '第一波·墨兵' delay=1.5  → Z_Enemy_MoGuai x3
+  [1] '第二波·墨兵+墨卒' delay=2  → Z_Enemy_MoGuai x2 + Z_Enemy_MoGu x2
+  [2] '第三波·墨魇' delay=2  → Z_Enemy_MoGuai x3 + Z_Enemy_MoShan x1
+
+---- 改后 ----
+  波数 = 4
+  [0] '第一波·墨兵' delay=1.5  → Z_Enemy_MoGuai x3
+  [1] '第二波·墨兵+墨卒' delay=2  → Z_Enemy_MoGuai x2 + Z_Enemy_MoGu x2
+  [2] '第三波·墨魇' delay=2  → Z_Enemy_MoGuai x3 + Z_Enemy_MoShan x1
+  [3] '第四波·墨龙' delay=3  → Z_Enemy_MoLong x1
+
+---- 复核：从磁盘重开场景 ----
+  波数 = 4
+  [0] '第一波·墨兵' delay=1.5  → Z_Enemy_MoGuai x3
+  [1] '第二波·墨兵+墨卒' delay=2  → Z_Enemy_MoGuai x2 + Z_Enemy_MoGu x2
+  [2] '第三波·墨魇' delay=2  → Z_Enemy_MoGuai x3 + Z_Enemy_MoShan x1
+  [3] '第四波·墨龙' delay=3  → Z_Enemy_MoLong x1

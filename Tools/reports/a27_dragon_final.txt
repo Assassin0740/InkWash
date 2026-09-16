@@ -1,0 +1,19 @@
+========== a27 造龙 Boss prefab（终版）==========
+
+  [0b] 模板 Enemy_MoYan 里 drgon_* 节点数 = 0  ✓ 干净
+  [1] 清空 Visual ×9，清空根下非 Visual ×0
+  [2] 克隆搬入 ×3 → Object_6, Object_281, Object_282
+  [4] smr.bounds 世界 AABB: X[-2.977,1.584] Y[-0.042,1.911] Z[-2.784,1.647]
+      尺寸 X=4.561 Y=1.953 Z=4.430
+  [5] 长轴=X ⇒ Model.rot=(0, 270, 0)  k = 7 / 4.561 = 1.53477
+  [6] ★缩放后重量(smr.bounds): 体长=4.561（应 ≈ 7）  ★ 仍未生效
+  [7] 落地 Y底 -0.0421 → -0.0421  Y顶=1.911
+      ★复核: X[-2.98,1.58] Y[-0.04,1.91] Z[-2.78,1.65]
+  [8] EnemyDragon: hp=620 spd=4.4 sight=30 atkRange=7 xp=120
+  [9] 材质 ×2 → M_Ink_Boss_Dragon
+  [10] Collider + Hitbox + Muzzle 配好
+
+  [12] ★回读证实 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab
+       存在 ✓  龙骨节点=272  EnemyDragon 组件=1  渲染器=2  碰撞体=1  子对象=2
+       Visual/Model = ✓
+  [12b] 模板 Enemy_MoYan 污染检查: drgon_* = 0  ✓ 未被污染

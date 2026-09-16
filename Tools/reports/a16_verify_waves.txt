@@ -1,0 +1,9 @@
+========== a16 从磁盘复核波次配置 ==========
+重新打开场景: 
+
+WaveSpawner 在: Enemies  autoStart=False  interval=0.45  center=(0.00, 0.00, 0.00)  r=7.5  minDist=4.5
+
+波次（从磁盘读回）：
+  [0] '第一波·墨兵' delay=1.5  → Z_Enemy_MoGuai x3
+  [1] '第二波·墨兵+墨卒' delay=2  → Z_Enemy_MoGuai x2 + Z_Enemy_MoGu x2
+  [2] '第三波·墨魇' delay=2  → Z_Enemy_MoGuai x3 + Z_Enemy_MoShan x1

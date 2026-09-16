@@ -1,0 +1,45 @@
+========== 三个新敌人 prefab 实测 ==========
+（目标高度：山怪 2.6~3.0 / 兽人 2.0~2.2 / 不死兵 1.8~2.0 m）
+
+--- Z_Enemy_MoShan（目标 2.8 m）---
+  SkinnedMeshRenderer 14 个
+  路径: Z_Enemy_MoShan / Visual / Model / Object_33
+  顶点真值: 高=2.942 m  宽/深=3.192  Y范围=[-0.015,2.928]
+  → 若按目标高度归一，容器 localScale 应为 0.9516
+  avatar=mountain_orgeAvatar isHuman=True
+  controller=Z_Orge.controller
+  GetBoneTransform(Hips) = mixamorig:Hips_00 (路径含 Visual? True)
+    [Idle   ] 髋=  0.435 手=  4.273  ✓ 有动作
+    [Run    ] 髋=  0.294 手=  1.657  ✓ 有动作
+    [Attack ] 髋=  0.439 手=  5.910  ✓ 有动作
+    [Hit    ] 髋=  0.800 手=  5.113  ✓ 有动作
+    [Dead   ] 髋=  0.944 手=  4.214  ✓ 有动作
+
+--- Z_Enemy_MoGuai（目标 2.1 m）---
+  SkinnedMeshRenderer 10 个
+  路径: Z_Enemy_MoGuai / Visual / Model / Object_7
+  顶点真值: 高=2.317 m  宽/深=1.423  Y范围=[-0.116,2.201]
+  → 若按目标高度归一，容器 localScale 应为 0.9064
+  avatar=low-poly_orcAvatar isHuman=True
+  controller=Z_Orc.controller
+  GetBoneTransform(Hips) = Bip001 Spine_03 (路径含 Visual? True)
+    [Idle   ] 髋=  0.511 手=  5.372  ✓ 有动作
+    [Run    ] 髋=  0.183 手=  0.507  ✓ 有动作
+    [Attack ] 髋=  0.405 手=  2.140  ✓ 有动作
+    [Hit    ] 髋=  0.315 手=  0.367  ✓ 有动作
+    [Dead   ] 髋=  0.650 手=  1.007  ✓ 有动作
+
+--- Z_Enemy_MoGu（目标 1.9 m）---
+  SkinnedMeshRenderer 3 个
+  路径: Z_Enemy_MoGu / Visual / Model / Object_21
+  顶点真值: 高=2.016 m  宽/深=2.087  Y范围=[-0.010,2.006]
+  → 若按目标高度归一，容器 localScale 应为 0.9424
+  avatar=cursed_undead_soldier_rigAvatar isHuman=True
+  controller=Z_Undead.controller
+  GetBoneTransform(Hips) = Pelvis_52 (路径含 Visual? True)
+    [Idle   ] 髋=  0.278 手=  1.368  ✓ 有动作
+    [Run    ] 髋=  0.371 手=  0.650  ✓ 有动作
+    [Attack ] 髋=  0.546 手=  1.840  ✓ 有动作
+    [Hit    ] 髋=  0.563 手=  0.371  ✓ 有动作
+    [Dead   ] 髋=  0.993 手=  0.720  ✓ 有动作
+
