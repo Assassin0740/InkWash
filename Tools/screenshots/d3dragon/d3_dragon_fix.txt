@@ -1,0 +1,23 @@
+========== d3 龙的彩虹色拆解 ==========
+龙 = D2_MoLong
+龙材质 = M_Ink_Boss_Dragon
+
+── 变体 A：现状（主角参数 + 青贴图）
+  _BandBias=0.150  _InkDensity=0.550  _ChromaKeep=0.450
+  _InkDark=RGBA(0.045, 0.065, 0.135, 1.000)  _InkMid=RGBA(0.205, 0.260, 0.395, 1.000)  _InkLight=RGBA(0.870, 0.905, 0.960, 1.000)
+  _BaseMap=MI_b09_00_drg_hair_clearcoat
+
+── 变体 B
+  _BandBias=-0.260  _InkDensity=0.620  _ChromaKeep=0.450
+  _InkDark=RGBA(0.080, 0.055, 0.045, 1.000)  _InkMid=RGBA(0.270, 0.210, 0.175, 1.000)  _InkLight=RGBA(0.820, 0.765, 0.690, 1.000)
+  _BaseMap=MI_b09_00_drg_hair_clearcoat
+
+── 变体 C
+  _BandBias=0.150  _InkDensity=0.550  _ChromaKeep=0.450
+  _InkDark=RGBA(0.045, 0.065, 0.135, 1.000)  _InkMid=RGBA(0.205, 0.260, 0.395, 1.000)  _InkLight=RGBA(0.870, 0.905, 0.960, 1.000)
+  _BaseMap=<null>
+
+── 变体 D
+  _BandBias=-0.260  _InkDensity=0.620  _ChromaKeep=0.450
+  _InkDark=RGBA(0.080, 0.055, 0.045, 1.000)  _InkMid=RGBA(0.270, 0.210, 0.175, 1.000)  _InkLight=RGBA(0.820, 0.765, 0.690, 1.000)
+  _BaseMap=<null>

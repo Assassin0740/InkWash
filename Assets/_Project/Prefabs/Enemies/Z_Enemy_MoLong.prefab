@@ -386,10 +386,18 @@ MonoBehaviour:
   breathProjectileCount: 3
   breathSpreadDeg: 9
   hoverHeight: 3.6
-  hoverOrbitRadius: 6.5
+  hoverOrbitRadius: 11
   hoverOrbitSpeedDeg: 55
-  hoverAmplitudeDeg: 11
-  hoverFrequency: 0.55
+  hoverAmplitudeDeg: 10
+  swimSpeed: 8
+  swimTurnRate: 1.1
+  swimRadiusGain: 0.12
+  hoverFrequency: 0.45
+  hoverPhaseStepDeg: 15
+  hoverPitchAmplitudeDeg: 1.5
+  straightenSpine: 1
+  waveAmpRootGain: 1.3
+  waveAmpHeadGain: 0.3
   breathMinRange: 5.5
   biteMaxRange: 7
   hoverDuration: 4.5

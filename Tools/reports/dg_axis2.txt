@@ -1,0 +1,21 @@
+龙骨蛇形波「弯曲平面」实测  节点数=24  振幅=20°/节  相位步进=15°/节
+坐标 = modelRoot 局部系；x=横向  y=垂直  z=沿体轴
+
+案例                             节点   横向跨度x   垂直跨度y   沿轴跨度z   主摆平面
+基准（无波）                           n  0      0.000      0.000      0.000   -
+基准（无波）                           n  6      0.000      0.000      0.000   -
+基准（无波）                           n 12      0.000      0.000      0.000   -
+基准（无波）                           n 17      0.000      0.000      0.000   -
+基准（无波）                           n 23      0.000      0.000      0.000   -
+现有 base*Euler(0,yaw,0) 局部Y       n  0      0.000      0.000      0.000   【左右 horizontal】
+现有 base*Euler(0,yaw,0) 局部Y       n  6      0.230      3.718      1.312   【上下 vertical】
+现有 base*Euler(0,yaw,0) 局部Y       n 12      0.862      8.290      4.841   【上下 vertical】
+现有 base*Euler(0,yaw,0) 局部Y       n 17      1.590     10.092      3.715   【上下 vertical】
+现有 base*Euler(0,yaw,0) 局部Y       n 23      2.123     10.787      3.727   【上下 vertical】
+候选 AngleAxis(yaw,up)*baseWorld   n  0      0.000      0.000      0.000   【左右 horizontal】
+候选 AngleAxis(yaw,up)*baseWorld   n  6      1.384      0.000      0.091   【左右 horizontal】
+候选 AngleAxis(yaw,up)*baseWorld   n 12      2.395      0.000      0.038   【左右 horizontal】
+候选 AngleAxis(yaw,up)*baseWorld   n 17      1.889      0.000      0.045   【左右 horizontal】
+候选 AngleAxis(yaw,up)*baseWorld   n 23      0.881      0.000      0.071   【左右 horizontal】
+
+判读：x 跨度 >> y 跨度 ⇒ 左右蜿蜒；y 跨度 >> x 跨度 ⇒ 上下蜿蜒。

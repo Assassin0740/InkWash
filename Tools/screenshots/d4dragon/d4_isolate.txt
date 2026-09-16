@@ -1,0 +1,9 @@
+========== d4 单变量极端隔离 ==========
+龙 = D2_MoLong
+材质数 = 2  m0 shader=InkWash/InkCharacter
+  00_基线  → _InkDensity=0.55 _ChromaKeep=0.45 _Bands=4.00 _BaseMap=<null>
+  01_InkDensity=1  → _InkDensity=0.55 _ChromaKeep=0.45 _Bands=4.00 _BaseMap=<null>
+  02_ChromaKeep=1  → _InkDensity=0.55 _ChromaKeep=1.00 _Bands=4.00 _BaseMap=<null>
+  03_Bands=0(关量化)  → _InkDensity=0.55 _ChromaKeep=1.00 _Bands=4.00 _BaseMap=<null>
+  04_BaseMap=null  → _InkDensity=0.55 _ChromaKeep=1.00 _Bands=4.00 _BaseMap=<null>
+  05_全还原  → _InkDensity=0.55 _ChromaKeep=0.45 _Bands=4.00 _BaseMap=<null>

@@ -1,0 +1,6 @@
+========== d2 生成墨龙供取证 ==========
+已停用 WaveSpawner
+玩家位置 = (0.00, 0.33, -3.00)
+龙 prefab = Z_Enemy_MoLong
+已生成 D2_MoLong @ (0.00, 0.38, 4.00)
+EnemyDragon 组件 = OK

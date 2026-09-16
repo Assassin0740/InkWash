@@ -41,12 +41,27 @@ namespace InkWash.UI
         {
             public InkMaterialSwap swap;
             public Material[] runtime;      // 水墨材质的运行时实例；null = 还没建
+            public Family family;           // 它属于哪一族（按源材质分）
         }
+
+        /// <summary>
+        /// 「一族材质」= 同一个源材质派生出来的全部运行时实例（主角一份、敌人一份…）。
+        /// 参数面板按族编辑：改主角的值只落回主角那一族，不越界去改敌人。
+        /// </summary>
+        private class Family
+        {
+            public Material source;         // 建这些实例时用的源材质（判族依据）
+            public Material edit;           // 面板读写的那一份运行时副本
+            public readonly List<Entry> members = new List<Entry>();
+        }
+
+        private static readonly List<Family> Families = new List<Family>();
 
         private static readonly List<Entry> Entries = new List<Entry>();
         private static int s_stage = 3;
 
         private Material _edit;
+        private int _editFamily = -1;       // 当前编辑的是第几族（-1 = 没得编）
         private bool _dirty;
         private float _fps, _fpsAccum;
         private int _fpsFrames;
@@ -57,6 +72,14 @@ namespace InkWash.UI
         public static int CurrentStage => s_stage;
         /// <summary>换材质登记了几家（验收脚本用：应当 ≥ 主角 1 家）。</summary>
         public static int RegisteredCount => Entries.Count;
+        /// <summary>参数族数（一个源材质一族；验收脚本用：应当 ≥ 2，主角与敌人各一族）。</summary>
+        public static int FamilyCount => Families.Count;
+
+        /// <summary>当前在编第几族的名字（验收脚本用；空串 = 没得编）。</summary>
+        public string EditingFamilyName
+        {
+            get { return _editFamily >= 0 && _editFamily < Families.Count ? FamilyName(Families[_editFamily]) : ""; }
+        }
 
         // ---------------- Shader 属性 ID ----------------
         private static readonly int IdBands = Shader.PropertyToID("_Bands");
@@ -93,6 +116,7 @@ namespace InkWash.UI
             foreach (var e in Entries) if (e.swap == swap) return;
             var entry = new Entry { swap = swap };
             Entries.Add(entry);
+            EnsureFamilyFor(entry);     // ★ 先按源材质判族，再进 ApplyToEntry
             ApplyToEntry(entry);        // 新刷出来的敌人立刻跟上当前阶段
         }
 
@@ -102,9 +126,101 @@ namespace InkWash.UI
             for (int i = Entries.Count - 1; i >= 0; i--)
             {
                 if (Entries[i].swap != swap) continue;
+                DetachFromFamily(Entries[i]);
                 DestroyRuntime(Entries[i]);
                 Entries.RemoveAt(i);
             }
+            LeaveEmptyFamilies();
+        }
+
+        /// <summary>活着的面板（Unregister 是静态的，但要改实例上的"正在编第几族"）。</summary>
+        private static readonly List<InkStylePanel> Panels = new List<InkStylePanel>();
+
+        // ==================================================================
+        // 材质族：同源材质 → 同一族
+        // ==================================================================
+        /// <summary>取「用来建运行时实例的源材质（第 0 槽）」—— 判族的键。</summary>
+        private static Material SourceOf(InkMaterialSwap swap)
+        {
+            if (swap == null || swap.inkMaterials == null || swap.inkMaterials.Length == 0) return null;
+            return swap.inkMaterials[0];
+        }
+
+        private static Family FindFamily(Material source)
+        {
+            if (source == null) return null;
+            foreach (var f in Families) if (f.source == source) return f;
+            return null;
+        }
+
+        private static void EnsureFamilyFor(Entry e)
+        {
+            var src = SourceOf(e.swap);
+            if (src == null) return;
+            var fam = FindFamily(src);
+            if (fam == null)
+            {
+                fam = new Family { source = src, edit = new Material(src) };
+                fam.edit.hideFlags = HideFlags.HideAndDontSave;
+                Families.Add(fam);
+            }
+            if (!fam.members.Contains(e)) fam.members.Add(e);
+            e.family = fam;
+        }
+
+        private static void DetachFromFamily(Entry e)
+        {
+            if (e.family == null) return;
+            e.family.members.Remove(e);
+            e.family = null;
+        }
+
+        /// <summary>某一族的实例全没了（敌人死光）就回收；空族留着只会白占面板行数。</summary>
+        private static void LeaveEmptyFamilies()
+        {
+            for (int i = Families.Count - 1; i >= 0; i--)
+            {
+                if (Families[i].members.Count > 0) continue;
+                var doomed = Families[i];
+                if (doomed.edit != null) UnityEngine.Object.Destroy(doomed.edit);
+                Families.RemoveAt(i);
+                // 序号会左移：让每个面板重新对齐自己那一族
+                foreach (var p in Panels) p.OnFamiliesChanged(i, doomed);
+            }
+        }
+
+        private void OnFamiliesChanged(int removedIndex, Family removed)
+        {
+            // 序号会左移，两种情况要分：删的正好是我在编的 / 删的是我前面的
+            if (removed != null && _edit == removed.edit)
+            {
+                _editFamily = -1;
+                _edit = null;
+            }
+            else if (_editFamily > removedIndex) _editFamily--;
+
+            if (_edit == null)
+            {
+                if (_editFamily < 0 && Families.Count > 0) EditFamily(0);
+                else if (_editFamily >= 0 && _editFamily < Families.Count) _edit = Families[_editFamily].edit;
+            }
+        }
+
+        /// <summary>切换正在编辑的族（面板上的按钮）。</summary>
+        public void EditFamily(int index)
+        {
+            if (index < 0 || index >= Families.Count) return;
+            if (_editFamily == index) return;
+            _editFamily = index;
+            _edit = Families[index].edit;
+        }
+
+        /// <summary>按源材质找族序号（找不到返回 -1）。</summary>
+        public static int IndexOfFamily(Material source)
+        {
+            if (source == null) return -1;
+            for (int i = 0; i < Families.Count; i++) if (Families[i].source == source) return i;
+            return -1;
         }
 
         // ==================================================================
@@ -112,21 +228,35 @@ namespace InkWash.UI
         // ==================================================================
         private void Awake()
         {
-            if (inkMaterial != null)
-            {
-                _edit = new Material(inkMaterial);
-                _edit.hideFlags = HideFlags.HideAndDontSave;
-            }
+            // inkMaterial 只是"面板一开始指向哪一族"的入口；
+            // 真正的参数副本由 EnsureFamilyFor 按源材质建，一族一份（主角一份、敌人一份）。
             ApplyStage(_stage);
+            if (inkMaterial != null) EditFamily(IndexOfFamily(inkMaterial));
+            if (_edit == null && Families.Count > 0) EditFamily(0);
+        }
+
+        private void OnEnable()
+        {
+            if (!Panels.Contains(this)) Panels.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            Panels.Remove(this);
         }
 
         private void OnDestroy()
         {
-            if (_edit != null) Destroy(_edit);
+            Panels.Remove(this);
+            _edit = null;       // 不能 Destroy：edit 归 Family 所有，可能还有别的面板在用
         }
 
         private void Update()
         {
+            // 惰性对齐：面板 Awake 时场上可能一个人都还没注册（Prefab 里的面板比角色先醒），
+            // 所以这里每帧补一次 —— 有族了但还没选中，就选第一族。
+            if (_edit == null && Families.Count > 0) EditFamily(0);
+
             _fpsAccum += Time.unscaledDeltaTime;
             _fpsFrames++;
             if (_fpsAccum >= 0.5f)
@@ -151,7 +281,6 @@ namespace InkWash.UI
             s_stage = _stage;
 
             foreach (var e in Entries) ApplyToEntry(e);
-
             // 走注册表的覆盖：不碰渲染器资产
             InkStyleRegistry.EdgeOn = _stage >= 2;
             InkStyleRegistry.PaperOn = _stage >= 3;
@@ -234,8 +363,19 @@ namespace InkWash.UI
             if (GUILayout.Toggle(_stage == 4, "5 +墨晕", GUI.skin.button)) ApplyStage(4);
             GUILayout.EndHorizontal();
 
+            // ★ 材质族选择：主角 / 各敌人各自一族，改谁只动谁。
+            //   没有这一行的话，"调主角的墨"会顺手把所有敌人也涂成主角的墨。
+            if (Families.Count > 0)
+            {
+                Section("调节对象（材质族）");
+                for (int i = 0; i < Families.Count; i++)
+                    if (GUILayout.Toggle(_editFamily == i, FamilyName(Families[i]) + "（" + Families[i].members.Count + "）",
+                                         GUI.skin.button))
+                        EditFamily(i);
+            }
+
             if (_edit == null)
-                GUILayout.Label("（没有指定水墨材质，角色参数不可调）");
+                GUILayout.Label("（没有可调对象：场上还没有换过材质的角色）");
 
             var m = _edit;
             if (m != null && m.HasProperty(IdBands))
@@ -345,6 +485,16 @@ namespace InkWash.UI
             }
         }
 
+        /// <summary>族的显示名 = 源材质名去掉 M_/M_Ink_ 前缀，够辨认就行。</summary>
+        private static string FamilyName(Family f)
+        {
+            if (f == null || f.source == null) return "（无名）";
+            string n = f.source.name;
+            if (n.StartsWith("M_Ink_")) n = n.Substring(6);
+            else if (n.StartsWith("M_")) n = n.Substring(2);
+            return n;
+        }
+
         private void Section(string name)
         {
             GUILayout.Space(6);
@@ -352,20 +502,29 @@ namespace InkWash.UI
         }
 
         // ---------------- 同步 ----------------
-        /// <summary>把 `_edit` 上的参数抄到所有运行时实例上（主角 + 全部敌人一起变）。</summary>
+        /// <summary>
+        /// 把 <c>_edit</c> 上的参数抄回**它自己那一族**的运行时实例。
+        ///
+        /// ★ 这里原来遍历 ALL entries，于是"调主角的墨阶"会把主角的值盖到每一个敌人头上
+        ///   （主角 _BandBias +0.15 / _InkDensity 0.55 / 青墨 _InkDark 盖住了龙自己的
+        ///    −0.42 / 0.25 / 赭墨）。龙因此变成"主角的黑剪纸"、颜色靠 _ChromaKeep 硬撑。
+        ///   现在按族分发：改谁只动谁。
+        /// </summary>
         private void Broadcast()
         {
             if (_edit == null) return;
-            foreach (var id in FloatProps) Sync(id, true);
-            foreach (var id in ColorProps) Sync(id, false);
+            var fam = (_editFamily >= 0 && _editFamily < Families.Count) ? Families[_editFamily] : null;
+            if (fam == null) return;
+            foreach (var id in FloatProps) Sync(fam, id, true);
+            foreach (var id in ColorProps) Sync(fam, id, false);
         }
 
-        private void Sync(int id, bool isFloat)
+        private void Sync(Family fam, int id, bool isFloat)
         {
-            if (!_edit.HasProperty(id)) return;
-            float f = isFloat ? _edit.GetFloat(id) : 0f;
-            Color c = isFloat ? default : _edit.GetColor(id);
-            foreach (var e in Entries)
+            if (!fam.edit.HasProperty(id)) return;
+            float f = isFloat ? fam.edit.GetFloat(id) : 0f;
+            Color c = isFloat ? default : fam.edit.GetColor(id);
+            foreach (var e in fam.members)          // ← 只遍历本族成员
             {
                 if (e.runtime == null) continue;
                 foreach (var mat in e.runtime)

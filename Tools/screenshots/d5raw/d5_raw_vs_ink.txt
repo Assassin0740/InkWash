@@ -1,0 +1,13 @@
+========== d5 原始FBX材质 vs 水墨材质 ==========
+龙 = D2_MoLong
+InkStylePanel 数量 = 1
+   InkStyle
+SkinnedMeshRenderer 数 = 2
+  Object_281
+     当前 mat[0] = M_Ink_Boss_Dragon shader=InkWash/InkCharacter
+  Object_282
+     当前 mat[0] = M_Ink_Boss_Dragon shader=InkWash/InkCharacter
+  A_当前 → _BaseMap=<null>  _BandBias=0.15  _InkDensity=0.55
+  B_BaseMap置空 → _BaseMap=<null>  _BandBias=0.15  _InkDensity=0.55
+  C_BaseMap置空+龙参数 → _BaseMap=<null>  _BandBias=0.15  _InkDensity=0.55
+  D_BaseMap设成emissive → _BaseMap=<null>  _BandBias=0.15  _InkDensity=0.55

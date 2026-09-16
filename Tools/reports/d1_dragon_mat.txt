@@ -1,0 +1,72 @@
+========== d1 龙的运行时材质取证 ==========
+场上 EnemyDragon 数量 = 2
+
+──── D2_MoLong ────
+  位置=(0.00, 0.35, 4.00)  本地缩放=(1.000, 1.000, 1.000)  世界缩放=(1.000, 1.000, 1.000)
+  HP=620/620  airborne=False  attack=-
+  渲染器数 = 2
+  [0] SkinnedMeshRenderer @ Visual/Model/Object_281
+       size=(5.87, 2.59, 6.04)  enabled=True
+       mat[0] 'M_Ink_Boss_Dragon'  shader='InkWash/InkCharacter'
+         _ChromaKeep = 0.450
+         _BandBias = 0.150
+         _InkDensity = 0.550
+         _Bands = 4.000
+         _OutlineWidth = 0.018
+         _SpecStrength = 0.500
+         _BaseColor = RGBA(1.000, 1.000, 1.000, 1.000)
+         _InkDark   = RGBA(0.045, 0.065, 0.135, 1.000)
+         _InkMid    = RGBA(0.205, 0.260, 0.395, 1.000)
+         _InkLight  = RGBA(0.870, 0.905, 0.960, 1.000)
+         _BaseMap = MI_b09_00_drg_hair_clearcoat
+  [1] SkinnedMeshRenderer @ Visual/Model/Object_282
+       size=(0.16, 0.15, 0.29)  enabled=True
+       mat[0] 'M_Ink_Boss_Dragon'  shader='InkWash/InkCharacter'
+         _ChromaKeep = 0.450
+         _BandBias = -0.260
+         _InkDensity = 0.620
+         _Bands = 4.000
+         _OutlineWidth = 0.018
+         _SpecStrength = 0.600
+         _BaseColor = RGBA(1.000, 1.000, 1.000, 1.000)
+         _InkDark   = RGBA(0.080, 0.055, 0.045, 1.000)
+         _InkMid    = RGBA(0.270, 0.210, 0.175, 1.000)
+         _InkLight  = RGBA(0.820, 0.765, 0.690, 1.000)
+         _BaseMap = MI_b09_00_drg_hair_clearcoat
+
+──── HoverTestDragon ────
+  位置=(0.00, 0.33, 0.00)  本地缩放=(1.000, 1.000, 1.000)  世界缩放=(1.000, 1.000, 1.000)
+  HP=620/620  airborne=False  attack=-
+  渲染器数 = 2
+  [0] SkinnedMeshRenderer @ Visual/Model/Object_281
+       size=(5.87, 2.59, 6.04)  enabled=True
+       mat[0] 'M_Ink_Boss_Dragon'  shader='InkWash/InkCharacter'
+         _ChromaKeep = 0.450
+         _BandBias = 0.150
+         _InkDensity = 0.550
+         _Bands = 4.000
+         _OutlineWidth = 0.018
+         _SpecStrength = 0.500
+         _BaseColor = RGBA(1.000, 1.000, 1.000, 1.000)
+         _InkDark   = RGBA(0.045, 0.065, 0.135, 1.000)
+         _InkMid    = RGBA(0.205, 0.260, 0.395, 1.000)
+         _InkLight  = RGBA(0.870, 0.905, 0.960, 1.000)
+         _BaseMap = MI_b09_00_drg_hair_clearcoat
+  [1] SkinnedMeshRenderer @ Visual/Model/Object_282
+       size=(0.16, 0.15, 0.29)  enabled=True
+       mat[0] 'M_Ink_Boss_Dragon'  shader='InkWash/InkCharacter'
+         _ChromaKeep = 0.450
+         _BandBias = -0.260
+         _InkDensity = 0.620
+         _Bands = 4.000
+         _OutlineWidth = 0.018
+         _SpecStrength = 0.600
+         _BaseColor = RGBA(1.000, 1.000, 1.000, 1.000)
+         _InkDark   = RGBA(0.080, 0.055, 0.045, 1.000)
+         _InkMid    = RGBA(0.270, 0.210, 0.175, 1.000)
+         _InkLight  = RGBA(0.820, 0.765, 0.690, 1.000)
+         _BaseMap = MI_b09_00_drg_hair_clearcoat
+
+──── 场景里所有名字含 Dragon/MoLong 的对象 ────
+  · D2_MoLong
+  · HoverTestDragon
