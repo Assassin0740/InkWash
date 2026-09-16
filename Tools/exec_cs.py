@@ -56,14 +56,32 @@ def main():
     with open(path, encoding="utf-8") as fh:
         code = fh.read()
 
+    script_dir = os.path.dirname(os.path.abspath(__file__))   # <root>/Tools
+    project_root = os.path.dirname(script_dir)                 # <root>
+
+    # 坑（已修）：Tools/cs/ 下有 25 个探针把输出/输入路径**写死**成源机器的
+    #   "D:/Unity Project/InkWash/..."
+    # 而且外层普遍是 try{}catch{} **静默吞异常** ⇒ 换一台机器（工程根不同）
+    # 跑起来会「改了没反应」，极难查。这里在发送前统一重写成当前实际工程根：
+    # 一处修复覆盖新旧所有探针，不必去动那 25 个文件；源机器上前后完全等价。
+    actual_root = project_root.replace("\\", "/")
+    rewritten = False
+    for _hard, _repl in (
+        ("D:/Unity Project/InkWash", actual_root),
+        ("D:\\\\Unity Project\\\\InkWash", actual_root.replace("/", "\\\\")),
+    ):
+        if _hard != _repl and _hard in code:
+            code = code.replace(_hard, _repl)
+            rewritten = True
+    if rewritten:
+        print(f"[exec_cs] 已把硬编码的工程根重写为: {actual_root}")
+
     cmd_type = "exec_runtime_script" if args.runtime else "execute_csharp_script"
     params = {"script": code}
     if args.record:
         # 坑（已修）：--record 的相对路径会被桥按「Unity 工程根目录」解析，
         # 而不是按本脚本所在目录，于是从 Tools/ 下调用会让视频落到工程根，
         # 与约定位置 Tools/screenshots/ 不一致。这里统一按工程根解析成绝对路径。
-        script_dir = os.path.dirname(os.path.abspath(__file__))   # <root>/Tools
-        project_root = os.path.dirname(script_dir)                 # <root>
         rec_dir = args.record
         if not os.path.isabs(rec_dir):
             rec_dir = os.path.join(project_root, rec_dir)
