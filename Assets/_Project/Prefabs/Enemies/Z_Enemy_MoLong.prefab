@@ -408,6 +408,14 @@ MonoBehaviour:
   _hoverCount: 0
   _spineLinksFound: 0
   _airborne: 0
+  bodySwayAmp: 1.6
+  bodySwayFreq: 0.45
+  limbSwingDeg: 14
+  limbSwingFreq: 0.45
+  limbMinDescendants: 2
+  limbPhaseStepDeg: 60
+  headLeadYawDeg: 8
+  headLeadGain: 0.03
 --- !u!4 &5493170584508413210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8379593388799904744, guid: 85f247e87b3926549b4b89cc4295f8d4,
