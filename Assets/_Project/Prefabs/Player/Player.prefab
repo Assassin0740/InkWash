@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 1038111662515904894}
   - component: {fileID: 6225359931486967881}
   - component: {fileID: 2517279585834350198}
+  - component: {fileID: 6291457233981044512}
   - component: {fileID: 2797808462613258062}
   - component: {fileID: 8102585910089641610}
   - component: {fileID: 895886384566563399}
@@ -449,6 +450,26 @@ MonoBehaviour:
   _damageTakenCount: 0
   _damageBlockedByIFrameCount: 0
   _lastDamageTime: -999
+--- !u!114 &6291457233981044512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830905228196163153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea472901f90329e40a3656e86f962065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 6225359931486967881}
+  cameraRig: {fileID: 0}
+  animator: {fileID: 0}
+  hurtTrigger: Hurt
+  shakeAmplitude: 0.12
+  shakeDuration: 0.18
+  damageRef: 20
+  damageScaleMax: 2
 --- !u!114 &2517279585834350198
 MonoBehaviour:
   m_ObjectHideFlags: 0
