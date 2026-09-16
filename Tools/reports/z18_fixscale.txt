@@ -1,0 +1,6 @@
+﻿清掉旧 Z_Rig
+Z_Orge: 设 k=1.0879 -> prefab 根 localScale=(1.09, 1.09, 1.09)
+Z_Orc: 设 k=0.3392 -> prefab 根 localScale=(0.34, 0.34, 0.34)
+Z_Undead: 设 k=0.3349 -> prefab 根 localScale=(0.33, 0.33, 0.33)
+Z_Dragon: 设 k=0.7546 -> prefab 根 localScale=(0.75, 0.75, 0.75)
+Z_Dragon_LP: 设 k=0.5759 -> prefab 根 localScale=(0.58, 0.58, 0.58)

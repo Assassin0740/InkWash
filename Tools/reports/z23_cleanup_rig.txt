@@ -1,0 +1,9 @@
+Z_Rig 子对象 5 个：
+   - Z_Orge
+   - Z_Orc
+   - Z_Undead
+   - Z_Dragon
+   - Z_Dragon_LP
+已删 Z_Rig
+场景根对象残留 Z_* 数量 = 0
+场景已保存 Assets/_Project/Scenes/Main.unity

@@ -1,0 +1,25 @@
+﻿shader = InkWash/InkCharacter
+brushTex = T_InkBrushNoise
+
+--- M_Ink_Enemy_MoShan ---
+  baseColor tex = Orge_LP_baseColor
+  CREATE Assets/_Project/Art/Materials/M_Ink_Enemy_MoShan.mat
+--- M_Ink_Enemy_MoGuai ---
+  baseColor tex = 07_-_Default_diffuse
+  CREATE Assets/_Project/Art/Materials/M_Ink_Enemy_MoGuai.mat
+--- M_Ink_Enemy_MoGu ---
+  baseColor tex = Undead_Material_baseColor
+  CREATE Assets/_Project/Art/Materials/M_Ink_Enemy_MoGu.mat
+--- M_Ink_Boss_Dragon ---
+  baseColor tex = MI_b09_00_drg_hair_clearcoat
+  CREATE Assets/_Project/Art/Materials/M_Ink_Boss_Dragon.mat
+
+=== 回读复核（重新 LoadAssetAtPath）===
+M_Ink_Enemy_MoShan: shader=InkWash/InkCharacter baseMap=Orge_LP_baseColor
+   _BandBias=-0.18 _InkDensity=0.50 _ChromaKeep=0.30 _OutlineWidth=0.014
+M_Ink_Enemy_MoGuai: shader=InkWash/InkCharacter baseMap=07_-_Default_diffuse
+   _BandBias=-0.16 _InkDensity=0.48 _ChromaKeep=0.28 _OutlineWidth=0.014
+M_Ink_Enemy_MoGu: shader=InkWash/InkCharacter baseMap=Undead_Material_baseColor
+   _BandBias=-0.24 _InkDensity=0.55 _ChromaKeep=0.22 _OutlineWidth=0.014
+M_Ink_Boss_Dragon: shader=InkWash/InkCharacter baseMap=MI_b09_00_drg_hair_clearcoat
+   _BandBias=-0.26 _InkDensity=0.62 _ChromaKeep=0.45 _OutlineWidth=0.018

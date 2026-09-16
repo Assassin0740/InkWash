@@ -1,0 +1,5 @@
+﻿删 Z_Orge_PBR
+(无) Z_Cam
+(无) Z_Light
+Z_Rig 保留，子对象数 = 5
+场景已保存 Assets/_Project/Scenes/Main.unity

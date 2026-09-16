@@ -1,0 +1,24 @@
+设到 Layer 31 的对象数 = 520
+已加预览专用方向光
+=== 尺寸 ===
+  Z_Orge: size=(2.82,2.60,0.92) foot=0.043
+  Z_Orc: size=(1.26,2.05,0.76) foot=-1.563
+  Z_Undead: size=(2.02,1.95,0.55) foot=-0.036
+  Z_Dragon_LP: size=(1.62,1.47,7.00) foot=-1.239
+  Z_Dragon: size=(1.41,0.98,9.00) foot=0.006
+总宽 totalW=19.14 中心=(9.57, 0.05, 0.00)
+  已存 A1_阵容_正面.png
+  已存 A2_阵容_斜45.png
+  已存 B1_Z_Orge.png
+  特写 Z_Orge dist=5.85
+  已存 B2_Z_Orc.png
+  特写 Z_Orc dist=4.58
+  已存 B3_Z_Undead.png
+  特写 Z_Undead dist=4.53
+  已存 B4_Z_Dragon_LP.png
+  特写 Z_Dragon_LP dist=12.75
+  已存 B5_Z_Dragon.png
+  特写 Z_Dragon dist=16.05
+  已存 C1_Boss龙_斜前.png
+  已存 C2_Boss龙_俯前.png
+  已存 D1_俯视.png

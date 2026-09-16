@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low-poly orc
+* source:	https://sketchfab.com/3d-models/low-poly-orc-62f1637181cb4f6aa38897f5b7ab5edf
+* author:	Riltariki (https://sketchfab.com/Riltariki)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low-poly orc" (https://sketchfab.com/3d-models/low-poly-orc-62f1637181cb4f6aa38897f5b7ab5edf) by Riltariki (https://sketchfab.com/Riltariki) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

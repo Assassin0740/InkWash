@@ -1,0 +1,39 @@
+﻿=== z5 修正 v2 ===
+
+[chinese_dragon] 已改回 Generic + NoAvatar
+
+[mountain_orge] defaultClipAnimations = 12
+[mountain_orge] 片段 12 -> 12
+
+=== 复核 ===
+mountain_orge:
+   type=Generic avatar=null 片段=12
+     - Object_5|Armature|Death2_Object_5
+     - Object_5|Armature|Death_Object_5
+     - Object_5|Armature|Ideal3_Object_5
+     - Object_5|Armature|Ideal_Object_5
+     - Object_5|Armature|Jump1_Object_5
+     - Object_5|Armature|Launch_Jump_attack_Object_5
+     - Object_5|Armature|Punch_Object_5
+     - Object_5|Armature|Roar2_Object_5
+     - Object_5|Armature|Run_Object_5
+     - Object_5|Armature|Slam_Object_5
+     - Object_5|Armature|T_Right_45_Object_5
+     - Object_5|Armature|Walk_Object_5
+low-poly_orc:
+   type=Generic avatar=null 片段=9
+     - Object_4|ANM_ATTACK_CRIT_Object_4
+     - Object_4|ANM_DAMAGED_Object_4
+     - Object_4|ANM_DEATH_Object_4
+     - Object_4|ANM_IDLE_Object_4
+     - Object_4|ANM_LIGHT_ATTACK_2_Object_4
+     - Object_4|ANM_ORC_LIGHT_ATTACK_Object_4
+     - Object_4|ANM_ORC_Roar_Object_4
+     - Object_4|ANM_RUN_Object_4
+     - Object_4|ANM_WALK_Object_4
+cursed_undead_soldier_rig:
+   type=Generic avatar=null 片段=1
+     - GLTF_created_0|Slash_GLTF_created_0
+chinese_dragon:
+   type=Generic avatar=null 片段=1
+     - Object_6|Take 001_Object_6

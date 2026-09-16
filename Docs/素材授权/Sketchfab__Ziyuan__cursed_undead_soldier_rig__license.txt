@@ -1,0 +1,11 @@
+Model Information:
+* title:	Cursed Undead Soldier Rig
+* source:	https://sketchfab.com/3d-models/cursed-undead-soldier-rig-b2e39de76b834d978adee5716aec814d
+* author:	DM-913 (https://sketchfab.com/SuperKapoo913)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Cursed Undead Soldier Rig" (https://sketchfab.com/3d-models/cursed-undead-soldier-rig-b2e39de76b834d978adee5716aec814d) by DM-913 (https://sketchfab.com/SuperKapoo913) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

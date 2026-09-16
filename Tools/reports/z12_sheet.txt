@@ -1,0 +1,21 @@
+已停用第三人称相机
+Z_Rig 已找到，子对象:
+   - Z_Orge
+   - Z_Orc
+   - Z_Undead
+   - Z_Dragon
+   - Z_Dragon_LP
+  摆位 Z_Orge: h=2.60 len=3.48 foot=-0.007 x=-8.00
+  摆位 Z_Orc: h=2.05 len=0.76 foot=-1.613 x=-4.00
+  摆位 Z_Undead: h=1.95 len=0.41 foot=-0.063 x=0.00
+  摆位 Z_Dragon: h=0.98 len=9.00 foot=-0.044 x=4.00
+  摆位 Z_Dragon_LP: h=1.47 len=7.00 foot=-1.289 x=8.00
+  已存 A1_阵容_水墨.png
+  已存 A2_阵容_侧.png
+  (场景里没有 Enemy_MoOu)
+  (场景里没有 Enemy_MoTu)
+  (场景里没有 Enemy_MoYan)
+KayKit 对照 0 个
+  已存 C1_Boss龙_近景.png
+  已存 C2_Boss龙_斜侧.png
+  已存 D1_俯视全景.png

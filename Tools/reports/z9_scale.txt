@@ -1,0 +1,63 @@
+﻿=== mountain_orge ===
+  顶点真值包围盒: 尺寸=(5.33, 4.86, 5.18) (高=4.859)  min=(-2.66, -1.00, -2.59)  max=(2.66, 3.86, 2.59)
+  层级 localScale:
+    (0) mountain_orge(Clone) localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Icosphere localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Object_33 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_35 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_37 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_39 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_41 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_43 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+      (1) Object_45 localScale=(2.66, 2.66, 2.66) localPos=(0.00, 0.00, 0.00)
+
+=== low-poly_orc ===
+  顶点真值包围盒: 尺寸=(1.95, 3.09, 2.00) (高=3.091)  min=(-1.00, -2.09, -1.00)  max=(0.95, 1.00, 1.00)
+  层级 localScale:
+    (0) low-poly_orc(Clone) localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Icosphere localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Object_7 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_9 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_11 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_13 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_15 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_17 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+      (1) Object_19 localScale=(0.00, 0.00, 0.00) localPos=(-0.19, -1.96, 0.06)
+
+=== cursed_undead_soldier_rig ===
+  顶点真值包围盒: 尺寸=(312.84, 413.14, 86.03) (高=413.144)  min=(-156.59, -13.36, -44.23)  max=(156.25, 399.79, 41.79)
+  层级 localScale:
+    (0) cursed_undead_soldier_rig(Clone) localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Icosphere localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Object_21 localScale=(2.55, 2.55, 2.55) localPos=(0.00, -2.86, 1.15)
+      (1) Object_23 localScale=(2.55, 2.55, 2.55) localPos=(0.00, -2.86, 1.15)
+      (1) Object_24 localScale=(2.55, 2.55, 2.55) localPos=(0.00, -2.86, 1.15)
+      (1) Sketchfab_model localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+        (2) root localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+          (3) GLTF_SceneRootNode localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+
+=== chinese_dragon ===
+  顶点真值包围盒: 尺寸=(779.80, 542.05, 4969.38) (高=542.049)  min=(-389.89, -24.34, -2037.19)  max=(389.91, 517.70, 2932.19)
+  层级 localScale:
+    (0) chinese_dragon(Clone) localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Icosphere localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Object_6 localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+        (2) _rootJoint localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+          (3) drgon_03 localScale=(1.00, 1.00, 1.00) localPos=(-640.16, 303.36, -996.39)
+      (1) Object_281 localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Object_282 localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+
+=== lowpoly_textured_chinese_dragon ===
+  顶点真值包围盒: 尺寸=(0.12, 0.03, 0.03) (高=0.026)  min=(-0.04, 0.00, -0.01)  max=(0.08, 0.02, 0.01)
+  层级 localScale:
+    (0) lowpoly_textured_chinese_dragon(Clone) localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+      (1) Mnupao_10002.fbx localScale=(0.01, 0.01, 0.01) localPos=(0.00, 0.00, 0.00)
+        (2) RootNode localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+          (3) Mnupao_10002_Mnupao_M_10002 localScale=(1.00, 1.00, 1.00) localPos=(0.00, 0.00, 0.00)
+
+=== ModelImporter 全局缩放 ===
+mountain_orge: globalScale=1 useFileScale=True fileScale=1
+low-poly_orc: globalScale=1 useFileScale=True fileScale=1
+cursed_undead_soldier_rig: globalScale=1 useFileScale=True fileScale=1
+chinese_dragon: globalScale=1 useFileScale=True fileScale=1
+lowpoly_textured_chinese_dragon: globalScale=1 useFileScale=True fileScale=1

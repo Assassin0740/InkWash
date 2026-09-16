@@ -1,0 +1,11 @@
+﻿从 FBX 收集原始材质 2 种:
+   Orge_LP  shader=Universal Render Pipeline/Lit
+   Material  shader=Universal Render Pipeline/Lit
+已存 Assets/_Project/Prefabs/Ziyuan/Z_Orge_PBR.prefab  scale=(1.09, 1.09, 1.09)
+预置 Z_Orge
+预置 Z_Orc
+预置 Z_Undead
+预置 Z_Dragon
+预置 Z_Dragon_LP
+预置 Z_Orge_PBR
+场景已保存 Assets/_Project/Scenes/Main.unity

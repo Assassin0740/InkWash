@@ -1,0 +1,36 @@
+﻿=== mountain_orge ===
+  before: animationType=Generic
+  avatar=mountain_orgeAvatar isHuman=True isValid=True
+    Hips <- mixamorig:Hips_00
+    Spine <- mixamorig:Spine_01
+    Head <- mixamorig:Head_05
+    LeftUpperArm <- mixamorig:LeftArm_08
+    RightUpperArm <- mixamorig:RightArm_012
+    LeftUpperLeg <- mixamorig:LeftUpLeg_015
+    RightUpperLeg <- mixamorig:RightUpLeg_020
+  关键骨骼命中 7/7
+
+=== low-poly_orc ===
+  before: animationType=Generic
+  avatar=low-poly_orcAvatar isHuman=True isValid=True
+    Hips <- Bip001 Spine_03
+    Spine <- Bip001 Spine1_04
+    Head <- Bip001 Head_060
+    LeftUpperArm <- Bip001 L UpperArm_08
+    RightUpperArm <- Bip001 R UpperArm_015
+    LeftUpperLeg <- Bip001 L Thigh_073
+    RightUpperLeg <- Bip001 R Thigh_080
+  关键骨骼命中 7/7
+
+=== cursed_undead_soldier_rig ===
+  before: animationType=Generic
+  avatar=cursed_undead_soldier_rigAvatar isHuman=True isValid=True
+    Hips <- Pelvis_52
+    Spine <- Torso_49
+    Head <- Head_47
+    LeftUpperArm <- Upper Arm.L_34
+    RightUpperArm <- Upper Arm.R_41
+    LeftUpperLeg <- Thigh Base.L_21
+    RightUpperLeg <- Thigh Base.R_29
+  关键骨骼命中 7/7
+

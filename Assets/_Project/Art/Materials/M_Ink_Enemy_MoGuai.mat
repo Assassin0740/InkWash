@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Ink_Enemy_MoGuai
+  m_Shader: {fileID: 4800000, guid: cffa811b22f317c498f75069f7cf8b5b, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: bf2df6b7501e9d84bb80d5bb512fa618, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BrushTex:
+        m_Texture: {fileID: 2800000, guid: e02ee8446a84c6e46962cfd1810ca732, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AerialFrom: 12
+    - _AerialStrength: 0.55
+    - _AerialTo: 30
+    - _BandBias: -0.16
+    - _BandSoftness: 0.06
+    - _Bands: 4
+    - _BrushScale: 26
+    - _BrushStrength: 0.6
+    - _BrushUvFromWorld: 1
+    - _ChromaKeep: 0.28
+    - _ContactHeight: 0.45
+    - _ContactInk: 0.3
+    - _GrainAmp: 0.18
+    - _GrainScale: 64
+    - _GroundY: 0
+    - _InkDensity: 0.48
+    - _LadderSkew: 0.42
+    - _MottleScale: 1.6
+    - _OutlineDistScale: 0.058
+    - _OutlineDry: 0.5
+    - _OutlineFacing: 0.72
+    - _OutlineScale: 5
+    - _OutlineWidth: 0.014
+    - _RimPower: 3
+    - _RimStrength: 0.95
+    - _SpecBands: 2
+    - _SpecSize: 48
+    - _SpecStrength: 0.5
+    - _StrokeAmp: 0.16
+    - _StrokeScale: 8
+    - _StrokeStretch: 3
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InkDark: {r: 0.105, g: 0.072, b: 0.058, a: 1}
+    - _InkLight: {r: 0.85, g: 0.795, b: 0.72, a: 1}
+    - _InkMid: {r: 0.305, g: 0.24, b: 0.2, a: 1}
+    - _OutlineColor: {r: 0.058, g: 0.042, b: 0.034, a: 1}
+    - _RimColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
+  m_BuildTextureStacks: []

@@ -1,0 +1,86 @@
+﻿=== ZIYUAN FBX 体检 ===
+path: Assets/ThirdParty/Ziyuan/_fbx
+
+--- mountain_orge ---
+  animationType = Generic
+  clips = 0
+  bones = 26
+  bone[0] = _rootJoint
+  bone names: _rootJoint mixamorig:Hips_00 mixamorig:Spine_01 mixamorig:Spine1_02 mixamorig:Spine2_03 mixamorig:Neck_04 | mixamorig:RightLeg_021| mixamorig:RightFoot_022| mixamorig:RightToeBase_023| mixamorig:RightToe_End_024
+  骨架风格: mixamorig=True Bip001=False 含IK控制骨=False
+    clip '__preview__Object_5|Armature|Death2_Object_5' len=3.625s frames=87 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Death_Object_5' len=3.500s frames=84 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Ideal3_Object_5' len=13.375s frames=321 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Ideal_Object_5' len=10.542s frames=253 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Jump1_Object_5' len=2.958s frames=71 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Launch_Jump_attack_Object_5' len=3.333s frames=80 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Punch_Object_5' len=1.083s frames=26 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Roar2_Object_5' len=4.417s frames=106 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Run_Object_5' len=1.000s frames=24 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Slam_Object_5' len=2.458s frames=59 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|T-Pose_Object_5' len=1.000s frames=24 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|T_Right_45_Object_5' len=1.958s frames=47 rate=24 legacy=False curves=270
+    clip '__preview__Object_5|Armature|Walk_Object_5' len=1.417s frames=34 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Death2_Object_5' len=3.625s frames=87 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Death_Object_5' len=3.500s frames=84 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Ideal3_Object_5' len=13.375s frames=321 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Ideal_Object_5' len=10.542s frames=253 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Jump1_Object_5' len=2.958s frames=71 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Launch_Jump_attack_Object_5' len=3.333s frames=80 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Punch_Object_5' len=1.083s frames=26 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Roar2_Object_5' len=4.417s frames=106 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Run_Object_5' len=0.833s frames=20 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Slam_Object_5' len=2.458s frames=59 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|T-Pose_Object_5' len=1.000s frames=24 rate=24 legacy=False curves=0
+    clip 'Object_5|Armature|T_Right_45_Object_5' len=1.958s frames=47 rate=24 legacy=False curves=270
+    clip 'Object_5|Armature|Walk_Object_5' len=1.417s frames=34 rate=24 legacy=False curves=270
+  => 实际片段数 = 26
+  三角面 = 17389
+
+--- low-poly_orc ---
+  animationType = Generic
+  clips = 0
+  bones = 97
+  bone[0] = _rootJoint
+  bone names: _rootJoint Bip001_01 Bip001 Pelvis_02 Bip001 Spine_03 Bip001 Spine1_04 Bip001 Spine2_05 | Bip001 Belt_armor_087| Bip001 Belt_armorNub_088| Bip001 Spine_03_0| Axe_1_Dummy_089
+  骨架风格: mixamorig=False Bip001=True 含IK控制骨=False
+    clip '__preview__Object_4|ANM_ATTACK_CRIT_Object_4' len=2.000s frames=48 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_DAMAGED_Object_4' len=1.042s frames=25 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_DEATH_Object_4' len=1.000s frames=24 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_IDLE_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_LIGHT_ATTACK_2_Object_4' len=2.000s frames=48 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_ORC_LIGHT_ATTACK_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_ORC_Roar_Object_4' len=3.000s frames=72 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_RUN_Object_4' len=1.333s frames=32 rate=24 legacy=False curves=980
+    clip '__preview__Object_4|ANM_WALK_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_ATTACK_CRIT_Object_4' len=2.000s frames=48 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_DAMAGED_Object_4' len=1.042s frames=25 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_DEATH_Object_4' len=1.000s frames=24 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_IDLE_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_LIGHT_ATTACK_2_Object_4' len=2.000s frames=48 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_ORC_LIGHT_ATTACK_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_ORC_Roar_Object_4' len=3.000s frames=72 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_RUN_Object_4' len=1.333s frames=32 rate=24 legacy=False curves=980
+    clip 'Object_4|ANM_WALK_Object_4' len=1.667s frames=40 rate=24 legacy=False curves=980
+  => 实际片段数 = 18
+  三角面 = 21670
+
+--- cursed_undead_soldier_rig ---
+  animationType = Generic
+  clips = 0
+  bones = 80
+  bone[0] = GLTF_created_0_rootJoint
+  bone names: GLTF_created_0_rootJoint Root Bone_94 Pelvis_52 Spine_13 Spine Target_12 Thigh Base.L_21 | Toes.R_88| LegIK.l_93| Foot.L_92| Toes.L_91
+  骨架风格: mixamorig=False Bip001=False 含IK控制骨=True
+    clip '__preview__GLTF_created_0|Slash_GLTF_created_0' len=1.625s frames=39 rate=24 legacy=False curves=810
+    clip 'GLTF_created_0|Slash_GLTF_created_0' len=1.625s frames=39 rate=24 legacy=False curves=810
+  => 实际片段数 = 2
+  三角面 = 16823
+
+--- lowpoly_textured_chinese_dragon ---
+  animationType = Generic
+  clips = 0
+  => 实际片段数 = 0
+
+=== 龙的 FBX 是否已落地 ===
+  NO 还没拷进来

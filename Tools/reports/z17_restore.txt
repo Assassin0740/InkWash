@@ -1,0 +1,5 @@
+﻿Z_Orge: localScale -> 1.0879  (期望 高=2.6 体长=3.48)
+Z_Orc: localScale -> 0.3392  (期望 高=2.05 体长=0.76)
+Z_Undead: localScale -> 0.3349  (期望 高=1.95 体长=0.41)
+Z_Dragon: localScale -> 0.7546  (期望 高=0.98 体长=9)
+Z_Dragon_LP: localScale -> 0.5759  (期望 高=1.47 体长=7)

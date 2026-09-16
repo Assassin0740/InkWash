@@ -1,0 +1,10 @@
+﻿Z_Orge: 渲染器=15 高=2.58m 宽=3.29m 深=3.20m -> Assets/_Project/Prefabs/Ziyuan/Z_Orge.prefab
+    骨架根=Z_Orge 材质=M_Ink_Enemy_MoShan
+Z_Orc: 渲染器=11 高=5.85m 宽=5.17m 深=3.08m -> Assets/_Project/Prefabs/Ziyuan/Z_Orc.prefab
+    骨架根=Z_Orc 材质=M_Ink_Enemy_MoGuai
+Z_Undead: 渲染器=14 高=5.87m 宽=3.29m 深=2.38m -> Assets/_Project/Prefabs/Ziyuan/Z_Undead.prefab
+    骨架根=Z_Undead 材质=M_Ink_Enemy_MoGu
+Z_Dragon: 渲染器=2 高=2.59m 宽=6.04m 深=5.87m -> Assets/_Project/Prefabs/Ziyuan/Z_Dragon.prefab
+    骨架根=Z_Dragon 材质=M_Ink_Boss_Dragon
+Z_Dragon_LP: 渲染器=1 高=3.19m 宽=15.15m 深=3.50m -> Assets/_Project/Prefabs/Ziyuan/Z_Dragon_LP.prefab
+    骨架根=Z_Dragon_LP 材质=M_Ink_Boss_Dragon

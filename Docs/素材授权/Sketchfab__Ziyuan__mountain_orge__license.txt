@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mountain Orge
+* source:	https://sketchfab.com/3d-models/mountain-orge-f18e6fb4a07b445095b5fcb5bec7fa7a
+* author:	SamThePie (https://sketchfab.com/Sam.Hendy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mountain Orge" (https://sketchfab.com/3d-models/mountain-orge-f18e6fb4a07b445095b5fcb5bec7fa7a) by SamThePie (https://sketchfab.com/Sam.Hendy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

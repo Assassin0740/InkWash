@@ -1,0 +1,11 @@
+﻿=== z4 修正与探索 ===
+
+  [mountain_orge] 片段 0 -> 0，已重导入
+
+  [chinese_dragon] before animationType=Generic
+  [chinese_dragon] avatar isHuman=False isValid=True
+  [chinese_dragon] 已映射 0 个骨骼
+  [chinese_dragon] 缺失: 
+
+  复核 mountain_orge: type=Human clips=0 实际=13
+  复核 chinese_dragon: type=Human clips=0 实际=0

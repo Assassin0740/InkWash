@@ -1,0 +1,64 @@
+﻿=== Z_Orge ===  渲染器=15 总顶点=9818 整体高度=2.806
+  整体包围盒 size=(3.58,2.81,3.48)
+    [Object_33] 顶点=116 size=(1.14,0.42,1.23) thin=0.422 plane=False tiny=False disjoint=False
+    [Object_35] 顶点=79 size=(0.07,0.03,0.08) thin=0.030 plane=False tiny=False disjoint=False
+    [Object_37] 顶点=240 size=(0.13,0.25,0.22) thin=0.127 plane=False tiny=False disjoint=False
+    [Object_39] 顶点=1108 size=(0.24,0.12,0.10) thin=0.101 plane=False tiny=False disjoint=False
+    [Object_41] 顶点=72 size=(0.18,0.17,0.11) thin=0.115 plane=False tiny=False disjoint=True
+    [Object_43] 顶点=44 size=(0.23,0.24,0.13) thin=0.129 plane=False tiny=False disjoint=True
+    [Object_45] 顶点=165 size=(0.84,0.93,1.02) thin=0.839 plane=False tiny=False disjoint=False
+    [Object_47] 顶点=112 size=(0.45,0.44,0.59) thin=0.445 plane=False tiny=False disjoint=False
+    [Object_49] 顶点=7401 size=(2.38,2.78,2.48) thin=2.381 plane=False tiny=False disjoint=False
+    [Object_51] 顶点=56 size=(0.11,0.13,0.12) thin=0.114 plane=False tiny=False disjoint=False
+    [Object_53] 顶点=255 size=(0.39,0.72,0.81) thin=0.387 plane=False tiny=False disjoint=False
+    [Object_55] 顶点=58 size=(0.32,0.17,0.09) thin=0.088 plane=False tiny=False disjoint=False
+    [Object_57] 顶点=55 size=(0.15,0.10,0.05) thin=0.053 plane=False tiny=False disjoint=False
+    [Object_59] 顶点=53 size=(0.07,0.06,0.03) thin=0.031 plane=False tiny=False disjoint=False
+    [Plane.001_Material_0] 顶点=4 size=(3.58,0.00,3.48) thin=0.000 plane=True tiny=True disjoint=False
+    ==> 删除 Plane.001_Material_0 原因: 平面片(薄0.000 面积3.6x3.5)
+  共删 1 个
+
+=== Z_Orc ===  渲染器=11 总顶点=13323 整体高度=1.986
+  整体包围盒 size=(1.75,1.99,1.04)
+    [Box001_08 - Default_0] 顶点=24 size=(0.00,0.00,0.00) thin=0.002 plane=False tiny=True disjoint=False
+    [Object_7] 顶点=9755 size=(1.24,1.99,0.91) thin=0.907 plane=False tiny=False disjoint=False
+    [Object_9] 顶点=317 size=(0.51,0.42,0.38) thin=0.380 plane=False tiny=False disjoint=False
+    [Object_11] 顶点=216 size=(0.23,0.24,0.15) thin=0.147 plane=False tiny=False disjoint=False
+    [Object_13] 顶点=629 size=(0.76,0.75,0.58) thin=0.583 plane=False tiny=False disjoint=False
+    [Object_15] 顶点=832 size=(0.11,0.07,0.10) thin=0.065 plane=False tiny=False disjoint=False
+    [Object_17] 顶点=143 size=(0.29,0.35,0.39) thin=0.294 plane=False tiny=False disjoint=False
+    [Object_19] 顶点=131 size=(0.27,0.46,0.25) thin=0.251 plane=False tiny=False disjoint=False
+    [Object_21] 顶点=143 size=(0.36,0.40,0.33) thin=0.334 plane=False tiny=False disjoint=False
+    [Object_23] 顶点=131 size=(0.25,0.46,0.32) thin=0.247 plane=False tiny=False disjoint=False
+    [Object_25] 顶点=1002 size=(1.75,0.73,0.68) thin=0.683 plane=False tiny=False disjoint=False
+  共删 0 个
+
+=== Z_Undead ===  渲染器=14 总顶点=9894 整体高度=1.966
+  整体包围盒 size=(1.10,1.97,0.80)
+    [Object_4] 顶点=32 size=(0.08,0.00,0.10) thin=0.004 plane=False tiny=False disjoint=True
+    [Object_6] 顶点=32 size=(0.08,0.01,0.10) thin=0.007 plane=False tiny=False disjoint=True
+    [Object_8] 顶点=32 size=(0.17,0.00,0.17) thin=0.003 plane=False tiny=False disjoint=True
+    [Object_10] 顶点=32 size=(0.10,0.01,0.07) thin=0.007 plane=False tiny=False disjoint=True
+    [Object_12] 顶点=32 size=(0.09,0.01,0.05) thin=0.006 plane=False tiny=False disjoint=True
+    [Object_14] 顶点=24 size=(0.05,0.03,0.00) thin=0.000 plane=False tiny=False disjoint=True
+    [Object_16] 顶点=24 size=(0.05,0.03,0.00) thin=0.000 plane=False tiny=False disjoint=True
+    [Object_21] 顶点=3239 size=(0.75,1.15,0.59) thin=0.587 plane=False tiny=False disjoint=False
+    [Object_23] 顶点=5584 size=(0.71,1.19,0.75) thin=0.714 plane=False tiny=False disjoint=False
+    [Object_24] 顶点=119 size=(0.04,0.05,0.05) thin=0.039 plane=False tiny=False disjoint=False
+    [Object_28] 顶点=70 size=(0.36,0.36,0.22) thin=0.218 plane=False tiny=False disjoint=False
+    [Object_34] 顶点=103 size=(0.33,0.37,0.38) thin=0.331 plane=False tiny=False disjoint=False
+    [Object_43] 顶点=103 size=(0.38,0.42,0.26) thin=0.265 plane=False tiny=False disjoint=False
+    [Object_90] 顶点=468 size=(0.67,0.68,0.45) thin=0.449 plane=False tiny=False disjoint=False
+  共删 0 个
+
+=== Z_Dragon ===  渲染器=2 总顶点=28886 整体高度=1.953
+  整体包围盒 size=(4.56,1.95,4.43)
+    [Object_281] 顶点=28082 size=(4.56,1.95,4.43) thin=1.953 plane=False tiny=False disjoint=False
+    [Object_282] 顶点=804 size=(0.22,0.11,0.12) thin=0.114 plane=False tiny=False disjoint=False
+  共删 0 个
+
+=== Z_Dragon_LP ===  渲染器=1 总顶点=6337 整体高度=1.472
+  整体包围盒 size=(1.62,1.47,7.00)
+    [] 顶点=6337 size=(1.62,1.47,7.00) thin=1.472 plane=False tiny=False disjoint=False
+  共删 0 个
+

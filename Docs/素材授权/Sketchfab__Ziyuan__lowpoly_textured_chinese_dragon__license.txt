@@ -1,0 +1,11 @@
+Model Information:
+* title:	Lowpoly textured Chinese Dragon
+* source:	https://sketchfab.com/3d-models/lowpoly-textured-chinese-dragon-4021eb82c1964cb8bd7618a8b4117d8c
+* author:	Khyoocumber (https://sketchfab.com/Khyoocumber)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Lowpoly textured Chinese Dragon" (https://sketchfab.com/3d-models/lowpoly-textured-chinese-dragon-4021eb82c1964cb8bd7618a8b4117d8c) by Khyoocumber (https://sketchfab.com/Khyoocumber) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

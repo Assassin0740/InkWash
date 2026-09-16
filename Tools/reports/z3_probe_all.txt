@@ -1,0 +1,69 @@
+﻿=== ZIYUAN 素材完整体检 (z3) ===
+
+--- mountain_orge ---
+  animationType = Generic
+  avatar = null
+  bones = 26  bone[0]=_rootJoint
+  triangles = 17309
+  skinnedMeshRenderers = 14
+  材质槽总数 = 14
+    AUDIO? clip 'Object_5|Armature|Death2_Object_5' 3.63s
+    AUDIO? clip 'Object_5|Armature|Death_Object_5' 3.50s
+    AUDIO? clip 'Object_5|Armature|Ideal3_Object_5' 13.38s
+    AUDIO? clip 'Object_5|Armature|Ideal_Object_5' 10.54s
+    AUDIO? clip 'Object_5|Armature|Jump1_Object_5' 2.96s
+    AUDIO? clip 'Object_5|Armature|Launch_Jump_attack_Object_5' 3.33s
+    AUDIO? clip 'Object_5|Armature|Punch_Object_5' 1.08s
+    AUDIO? clip 'Object_5|Armature|Roar2_Object_5' 4.42s
+    AUDIO? clip 'Object_5|Armature|Run_Object_5' 0.83s
+    AUDIO? clip 'Object_5|Armature|Slam_Object_5' 2.46s
+    AUDIO? clip 'Object_5|Armature|T_Right_45_Object_5' 1.96s
+    AUDIO? clip 'Object_5|Armature|Walk_Object_5' 1.42s
+  => 非preview片段数 = 12
+
+--- low-poly_orc ---
+  animationType = Generic
+  avatar = null
+  bones = 97  bone[0]=_rootJoint
+  triangles = 21590
+  skinnedMeshRenderers = 10
+  材质槽总数 = 10
+    AUDIO? clip 'Object_4|ANM_ATTACK_CRIT_Object_4' 2.00s
+    AUDIO? clip 'Object_4|ANM_DAMAGED_Object_4' 1.04s
+    AUDIO? clip 'Object_4|ANM_DEATH_Object_4' 1.00s
+    AUDIO? clip 'Object_4|ANM_IDLE_Object_4' 1.67s
+    AUDIO? clip 'Object_4|ANM_LIGHT_ATTACK_2_Object_4' 2.00s
+    AUDIO? clip 'Object_4|ANM_ORC_LIGHT_ATTACK_Object_4' 1.67s
+    AUDIO? clip 'Object_4|ANM_ORC_Roar_Object_4' 3.00s
+    AUDIO? clip 'Object_4|ANM_RUN_Object_4' 1.33s
+    AUDIO? clip 'Object_4|ANM_WALK_Object_4' 1.67s
+  => 非preview片段数 = 9
+
+--- cursed_undead_soldier_rig ---
+  animationType = Generic
+  avatar = null
+  bones = 80  bone[0]=GLTF_created_0_rootJoint
+  triangles = 16743
+  skinnedMeshRenderers = 3
+  材质槽总数 = 3
+    AUDIO? clip 'GLTF_created_0|Slash_GLTF_created_0' 1.63s
+  => 非preview片段数 = 1
+
+--- lowpoly_textured_chinese_dragon ---
+  animationType = Generic
+  avatar = null
+  triangles = 6157
+  skinnedMeshRenderers = 0
+  材质槽总数 = 0
+  => 非preview片段数 = 0
+
+--- chinese_dragon ---
+  animationType = Generic
+  avatar = null
+  bones = 273  bone[0]=_rootJoint
+  triangles = 50552
+  skinnedMeshRenderers = 2
+  材质槽总数 = 2
+    AUDIO? clip 'Object_6|Take 001_Object_6' 57.50s
+  => 非preview片段数 = 1
+

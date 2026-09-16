@@ -60,6 +60,15 @@ sysinfo.txt
 # 各平台的冗余导出格式（GLB/glTF/blend/Unreal 法线），已移出 Assets
 /_RawDownloads/
 
+# Sketchfab「中文志怪」素材包（CC-BY-4.0，允许商用、需署名）。
+# 授权上可以入库，但实际不入库 —— 已被上面的 /Assets/ThirdParty/ 连带排除。
+# 理由：glTF 源（scene.bin/gltf + PBR 贴图）共 160 MB，而 Unity 吃的是它派生的 FBX
+# （同样在 ThirdParty 下、同样不入库）。上游 glTF 是可重新下载的只读素材，版本控制无收益。
+# 复原方式：Tools/gltf2fbx_scaled.py（Blender 批量 glTF→FBX + 单位归一 + 清垃圾几何）。
+# ★ CC-BY 的署名是**强制义务**：license.txt 副本已归档 Docs/素材授权/（该目录入库），
+#   上游链接与完整署名串见 Docs/素材来源与授权清单.md。
+# 场景 .gltf 与贴图虽不入库，但磁盘上必须保留 —— Blender 转换脚本依赖它们。
+
 # 主角模型「武侠风格角色-锋」（Unity 中国资源商店，作者：冰橙，免费但不可再分发）。
 # 授权：Unity 商店授权 + 作者另注「禁止二次贩卖」→ 与 ThirdParty 同理，入库即构成再分发。
 # 复原方式：Tools/install_feng.py（从本机 Asset Store 缓存的 .unitypackage 解包，保 GUID）。
