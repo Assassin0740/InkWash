@@ -153,7 +153,19 @@ public class dg_axis2 : MonoBehaviour
 
         string s = _sb.ToString();
         Debug.Log(s);
-        try { System.IO.File.WriteAllText("D:/Unity Project/InkWash/Tools/reports/dg_axis2.txt", s); } catch { }
+        // ★ 别写死盘符：换机器（例如 D: → E:）后 WriteAllText 会失败，
+        //   而这里 catch 是空的 ⇒ 报告**静默丢失**，看上去像"探针没跑"。
+        //   用 Application.dataPath 反推工程根，任何机器都成立。
+        try
+        {
+            string root = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, ".."));
+            string dir = System.IO.Path.Combine(root, "Tools", "reports");
+            System.IO.Directory.CreateDirectory(dir);
+            string path = System.IO.Path.Combine(dir, "dg_axis2.txt");
+            System.IO.File.WriteAllText(path, s);
+            Debug.Log("[dg_axis2] 报告已写出: " + path);
+        }
+        catch (System.Exception e) { Debug.LogWarning("[dg_axis2] 报告写出失败: " + e.Message); }
         _done = true;
         enabled = false;
     }
