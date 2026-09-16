@@ -1,0 +1,35 @@
+========== perf_alloc_ab 每帧分配归因 ==========
+生成时间 2026-09-17 00:24:29
+分辨率 1920x1080　vSync 1　场景 Main
+GC　isIncremental=True　GCMode=Enabled
+
+---------- 组件解析（找不到就明写，不许静默）----------
+  RunManager 有　InkStylePanel 有　SkillChoicePanel 有　WaveSpawner 有
+  RoomController 有　InkHitVfx 有　AudioDirector 有　ThirdPersonCamera 有
+  CinemachineBrain 有（挂在主相机上）
+  PlayerController 有　CombatStance 有　SwordVfx 有　FootIK 有
+
+计数器　GC.Alloc=GC.Alloc　Draw Calls=Draw Calls Count
+
+---------- 各档每帧分配（每档 3.0s，先热身 0.8s）----------
+  档位　　　　　　　　　　　　　　　　　 每帧分配中位　95%　　　窗口合计　gen0　draw call 中位
+  V0 原样（静置）                                 12.988 KB    17.48 KB     6.538 MB     0           157
+  V1 关 RunManager（含其 OnGUI）                 11.914 KB   15.234 KB     6.216 MB     0           152
+  V2 关全部 UI 组件                              12.109 KB   15.137 KB      6.18 MB     0           157
+  V3 关玩家（Controller/Stance/SwordVfx/FootIK）  11.914 KB   14.844 KB     6.215 MB     0           157
+  V4 关相机系统（ThirdPersonCamera + CinemachineBrain）  12.598 KB   15.918 KB     6.518 MB     0           157
+  V5 关特效/音频（InkHitVfx + WaveSpawner + AudioDirector）    12.5 KB    15.43 KB     6.417 MB     0           157
+  V6 以上全关（剩余地板）                             10.645 KB   13.379 KB     5.472 MB     0           152
+
+---------- 归因（相对 V0 的差额）----------
+  V1 关 RunManager（含其 OnGUI）               贡献 1.074 KB/帧（占基线 8.271 %）
+  V2 关全部 UI 组件                            贡献 0.879 KB/帧（占基线 6.767 %）
+  V3 关玩家（Controller/Stance/SwordVfx/FootIK）贡献 1.074 KB/帧（占基线 8.271 %）
+  V4 关相机系统（ThirdPersonCamera + CinemachineBrain）≈ 0：不是它的锅（在噪声量级内）
+  V5 关特效/音频（InkHitVfx + WaveSpawner + AudioDirector）≈ 0：不是它的锅（在噪声量级内）
+  V6 以上全关（剩余地板）                           贡献 2.344 KB/帧（占基线 18.045 %）
+
+---------- 判读口径 ----------
+  · 单档 3.0s × ~165fps ≈ 500 帧，中位数足够稳；但差值 <0.5 KB/帧 一律视为噪声。
+  · 若 V6（全关）仍显著 >0 ⇒ 剩余分配来自**渲染管线 / 引擎本身**，
+    那就不是对象池能解决的：改由「减少每帧分配」转为「接受地板值、只削战斗峰值」。
