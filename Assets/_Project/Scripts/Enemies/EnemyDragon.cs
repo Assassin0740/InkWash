@@ -601,10 +601,14 @@ namespace InkWash.Enemies
                 }
             }
 
-            // 基准同样存成「容器局部系」，与 §3 的 `_baseRel` 同一套约定（不依赖骨骼局部轴）
-            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            // ★ 四肢的基准必须存 **localRotation**（相对父脊柱节点），**不能**像脊柱那样存容器系世界旋转。
+            //   原因（实测踩到）：四肢挂在脊柱节下面，脊柱每帧都在摆动；
+            //   如果我们把四肢的**世界**旋转写死成"容器系基准 + 摆动"，
+            //   那父节点一转，四肢相对父节点的局部姿态就被反向甩出去 ——
+            //   实测末端摆幅 930 m（正常应 < 0.5 m），四肢疯狂乱甩。
+            //   写成局部旋转后，四肢会**跟着父节点走**，再叠自己的摆动。
             for (int k = 0; k < _limbRoots.Count; k++)
-                _limbBaseRel.Add(Quaternion.Inverse(rootRot) * _limbRoots[k].rotation);
+                _limbBaseRel.Add(_limbRoots[k].localRotation);
         }
 
         private static int CountDescendants(Transform t)
@@ -622,9 +626,7 @@ namespace InkWash.Enemies
         private void ApplyLimbMotion(float phase)
         {
             if (_limbRoots.Count == 0 || limbSwingDeg <= 0f) return;
-            if (_modelRoot == null) return;
 
-            Quaternion rootRot = _modelRoot.rotation;
             float lp = 2f * Mathf.PI * limbSwingFreq * Time.time;
             float step = limbPhaseStepDeg * Mathf.Deg2Rad;
 
@@ -634,7 +636,8 @@ namespace InkWash.Enemies
                 if (b == null) continue;
                 float ph = lp - _limbParentIndex[k] * step + (k % 2 == 0 ? 0f : Mathf.PI);
                 float swing = limbSwingDeg * Mathf.Sin(ph);
-                b.rotation = rootRot * Quaternion.AngleAxis(swing, Vector3.right) * _limbBaseRel[k];
+                // ★ 局部旋转叠加：四肢跟着父脊柱节点走，再叠自己的前后划动
+                b.localRotation = _limbBaseRel[k] * Quaternion.AngleAxis(swing, Vector3.right);
             }
         }
 
