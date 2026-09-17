@@ -96,6 +96,21 @@ def refs_of(path):
     return {g for g in GUID_REF_RE.findall(t) if not BUILTIN_RE.match(g)}
 
 
+def bin_guid(guid_hex):
+    """文本 guid -> Unity 二进制里**实际写出的** 16 字节。
+
+    ★ 关键：不是 `bytes.fromhex(g)`。Unity 的 GUID 在文件里每个字节的两位十六进制
+    是**互换**的（文本 `d3ef99fc…` ↔ 文件 `3d fe 99 cf …`）。
+    用错这一步，字节扫描会**恒 0 命中且不报错** —— 2026-09-17 那次跨机搬运正是栽在
+    这里：`Main.unity` 依赖的 13 个 Nature FBX 一个都没进清单，那边道具全断。
+    """
+    out = bytearray()
+    for i in range(0, 32, 2):
+        b = int(guid_hex[i:i + 2], 16)
+        out.append((b >> 4) | ((b & 0x0F) << 4))
+    return bytes(out)
+
+
 def refs_of_binary(path, ignored_bytes):
     """★ 二进制资产（本工程的 `Main.unity` 就是）里 guid 是 **16 字节裸值**，
     文本正则一条都读不到 ⇒ 闭包会整段瞎掉。这里直接按字节串做子串查找。
@@ -140,7 +155,7 @@ def main():
     ignored_bytes = {}
     for g, p in gmap.items():
         if is_ignored_path(rel(p)):
-            ignored_bytes[bytes.fromhex(g)] = p
+            ignored_bytes[bin_guid(g)] = p
     binary_roots = []
     for p in roots:
         try:

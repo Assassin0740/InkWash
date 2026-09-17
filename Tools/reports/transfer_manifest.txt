@@ -1,4 +1,4 @@
-# InkWash 跨机搬运文件清单（源机器生成，78 个文件）
+# InkWash 跨机搬运文件清单（源机器生成，106 个文件）
 # 判据：从入库资产出发按 guid 引用做闭包，落到被 ignore 目录的文件
 # 用法：整目录拷贝时可直接对照本清单确认无遗漏
 # 授权提醒：本清单里的素材不可再分发，仅供毕设本机使用
@@ -40,6 +40,34 @@ Assets/ThirdParty/KayKit/Skeletons/Characters/Skeleton_Minion.fbx.meta
 Assets/ThirdParty/KayKit/Skeletons/Characters/skeleton_texture_A.png
 Assets/ThirdParty/KayKit/Skeletons/Characters/skeleton_texture_A.png.meta
 Assets/ThirdParty/Quaternius.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity).meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_2.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_2.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_4.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_4.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_1.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_1.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_2.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_2.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_3.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_3.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_4.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_4.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_5.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_5.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_1.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_1.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_2.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_2.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_3.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_3.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_1.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_1.fbx.meta
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_3.fbx
+Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_3.fbx.meta
 Assets/ThirdParty/Quaternius/UniversalAnimationLibrary.meta
 Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity.meta
 Assets/ThirdParty/Quaternius/UniversalAnimationLibrary/Unity/AnimationLibrary_Unity_Standard.fbx

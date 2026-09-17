@@ -1,0 +1,63 @@
+# 外部引用清单 —— 由 Tools/scene_deps.py 在源机器生成，随 git 走
+# 格式: <guid>\t<期望路径或 builtin>\t<引用方资产>
+# 目标机器跑 Tools/check_clone_deps.py 会逐条核验这些 guid 能否解析。
+# 为什么需要它：二进制场景（如 Main.unity）里的 guid 是 16 字节裸值，
+# 文本正则扫不到 —— 只靠文本扫描会给出「通过」的假阴性。
+0000000000000000e000000000000000	builtin	Assets/_Project/Scenes/Main.unity
+02817023ae24556428b408e73b9255bd	Assets/Char_Feng/Fbx/Feng.fbx	Assets/_Project/Scenes/Main.unity
+03e8325cefc97d149b0619826456c48d	Assets/_Project/Data/Skills/Skill_skill_atkspd.asset	Assets/_Project/Scenes/Main.unity
+07fb3febe2ddb4946ac5f6eca081ebfc	Assets/_Project/Scripts/Roguelike/LevelSystem.cs	Assets/_Project/Scenes/Main.unity
+0bdd9d8b7f0e4b848a271b0f23a35d47	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_4.fbx	Assets/_Project/Scenes/Main.unity
+1e3fdca004f2d45fe8abbed571a8abd5	Library/PackageCache/com.unity.ai.navigation@1.1.7/Runtime/NavMeshModifier.cs	Assets/_Project/Scenes/Main.unity
+321afe24a3f3d4a46a5f36dacb63710f	Assets/_Project/Scripts/Enemies/RoomController.cs	Assets/_Project/Scenes/Main.unity
+45e653bab7fb20e499bda25e1b646fea	Library/PackageCache/com.unity.cinemachine@2.10.7/Runtime/Behaviours/CinemachineVirtualCamera.cs	Assets/_Project/Scenes/Main.unity
+474bcb49853aa07438625e644c072ee6	Library/PackageCache/com.unity.render-pipelines.universal@14.0.12/Runtime/UniversalAdditionalLightData.cs	Assets/_Project/Scenes/Main.unity
+475b207b7b83d4a48b924b12cc14dfa8	Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab	Assets/_Project/Scenes/Main.unity
+4bf74cb34b8f9c5488e38b703d8af615	Assets/_Project/Data/Skills/Skill_skill_damage.asset	Assets/_Project/Scenes/Main.unity
+4c30c040ec55bf443b7c81067166b1f9	Assets/_Project/Scripts/UI/SkillChoicePanel.cs	Assets/_Project/Scenes/Main.unity
+510d168f4cf03bd4d9074b0bc4ffb12e	Assets/_Project/Scripts/Effects/InkHitVfx.cs	Assets/_Project/Scenes/Main.unity
+593fcfdf02587394d9ee59b17844237f	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_3.fbx	Assets/_Project/Scenes/Main.unity
+59a91d3f74d90aa429ca25843a6e0485	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_4.fbx	Assets/_Project/Scenes/Main.unity
+6642d5de63f21ed4e8527ba30dded988	Assets/_Project/Art/Materials/M_InkSky.mat	Assets/_Project/Scenes/Main.unity
+6aa9a7018e8c88e46ace489008bfafb2	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_1.fbx	Assets/_Project/Scenes/Main.unity
+6adcc1ac7dd4c4a4a96037bf94431c2a	Assets/_Project/Art/Materials/M_Character_Ink.mat	Assets/_Project/Scenes/Main.unity
+6d768d0010b1c0741bede12616a365ed	Assets/_Project/Art/Materials/M_Whitebox_Pillar.mat	Assets/_Project/Scenes/Main.unity
+72ece51f2901e7445ab60da3685d6b5f	Library/PackageCache/com.unity.cinemachine@2.10.7/Runtime/Behaviours/CinemachineBrain.cs	Assets/_Project/Scenes/Main.unity
+7a5ac11cc976e418e8d13136b07e1f52	Library/PackageCache/com.unity.ai.navigation@1.1.7/Runtime/NavMeshSurface.cs	Assets/_Project/Scenes/Main.unity
+7d0f2e16432db29459d5af2e84f293af	Assets/_Project/Data/Skills/Skill_skill_health.asset	Assets/_Project/Scenes/Main.unity
+7eadcdaa397283146a569152e71ebe48	Assets/_Project/Data/Skills/Skill_skill_crit.asset	Assets/_Project/Scenes/Main.unity
+85e8e65df9f8ca041b8daf7f259a9da5	Assets/_Project/Data/Skills/Skill_skill_leech.asset	Assets/_Project/Scenes/Main.unity
+902ffc45ba39db54aa369b683f9e9ee5	Assets/_Project/Prefabs/Player/Player.prefab	Assets/_Project/Scenes/Main.unity
+942b17f56af821e4aa730299b94da08b	Assets/_Project/Art/Materials/M_Ink_Prop.mat	Assets/_Project/Scenes/Main.unity
+9edbbc313186f3c479965af17b9d33f9	Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab	Assets/_Project/Scenes/Main.unity
+9f3fa4fbfef572b40a219b07f9580678	Assets/_Project/Data/Skills/Skill_skill_critdmg.asset	Assets/_Project/Scenes/Main.unity
+a097f335b625ae544829caf53e9942a2	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_1.fbx	Assets/_Project/Scenes/Main.unity
+a0d88b31d91461841915b33b8870522b	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_2.fbx	Assets/_Project/Scenes/Main.unity
+a31185426ac6d424eb378f98fb1269c0	Assets/_Project/Scripts/UI/InkStylePanel.cs	Assets/_Project/Scenes/Main.unity
+a66b264ce4ef68345bafadbc4aee1ad5	Assets/_Project/Data/Skills/Skill_skill_killheal.asset	Assets/_Project/Scenes/Main.unity
+a79441f348de89743a2939f4d699eac1	Library/PackageCache/com.unity.render-pipelines.universal@14.0.12/Runtime/UniversalAdditionalCameraData.cs	Assets/_Project/Scenes/Main.unity
+ac0b09e7857660247b1477e93731de29	Library/PackageCache/com.unity.cinemachine@2.10.7/Runtime/Behaviours/CinemachinePipeline.cs	Assets/_Project/Scenes/Main.unity
+b12fed30ae12b3b4984f7119d595e1f3	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_2.fbx	Assets/_Project/Scenes/Main.unity
+b450e51491d16cd49af99b11b37c6cbe	Assets/_Project/Scripts/Roguelike/RunManager.cs	Assets/_Project/Scenes/Main.unity
+c15d4cc901d96e64395197dda76e364a	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_5.fbx	Assets/_Project/Scenes/Main.unity
+c468ec746f74a864ca333bbef0a22a90	Assets/_Project/Art/Materials/M_Whitebox_Ground.mat	Assets/_Project/Scenes/Main.unity
+c51832d246f101c4b8f73731d937a2e3	Assets/_Project/Art/Materials/M_Ink_Eave.mat	Assets/_Project/Scenes/Main.unity
+d3ef99fc6191a4640bd69aeabb667991	Assets/_Project/Scripts/Enemies/WaveSpawner.cs	Assets/_Project/Scenes/Main.unity
+d4f753efc5a38d74eab217592a7d43d7	Assets/_Project/Scripts/Roguelike/SkillInventory.cs	Assets/_Project/Scenes/Main.unity
+d51db8fdf783d10429de20ab0adb310f	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_3.fbx	Assets/_Project/Scenes/Main.unity
+d9c3cf485be621f4fa9505c15df7b6d1	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_3.fbx	Assets/_Project/Scenes/Main.unity
+e058f10e6fdf9734496bde8d01fc8103	Assets/_Project/Data/Skills/Skill_skill_dash.asset	Assets/_Project/Scenes/Main.unity
+e157979b2a837624989372a505c25210	Assets/_Project/Scripts/Player/PlayerHealth.cs	Assets/_Project/Scenes/Main.unity
+e1aaed82c036d78408a28c8127fff478	Assets/_Project/Data/Skills/Skill_skill_knock.asset	Assets/_Project/Scenes/Main.unity
+e4b3fbf01abd7bd45858c7b25e5c0c48	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common.fbx	Assets/_Project/Scenes/Main.unity
+e6e94c9ea1d7d4e47bf7433f33122a81	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_1.fbx	Assets/_Project/Scenes/Main.unity
+e73e35dbb5e1a594a973871f8e0744b6	Assets/_Project/Data/Skills/Skill_skill_speed.asset	Assets/_Project/Scenes/Main.unity
+eb839b84968d5a14da27e08395d39eb6	Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab	Assets/_Project/Scenes/Main.unity
+ece597b72d931764ca6f6c10d45d68b8	Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab	Assets/_Project/Scenes/Main.unity
+ed43f3ace25f05e4d8417bf7250864bf	Assets/_Project/Art/Materials/M_Whitebox_Platform.mat	Assets/_Project/Scenes/Main.unity
+ee51f88cedcd9e24a86e9001a539f254	Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_2.fbx	Assets/_Project/Scenes/Main.unity
+f4044717213e31446939f7bd49c896ea	Library/PackageCache/com.unity.cinemachine@2.10.7/Runtime/Components/CinemachineComposer.cs	Assets/_Project/Scenes/Main.unity
+f65e50cb6be8be2409c9f0460ac7f34d	Assets/_Project/Scripts/UI/InkMaterialSwap.cs	Assets/_Project/Scenes/Main.unity
+fa7155796051b734daa718462081dc5f	Library/PackageCache/com.unity.cinemachine@2.10.7/Runtime/Components/CinemachineTransposer.cs	Assets/_Project/Scenes/Main.unity
+ff35c58a50d5c6145b67d2e211275c19	Assets/_Project/Scripts/Camera/ThirdPersonCamera.cs	Assets/_Project/Scenes/Main.unity
+ffde09f76ae4bb4478d10444a9188bcb	Assets/_Project/Art/Materials/M_Whitebox_Wall.mat	Assets/_Project/Scenes/Main.unity

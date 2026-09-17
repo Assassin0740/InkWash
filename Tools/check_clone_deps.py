@@ -124,12 +124,17 @@ def main():
     print("    可解析的 guid 定义: %d 个" % len(gmap))
 
     refs_by_file = {}
+    binary_skipped = []
     for dp, _dn, fns in os.walk(ASSETS):
         for fn in fns:
             if not fn.endswith(SCAN_EXT):
                 continue
             p = os.path.join(dp, fn)
             try:
+                with open(p, "rb") as fb:
+                    if not fb.read(8).startswith(b"%YAML"):
+                        binary_skipped.append(p)
+                        continue          # 二进制：文本正则读不到，交给 [E]
                 with open(p, encoding="utf-8", errors="ignore") as f:
                     t = f.read()
             except OSError:
@@ -157,15 +162,54 @@ def main():
 
     print("    Unity 内建 guid（已忽略）: %d 处" % builtin_skipped)
     print("    素材目录内部未解析引用:  %d 处（不影响工程）" % asset_missing)
+    if binary_skipped:
+        print()
+        print("    ★ 非文本资产 %d 个，**文本扫描读不到它们的引用** —— 已跳过：" % len(binary_skipped))
+        for p in binary_skipped:
+            print("        %s" % norm(p))
+        print("      这不是「没有依赖」，改由下面的 [E] 核验。")
+
+    # ---- E. 二进制资产的外部引用（按源机器导出的清单核验）----
+    print()
+    print("[E] 二进制资产的外部引用核验（清单来自源机器）")
+    mani = os.path.join(TOOLS_DIR, "reports", "scene_externals.txt")
+    scene_missing = []
+    if not os.path.isfile(mani):
+        print("    [!! ] 缺 Tools/reports/scene_externals.txt —— 无法核验二进制资产")
+    else:
+        tot = 0
+        for ln in open(mani, encoding="utf-8"):
+            ln = ln.rstrip("\n")
+            if not ln or ln.startswith("#"):
+                continue
+            parts = ln.split("\t")
+            if len(parts) < 3:
+                continue
+            g, want, referrer = parts[0], parts[1], parts[2]
+            if want in ("builtin",):
+                continue
+            tot += 1
+            if g not in gmap:
+                scene_missing.append((g, want, referrer))
+        print("    清单条目: %d 条（不含内建）" % tot)
+        if scene_missing:
+            print("    !! 有 %d 条解析不到 —— 缺失文件如下：" % len(scene_missing))
+            for g, want, referrer in scene_missing:
+                print("       %s" % want)
+            print("        （引用方: %s）" % scene_missing[0][2])
+        else:
+            print("    [OK ] 全部解析得到，二进制资产的引用完整。")
 
     print()
     print("[D] 结论")
     bad = sum(len(v) for v in project_missing.values())
-    if not project_missing and not missing_dir:
+    if not project_missing and not missing_dir and not scene_missing:
         print("    通过 —— 工程资产的全部外部引用都能在磁盘上找到定义。")
     else:
         if missing_dir:
             print("    !! 上表 [A] 有缺项，先补齐目录再复检。")
+        if scene_missing:
+            print("    !! [E] 有 %d 个二进制资产引用的文件缺失（见上表路径）。" % len(scene_missing))
         if project_missing:
             print("    !! 有 %d 处工程引用找不到定义，分布在 %d 个文件："
                   % (bad, len(project_missing)))
