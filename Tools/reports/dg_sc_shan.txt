@@ -1,0 +1,56 @@
+===== dg_sc_shan —— 演示场内的 Ziyuan 敌人（同 tick 差分帧，无哨兵底色） =====
+相机 = Showcase_Camera  摆位 = stageCenter(0.00, 0.00, 0.00) + up*0.05（演示场 Play() 的同一摆法）
+判据：同 tick 背靠背 Camera.Render()，渲染器开/关两帧逐像素求差（> 6），两帧均关投影
+
+── Z_Enemy_MoShan
+     - SkinnedMeshRenderer Object_33  SMR bones=26 非null=0 rootBone=<null> mesh=Object_33 vc=116
+     - SkinnedMeshRenderer Object_35  SMR bones=26 非null=0 rootBone=<null> mesh=Object_35 vc=79
+     - SkinnedMeshRenderer Object_37  SMR bones=26 非null=0 rootBone=<null> mesh=Object_37 vc=240
+     - SkinnedMeshRenderer Object_39  SMR bones=26 非null=0 rootBone=<null> mesh=Object_39 vc=1108
+     - SkinnedMeshRenderer Object_41  SMR bones=26 非null=0 rootBone=<null> mesh=Object_41 vc=72
+     - SkinnedMeshRenderer Object_43  SMR bones=26 非null=0 rootBone=<null> mesh=Object_43 vc=44
+     - SkinnedMeshRenderer Object_45  SMR bones=26 非null=0 rootBone=<null> mesh=Object_45 vc=165
+     - SkinnedMeshRenderer Object_47  SMR bones=26 非null=0 rootBone=<null> mesh=Object_47 vc=112
+     - SkinnedMeshRenderer Object_49  SMR bones=26 非null=0 rootBone=<null> mesh=Object_49 vc=7401
+     - SkinnedMeshRenderer Object_51  SMR bones=26 非null=0 rootBone=<null> mesh=Object_51 vc=56
+     - SkinnedMeshRenderer Object_53  SMR bones=26 非null=0 rootBone=<null> mesh=Object_53 vc=255
+     - SkinnedMeshRenderer Object_55  SMR bones=26 非null=0 rootBone=<null> mesh=Object_55 vc=58
+     - SkinnedMeshRenderer Object_57  SMR bones=26 非null=0 rootBone=<null> mesh=Object_57 vc=55
+     - SkinnedMeshRenderer Object_59  SMR bones=26 非null=0 rootBone=<null> mesh=Object_59 vc=53
+     SMR 合计 14，其中骨骼引用全 null 的 14
+     ▶ 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+
+── Z_Enemy_MoGuai
+     - MeshRenderer Box001_08 - Default_0  MR mesh=Box001_08 - Default_0 vc=24
+     - SkinnedMeshRenderer Object_7  SMR bones=97 非null=0 rootBone=<null> mesh=Object_7 vc=9755
+     - SkinnedMeshRenderer Object_9  SMR bones=97 非null=0 rootBone=<null> mesh=Object_9 vc=317
+     - SkinnedMeshRenderer Object_11  SMR bones=97 非null=0 rootBone=<null> mesh=Object_11 vc=216
+     - SkinnedMeshRenderer Object_13  SMR bones=97 非null=0 rootBone=<null> mesh=Object_13 vc=629
+     - SkinnedMeshRenderer Object_15  SMR bones=97 非null=0 rootBone=<null> mesh=Object_15 vc=832
+     - SkinnedMeshRenderer Object_17  SMR bones=97 非null=0 rootBone=<null> mesh=Object_17 vc=143
+     - SkinnedMeshRenderer Object_19  SMR bones=97 非null=0 rootBone=<null> mesh=Object_19 vc=131
+     - SkinnedMeshRenderer Object_21  SMR bones=97 非null=0 rootBone=<null> mesh=Object_21 vc=143
+     - SkinnedMeshRenderer Object_23  SMR bones=97 非null=0 rootBone=<null> mesh=Object_23 vc=131
+     - SkinnedMeshRenderer Object_25  SMR bones=97 非null=0 rootBone=<null> mesh=Object_25 vc=1002
+     SMR 合计 10，其中骨骼引用全 null 的 10
+     ▶ 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+
+── Z_Enemy_MoGu
+     - SkinnedMeshRenderer Object_21  SMR bones=80 非null=0 rootBone=<null> mesh=Object_21 vc=3239
+     - SkinnedMeshRenderer Object_23  SMR bones=80 非null=0 rootBone=<null> mesh=Object_23 vc=5584
+     - SkinnedMeshRenderer Object_24  SMR bones=80 非null=0 rootBone=<null> mesh=Object_24 vc=119
+     - MeshRenderer Object_28  MR mesh=Object_28 vc=70
+     - MeshRenderer Object_34  MR mesh=Object_34 vc=103
+     - MeshRenderer Object_43  MR mesh=Object_43 vc=103
+     - MeshRenderer Object_90  MR mesh=Object_90 vc=468
+     SMR 合计 3，其中骨骼引用全 null 的 3
+     ▶ 纯几何像素 = 3053 / 921600 = 0.331%   最大通道差 = 241
+       屏内范围 x[736,812] y[73,168]  占屏 6.0% x 13.3%
+
+── Z_Enemy_MoLong
+     - SkinnedMeshRenderer Object_281  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_281 vc=28082
+     - SkinnedMeshRenderer Object_282  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_282 vc=804
+     SMR 合计 2，其中骨骼引用全 null 的 0
+     ▶ 纯几何像素 = 7105 / 921600 = 0.771%   最大通道差 = 250
+       屏内范围 x[665,766] y[213,350]  占屏 8.0% x 19.2%
+

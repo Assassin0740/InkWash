@@ -1,0 +1,64 @@
+===== dg_sc_vis v2 —— 演示场内敌人可见性（同 tick 差分帧） =====
+台子/相机/灯光/地面材质 = ActionShowcase.BuildStage()（游戏同一套）
+判据：同 tick 背靠背 Camera.Render()，演员渲染器【开】/【关】两帧逐像素求差，差值 > 6
+      且两帧均把演员 shadowCastingMode 设为 Off ⇒ 差集是纯几何像素，不含投影
+
+演示场条目清单（共 23 条）：
+  [00] 主角 墨客 / 待机 Idle
+  [01] 主角 墨客 / 走 Walk
+  [02] 主角 墨客 / 跑 Run
+  [03] 主角 墨客 / 冲刺 Dash（挥墨拖尾）
+  [04] 主角 墨客 / 连招一段 Atk1
+  [05] 主角 墨客 / 连招二段 Atk2
+  [06] 主角 墨客 / 连招三段 Atk3
+  [07] 主角 墨客 / 重击 HeavyAttack（K）
+  [08] 敌人 墨徒（人形近战） / 待机
+  [09] 敌人 墨徒（人形近战） / 追击玩家
+  [10] 敌人 墨徒（人形近战） / 发起攻击
+  [11] 敌人 墨偶（远程） / 待机
+  [12] 敌人 墨偶（远程） / 追击玩家
+  [13] 敌人 墨偶（远程） / 发起攻击
+  [14] 敌人 墨魇（精英） / 待机
+  [15] 敌人 墨魇（精英） / 追击玩家
+  [16] 敌人 墨魇（精英） / 发起攻击
+  [17] BOSS 墨龙 / 盘旋 Circling（默认态）
+  [18] BOSS 墨龙 / 俯冲撕咬 Dive→Bite
+  [19] BOSS 墨龙 / 俯冲扫尾 Dive→Sweep
+  [20] BOSS 墨龙 / 吐息 Breath（悬浮放弹）
+  [21] 特效 / 命中溅墨 InkHitVfx
+  [22] 特效 / 落地墨晕 InkLandingBloom
+
+演示场相机 = Showcase_Camera  1920x1080  ortho=False  fov=45.0  pos=(10.98, 2.02, -3.80)
+
+── 墨徒（条目 8，演员 Showcase_Actor_8 activeSelf=True activeInHierarchy=True）
+     - MeshRenderer Box001_08 - Default_0  MR mesh=Box001_08 - Default_0 vc=24 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_7  SMR bones=97 非null=0 rootBone=<null> mesh=Object_7 vc=9755 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_9  SMR bones=97 非null=0 rootBone=<null> mesh=Object_9 vc=317 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_11  SMR bones=97 非null=0 rootBone=<null> mesh=Object_11 vc=216 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_13  SMR bones=97 非null=0 rootBone=<null> mesh=Object_13 vc=629 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_15  SMR bones=97 非null=0 rootBone=<null> mesh=Object_15 vc=832 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_17  SMR bones=97 非null=0 rootBone=<null> mesh=Object_17 vc=143 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_19  SMR bones=97 非null=0 rootBone=<null> mesh=Object_19 vc=131 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_21  SMR bones=97 非null=0 rootBone=<null> mesh=Object_21 vc=143 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_23  SMR bones=97 非null=0 rootBone=<null> mesh=Object_23 vc=131 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_25  SMR bones=97 非null=0 rootBone=<null> mesh=Object_25 vc=1002 mat=InkWash/InkCharacter
+     SMR 合计 10，其中骨骼引用全 null 的 10
+     世界包围盒 center=(3.29, 0.05, -0.37) size=(2.64, 1.18, 2.50)
+     ▶ 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+
+── 墨偶（条目 11）：找不到演员对象
+     activeScene 根对象：Showcase | Player | Showcase_Ground | Showcase_Camera | Showcase_KeyLight | Showcase_FillLight | Showcase_RimLight | dg_sc_vis | dg_sc_vis | 
+     演示场 _status = 敌人：待机（已就位）
+
+── 墨魇（条目 14）：找不到演员对象
+     activeScene 根对象：Showcase | Player | Showcase_Ground | Showcase_Camera | Showcase_KeyLight | Showcase_FillLight | Showcase_RimLight | dg_sc_vis | dg_sc_vis | 
+     演示场 _status = 敌人：待机（已就位）
+
+── 墨龙（条目 17，演员 Showcase_Actor_17 activeSelf=True activeInHierarchy=True）
+     - SkinnedMeshRenderer Object_281  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_281 vc=28082 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_282  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_282 vc=804 mat=InkWash/InkCharacter
+     SMR 合计 2，其中骨骼引用全 null 的 0
+     世界包围盒 center=(8.04, 5.63, -2.88) size=(6.41, 2.59, 6.57)
+     ▶ 纯几何像素 = 20145 / 921600 = 2.186%   最大通道差 = 243
+       屏内范围 x[809,1135] y[417,539]  占屏 25.5% x 17.1%
+

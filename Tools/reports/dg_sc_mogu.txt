@@ -1,0 +1,13 @@
+===== dg_sc_mogu —— MoGu 反例拆解（演示场相机，同 tick 差分帧） =====
+相机 = Showcase_Camera
+构成：SMR 3 个 / 普通 MeshRenderer 4 个
+   MR Object_28  mesh=Object_28 vc=70
+   MR Object_34  mesh=Object_34 vc=103
+   MR Object_43  mesh=Object_43 vc=103
+   MR Object_90  mesh=Object_90 vc=468
+
+档位说明：B 档 = 只留 SMR；C 档 = 只留 MeshRenderer
+
+[A 全部（SMR+MR）] 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+[B 只留 SMR] 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+[C 只留 MeshRenderer] 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
