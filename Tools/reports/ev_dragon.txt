@@ -1,0 +1,21 @@
+===== ev_dragon —— 墨龙朱砂阵营描边 =====
+APPLY = true（落盘）
+
+改前（内存对象）：
+   _OutlineColor = (0.042, 0.038, 0.036)   _OutlineWidth = 0.0180   _OutlineDry = 0.450
+
+落盘确证（读 .mat 文件文本）：
+   _OutlineColor = (0.48, 0.035, 0.022)
+   _OutlineWidth = 0.018
+   [OK] 朱砂红确已写入磁盘
+
+连带影响（该材质被下列资产引用，改一份等于三处同变）：
+   Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab   <- 正式 BOSS
+   Assets/_Project/Prefabs/Ziyuan/Z_Dragon.prefab          <- 被上面嵌套引用（同一视觉）
+   Assets/_Project/Prefabs/Ziyuan/Z_Dragon_LP.prefab       <- 孤立资产，工程内无引用者
+
+反向确认（主角 / 剑 / 六个敌人 的描边色应保持原值）：
+   M_Character_Ink          (0.030, 0.042, 0.075)  ← 原值未动
+   M_W_Sword_Ink            (0.048, 0.053, 0.068)  ← 原值未动
+   M_Ink_Enemy_MoShan       (0.480, 0.035, 0.022)  ← 朱砂（敌人，符合预期）
+   M_Ink_Enemy_MoGu         (0.480, 0.035, 0.022)  ← 朱砂（敌人，符合预期）
