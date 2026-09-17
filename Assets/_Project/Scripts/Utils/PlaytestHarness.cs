@@ -2344,6 +2344,31 @@ namespace InkWash.Utils
         /// 2) "追击有效"的判据用**与玩家的距离收敛**，不用"敌人位移了多少"：
         ///    敌人可能被柱子卡住绕路，位移很大但没靠近。距离才是玩家真正感知到的东西。
         /// </summary>
+        /// <summary>
+        /// 某一波按配置**应当**生成多少只（只数 prefab 非空的 entries）。
+        ///
+        /// ★ 存在理由：验收断言里不许写死期望值。S3 原先写死 `WaveCount == 3`、
+        ///   `SpawnedCount >= 8`，而 `622e8a2`「新怪接入战斗 + 墨龙四招程序驱动」
+        ///   加了第 4 波（墨龙 BOSS）、同时把第 2 波从 5 只改成 4 只
+        ///   —— 这三条断言当场变红，**而此后没人再跑过 S3**（报告时间戳一直停在
+        ///   加入第 4 波之前的 09-16 00:11）。也就是说：写死的期望值让这部分验收
+        ///   在配置变更那天就已名存实亡，只是没人看得见。
+        ///
+        ///   期望值必须从被测配置推导，配置改了断言自动跟随；断言该问的是
+        ///   "实际是否等于配置所要求的"，而不是"是否等于当初那个数"。
+        /// </summary>
+        private static int ConfiguredSpawnCount(WaveSpawner sp, int waveIndex)
+        {
+            if (sp == null || sp.waves == null || waveIndex < 0 || waveIndex >= sp.waves.Length) return 0;
+            var w = sp.waves[waveIndex];
+            int n = 0;
+            if (w != null && w.entries != null)
+                for (int j = 0; j < w.entries.Length; j++)
+                    if (w.entries[j] != null && w.entries[j].prefab != null)
+                        n += Mathf.Max(0, w.entries[j].count);
+            return n;
+        }
+
         public static IEnumerator S3EnemyFlow()
         {
             var sb = new StringBuilder();
@@ -2410,11 +2435,16 @@ namespace InkWash.Utils
             ctl.ResetToLocomotion();
             { float t = Time.time; while (Time.time - t < 0.9f) yield return null; }
 
-            M3(sb, spawner.WaveCount == 3, "波次配置 = 3 波", "实际 " + spawner.WaveCount);
+            // ★ 期望值从配置推导，不写死（原因见 ConfiguredSpawnCount 的注释）
+            int firstWaveWant = ConfiguredSpawnCount(spawner, 0);
+            M3(sb, spawner.WaveCount > 0 && firstWaveWant > 0,
+                "波次配置自洽（波数 ≥1、第一波有可生成条目）",
+                "共 " + spawner.WaveCount + " 波　第一波应刷 " + firstWaveWant + " 只");
             spawner.Begin();
 
-            { float t = Time.time; while (spawner.SpawnedCount < 3 && Time.time - t < 10f) yield return null; }
-            M3(sb, spawner.SpawnedCount == 3, "第一波刷出 3 只墨徒", "实际 " + spawner.SpawnedCount);
+            { float t = Time.time; while (spawner.SpawnedCount < firstWaveWant && Time.time - t < 10f) yield return null; }
+            M3(sb, spawner.SpawnedCount == firstWaveWant,
+                "第一波按配置刷出（应为 " + firstWaveWant + " 只）", "实际 " + spawner.SpawnedCount);
 
             var alive = AliveEnemies();
             int onNav = 0;
@@ -2549,8 +2579,11 @@ namespace InkWash.Utils
             M3(sb, spawner.WaveClearedCount >= 1, "第 1 波清空后判定通过",
                 "清空 " + spawner.WaveClearedCount + " 波 / 已开 " + spawner.WaveStartedCount + " 波"
                 + "  本次击杀 " + killedNow);
-            { float t = Time.time; while (spawner.SpawnedCount < 8 && Time.time - t < 20f) yield return null; }
-            M3(sb, spawner.SpawnedCount >= 8, "第 2 波按配置刷出（3 墨徒 + 2 墨偶）",
+            // ★ 同样从配置推导：原先写死 8（= 旧配置 3+5），配置改成 3+4 后会白等 20 秒
+            int twoWavesWant = ConfiguredSpawnCount(spawner, 0) + ConfiguredSpawnCount(spawner, 1);
+            { float t = Time.time; while (spawner.SpawnedCount < twoWavesWant && Time.time - t < 20f) yield return null; }
+            M3(sb, spawner.SpawnedCount >= twoWavesWant,
+                "前两波按配置刷出（应累计 " + twoWavesWant + " 只）",
                 "累计生成 " + spawner.SpawnedCount);
             var mixed = AliveEnemies();
             int ranged = 0; foreach (var e in mixed) if (e is EnemyRanged) ranged++;
@@ -2582,7 +2615,8 @@ namespace InkWash.Utils
                     yield return null;
                 }
             }
-            M3(sb, spawner.AllCleared, "三波全部清空", "已开 " + spawner.WaveStartedCount + " 波 / 清 " + spawner.WaveClearedCount + " 波");
+            M3(sb, spawner.AllCleared, "全部波次清空（波数 = " + spawner.WaveCount + "）",
+                "已开 " + spawner.WaveStartedCount + " 波 / 清 " + spawner.WaveClearedCount + " 波");
             { float t = Time.time; while (Time.time - t < 2.0f) yield return null; }   // 等门沉下去
             if (room != null)
             {
@@ -2590,9 +2624,13 @@ namespace InkWash.Utils
                 M3(sb, room.GateProgress > 0.95f, "石门下沉完成（开门）",
                     "位移进度 " + F(room.GateProgress) + "，扇数 " + room.OpenedGateCount);
             }
-            M3(sb, EnemyBase.TotalKills >= spawner.SpawnedCount && spawner.SpawnedCount >= 8,
+            // 期望值 = 全部波次的配置总数（原先写死 8，配置改成 3+4+4+1=12 后会误判）
+            int allWavesWant = 0;
+            for (int i = 0; i < spawner.WaveCount; i++) allWavesWant += ConfiguredSpawnCount(spawner, i);
+            M3(sb, EnemyBase.TotalKills >= spawner.SpawnedCount && spawner.SpawnedCount >= allWavesWant,
                 "击杀数 == 生成数（无漏算/幽灵敌人）",
-                "击杀 " + EnemyBase.TotalKills + " / 生成 " + spawner.SpawnedCount);
+                "击杀 " + EnemyBase.TotalKills + " / 生成 " + spawner.SpawnedCount
+                + "（配置共 " + allWavesWant + "）");
 
             // ---------------- 收尾 ----------------
             sb.AppendLine();
@@ -2834,7 +2872,9 @@ namespace InkWash.Utils
                 EnemyBase.AliveCount = 0; EnemyBase.TotalKills = 0; EnemyBase.TotalSpawned = 0;
                 { float t = Time.time; while (Time.time - t < 0.3f) yield return null; }
                 spawner.Begin();
-                { float t = Time.time; while (spawner.SpawnedCount < 3 && Time.time - t < 10f) yield return null; }
+                // 等第一波按配置刷齐（不写死 3：配置改了这里要自动跟随）
+                int waitFirst = Mathf.Max(1, ConfiguredSpawnCount(spawner, 0));
+                { float t = Time.time; while (spawner.SpawnedCount < waitFirst && Time.time - t < 10f) yield return null; }
 
                 var alive = AliveEnemies();
                 int inkCount = 0;
@@ -2849,8 +2889,16 @@ namespace InkWash.Utils
                     "换材质对象已登记（主角 + 敌人，运行时生成的敌人靠组件自注册）",
                     "登记 " + InkStylePanel.RegisteredCount + " 家（敌人 " + alive.Count + " 只）");
 
-                // 阶段 1「白模」必须能把敌人也切回原 PBR 材质 —— 这一条同时验证
-                // "记录原始材质"没被第二次施工覆盖成水墨材质（那样对照实验会静默失效）
+                // 阶段 1「白模」能不能把敌人也切回去，取决于**敌人 prefab 挂的是什么材质**。
+                //
+                // ★ 本条原先写死 `s0 != 水墨`，隐含假设"敌人 prefab 是 PBR"。
+                //   `d6eb475`（09-16 00:40「敌人补水墨化」）与 `622e8a2`（同日 12:39 新怪接入）
+                //   之后，敌人 prefab 直接引用 `M_Ink_Enemy_*`，该假设不复存在 —— 而 S4 报告
+                //   停在 00:13，此后没人重跑，于是这条断言注定红却无人看见（同 S3 那两条
+                //   死期望值）。期望值改为从**实测到的阶段 1 材质**推导，并区分两种情形：
+                //     · 阶段 1 非水墨 ⇒ 阶段 4 必须是水墨，且两者不同（对照实验对敌有效）
+                //     · 阶段 1 即水墨 ⇒ 敌人 prefab 本来就是水墨，白模对敌人**本不适用**，
+                //       阶段 4 仍必须是水墨；如实报出，不再拿一个消失的前提去判失败。
                 if (panel != null && alive.Count > 0)
                 {
                     panel.ApplyStage(0);
@@ -2861,9 +2909,14 @@ namespace InkWash.Utils
                     yield return null; yield return null;
                     var r3 = alive[0].GetComponentInChildren<SkinnedMeshRenderer>(true);
                     string s3 = (r3 != null && r3.sharedMaterial != null) ? r3.sharedMaterial.shader.name : "<无>";
-                    M4(sb, s0 != "InkWash/InkCharacter" && s3 == "InkWash/InkCharacter",
-                        "切阶段 1 时敌人回到原 PBR 材质、切回阶段 4 又是水墨",
-                        "阶段1 = " + s0 + " ｜ 阶段4 = " + s3);
+
+                    bool origIsInk = s0 == "InkWash/InkCharacter";
+                    M4(sb, s3 == "InkWash/InkCharacter" && (origIsInk || s0 != s3),
+                        origIsInk
+                            ? "阶段 4 敌人是水墨；阶段 1 保持水墨（敌 prefab 即水墨 ⇒ 不参与白模对照）"
+                            : "切阶段 1 时敌人回原始材质、阶段 4 是水墨",
+                        "阶段1 = " + s0 + " ｜ 阶段4 = " + s3
+                        + "　（阶段1 " + (origIsInk ? "本就是水墨" : "非水墨") + "）");
                 }
             }
             if (health != null) health.ResetHealth();
@@ -3787,8 +3840,14 @@ namespace InkWash.Utils
             int rewards = 0;
             int guard = 0;
             float t0 = Time.unscaledTime;
+            // ★ `guard` 只是"活着别死循环"的保险丝，**真正的上限是 120 s 的墙钟**
+            //   （与 S3 波次等待段同一纪律）。原先这里写死 6000 **帧**，在 ~166 fps 下
+            //   只折合 36 秒 —— 配置一变重（622e8a2 给每间房补了第 4 波「墨龙 BOSS」）
+            //   帧数就先耗尽，循环被探针自己掐断，房间推进 0/3；而报告只写"未通关"，
+            //   完全看不出是探针提前退出的。写死的帧数上限会随配置与帧率悄悄漂移，
+            //   与 S3/S4 那几处写死的期望值是同一种错误。
             while (run.State != RunState.Victory && run.State != RunState.GameOver
-                   && guard++ < 6000 && Time.unscaledTime - t0 < 120f)
+                   && guard++ < 200000 && Time.unscaledTime - t0 < 120f)
             {
                 if (run.State == RunState.Reward)
                 {
@@ -3805,9 +3864,17 @@ namespace InkWash.Utils
                 yield return null;
             }
 
+            // 注：变量名不能叫 elapsed —— 同一方法里的 ⑦ 性能段已经用了（CS0128）
+            float elapsedRun = Time.unscaledTime - t0;
+            // 退出原因必须写出来：否则"没通关"这五个字同时对应"被怪打死／时间到／
+            // 探针自己掐断"三种完全不同的处置，事后无从查起。
+            string exitWhy = run.State == RunState.Victory ? "通关"
+                           : run.State == RunState.GameOver ? "玩家阵亡"
+                           : (elapsedRun >= 120f ? "★ 120s 时间上限到（房间未清完）"
+                                                 : "★ 帧数保险丝到（与时长脱钩，判据需复核）");
             sb.AppendLine("   房间 " + run.RoomIndex + "/" + run.roomsToClear
                           + "　升级/选择 " + rewards + " 次　迁移 " + run.TransitionCount + " 次"
-                          + "　耗时 " + F(Time.unscaledTime - t0) + " s");
+                          + "　耗时 " + F(elapsedRun) + " s　退出原因：" + exitWhy);
             M5(sb, run.State == RunState.Victory, "清空 " + run.roomsToClear + " 间房后通关（Victory）",
                 "实际 " + run.State);
             M5(sb, run.RoomIndex >= run.roomsToClear, "房间推进到位", run.RoomIndex + " / " + run.roomsToClear);

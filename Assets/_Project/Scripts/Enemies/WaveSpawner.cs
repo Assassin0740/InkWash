@@ -123,6 +123,20 @@ namespace InkWash.Enemies
         /// <summary>开始跑波次（也可以由房间控制器在开门后调用）。</summary>
         public void Begin()
         {
+            // ★ 自愈：被禁用的 MonoBehaviour **不执行 Update()**，而波次推进全在 Update 里。
+            //   于是"已经开跑"的标记会正常设上、`_waveTimer` 却永远停在初值 ——
+            //   一只怪都不刷、控制台干干净净，玩家卡死在一间空房里。
+            //
+            //   真实事故：做动作演示场时为了让场内不刷怪，把本组件 enabled 关掉，这个调试态
+            //   被一起存进了 Main.unity 并提交（41f1c9a）。此后玩家点「开始一局」，
+            //   `RunManager.StartRun()` 照常调本方法、`State` 也照常变成 Playing、
+            //   **没有任何报错**，但那 4 波怪一只都不来。（实测：StartRun 后 `_running=True`、
+            //   `CurrentWave=0`，而 `WaveTimer` 12 秒纹丝不动停在 1.50。）
+            //
+            //   "调用方说要开跑"，本组件就得保证自己跑得起来 —— 与类首那条
+            //   "这类静默失败一定要在源头挡掉"是同一套做法。
+            if (!enabled) enabled = true;
+
             if (_running) return;
             _running = true;
             _currentWave = -1;
