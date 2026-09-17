@@ -36,13 +36,13 @@ Material:
     - _AerialFrom: 12
     - _AerialStrength: 0.55
     - _AerialTo: 30
-    - _BandBias: -0.18
+    - _BandBias: 0
     - _BandSoftness: 0.06
     - _Bands: 4
     - _BrushScale: 26
     - _BrushStrength: 0.6
     - _BrushUvFromWorld: 1
-    - _ChromaKeep: 0.3
+    - _ChromaKeep: 0.45
     - _ContactHeight: 0.45
     - _ContactInk: 0.3
     - _GrainAmp: 0.18
@@ -55,7 +55,7 @@ Material:
     - _OutlineDry: 0.5
     - _OutlineFacing: 0.72
     - _OutlineScale: 5
-    - _OutlineWidth: 0.014
+    - _OutlineWidth: 0.018
     - _RimPower: 3
     - _RimStrength: 0.95
     - _SpecBands: 2
@@ -69,6 +69,6 @@ Material:
     - _InkDark: {r: 0.1, g: 0.068, b: 0.055, a: 1}
     - _InkLight: {r: 0.845, g: 0.79, b: 0.715, a: 1}
     - _InkMid: {r: 0.3, g: 0.235, b: 0.195, a: 1}
-    - _OutlineColor: {r: 0.055, g: 0.04, b: 0.032, a: 1}
+    - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
     - _RimColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
   m_BuildTextureStacks: []

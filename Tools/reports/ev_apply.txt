@@ -1,0 +1,50 @@
+=== ev_apply：六个敌人材质落盘 ===
+目标  _ChromaKeep=0.45  _BandBias=0.00  _OutlineColor=0.480/0.035/0.022  _OutlineWidth=0.018
+activeColorSpace = Linear   isPlaying = False
+
+√ M_Ink_Enemy_MoShan
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+√ M_Ink_Enemy_MoGuai
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+√ M_Ink_Enemy_MoGu
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+√ M_Ink_Enemy_MoOu_0
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+√ M_Ink_Enemy_MoTu_0
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+√ M_Ink_Enemy_MoYan_0
+     旧:  _ChromaKeep=0.450 _BandBias=0.100 _OLW=0.018 _OutlineColor=(0.350,0.030,0.020)
+     新:  _ChromaKeep=0.450 _BandBias=0.000 _OLW=0.018 _OutlineColor=(0.480,0.035,0.022)
+
+落盘完成：成功 6 / 缺失 0
+
+── 磁盘回读核对（_OutlineColor 应为 0.35/0.03/0.02）──
+   M_Ink_Enemy_MoShan      - _BandBias: 0
+   M_Ink_Enemy_MoShan      - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoShan      - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoShan      - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
+   M_Ink_Enemy_MoGuai      - _BandBias: 0
+   M_Ink_Enemy_MoGuai      - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoGuai      - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoGuai      - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
+   M_Ink_Enemy_MoGu        - _BandBias: 0
+   M_Ink_Enemy_MoGu        - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoGu        - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoGu        - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
+   M_Ink_Enemy_MoOu_0      - _BandBias: 0
+   M_Ink_Enemy_MoOu_0      - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoOu_0      - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoOu_0      - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
+   M_Ink_Enemy_MoTu_0      - _BandBias: 0
+   M_Ink_Enemy_MoTu_0      - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoTu_0      - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoTu_0      - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
+   M_Ink_Enemy_MoYan_0     - _BandBias: 0
+   M_Ink_Enemy_MoYan_0     - _ChromaKeep: 0.45
+   M_Ink_Enemy_MoYan_0     - _OutlineWidth: 0.018
+   M_Ink_Enemy_MoYan_0     - _OutlineColor: {r: 0.48, g: 0.035, b: 0.022, a: 1}
