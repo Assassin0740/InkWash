@@ -1,0 +1,170 @@
+===== dg_enemy_probe2 =====
+口径：不禁用任何 MonoBehaviour（只关 NavMeshAgent）；双背景色对照；顶点真值 vs 蒙皮包围盒。
+
+### MoShan  activeInHierarchy=True
+    SMR=14
+    [1] Object_33  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_33(116v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.639, 0.236, 0.686)
+         s.bounds(蒙皮后) center=(0.022, 300.002, -0.984) size=(1.295, 1.389, 0.477)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 0.985
+    [2] Object_35  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_35(79v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.038, 0.017, 0.045)
+         s.bounds(蒙皮后) center=(0.383, 300.189, -0.832) size=(0.077, 0.090, 0.034)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 0.936
+    [3] Object_37  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_37(240v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.071, 0.137, 0.121)
+         s.bounds(蒙皮后) center=(0.347, 300.255, -0.911) size=(0.144, 0.245, 0.278)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.009
+    [4] Object_39  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_39(1108v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.132, 0.065, 0.056)
+         s.bounds(蒙皮后) center=(0.170, 300.523, -2.259) size=(0.268, 0.114, 0.131)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 2.327
+    [5] Object_41  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_41(72v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.102, 0.095, 0.064)
+         s.bounds(蒙皮后) center=(0.368, 300.405, -2.463) size=(0.207, 0.130, 0.193)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 2.524
+    [6] Object_43  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_43(44v)  bindposes=26
+         bones.len=26  其中 null=26  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  localBounds=(0.130, 0.136, 0.072)
+         s.bounds(蒙皮后) center=(0.005, 300.438, -2.556) size=(0.263, 0.146, 0.275)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 299.994, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(2.026, 2.026, 2.026)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 2.594
+    …（其余 8 个略）
+    用于取景的包围盒 center=(0.425, 300.132, -1.106) size=(2.694, 2.804, 3.175)  剔除离群=0
+    像素  品红底 top=0.00%  side=0.00%   ||   绿底 top=27.14%  side=27.14%
+    ★★ 判定：品红底 0%、绿底有 → **渲染成了品红 = missing material 假阴性**！
+
+### MoGuai  activeInHierarchy=True
+    SMR=10
+    [1] Object_7  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_7(9755v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(1248.556, 904.298, 1996.526)
+         s.bounds(蒙皮后) center=(-0.135, 339.918, -1.000) size=(1.400, 1.025, 2.244)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.059
+    [2] Object_9  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_9(317v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(518.174, 380.971, 420.634)
+         s.bounds(蒙皮后) center=(-0.399, 339.889, -1.799) size=(0.581, 0.430, 0.474)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.873
+    [3] Object_11  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_11(216v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(229.434, 146.912, 238.035)
+         s.bounds(蒙皮后) center=(-0.164, 340.162, -1.287) size=(0.257, 0.166, 0.268)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.352
+    [4] Object_13  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_13(629v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(768.559, 584.091, 751.188)
+         s.bounds(蒙皮后) center=(-0.156, 339.959, -0.912) size=(0.862, 0.659, 0.846)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 0.969
+    [5] Object_15  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_15(832v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(107.932, 95.762, 65.475)
+         s.bounds(蒙皮后) center=(-0.110, 340.056, -1.813) size=(0.121, 0.108, 0.074)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.869
+    [6] Object_17  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_17(143v)  bindposes=97
+         bones.len=97  其中 null=97  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  localBounds=(296.476, 390.115, 349.091)
+         s.bounds(蒙皮后) center=(-0.533, 340.197, -1.405) size=(0.333, 0.439, 0.394)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(-0.163, 340.001, 0.055) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.001, 0.001, 0.001)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.519
+    …（其余 4 个略）
+    用于取景的包围盒 center=(0.156, 339.995, -1.000) size=(1.982, 1.179, 2.244)  剔除离群=0
+    像素  品红底 top=0.00%  side=0.00%   ||   绿底 top=27.14%  side=27.14%
+    ★★ 判定：品红底 0%、绿底有 → **渲染成了品红 = missing material 假阴性**！
+
+### MoGu  activeInHierarchy=True
+    SMR=3
+    [1] Object_21  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_21(3239v)  bindposes=80
+         bones.len=80  其中 null=80  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  localBounds=(62.333, 95.238, 48.646)
+         s.bounds(蒙皮后) center=(-0.011, 380.194, -0.711) size=(1.062, 0.829, 1.623)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 380.060, 0.008) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.017, 0.017, 0.017)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 0.731
+    [2] Object_23  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_23(5584v)  bindposes=80
+         bones.len=80  其中 null=80  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  localBounds=(59.236, 98.412, 61.984)
+         s.bounds(蒙皮后) center=(-0.009, 380.274, -0.783) size=(1.010, 1.056, 1.677)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 380.060, 0.008) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.017, 0.017, 0.017)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 0.819
+    [3] Object_24  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_24(119v)  bindposes=80
+         bones.len=80  其中 null=80  rootBone=★null  非null=0
+         sharedMat=M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  localBounds=(3.209, 3.921, 3.881)
+         s.bounds(蒙皮后) center=(0.016, 380.684, -1.399) size=(0.055, 0.066, 0.067)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 380.060, 0.008) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.017, 0.017, 0.017)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.539
+    用于取景的包围盒 center=(-0.011, 380.274, -0.761) size=(1.062, 1.056, 1.722)  剔除离群=0
+    像素  品红底 top=11.27%  side=9.73%   ||   绿底 top=35.61%  side=34.05%
+
+### MoLong  activeInHierarchy=True
+    SMR=2
+    [1] Object_281  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_281(28082v)  bindposes=273
+         bones.len=273  其中 null=0  rootBone=_rootJoint  非null=273
+         sharedMat=M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  localBounds=(2518.266, 1078.275, 2446.141)
+         s.bounds(蒙皮后) center=(0.754, 421.294, -0.922) size=(5.871, 2.588, 6.044)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 420.056, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.002, 0.002, 0.002)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.718
+    [2] Object_282  enabled=True  layer=0  updateWhenOffscreen=False
+         mesh=Object_282(804v)  bindposes=273
+         bones.len=273  其中 null=0  rootBone=_rootJoint  非null=273
+         sharedMat=M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  localBounds=(122.418, 63.163, 65.961)
+         s.bounds(蒙皮后) center=(-1.775, 420.879, -0.044) size=(0.158, 0.152, 0.294)
+         顶点(局部) min=(340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000, 340282300000000000000000000000000000000.000) max=(-340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000, -340282300000000000000000000000000000000.000)  NaN/Inf=0
+         顶点(未蒙皮世界) center=(0.000, 420.056, 0.000) size=(-Infinity, -Infinity, -Infinity)   lossyScale=(0.002, 0.002, 0.002)
+         s.bounds.center 与未蒙皮世界 center 的距离 = 1.957
+    用于取景的包围盒 center=(0.754, 421.294, -0.922) size=(5.871, 2.588, 6.044)  剔除离群=0
+    像素  品红底 top=10.75%  side=7.97%   ||   绿底 top=35.22%  side=33.69%
+
+### MoYan  ★ prefab 加载失败
+相机 cullingMask=-1  far=3000
+  场景相机 Main Camera enabled=True cullingMask=-1
+  场景相机 Cam enabled=True cullingMask=-1
+  场景相机数=2
+
+判据：绿底 >0 而品红底 =0 ⇒ 上一轮的 0.00% 是 missing material 造成的假阴性。
