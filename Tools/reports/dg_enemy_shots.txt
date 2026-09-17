@@ -1,0 +1,15 @@
+===== dg_enemy_shots v2 =====
+isPlaying=True
+口径：不禁用 MonoBehaviour（让 InkMaterialSwap 正常贴材质）；取景用离群过滤后的包围盒并集。
+
+Prefab   SMR/有mesh   材质非空      视图1      视图2      取景范围(m)               网格名(前3)
+MoYan    8/8         8/8       16.58%   12.02%   (3.51,2.80,1.16)      Skeleton_Golem_ArmLeft Skeleton_Golem_ArmRight
+MoTu     9/9         9/9       23.45%   19.64%   (1.57,1.89,0.74)      Skeleton_Minion_ArmLeft Skeleton_Minion_ArmRight
+MoOu     8/8         8/8       20.36%   17.95%   (1.64,2.37,1.68)      Skeleton_Mage_ArmLeft Skeleton_Mage_ArmRight Skeleton_Mage_Body
+MoGu     3/3         3/3       5.38%    4.23%    (1.56,1.32,1.96)      Object_21 Object_23 Object_24
+MoGuai   10/10       10/10     0.00%    0.00%    (1.98,1.18,2.24) 剔除1  Object_7 Object_9 Object_11 Object_13 Object_15
+MoShan   14/14       14/14     0.00%    0.00%    (2.69,2.80,3.18)      Object_33 Object_35 Object_37 Object_39 Object_41
+MoLong   2/2         2/2       5.61%    7.48%    (5.87,2.59,6.04)      Object_281 Object_282
+
+判据：两视图都 ≈0 ⇒ 该敌人渲染不出来；只有一侧为 0 ⇒ 多半是取景问题，需复核。
+图片: D:/Unity Project/InkWash/Tools/screenshots/enemies

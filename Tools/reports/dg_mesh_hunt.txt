@@ -1,0 +1,49 @@
+===== dg_mesh_hunt =====
+目标 localId = -3325053396650211315
+
+工程内 Model 资产 284 个，开始逐个枚举 Mesh 子资产…
+  扫描 Model 284 个，Mesh 子资产 569 个
+
+[a] localId == -3325053396650211315 的 Mesh：
+      ★ 一个都没有 ⇒ 该引用在本工程内**无处可解析**（悬空）
+
+[b] 名字为 dragon 的 Mesh：
+      没有
+
+[c] .meta 对照
+--- Assets/ThirdParty/Ziyuan/_fbx/chinese_dragon.fbx
+      internalIDToNameTable: []
+      materialImportMode: 2
+      optimizeGameObjects: 0
+      sortHierarchyByName: 1
+      nodeNameCollisionStrategy: 1
+      fileIdsGeneration: 2
+      useFileUnits: 1
+      bakeAxisConversion: 0
+      preserveHierarchy: 0
+      useFileScale: 1
+      importAnimation: 1
+      依赖哈希 = 5ca89da77ca33353250d482d37dc1ce4
+      资产 guid = c68a78a74a299104a8f51cee5029c146
+--- Assets/ThirdParty/KayKit/Skeletons/Characters/Skeleton_Golem.fbx
+      internalIDToNameTable: []
+      materialImportMode: 2
+      optimizeGameObjects: 0
+      sortHierarchyByName: 1
+      nodeNameCollisionStrategy: 1
+      fileIdsGeneration: 2
+      useFileUnits: 1
+      bakeAxisConversion: 0
+      preserveHierarchy: 0
+      useFileScale: 1
+      importAnimation: 1
+      依赖哈希 = ac57b849f964e6924f4e1fb5721ee3ae
+      资产 guid = 2135005f3db468a40963199158b75532
+
+[d] Assets/ThirdParty/Ziyuan/_fbx/chinese_dragon.fbx 的 Mesh 明细
+      sub名=Object_281  mesh.name=Object_281  localId=7161509005421682173  verts=28082  bindposes=273  subMesh=1
+      sub名=Object_282  mesh.name=Object_282  localId=7238157132297919992  verts=804  bindposes=273  subMesh=1
+      fbx 根对象: chinese_dragon（子 3）
+
+[e] Z_Dragon.prefab 的 SMR 当前读数
+      mesh=null  bones=180  rootBone=drgon_dup2

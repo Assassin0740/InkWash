@@ -1,0 +1,22 @@
+===== dg_fix_mesh =====
+isPlaying=False（必须是 False）
+activeScene=Main  isDirty=False
+
+[1] fbx 网格定位
+    body (Object_281) = Object_281  28082v  subMesh=1  bindposes=273
+    extra(Object_282) = Object_282  804v  subMesh=1  bindposes=273
+    ink 材质 = M_Ink_Boss_Dragon  shader=InkWash/InkCharacter
+
+[2] 改动前
+    mesh=null  mats=2  bones=180  rootBone=drgon_dup2
+
+[3] 已在场景实例上改：mesh=Object_281, mats=[M_Ink_Boss_Dragon]
+    蒙皮一致性: bones=180  mesh.bindposes=273   ⚠ 数量不等（180 vs 273）⇒ 若渲染错位，须另想办法
+    已 ApplyPrefabInstance 写回 prefab，临时实例已销毁
+
+[4] 写回后复核（重新从磁盘加载）
+    mesh=Object_281(28082v)  mats=1[M_Ink_Boss_Dragon]  bones=180  rootBone=drgon_dup2
+
+[5] MoLong 牵连检查
+    MoLong SMR = 1  mesh=Object_281  bones=180
+    场景 isDirty=False（不保存场景）

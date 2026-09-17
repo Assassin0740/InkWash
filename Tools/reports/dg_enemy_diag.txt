@@ -1,0 +1,53 @@
+
+### MoShan   root.activeInHierarchy=True
+    SMR=14
+      Object_33  enabled=True activeInHier=True  layer=0
+        mesh=Object_33(116v)  mesh.bindposes=26  renderer.bones=26  rootBone=null
+        mat=null  shader=-  renderer.bounds.size=(1.295, 1.389, 0.477)  mesh.bounds.size=(0.550, 0.400, 0.190)
+      Object_35  enabled=True activeInHier=True  layer=0
+        mesh=Object_35(79v)  mesh.bindposes=26  renderer.bones=26  rootBone=null
+        mat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  renderer.bounds.size=(0.077, 0.090, 0.034)  mesh.bounds.size=(0.040, 0.019, 0.014)
+      Object_37  enabled=True activeInHier=True  layer=0
+        mesh=Object_37(240v)  mesh.bindposes=26  renderer.bones=26  rootBone=null
+        mat=M_Ink_Enemy_MoShan  shader=InkWash/InkCharacter  renderer.bounds.size=(0.144, 0.245, 0.278)  mesh.bounds.size=(0.075, 0.024, 0.056)
+    …（其余 11 个略）
+    像素(按 Renderer.bounds 取景) = 0.00%    像素(按 mesh.bounds 取景) = 0.00%
+
+### MoGuai   root.activeInHierarchy=True
+    SMR=10
+      Object_7  enabled=True activeInHier=True  layer=0
+        mesh=Object_7(9755v)  mesh.bindposes=97  renderer.bones=97  rootBone=null
+        mat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  renderer.bounds.size=(1.400, 1.025, 2.244)  mesh.bounds.size=(1269.037, 1964.540, 566.878)
+      Object_9  enabled=True activeInHier=True  layer=0
+        mesh=Object_9(317v)  mesh.bindposes=97  renderer.bones=97  rootBone=null
+        mat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  renderer.bounds.size=(0.581, 0.430, 0.474)  mesh.bounds.size=(317.470, 340.540, 318.708)
+      Object_11  enabled=True activeInHier=True  layer=0
+        mesh=Object_11(216v)  mesh.bindposes=97  renderer.bones=97  rootBone=null
+        mat=M_Ink_Enemy_MoGuai  shader=InkWash/InkCharacter  renderer.bounds.size=(0.257, 0.166, 0.268)  mesh.bounds.size=(228.619, 229.194, 52.852)
+    …（其余 7 个略）
+    像素(按 Renderer.bounds 取景) = 0.00%    像素(按 mesh.bounds 取景) = 0.00%
+
+### MoGu   root.activeInHierarchy=True
+    SMR=3
+      Object_21  enabled=True activeInHier=True  layer=0
+        mesh=Object_21(3239v)  mesh.bindposes=80  renderer.bones=80  rootBone=null
+        mat=null  shader=-  renderer.bounds.size=(1.062, 0.829, 1.623)  mesh.bounds.size=(83.794, 20.296, 101.632)
+      Object_23  enabled=True activeInHier=True  layer=0
+        mesh=Object_23(5584v)  mesh.bindposes=80  renderer.bones=80  rootBone=null
+        mat=M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  renderer.bounds.size=(1.010, 1.056, 1.677)  mesh.bounds.size=(122.459, 18.541, 117.668)
+      Object_24  enabled=True activeInHier=True  layer=0
+        mesh=Object_24(119v)  mesh.bindposes=80  renderer.bones=80  rootBone=null
+        mat=M_Ink_Enemy_MoGu  shader=InkWash/InkCharacter  renderer.bounds.size=(0.055, 0.066, 0.067)  mesh.bounds.size=(2.546, 2.546, 2.546)
+    像素(按 Renderer.bounds 取景) = 8.39%    像素(按 mesh.bounds 取景) = 7.36%
+
+### MoLong   root.activeInHierarchy=True
+    SMR=2
+      Object_281  enabled=True activeInHier=True  layer=0
+        mesh=Object_281(28082v)  mesh.bindposes=273  renderer.bones=273  rootBone=_rootJoint
+        mat=null  shader=-  renderer.bounds.size=(5.871, 2.588, 6.044)  mesh.bounds.size=(779.800, 4969.382, 542.049)
+      Object_282  enabled=True activeInHier=True  layer=0
+        mesh=Object_282(804v)  mesh.bindposes=273  renderer.bones=273  rootBone=_rootJoint
+        mat=M_Ink_Boss_Dragon  shader=InkWash/InkCharacter  renderer.bounds.size=(0.158, 0.152, 0.294)  mesh.bounds.size=(120.130, 43.200, 43.200)
+    像素(按 Renderer.bounds 取景) = 4.23%    像素(按 mesh.bounds 取景) = 1.36%
+
+判据：两列像素都 = 0 才是真不可见；只有 Renderer.bounds 那列为 0，说明取景依赖了坏包围盒。
