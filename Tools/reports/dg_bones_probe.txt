@@ -1,0 +1,56 @@
+===== dg_bones_probe =====
+① bones 数组的 null 元素数  ② 材质 shaderKeywords  ③ MeshRenderer 直画同一 mesh
+
+### MoGu   SMR=3
+    Object_21      bones.len=80  null元素=80  非null=0  rootBone=<null>
+    Object_23      bones.len=80  null元素=80  非null=0  rootBone=<null>
+    Object_24      bones.len=80  null元素=80  非null=0  rootBone=<null>
+    → 全 null 的 SMR 数=3   有非 null 骨骼的 SMR 数=0
+    材质 M_Ink_Enemy_MoGu  keywords=[]  数=0  pass数=4
+    材质 M_Ink_Enemy_MoGu  keywords=[]  数=0  pass数=4
+    [实验] MeshRenderer 直画 mesh=Object_23  triangleCount=0  bounds=(122.459, 18.541, 117.668)
+    [MoGu_A_skinned] 视野=5.2m  非背景=1.81%  量化色数=18
+    [MoGu_D_meshrender] 视野=367.4m  非背景=1.55%  量化色数=34
+
+### MoShan   SMR=14
+    Object_33      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_35      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_37      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_39      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_41      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_43      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_45      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_47      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_49      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_51      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_53      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_55      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_57      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    Object_59      bones.len=26  null元素=26  非null=0  rootBone=<null>
+    → 全 null 的 SMR 数=14   有非 null 骨骼的 SMR 数=0
+    材质 M_Ink_Enemy_MoShan  keywords=[]  数=0  pass数=4
+    材质 M_Ink_Enemy_MoShan  keywords=[]  数=0  pass数=4
+    [实验] MeshRenderer 直画 mesh=Object_49  triangleCount=0  bounds=(1.576, 0.472, 1.418)
+    [MoShan_A_skinned] 视野=9.5m  非背景=1.52%  量化色数=40
+    [MoShan_D_meshrender] 视野=4.7m  非背景=6.19%  量化色数=44
+
+### MoGuai   SMR=10
+    Object_7       bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_9       bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_11      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_13      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_15      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_17      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_19      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_21      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_23      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    Object_25      bones.len=97  null元素=97  非null=0  rootBone=<null>
+    → 全 null 的 SMR 数=10   有非 null 骨骼的 SMR 数=0
+    材质 M_Ink_Enemy_MoGuai  keywords=[]  数=0  pass数=4
+    [实验] MeshRenderer 直画 mesh=Object_7  triangleCount=0  bounds=(1269.037, 1964.540, 566.878)
+    [MoGuai_A_skinned] 视野=6.7m  非背景=100.00%  量化色数=9
+    [MoGuai_D_meshrender] 视野=5893.6m  非背景=1.06%  量化色数=33
+
+怎么读：
+  bones null元素 == bones.len（全 null）而 MoGu 也是全 null 却正常 ⇒ 不是充分原因
+  D 档画出来而 A 档没有 ⇒ 网格+材质无罪，问题在 SMR 蒙皮路径

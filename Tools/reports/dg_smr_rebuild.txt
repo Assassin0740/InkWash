@@ -1,0 +1,22 @@
+===== dg_smr_rebuild =====
+T1=新SMR+MoShan网格(无骨骼)  T2=新SMR+MoGu网格(无骨骼,对照)  T3=新SMR+MoShan网格+有效骨骼引用
+
+MoShan 最大 SMR=Object_49 mesh=Object_49   MoGu 最大 SMR=Object_23 mesh=Object_23
+T1 bounds=(6.00, 299.95, 0.70) / (1.58, 0.47, 1.42)
+T2 bounds=(14.00, 300.12, 0.94) / (2.08, 0.32, 2.00)
+T3 bounds=(22.00, 299.95, 0.70) / (1.58, 0.47, 1.42)  （bones=26 个，全指向 t3 自身）
+
+### T1_newSMR_MoShanMesh
+    [T1_newSMR_MoShanMesh] 视野=4.73m  非背景=0.00%  量化色数=2
+
+### T2_newSMR_MoGuMesh
+    [T2_newSMR_MoGuMesh] 视野=6.25m  非背景=0.00%  量化色数=2
+
+### T3_newSMR_validBones
+    [T3_newSMR_validBones] 视野=4.73m  非背景=1.37%  量化色数=30
+
+怎么读：
+  T1=0 & T2>0 & T3>0 ⇒ 网格蒙皮数据有问题(boneWeights)，但补上有效骨骼引用即可渲染
+  T1=0 & T2>0 & T3=0 ⇒ 网格蒙皮数据坏且补骨骼也救不了 ⇒ 只能改 MeshFilter+MeshRenderer
+  T1>0 ⇒ 网格无罪，原 SMR 组件的隐藏状态有问题
+  T2=0 ⇒ 实验本身失效（新建 SMR 不带骨骼就画不出），结论不可用

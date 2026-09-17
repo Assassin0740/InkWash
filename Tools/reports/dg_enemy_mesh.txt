@@ -1,0 +1,50 @@
+===== dg_enemy_mesh =====
+口径：蓝底哨兵（抖动 ≤21 < 阈值 24）。A 档 = 包围盒取景 ×1.5 余量（全高 3×最大边）；
+      B 档 = 不依赖包围盒，固定 6 m 视野、相机对准 实例位置+1.5m。
+重点：subMeshCount / GetIndexCount —— 若 idx=0 而 v>0，就是「有顶点没面」。
+
+### MoGu   SMR=3
+    Object_21                mesh=Object_21          v=3239 sub=1 idx=16623 tri=5541 bind=80  mat=M_Ink_Enemy_MoGu  lossy=0.0170  rBounds=(1.062, 0.829, 1.623)  lBounds=(62.333, 95.238, 48.646)
+    Object_23                mesh=Object_23          v=5584 sub=1 idx=29214 tri=9738 bind=80  mat=M_Ink_Enemy_MoGu  lossy=0.0170  rBounds=(1.010, 1.056, 1.677)  lBounds=(59.236, 98.412, 61.984)
+    Object_24                mesh=Object_24          v=119 sub=1 idx=648 tri=216 bind=80  mat=M_Ink_Enemy_MoGu  lossy=0.0170  rBounds=(0.055, 0.066, 0.067)  lBounds=(3.209, 3.921, 3.881)
+    mesh=null 的 SMR 数=0   全部三角形索引合计=46485
+    [MoGu_A_bbox]  视野=5.17m  非背景=1.81%  量化色数=18
+    [MoGu_B_fixed6m]  视野=6.00m  非背景=1.34%  量化色数=16
+
+### MoShan   SMR=14
+    Object_33                mesh=Object_33          v=116 sub=1 idx=504 tri=168 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(1.295, 1.389, 0.477)  lBounds=(0.639, 0.236, 0.686)
+    Object_35                mesh=Object_35          v=79 sub=1 idx=336 tri=112 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.077, 0.090, 0.034)  lBounds=(0.038, 0.017, 0.045)
+    Object_37                mesh=Object_37          v=240 sub=1 idx=1152 tri=384 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.144, 0.245, 0.278)  lBounds=(0.071, 0.137, 0.121)
+    Object_39                mesh=Object_39          v=1108 sub=1 idx=5760 tri=1920 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.268, 0.114, 0.131)  lBounds=(0.132, 0.065, 0.056)
+    Object_41                mesh=Object_41          v=72 sub=1 idx=282 tri=94 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.207, 0.130, 0.193)  lBounds=(0.102, 0.095, 0.064)
+    Object_43                mesh=Object_43          v=44 sub=1 idx=183 tri=61 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.263, 0.146, 0.275)  lBounds=(0.130, 0.136, 0.072)
+    Object_45                mesh=Object_45          v=165 sub=1 idx=780 tri=260 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.949, 1.159, 1.056)  lBounds=(0.468, 0.521, 0.572)
+    Object_47                mesh=Object_47          v=112 sub=1 idx=408 tri=136 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.514, 0.673, 0.503)  lBounds=(0.254, 0.248, 0.332)
+    Object_49                mesh=Object_49          v=7401 sub=1 idx=40356 tri=13452 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(2.694, 2.804, 3.142)  lBounds=(1.330, 1.551, 1.384)
+    Object_51                mesh=Object_51          v=56 sub=1 idx=252 tri=84 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.129, 0.141, 0.146)  lBounds=(0.064, 0.072, 0.070)
+    Object_53                mesh=Object_53          v=255 sub=1 idx=1344 tri=448 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.438, 0.915, 0.815)  lBounds=(0.216, 0.402, 0.451)
+    Object_55                mesh=Object_55          v=58 sub=1 idx=207 tri=69 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.362, 0.100, 0.195)  lBounds=(0.179, 0.096, 0.049)
+    Object_57                mesh=Object_57          v=55 sub=1 idx=186 tri=62 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.172, 0.060, 0.111)  lBounds=(0.085, 0.055, 0.030)
+    Object_59                mesh=Object_59          v=53 sub=1 idx=171 tri=57 bind=26  mat=M_Ink_Enemy_MoShan  lossy=2.0260  rBounds=(0.082, 0.035, 0.070)  lBounds=(0.040, 0.035, 0.017)
+    mesh=null 的 SMR 数=0   全部三角形索引合计=51921
+    [MoShan_A_bbox]  视野=9.53m  非背景=0.00%  量化色数=2
+    [MoShan_B_fixed6m]  视野=6.00m  非背景=0.00%  量化色数=2
+
+### MoGuai   SMR=10
+    Object_7                 mesh=Object_7           v=9755 sub=1 idx=49602 tri=16534 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(1.400, 1.025, 2.244)  lBounds=(1248.556, 904.298, 1996.526)
+    Object_9                 mesh=Object_9           v=317 sub=1 idx=1278 tri=426 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.581, 0.430, 0.474)  lBounds=(518.174, 380.971, 420.634)
+    Object_11                mesh=Object_11          v=216 sub=1 idx=1074 tri=358 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.257, 0.166, 0.268)  lBounds=(229.434, 146.912, 238.035)
+    Object_13                mesh=Object_13          v=629 sub=1 idx=3072 tri=1024 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.862, 0.659, 0.846)  lBounds=(768.559, 584.091, 751.188)
+    Object_15                mesh=Object_15          v=832 sub=1 idx=3714 tri=1238 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.121, 0.108, 0.074)  lBounds=(107.932, 95.762, 65.475)
+    Object_17                mesh=Object_17          v=143 sub=1 idx=438 tri=146 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.333, 0.439, 0.394)  lBounds=(296.476, 390.115, 349.091)
+    Object_19                mesh=Object_19          v=131 sub=1 idx=402 tri=134 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.310, 0.283, 0.523)  lBounds=(275.940, 250.436, 465.095)
+    Object_21                mesh=Object_21          v=143 sub=1 idx=438 tri=146 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.402, 0.377, 0.453)  lBounds=(358.111, 334.557, 402.131)
+    Object_23                mesh=Object_23          v=131 sub=1 idx=402 tri=134 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(0.279, 0.363, 0.519)  lBounds=(248.926, 321.726, 461.154)
+    Object_25                mesh=Object_25          v=1002 sub=1 idx=4314 tri=1438 bind=97  mat=M_Ink_Enemy_MoGuai  lossy=0.0011  rBounds=(1.981, 0.772, 0.830)  lBounds=(1766.051, 685.195, 736.406)
+    mesh=null 的 SMR 数=0   全部三角形索引合计=64734
+    [MoGuai_A_bbox]  视野=6.73m  非背景=0.00%  量化色数=2
+    [MoGuai_B_fixed6m]  视野=6.00m  非背景=0.00%  量化色数=3
+
+怎么读：MoGu = 正常对照组（画面里应看到完整模型）；
+       MoShan/MoGuai 若 idx>0 却仍 0 像素 ⇒ 几何存在但没被画 ⇒ 排除「网格缺面」；
+       若 idx=0 ⇒ 「有顶点没面」，导出环节把索引丢了。

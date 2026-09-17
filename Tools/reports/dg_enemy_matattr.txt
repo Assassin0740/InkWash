@@ -1,0 +1,143 @@
+===== dg_enemy_matattr =====
+① 材质属性值全量 dump   ② 交叉互换：把被测模型换成 M_Ink_Enemy_MoGu 的副本后重拍
+对照材质 M_Ink_Enemy_MoGu = ok
+
+### MoShan   材质 M_Ink_Enemy_MoShan
+    shader=InkWash/InkCharacter   renderQueue=2000   RenderType=Opaque   enableInstancing=False
+      _BaseMap                 = Orge_LP_baseColor  2048x2048  cls=Texture2D  fmt=DXT1  alphaIsTransparency=False
+      _BaseColor               = RGBA(1.0000, 1.0000, 1.0000, 1.0000)
+      _InkDark                 = RGBA(0.1000, 0.0680, 0.0550, 1.0000)
+      _InkMid                  = RGBA(0.3000, 0.2350, 0.1950, 1.0000)
+      _InkLight                = RGBA(0.8450, 0.7900, 0.7150, 1.0000)
+      _LadderSkew              = 0.4200
+      _Bands                   = 4.0000
+      _BandSoftness            = 0.0600
+      _BandBias                = -0.1800
+      _InkDensity              = 0.5000
+      _ChromaKeep              = 0.3000
+      _OutlineWidth            = 0.0140
+      _OutlineColor            = RGBA(0.0550, 0.0400, 0.0320, 1.0000)
+      _OutlineDistScale        = 0.0580
+      _OutlineFacing           = 0.7200
+      _OutlineDry              = 0.5000
+      _OutlineScale            = 5.0000
+      _BrushTex                = T_InkBrushNoise  256x256  cls=Texture2D  fmt=BC7  alphaIsTransparency=False
+      _BrushScale              = 26.0000
+      _BrushStrength           = 0.6000
+      _BrushUvFromWorld        = 1.0000
+      _GrainScale              = 64.0000
+      _GrainAmp                = 0.1800
+      _StrokeScale             = 8.0000
+      _StrokeStretch           = 3.0000
+      _StrokeAmp               = 0.1600
+      _MottleScale             = 1.6000
+      _RimColor                = RGBA(0.0800, 0.0900, 0.1200, 1.0000)
+      _RimPower                = 3.0000
+      _RimStrength             = 0.9500
+      _SpecBands               = 2.0000
+      _SpecStrength            = 0.5000
+      _SpecSize                = 48.0000
+      _ContactInk              = 0.3000
+      _ContactHeight           = 0.4500
+      _GroundY                 = 0.0000
+      _AerialFrom              = 12.0000
+      _AerialTo                = 30.0000
+      _AerialStrength          = 0.5500
+    [mat_MoShan_orig] 视野=9.53m  非背景=0.00%  量化色数=2
+    [互换] 14 个 SMR 已换成 M_Ink_Enemy_MoGu 的副本
+    [mat_MoShan_swapped] 视野=9.53m  非背景=0.00%  量化色数=2
+
+### MoGuai   材质 M_Ink_Enemy_MoGuai
+    shader=InkWash/InkCharacter   renderQueue=2000   RenderType=Opaque   enableInstancing=False
+      _BaseMap                 = 07_-_Default_diffuse  2048x2048  cls=Texture2D  fmt=DXT1  alphaIsTransparency=False
+      _BaseColor               = RGBA(1.0000, 1.0000, 1.0000, 1.0000)
+      _InkDark                 = RGBA(0.1050, 0.0720, 0.0580, 1.0000)
+      _InkMid                  = RGBA(0.3050, 0.2400, 0.2000, 1.0000)
+      _InkLight                = RGBA(0.8500, 0.7950, 0.7200, 1.0000)
+      _LadderSkew              = 0.4200
+      _Bands                   = 4.0000
+      _BandSoftness            = 0.0600
+      _BandBias                = -0.1600
+      _InkDensity              = 0.4800
+      _ChromaKeep              = 0.2800
+      _OutlineWidth            = 0.0140
+      _OutlineColor            = RGBA(0.0580, 0.0420, 0.0340, 1.0000)
+      _OutlineDistScale        = 0.0580
+      _OutlineFacing           = 0.7200
+      _OutlineDry              = 0.5000
+      _OutlineScale            = 5.0000
+      _BrushTex                = T_InkBrushNoise  256x256  cls=Texture2D  fmt=BC7  alphaIsTransparency=False
+      _BrushScale              = 26.0000
+      _BrushStrength           = 0.6000
+      _BrushUvFromWorld        = 1.0000
+      _GrainScale              = 64.0000
+      _GrainAmp                = 0.1800
+      _StrokeScale             = 8.0000
+      _StrokeStretch           = 3.0000
+      _StrokeAmp               = 0.1600
+      _MottleScale             = 1.6000
+      _RimColor                = RGBA(0.0800, 0.0900, 0.1200, 1.0000)
+      _RimPower                = 3.0000
+      _RimStrength             = 0.9500
+      _SpecBands               = 2.0000
+      _SpecStrength            = 0.5000
+      _SpecSize                = 48.0000
+      _ContactInk              = 0.3000
+      _ContactHeight           = 0.4500
+      _GroundY                 = 0.0000
+      _AerialFrom              = 12.0000
+      _AerialTo                = 30.0000
+      _AerialStrength          = 0.5500
+    [mat_MoGuai_orig] 视野=6.73m  非背景=0.00%  量化色数=2
+    [互换] 10 个 SMR 已换成 M_Ink_Enemy_MoGu 的副本
+    [mat_MoGuai_swapped] 视野=6.73m  非背景=0.00%  量化色数=2
+
+### MoGu   材质 M_Ink_Enemy_MoGu
+    shader=InkWash/InkCharacter   renderQueue=2000   RenderType=Opaque   enableInstancing=False
+      _BaseMap                 = Undead_Material_baseColor  2048x2048  cls=Texture2D  fmt=DXT1  alphaIsTransparency=False
+      _BaseColor               = RGBA(1.0000, 1.0000, 1.0000, 1.0000)
+      _InkDark                 = RGBA(0.0900, 0.0620, 0.0500, 1.0000)
+      _InkMid                  = RGBA(0.2850, 0.2250, 0.1850, 1.0000)
+      _InkLight                = RGBA(0.8300, 0.7750, 0.7000, 1.0000)
+      _LadderSkew              = 0.4200
+      _Bands                   = 4.0000
+      _BandSoftness            = 0.0600
+      _BandBias                = -0.2400
+      _InkDensity              = 0.5500
+      _ChromaKeep              = 0.2200
+      _OutlineWidth            = 0.0140
+      _OutlineColor            = RGBA(0.0500, 0.0380, 0.0300, 1.0000)
+      _OutlineDistScale        = 0.0580
+      _OutlineFacing           = 0.7200
+      _OutlineDry              = 0.5000
+      _OutlineScale            = 5.0000
+      _BrushTex                = T_InkBrushNoise  256x256  cls=Texture2D  fmt=BC7  alphaIsTransparency=False
+      _BrushScale              = 26.0000
+      _BrushStrength           = 0.6000
+      _BrushUvFromWorld        = 1.0000
+      _GrainScale              = 64.0000
+      _GrainAmp                = 0.1800
+      _StrokeScale             = 8.0000
+      _StrokeStretch           = 3.0000
+      _StrokeAmp               = 0.1600
+      _MottleScale             = 1.6000
+      _RimColor                = RGBA(0.0800, 0.0900, 0.1200, 1.0000)
+      _RimPower                = 3.0000
+      _RimStrength             = 0.9500
+      _SpecBands               = 2.0000
+      _SpecStrength            = 0.5000
+      _SpecSize                = 48.0000
+      _ContactInk              = 0.3000
+      _ContactHeight           = 0.4500
+      _GroundY                 = 0.0000
+      _AerialFrom              = 12.0000
+      _AerialTo                = 30.0000
+      _AerialStrength          = 0.5500
+    [mat_MoGu_orig] 视野=5.17m  非背景=1.81%  量化色数=18
+    [互换] 3 个 SMR 已换成 M_Ink_Enemy_MoGu 的副本
+    [mat_MoGu_swapped] 视野=5.17m  非背景=1.81%  量化色数=18
+
+怎么读：
+  _swapped 出现模型而 _orig 没有 ⇒ 元凶是原材质（属性值/贴图），看 dump 里哪一项异常
+  _swapped 仍为 0 ⇒ 材质无罪，问题在渲染层（骨骼/批处理/管线）
+  重点看：_BaseMap 是否 <null ★>、Alpha/Cutoff 类属性、renderQueue 是否 3000(Transparent)

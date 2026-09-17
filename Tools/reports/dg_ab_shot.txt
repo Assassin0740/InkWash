@@ -1,0 +1,16 @@
+===== dg_ab_shot =====
+
+### ① 敌人 prefab 骨骼引用普查（编辑模式读资产）
+    判据：SMR 的 bones 数组里【非 null 元素】的个数
+    Enemy_MoOu                SMR=8  有骨骼的SMR=8/8  骨骼元素=184  非null=184
+    Enemy_MoTu                SMR=9  有骨骼的SMR=9/9  骨骼元素=207  非null=207
+    Enemy_MoYan               SMR=8  有骨骼的SMR=8/8  骨骼元素=184  非null=184
+    Z_Dragon                  SMR=2  有骨骼的SMR=2/2  骨骼元素=546  非null=546
+    Z_Enemy_MoGu              SMR=3  有骨骼的SMR=0/3  骨骼元素=240  非null=0
+    Z_Enemy_MoGuai            SMR=10  有骨骼的SMR=0/10  骨骼元素=970  非null=0
+    Z_Enemy_MoLong            SMR=2  有骨骼的SMR=2/2  骨骼元素=546  非null=546
+    Z_Enemy_MoShan            SMR=14  有骨骼的SMR=0/14  骨骼元素=364  非null=0
+
+    [AB_MoShan_A_原样SMR] 非背景=0.00%  量化色数=2
+    [AB_MoShan_B_同网格挂MeshRenderer] 非背景=1.56%  量化色数=37
+    取景 center=(0.42, 300.13, -1.09)  视野=9.43m（A/B 完全相同）

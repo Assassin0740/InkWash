@@ -1,0 +1,198 @@
+===== dg_smr_deep =====
+完整展开数组后 diff；并做【清空 blendShapeWeights】实验。
+
+### MoGu   最大 SMR=Object_23
+    m_CastShadows                                = (Enum)
+    m_ReceiveShadows                             = True
+    m_DynamicOccludee                            = True
+    m_StaticShadowCaster                         = False
+    m_MotionVectors                              = (Enum)
+    m_LightProbeUsage                            = 1
+    m_ReflectionProbeUsage                       = 1
+    m_RayTracingMode                             = 3
+    m_RayTraceProcedural                         = False
+    m_RenderingLayerMask                         = 1
+    m_RendererPriority                           = 0
+    m_Materials                                  = (Generic)
+    m_Materials.Array.size                       = size=1
+    m_Materials.Array.data[0]                    = M_Ink_Enemy_MoGu (id=34048)
+    m_ProbeAnchor                                = null
+    m_LightProbeVolumeOverride                   = null
+    m_LightmapParameters                         = null
+    m_Quality                                    = (Enum)
+    m_UpdateWhenOffscreen                        = False
+    m_SkinnedMotionVectors                       = True
+    m_Mesh                                       = Object_23 (id=35530)
+    m_BlendShapeWeights                          = (Generic)
+    m_BlendShapeWeights.Array.size               = size=0
+    m_RootBone                                   = null
+    m_AABB                                       = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+    m_AABB.m_Center                              = (Vector3)
+    m_AABB.m_Center.x                            = -0.512974
+    m_AABB.m_Center.y                            = 46.413060
+    m_AABB.m_Center.z                            = 12.545580
+    m_AABB.m_Extent                              = (Vector3)
+    m_AABB.m_Extent.x                            = 29.618000
+    m_AABB.m_Extent.y                            = 49.205780
+    m_AABB.m_Extent.z                            = 30.992020
+
+### MoShan   最大 SMR=Object_49
+    m_CastShadows                                = (Enum)
+    m_ReceiveShadows                             = True
+    m_DynamicOccludee                            = True
+    m_StaticShadowCaster                         = False
+    m_MotionVectors                              = (Enum)
+    m_LightProbeUsage                            = 1
+    m_ReflectionProbeUsage                       = 1
+    m_RayTracingMode                             = 3
+    m_RayTraceProcedural                         = False
+    m_RenderingLayerMask                         = 1
+    m_RendererPriority                           = 0
+    m_Materials                                  = (Generic)
+    m_Materials.Array.size                       = size=1
+    m_Materials.Array.data[0]                    = M_Ink_Enemy_MoShan (id=33998)
+    m_ProbeAnchor                                = null
+    m_LightProbeVolumeOverride                   = null
+    m_LightmapParameters                         = null
+    m_Quality                                    = (Enum)
+    m_UpdateWhenOffscreen                        = False
+    m_SkinnedMotionVectors                       = True
+    m_Mesh                                       = Object_49 (id=35560)
+    m_BlendShapeWeights                          = (Generic)
+    m_BlendShapeWeights.Array.size               = size=0
+    m_RootBone                                   = null
+    m_AABB                                       = (0.2097, 0.5376, 0.0682) / (1.3300, 1.5510, 1.3838)
+    m_AABB.m_Center                              = (Vector3)
+    m_AABB.m_Center.x                            = 0.209726
+    m_AABB.m_Center.y                            = 0.537634
+    m_AABB.m_Center.z                            = 0.068208
+    m_AABB.m_Extent                              = (Vector3)
+    m_AABB.m_Extent.x                            = 0.664994
+    m_AABB.m_Extent.y                            = 0.775490
+    m_AABB.m_Extent.z                            = 0.691911
+
+### MoGuai   最大 SMR=Object_7
+    m_CastShadows                                = (Enum)
+    m_ReceiveShadows                             = True
+    m_DynamicOccludee                            = True
+    m_StaticShadowCaster                         = False
+    m_MotionVectors                              = (Enum)
+    m_LightProbeUsage                            = 1
+    m_ReflectionProbeUsage                       = 1
+    m_RayTracingMode                             = 3
+    m_RayTraceProcedural                         = False
+    m_RenderingLayerMask                         = 1
+    m_RendererPriority                           = 0
+    m_Materials                                  = (Generic)
+    m_Materials.Array.size                       = size=1
+    m_Materials.Array.data[0]                    = M_Ink_Enemy_MoGuai (id=34070)
+    m_ProbeAnchor                                = null
+    m_LightProbeVolumeOverride                   = null
+    m_LightmapParameters                         = null
+    m_Quality                                    = (Enum)
+    m_UpdateWhenOffscreen                        = False
+    m_SkinnedMotionVectors                       = True
+    m_Mesh                                       = Object_7 (id=35500)
+    m_BlendShapeWeights                          = (Generic)
+    m_BlendShapeWeights.Array.size               = size=0
+    m_RootBone                                   = null
+    m_AABB                                       = (25.3604, 77.9224, 940.4761) / (1248.5560, 904.2977, 1996.5260)
+    m_AABB.m_Center                              = (Vector3)
+    m_AABB.m_Center.x                            = 25.360350
+    m_AABB.m_Center.y                            = 77.922420
+    m_AABB.m_Center.z                            = 940.476100
+    m_AABB.m_Extent                              = (Vector3)
+    m_AABB.m_Extent.x                            = 624.278000
+    m_AABB.m_Extent.y                            = 452.148900
+    m_AABB.m_Extent.z                            = 998.262900
+
+### MoGu vs MoShan   差异：
+    m_Materials.Array.data[0]
+        MoGu   = M_Ink_Enemy_MoGu (id=34048)
+        MoShan = M_Ink_Enemy_MoShan (id=33998)
+    m_Mesh
+        MoGu   = Object_23 (id=35530)
+        MoShan = Object_49 (id=35560)
+    m_AABB
+        MoGu   = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+        MoShan = (0.2097, 0.5376, 0.0682) / (1.3300, 1.5510, 1.3838)
+    m_AABB.m_Center.x
+        MoGu   = -0.512974
+        MoShan = 0.209726
+    m_AABB.m_Center.y
+        MoGu   = 46.413060
+        MoShan = 0.537634
+    m_AABB.m_Center.z
+        MoGu   = 12.545580
+        MoShan = 0.068208
+    m_AABB.m_Extent.x
+        MoGu   = 29.618000
+        MoShan = 0.664994
+    m_AABB.m_Extent.y
+        MoGu   = 49.205780
+        MoShan = 0.775490
+    m_AABB.m_Extent.z
+        MoGu   = 30.992020
+        MoShan = 0.691911
+    ---- 差异数=9
+
+### MoGu vs MoGuai   差异：
+    m_Materials.Array.data[0]
+        MoGu   = M_Ink_Enemy_MoGu (id=34048)
+        MoGuai = M_Ink_Enemy_MoGuai (id=34070)
+    m_Mesh
+        MoGu   = Object_23 (id=35530)
+        MoGuai = Object_7 (id=35500)
+    m_AABB
+        MoGu   = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+        MoGuai = (25.3604, 77.9224, 940.4761) / (1248.5560, 904.2977, 1996.5260)
+    m_AABB.m_Center.x
+        MoGu   = -0.512974
+        MoGuai = 25.360350
+    m_AABB.m_Center.y
+        MoGu   = 46.413060
+        MoGuai = 77.922420
+    m_AABB.m_Center.z
+        MoGu   = 12.545580
+        MoGuai = 940.476100
+    m_AABB.m_Extent.x
+        MoGu   = 29.618000
+        MoGuai = 624.278000
+    m_AABB.m_Extent.y
+        MoGu   = 49.205780
+        MoGuai = 452.148900
+    m_AABB.m_Extent.z
+        MoGu   = 30.992020
+        MoGuai = 998.262900
+    ---- 差异数=9
+
+[MoGu/Object_21] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGu/Object_23] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGu/Object_24] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_33] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_35] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_37] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_39] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_41] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_43] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_45] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_47] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_49] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_51] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_53] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_55] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_57] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoShan/Object_59] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_7] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_9] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_11] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_13] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_15] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_17] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_19] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_21] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_23] blendShapeWeights.size=0  mesh.blendShapeCount=0
+[MoGuai/Object_25] blendShapeWeights.size=0  mesh.blendShapeCount=0
+    [MoGu_G_noBlendShape] 视野=5.2m  非背景=1.81%  量化色数=18
+    [MoShan_G_noBlendShape] 视野=9.5m  非背景=0.00%  量化色数=2
+    [MoGuai_G_noBlendShape] 视野=6.7m  非背景=0.00%  量化色数=2

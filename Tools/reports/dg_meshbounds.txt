@@ -1,0 +1,53 @@
+===== dg_meshbounds =====
+A=renderer.bounds 取景（现行）  B=mesh.bounds 世界化取景  C=固定 2000m 视野（不依赖 bounds）
+
+### MoGu   实例位置=(0.0, 300.0, 0.0)   SMR=3
+    Object_21       meshB.size=(83.794, 20.296, 101.632)  localB.size=(62.333, 95.238, 48.646)  rendererB.size=(1.062, 0.829, 1.623)  lossy=0.0170  SMRpos=(0.00, 300.06, 0.01)
+    Object_23       meshB.size=(122.459, 18.541, 117.668)  localB.size=(59.236, 98.412, 61.984)  rendererB.size=(1.010, 1.056, 1.677)  lossy=0.0170  SMRpos=(0.00, 300.06, 0.01)
+    Object_24       meshB.size=(2.546, 2.546, 2.546)  localB.size=(3.209, 3.921, 3.881)  rendererB.size=(0.055, 0.066, 0.067)  lossy=0.0170  SMRpos=(0.00, 300.06, 0.01)
+    → A档取景(renderer union) center=(-0.01, 300.27, -0.76) size=(1.06, 1.06, 1.72)
+    → B档取景(mesh.bounds 世界) center=(0.00, 301.29, -0.12) size=(2.09, 1.21, 2.01)
+    [MoGu_A_rendererB] 视野=5.2m  非背景=1.81%  量化色数=18
+    [MoGu_B_meshB] 视野=6.3m  非背景=1.23%  量化色数=19
+    [MoGu_C_fixed2000m] 视野=2000.0m  非背景=0.00%  量化色数=2
+
+### MoShan   实例位置=(0.0, 360.0, 0.0)   SMR=14
+    Object_33       meshB.size=(0.550, 0.400, 0.190)  localB.size=(0.639, 0.236, 0.686)  rendererB.size=(1.295, 1.389, 0.477)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_35       meshB.size=(0.040, 0.019, 0.014)  localB.size=(0.038, 0.017, 0.045)  rendererB.size=(0.077, 0.090, 0.034)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_37       meshB.size=(0.075, 0.024, 0.056)  localB.size=(0.071, 0.137, 0.121)  rendererB.size=(0.144, 0.245, 0.278)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_39       meshB.size=(0.125, 0.042, 0.042)  localB.size=(0.132, 0.065, 0.056)  rendererB.size=(0.268, 0.114, 0.131)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_41       meshB.size=(0.089, 0.049, 0.078)  localB.size=(0.102, 0.095, 0.064)  rendererB.size=(0.207, 0.130, 0.193)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_43       meshB.size=(0.111, 0.052, 0.116)  localB.size=(0.130, 0.136, 0.072)  rendererB.size=(0.263, 0.146, 0.275)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_45       meshB.size=(0.473, 0.156, 0.248)  localB.size=(0.468, 0.521, 0.572)  rendererB.size=(0.949, 1.159, 1.056)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_47       meshB.size=(0.332, 0.081, 0.205)  localB.size=(0.254, 0.248, 0.332)  rendererB.size=(0.514, 0.673, 0.503)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_49       meshB.size=(1.576, 0.472, 1.418)  localB.size=(1.330, 1.551, 1.384)  rendererB.size=(2.694, 2.804, 3.142)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_51       meshB.size=(0.042, 0.058, 0.034)  localB.size=(0.064, 0.072, 0.070)  rendererB.size=(0.129, 0.141, 0.146)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_53       meshB.size=(0.167, 0.150, 0.162)  localB.size=(0.216, 0.402, 0.451)  rendererB.size=(0.438, 0.915, 0.815)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_55       meshB.size=(0.168, 0.029, 0.070)  localB.size=(0.179, 0.096, 0.049)  rendererB.size=(0.362, 0.100, 0.195)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_57       meshB.size=(0.078, 0.019, 0.042)  localB.size=(0.085, 0.055, 0.030)  rendererB.size=(0.172, 0.060, 0.111)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    Object_59       meshB.size=(0.036, 0.011, 0.029)  localB.size=(0.040, 0.035, 0.017)  rendererB.size=(0.082, 0.035, 0.070)  lossy=2.0260  SMRpos=(0.00, 359.99, 0.00)
+    → A档取景(renderer union) center=(0.42, 360.13, -1.11) size=(2.69, 2.80, 3.18)
+    → B档取景(mesh.bounds 世界) center=(0.00, 361.84, 0.09) size=(3.19, 2.05, 2.87)
+    [MoShan_A_rendererB] 视野=9.5m  非背景=0.00%  量化色数=2
+    [MoShan_B_meshB] 视野=9.6m  非背景=0.00%  量化色数=2
+    [MoShan_C_fixed2000m] 视野=2000.0m  非背景=0.00%  量化色数=2
+
+### MoGuai   实例位置=(0.0, 420.0, 0.0)   SMR=10
+    Object_7        meshB.size=(1269.037, 1964.540, 566.878)  localB.size=(1248.556, 904.298, 1996.526)  rendererB.size=(1.400, 1.025, 2.244)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_9        meshB.size=(317.470, 340.540, 318.708)  localB.size=(518.174, 380.971, 420.634)  rendererB.size=(0.581, 0.430, 0.474)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_11       meshB.size=(228.619, 229.194, 52.852)  localB.size=(229.434, 146.912, 238.035)  rendererB.size=(0.257, 0.166, 0.268)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_13       meshB.size=(600.330, 572.596, 403.127)  localB.size=(768.559, 584.091, 751.188)  rendererB.size=(0.862, 0.659, 0.846)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_15       meshB.size=(107.720, 56.852, 79.272)  localB.size=(107.932, 95.762, 65.475)  rendererB.size=(0.121, 0.108, 0.074)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_17       meshB.size=(147.195, 367.635, 207.707)  localB.size=(296.476, 390.115, 349.091)  rendererB.size=(0.333, 0.439, 0.394)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_19       meshB.size=(195.276, 401.500, 171.705)  localB.size=(275.940, 250.436, 465.095)  rendererB.size=(0.310, 0.283, 0.523)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_21       meshB.size=(147.195, 367.635, 207.707)  localB.size=(358.111, 334.557, 402.131)  rendererB.size=(0.402, 0.377, 0.453)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_23       meshB.size=(195.276, 401.500, 171.705)  localB.size=(248.926, 321.726, 461.154)  rendererB.size=(0.279, 0.363, 0.519)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    Object_25       meshB.size=(604.091, 1725.577, 89.197)  localB.size=(1766.051, 685.195, 736.406)  rendererB.size=(1.981, 0.772, 0.830)  lossy=0.0011  SMRpos=(-0.16, 420.00, 0.06)
+    → A档取景(renderer union) center=(0.16, 420.00, -1.00) size=(1.98, 1.18, 2.24)
+    → B档取景(mesh.bounds 世界) center=(-0.16, 421.04, -0.05) size=(1.42, 2.32, 0.86)
+    [MoGuai_A_rendererB] 视野=6.7m  非背景=0.00%  量化色数=2
+    [MoGuai_B_meshB] 视野=7.0m  非背景=0.00%  量化色数=3
+    [MoGuai_C_fixed2000m] 视野=2000.0m  非背景=0.00%  量化色数=2
+
+怎么读：若 B 档/C 档出现模型而 A 档为 0 ⇒ SMR.localBounds 撒谎，取景一直对着空气；
+        若三档全 0 ⇒ 几何确实没被画（与包围盒无关）。

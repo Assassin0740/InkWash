@@ -1,0 +1,92 @@
+===== dg_smr_diff =====
+口径：每个 prefab 取『renderer.bounds 最大的那个 SMR』，dump 全部序列化字段后 diff。
+
+### MoGu   SMR 总数=3   选中=Object_23
+    m_CastShadows                            = 1
+    m_ReceiveShadows                         = True
+    m_DynamicOccludee                        = True
+    m_StaticShadowCaster                     = False
+    m_MotionVectors                          = 1
+    m_LightProbeUsage                        = 1
+    m_ReflectionProbeUsage                   = 1
+    m_RayTracingMode                         = 3
+    m_RayTraceProcedural                     = False
+    m_RenderingLayerMask                     = 1
+    m_RendererPriority                       = 0
+    m_Materials                              = (Generic)
+    m_ProbeAnchor                            = null
+    m_LightProbeVolumeOverride               = null
+    m_LightmapParameters                     = null
+    m_Quality                                = 0
+    m_UpdateWhenOffscreen                    = False
+    m_SkinnedMotionVectors                   = True
+    m_Mesh                                   = Object_23 (fileID=35530)
+    m_BlendShapeWeights                      = (Generic)
+    m_RootBone                               = null
+    m_AABB                                   = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+
+### MoShan   SMR 总数=14   选中=Object_49
+    m_CastShadows                            = 1
+    m_ReceiveShadows                         = True
+    m_DynamicOccludee                        = True
+    m_StaticShadowCaster                     = False
+    m_MotionVectors                          = 1
+    m_LightProbeUsage                        = 1
+    m_ReflectionProbeUsage                   = 1
+    m_RayTracingMode                         = 3
+    m_RayTraceProcedural                     = False
+    m_RenderingLayerMask                     = 1
+    m_RendererPriority                       = 0
+    m_Materials                              = (Generic)
+    m_ProbeAnchor                            = null
+    m_LightProbeVolumeOverride               = null
+    m_LightmapParameters                     = null
+    m_Quality                                = 0
+    m_UpdateWhenOffscreen                    = False
+    m_SkinnedMotionVectors                   = True
+    m_Mesh                                   = Object_49 (fileID=35560)
+    m_BlendShapeWeights                      = (Generic)
+    m_RootBone                               = null
+    m_AABB                                   = (0.2097, 0.5376, 0.0682) / (1.3300, 1.5510, 1.3838)
+
+### MoGuai   SMR 总数=10   选中=Object_7
+    m_CastShadows                            = 1
+    m_ReceiveShadows                         = True
+    m_DynamicOccludee                        = True
+    m_StaticShadowCaster                     = False
+    m_MotionVectors                          = 1
+    m_LightProbeUsage                        = 1
+    m_ReflectionProbeUsage                   = 1
+    m_RayTracingMode                         = 3
+    m_RayTraceProcedural                     = False
+    m_RenderingLayerMask                     = 1
+    m_RendererPriority                       = 0
+    m_Materials                              = (Generic)
+    m_ProbeAnchor                            = null
+    m_LightProbeVolumeOverride               = null
+    m_LightmapParameters                     = null
+    m_Quality                                = 0
+    m_UpdateWhenOffscreen                    = False
+    m_SkinnedMotionVectors                   = True
+    m_Mesh                                   = Object_7 (fileID=35500)
+    m_BlendShapeWeights                      = (Generic)
+    m_RootBone                               = null
+    m_AABB                                   = (25.3604, 77.9224, 940.4761) / (1248.5560, 904.2977, 1996.5260)
+
+### MoGu  vs  MoShan   （只列不同的字段）
+    m_Mesh                                      MoGu = Object_23 (fileID=35530)
+                                                MoShan = Object_49 (fileID=35560)
+    m_AABB                                      MoGu = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+                                                MoShan = (0.2097, 0.5376, 0.0682) / (1.3300, 1.5510, 1.3838)
+    ---- 差异字段数 = 2
+
+### MoGu  vs  MoGuai   （只列不同的字段）
+    m_Mesh                                      MoGu = Object_23 (fileID=35530)
+                                                MoGuai = Object_7 (fileID=35500)
+    m_AABB                                      MoGu = (-0.5130, 46.4131, 12.5456) / (59.2360, 98.4116, 61.9840)
+                                                MoGuai = (25.3604, 77.9224, 940.4761) / (1248.5560, 904.2977, 1996.5260)
+    ---- 差异字段数 = 2
+
+[MoGu] quality=Auto  updateWhenOffscreen=False  forceMatrixRecal=False  enabled=True  bones=80  rootBone=<null>  localBounds=(59.236, 98.412, 61.984)
+[MoShan] quality=Auto  updateWhenOffscreen=False  forceMatrixRecal=False  enabled=True  bones=26  rootBone=<null>  localBounds=(1.330, 1.551, 1.384)
+[MoGuai] quality=Auto  updateWhenOffscreen=False  forceMatrixRecal=False  enabled=True  bones=97  rootBone=<null>  localBounds=(1248.556, 904.298, 1996.526)
