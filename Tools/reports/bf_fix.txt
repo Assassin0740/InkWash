@@ -1,0 +1,73 @@
+=== bf_fix   APPLY=True   isPlaying=False
+
+################ Z_Enemy_MoShan.prefab   <- mountain_orge.fbx
+  源 Object_33    bones=26 有效=26 root=_rootJoint
+  源 Object_35    bones=26 有效=26 root=_rootJoint
+  源 Object_37    bones=26 有效=26 root=_rootJoint
+  源 Object_39    bones=26 有效=26 root=_rootJoint
+  源 Object_41    bones=26 有效=26 root=_rootJoint
+  源 Object_43    bones=26 有效=26 root=_rootJoint
+  源 Object_45    bones=26 有效=26 root=_rootJoint
+  源 Object_47    bones=26 有效=26 root=_rootJoint
+  源 Object_49    bones=26 有效=26 root=_rootJoint
+  源 Object_51    bones=26 有效=26 root=_rootJoint
+  源 Object_53    bones=26 有效=26 root=_rootJoint
+  源 Object_55    bones=26 有效=26 root=_rootJoint
+  源 Object_57    bones=26 有效=26 root=_rootJoint
+  源 Object_59    bones=26 有效=26 root=_rootJoint
+  prefab 骨架根 _rootJoint = 找到，子树 Transform 数 26
+  prefab SMR 总数 = 14
+  Object_33    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_35    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_37    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_39    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_41    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_43    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_45    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_47    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_49    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_51    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_53    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_55    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_57    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  Object_59    现 bones=26 非null=0  ->  目标 26/26  root=_rootJoint
+  ⇒ 处理 14 个 SMR；缺骨骼引用 0；缺 rootBone 0
+  >>> 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+
+################ Z_Enemy_MoGuai.prefab   <- low-poly_orc.fbx
+  源 Object_7     bones=97 有效=97 root=_rootJoint
+  源 Object_9     bones=97 有效=97 root=_rootJoint
+  源 Object_11    bones=97 有效=97 root=_rootJoint
+  源 Object_13    bones=97 有效=97 root=_rootJoint
+  源 Object_15    bones=97 有效=97 root=_rootJoint
+  源 Object_17    bones=97 有效=97 root=_rootJoint
+  源 Object_19    bones=97 有效=97 root=_rootJoint
+  源 Object_21    bones=97 有效=97 root=_rootJoint
+  源 Object_23    bones=97 有效=97 root=_rootJoint
+  源 Object_25    bones=97 有效=97 root=_rootJoint
+  prefab 骨架根 _rootJoint = 找到，子树 Transform 数 97
+  prefab SMR 总数 = 10
+  Object_7     现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_9     现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_11    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_13    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_15    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_17    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_19    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_21    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_23    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  Object_25    现 bones=97 非null=0  ->  目标 97/97  root=_rootJoint
+  ⇒ 处理 10 个 SMR；缺骨骼引用 0；缺 rootBone 0
+  >>> 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+
+################ Z_Enemy_MoGu.prefab   <- cursed_undead_soldier_rig.fbx
+  源 Object_21    bones=80 有效=80 root=GLTF_created_0_rootJoint
+  源 Object_23    bones=80 有效=80 root=GLTF_created_0_rootJoint
+  源 Object_24    bones=80 有效=80 root=GLTF_created_0_rootJoint
+  prefab 骨架根 _rootJoint = **找不到**
+  prefab SMR 总数 = 3
+  Object_21    现 bones=80 非null=0  ->  目标 80/80  root=GLTF_created_0_rootJoint
+  Object_23    现 bones=80 非null=0  ->  目标 80/80  root=GLTF_created_0_rootJoint
+  Object_24    现 bones=80 非null=0  ->  目标 80/80  root=GLTF_created_0_rootJoint
+  ⇒ 处理 3 个 SMR；缺骨骼引用 0；缺 rootBone 0
+  >>> 已写回 Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab

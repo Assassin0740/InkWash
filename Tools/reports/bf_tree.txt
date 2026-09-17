@@ -1,0 +1,546 @@
+Unity 2022.3.62f2c1   isPlaying=False
+
+============================== Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+  根 Z_Enemy_MoShan  prefabType=Regular  childCount=1
+  Visual  Transform 
+     Model  Transform 
+        Object_5  Transform 
+           _rootJoint  Transform 
+              mixamorig:Hips_00  Transform 
+                 mixamorig:LeftUpLeg_015  Transform 
+                    mixamorig:LeftLeg_016  Transform 
+                       mixamorig:LeftFoot_017  Transform 
+                          mixamorig:LeftToeBase_018  Transform 
+                             mixamorig:LeftToe_End_019  Transform 
+                 mixamorig:RightUpLeg_020  Transform 
+                    mixamorig:RightLeg_021  Transform 
+                       mixamorig:RightFoot_022  Transform 
+                          mixamorig:RightToeBase_023  Transform 
+                             mixamorig:RightToe_End_024  Transform 
+                 mixamorig:Spine_01  Transform 
+                    mixamorig:Spine1_02  Transform 
+                       mixamorig:Spine2_03  Transform 
+                          mixamorig:LeftShoulder_07  Transform 
+                             mixamorig:LeftArm_08  Transform 
+                                mixamorig:LeftForeArm_09  Transform 
+                                   mixamorig:LeftHand_010  Transform 
+                          mixamorig:Neck_04  Transform 
+                             mixamorig:Head_05  Transform 
+                                mixamorig:HeadTop_End_06  Transform 
+                          mixamorig:RightShoulder_011  Transform 
+                             mixamorig:RightArm_012  Transform 
+                                mixamorig:RightForeArm_013  Transform 
+                                   mixamorig:RightHand_014  Transform 
+        Object_33  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_33#116 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_35  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_35#79 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_37  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_37#240 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_39  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_39#1108 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_41  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_41#72 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_43  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_43#44 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_45  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_45#165 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_47  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_47#112 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_49  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_49#7401 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_51  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_51#56 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_53  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_53#255 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_55  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_55#58 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_57  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_57#55 mat=M_Ink_Enemy_MoShan updOff=False)  
+        Object_59  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_59#53 mat=M_Ink_Enemy_MoShan updOff=False)  
+
+============================== Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+  根 Z_Enemy_MoGuai  prefabType=Regular  childCount=1
+  Visual  Transform 
+     Model  Transform 
+        Box001_08 - Default_0  Transform MeshFilter MeshRenderer(mesh=Box001_08 - Default_0#24 mat=M_Ink_Enemy_MoGuai)  
+        Object_4  Transform 
+           _rootJoint  Transform 
+              Axe_1_Dummy_089  Transform 
+              Bip001_01  Transform 
+                 Bip001 Pelvis_02  Transform 
+                    Bip001 Spine_03  Transform 
+                       Bip001 Belt_armor_087  Transform 
+                          Bip001 Belt_armorNub_088  Transform 
+                       Bip001 L Thigh_073  Transform 
+                          Bip001 L Calf_074  Transform 
+                             Bip001 L Foot_075  Transform 
+                                Bip001 L Toe0_076  Transform 
+                                   Bip001 L Toe0Nub_077  Transform 
+                             Bip001 Leg_armor_-L_078  Transform 
+                                Bip001 Leg_armor_-LNub_079  Transform 
+                       Bip001 R Thigh_080  Transform 
+                          Bip001 R Calf_081  Transform 
+                             Bip001 Leg_armor_-R_085  Transform 
+                                Bip001 Leg_armor_-RNub_086  Transform 
+                             Bip001 R Foot_082  Transform 
+                                Bip001 R Toe0_083  Transform 
+                                   Bip001 R Toe0Nub_084  Transform 
+                       Bip001 Spine1_04  Transform 
+                          Bip001 Spine2_05  Transform 
+                             Bip001 Neck_06  Transform 
+                                Bip001 Head_060  Transform 
+                                   Bip001 Eye_L_066  Transform 
+                                      Bip001 Eye_LNub_067  Transform 
+                                   Bip001 Eye_R_068  Transform 
+                                      Bip001 Eye_RNub_069  Transform 
+                                   Bip001 Head_060_0  Transform 
+                                   Bip001 HeadNub_061  Transform 
+                                   Bip001 Jaw_down_062  Transform 
+                                      Bip001 Jaw_down_062_0  Transform 
+                                      Bip001 Jaw_downNub_063  Transform 
+                                      Bip001 Lip_064  Transform 
+                                         Bip001 LipNub_065  Transform 
+                                   Bip001 Tongue_070  Transform 
+                                      Bip001 Tongue02_071  Transform 
+                                         Bip001 TongueNub_072  Transform 
+                                Bip001 L Clavicle_07  Transform 
+                                   Bip001 L UpperArm_08  Transform 
+                                      Bip001 L Forearm_09  Transform 
+                                         Bip001 Arm_armor_L_010  Transform 
+                                            Bip001 Arm_armor_L_010_0  Transform 
+                                            Bip001 Arm_armor_LNub_011  Transform 
+                                   Bip001 Shoulder_012  Transform 
+                                      Bip001 Shoulder_012_0  Transform 
+                                      Bip001 ShoulderNub_013  Transform 
+                                Bip001 R Clavicle_014  Transform 
+                                   Bip001 R UpperArm_015  Transform 
+                                      Bip001 R Forearm_016  Transform 
+                                         Bip001 Arm_armor_R_058  Transform 
+                                            Bip001 Arm_armor_R_058_0  Transform 
+                                            Bip001 Arm_armor_RNub_059  Transform 
+                                         Bip001 R Hand_017  Transform 
+                                            Bip001 L Hand_037  Transform 
+                                               Bip001 L Finger0_038  Transform 
+                                                  Bip001 L Finger01_039  Transform 
+                                                     Bip001 L Finger02_040  Transform 
+                                                        Bip001 L Finger0Nub_041  Transform 
+                                               Bip001 L Finger2_042  Transform 
+                                                  Bip001 L Finger21_043  Transform 
+                                                     Bip001 L Finger22_044  Transform 
+                                                        Bip001 L Finger2Nub_045  Transform 
+                                               Bip001 L Finger3_046  Transform 
+                                                  Bip001 L Finger31_047  Transform 
+                                                     Bip001 L Finger32_048  Transform 
+                                                        Bip001 L Finger3Nub_049  Transform 
+                                               Bip001 L Finger4_050  Transform 
+                                                  Bip001 L Finger1_054  Transform 
+                                                     Bip001 L Finger11_055  Transform 
+                                                        Bip001 L Finger12_056  Transform 
+                                                           Bip001 L Finger1Nub_057  Transform 
+                                                  Bip001 L Finger41_051  Transform 
+                                                     Bip001 L Finger42_052  Transform 
+                                                        Bip001 L Finger4Nub_053  Transform 
+                                            Bip001 R Finger0_018  Transform 
+                                               Bip001 R Finger01_019  Transform 
+                                                  Bip001 R Finger02_020  Transform 
+                                                     Bip001 R Finger0Nub_00  Transform 
+                                            Bip001 R Finger1_021  Transform 
+                                               Bip001 R Finger11_022  Transform 
+                                                  Bip001 R Finger12_023  Transform 
+                                                     Bip001 R Finger1Nub_024  Transform 
+                                            Bip001 R Finger2_025  Transform 
+                                               Bip001 R Finger21_026  Transform 
+                                                  Bip001 R Finger22_027  Transform 
+                                                     Bip001 R Finger2Nub_028  Transform 
+                                            Bip001 R Finger3_029  Transform 
+                                               Bip001 R Finger31_030  Transform 
+                                                  Bip001 R Finger32_031  Transform 
+                                                     Bip001 R Finger3Nub_032  Transform 
+                                            Bip001 R Finger4_033  Transform 
+                                               Bip001 R Finger41_034  Transform 
+                                                  Bip001 R Finger42_035  Transform 
+                                                     Bip001 R Finger4Nub_036  Transform 
+                       Bip001 Spine_03_0  Transform 
+        Object_7  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_7#9755 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_9  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_9#317 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_11  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_11#216 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_13  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_13#629 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_15  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_15#832 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_17  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_17#143 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_19  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_19#131 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_21  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_21#143 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_23  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_23#131 mat=M_Ink_Enemy_MoGuai updOff=False)  
+        Object_25  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_25#1002 mat=M_Ink_Enemy_MoGuai updOff=False)  
+
+============================== Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab
+  根 Z_Enemy_MoGu  prefabType=Regular  childCount=2
+  Visual  Transform 
+     Model  Transform 
+        GLTF_created_0  Transform 
+           GLTF_created_0_rootJoint  Transform 
+              Root Bone_94  Transform 
+                 ArmIK.l_69  Transform 
+                    Hand.L_68  Transform 
+                       Index1.L_64  Transform 
+                          Index2.L_63  Transform 
+                             Index3.L_62  Transform 
+                       Mid Finger1.L_61  Transform 
+                          Mid Finger2.L_60  Transform 
+                             Mid Finger3.L_59  Transform 
+                       Pinky1.L_55  Transform 
+                          Pinky2.L_54  Transform 
+                             Pinky3.L_53  Transform 
+                       Ring Finger1.L_58  Transform 
+                          Ring Finger2.L_57  Transform 
+                             Ring Finger3.L_56  Transform 
+                       Thumb1.L_67  Transform 
+                          Thumb2.L_66  Transform 
+                             Thumb3.L_65  Transform 
+                 ArmIK.r_87  Transform 
+                    Hand.R_86  Transform 
+                       Index1.R_81  Transform 
+                          Index2.R_80  Transform 
+                             Index3.R_79  Transform 
+                       Mid Finger1.R_78  Transform 
+                          Mid Finger2.R_77  Transform 
+                             Mid Finger3.R_76  Transform 
+                       Pinky1.R_72  Transform 
+                          Pinky2.R_71  Transform 
+                             Pinky3.R_70  Transform 
+                       Ring Finger1.R_75  Transform 
+                          Ring Finger2.R_74  Transform 
+                             Ring Finger3.R_73  Transform 
+                       Thumb1.R_84  Transform 
+                          Thumb2.R_83  Transform 
+                             Thumb3.R_82  Transform 
+                 LegIK.l_93  Transform 
+                    Foot.L_92  Transform 
+                       Toes.L_91  Transform 
+                 LegIK.r_90  Transform 
+                    Foot.R_89  Transform 
+                       Toes.R_88  Transform 
+                 Pelvis_52  Transform 
+                    Spine_13  Transform 
+                       Spine Target_12  Transform 
+                    Thigh Base.L_21  Transform 
+                       Leg POLE IK.l_20  Transform 
+                          Leg POLE IK Rotation.l_19  Transform 
+                             LegPOLE.l_18  Transform 
+                       Thigh.L_17  Transform 
+                          Knee.L_15  Transform 
+                             Lower Leg.L_14  Transform 
+                    Thigh Base.R_29  Transform 
+                       Leg POLE IK.r_28  Transform 
+                          Leg POLE IK Rotation.r_27  Transform 
+                             LegPOLE.r_26  Transform 
+                       Thigh.R_25  Transform 
+                          Knee.R_23  Transform 
+                             Lower Leg.R_22  Transform 
+                    Torso IK_50  Transform 
+                       Torso_49  Transform 
+                          Head IK_48  Transform 
+                             Head_47  Transform 
+                                Jaw_46  Transform 
+                          Neck_31  Transform 
+                             Neck Target_30  Transform 
+                          Shoulder.L_38  Transform 
+                             Arm Pole IK.l_37  Transform 
+                                Arm Pole IK Rotaion.l_36  Transform 
+                                   ArmPOLE.l_35  Transform 
+                             Upper Arm.L_34  Transform 
+                                Elbow.L_33  Transform 
+                                   Forearm.L_32  Transform 
+                          Shoulder.R_45  Transform 
+                             Arm Pole IK.r_44  Transform 
+                                Arm Pole IK Rotaion.r_43  Transform 
+                                   ArmPOLE.r_42  Transform 
+                             Upper Arm.R_41  Transform 
+                                Elbow.R_40  Transform 
+                                   Forearm.R_39  Transform 
+        Object_21  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_21#3239 mat=M_Ink_Enemy_MoGu updOff=False)  
+        Object_23  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_23#5584 mat=M_Ink_Enemy_MoGu updOff=False)  
+        Object_24  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_24#119 mat=M_Ink_Enemy_MoGu updOff=False)  
+        Object_28  Transform MeshFilter MeshRenderer(mesh=Object_28#70 mat=M_Ink_Enemy_MoGu)  
+        Object_34  Transform MeshFilter MeshRenderer(mesh=Object_34#103 mat=M_Ink_Enemy_MoGu)  
+        Object_43  Transform MeshFilter MeshRenderer(mesh=Object_43#103 mat=M_Ink_Enemy_MoGu)  
+        Object_90  Transform MeshFilter MeshRenderer(mesh=Object_90#468 mat=M_Ink_Enemy_MoGu)  
+  Muzzle  Transform 
+
+============================== [SOURCE FBX] Assets/ThirdParty/KayKit/Skeletons/Characters/Skeleton_Golem.fbx
+  根 Skeleton_Golem  childCount=9
+  Rig_Large  Transform 
+     root  Transform 
+        hips  Transform 
+           spine  Transform 
+              chest  Transform 
+                 head  Transform 
+                 upperarm.l  Transform 
+                    lowerarm.l  Transform 
+                       wrist.l  Transform 
+                          hand.l  Transform 
+                             handslot.l  Transform 
+                 upperarm.r  Transform 
+                    lowerarm.r  Transform 
+                       wrist.r  Transform 
+                          hand.r  Transform 
+                             handslot.r  Transform 
+           upperleg.l  Transform 
+              lowerleg.l  Transform 
+                 foot.l  Transform 
+                    toes.l  Transform 
+           upperleg.r  Transform 
+              lowerleg.r  Transform 
+                 foot.r  Transform 
+                    toes.r  Transform 
+  Skeleton_Golem_ArmLeft  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_ArmLeft#987 mat=skeleton updOff=False)  
+  Skeleton_Golem_ArmRight  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_ArmRight#866 mat=skeleton updOff=False)  
+  Skeleton_Golem_Body  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_Body#1761 mat=skeleton updOff=False)  
+  Skeleton_Golem_Eyes  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_Eyes#96 mat=Glow updOff=False)  
+  Skeleton_Golem_Head  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_Head#1812 mat=skeleton updOff=False)  
+  Skeleton_Golem_Jaw  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_Jaw#287 mat=skeleton updOff=False)  
+  Skeleton_Golem_LegLeft  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_LegLeft#545 mat=skeleton updOff=False)  
+  Skeleton_Golem_LegRight  Transform SkinnedMeshRenderer(bones=23 nonNull=23 root=root mesh=Skeleton_Golem_LegRight#545 mat=skeleton updOff=False)  
+
+============================== [SOURCE FBX] Assets/ThirdParty/Ziyuan/_fbx/mountain_orge.fbx
+  根 mountain_orge  childCount=16
+  Object_5  Transform 
+     _rootJoint  Transform 
+        mixamorig:Hips_00  Transform 
+           mixamorig:LeftUpLeg_015  Transform 
+              mixamorig:LeftLeg_016  Transform 
+                 mixamorig:LeftFoot_017  Transform 
+                    mixamorig:LeftToeBase_018  Transform 
+                       mixamorig:LeftToe_End_019  Transform 
+           mixamorig:RightUpLeg_020  Transform 
+              mixamorig:RightLeg_021  Transform 
+                 mixamorig:RightFoot_022  Transform 
+                    mixamorig:RightToeBase_023  Transform 
+                       mixamorig:RightToe_End_024  Transform 
+           mixamorig:Spine_01  Transform 
+              mixamorig:Spine1_02  Transform 
+                 mixamorig:Spine2_03  Transform 
+                    mixamorig:LeftShoulder_07  Transform 
+                       mixamorig:LeftArm_08  Transform 
+                          mixamorig:LeftForeArm_09  Transform 
+                             mixamorig:LeftHand_010  Transform 
+                    mixamorig:Neck_04  Transform 
+                       mixamorig:Head_05  Transform 
+                          mixamorig:HeadTop_End_06  Transform 
+                    mixamorig:RightShoulder_011  Transform 
+                       mixamorig:RightArm_012  Transform 
+                          mixamorig:RightForeArm_013  Transform 
+                             mixamorig:RightHand_014  Transform 
+  Object_33  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_33#116 mat=Orge_LP updOff=False)  
+  Object_35  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_35#79 mat=Orge_LP updOff=False)  
+  Object_37  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_37#240 mat=Orge_LP updOff=False)  
+  Object_39  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_39#1108 mat=Orge_LP updOff=False)  
+  Object_41  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_41#72 mat=Orge_LP updOff=False)  
+  Object_43  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_43#44 mat=Orge_LP updOff=False)  
+  Object_45  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_45#165 mat=Orge_LP updOff=False)  
+  Object_47  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_47#112 mat=Orge_LP updOff=False)  
+  Object_49  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_49#7401 mat=Orge_LP updOff=False)  
+  Object_51  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_51#56 mat=Orge_LP updOff=False)  
+  Object_53  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_53#255 mat=Orge_LP updOff=False)  
+  Object_55  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_55#58 mat=Orge_LP updOff=False)  
+  Object_57  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_57#55 mat=Orge_LP updOff=False)  
+  Object_59  Transform SkinnedMeshRenderer(bones=26 nonNull=26 root=_rootJoint mesh=Object_59#53 mat=Orge_LP updOff=False)  
+  Plane.001_Material_0  Transform MeshFilter MeshRenderer(mesh=Plane.001_Material_0#4 mat=Material)  
+
+============================== [SOURCE FBX] Assets/ThirdParty/Ziyuan/_fbx/cursed_undead_soldier_rig.fbx
+  根 cursed_undead_soldier_rig  childCount=15
+  GLTF_created_0  Transform 
+     GLTF_created_0_rootJoint  Transform 
+        Root Bone_94  Transform 
+           ArmIK.l_69  Transform 
+              Hand.L_68  Transform 
+                 Index1.L_64  Transform 
+                    Index2.L_63  Transform 
+                       Index3.L_62  Transform 
+                 Mid Finger1.L_61  Transform 
+                    Mid Finger2.L_60  Transform 
+                       Mid Finger3.L_59  Transform 
+                 Pinky1.L_55  Transform 
+                    Pinky2.L_54  Transform 
+                       Pinky3.L_53  Transform 
+                 Ring Finger1.L_58  Transform 
+                    Ring Finger2.L_57  Transform 
+                       Ring Finger3.L_56  Transform 
+                 Thumb1.L_67  Transform 
+                    Thumb2.L_66  Transform 
+                       Thumb3.L_65  Transform 
+           ArmIK.r_87  Transform 
+              Hand.R_86  Transform 
+                 Index1.R_81  Transform 
+                    Index2.R_80  Transform 
+                       Index3.R_79  Transform 
+                 Mid Finger1.R_78  Transform 
+                    Mid Finger2.R_77  Transform 
+                       Mid Finger3.R_76  Transform 
+                 Pinky1.R_72  Transform 
+                    Pinky2.R_71  Transform 
+                       Pinky3.R_70  Transform 
+                 Ring Finger1.R_75  Transform 
+                    Ring Finger2.R_74  Transform 
+                       Ring Finger3.R_73  Transform 
+                 Thumb1.R_84  Transform 
+                    Thumb2.R_83  Transform 
+                       Thumb3.R_82  Transform 
+           LegIK.l_93  Transform 
+              Foot.L_92  Transform 
+                 Toes.L_91  Transform 
+           LegIK.r_90  Transform 
+              Foot.R_89  Transform 
+                 Toes.R_88  Transform 
+           Pelvis_52  Transform 
+              Spine_13  Transform 
+                 Spine Target_12  Transform 
+              Thigh Base.L_21  Transform 
+                 Leg POLE IK.l_20  Transform 
+                    Leg POLE IK Rotation.l_19  Transform 
+                       LegPOLE.l_18  Transform 
+                 Thigh.L_17  Transform 
+                    Knee.L_15  Transform 
+                       Lower Leg.L_14  Transform 
+              Thigh Base.R_29  Transform 
+                 Leg POLE IK.r_28  Transform 
+                    Leg POLE IK Rotation.r_27  Transform 
+                       LegPOLE.r_26  Transform 
+                 Thigh.R_25  Transform 
+                    Knee.R_23  Transform 
+                       Lower Leg.R_22  Transform 
+              Torso IK_50  Transform 
+                 Torso_49  Transform 
+                    Head IK_48  Transform 
+                       Head_47  Transform 
+                          Jaw_46  Transform 
+                    Neck_31  Transform 
+                       Neck Target_30  Transform 
+                    Shoulder.L_38  Transform 
+                       Arm Pole IK.l_37  Transform 
+                          Arm Pole IK Rotaion.l_36  Transform 
+                             ArmPOLE.l_35  Transform 
+                       Upper Arm.L_34  Transform 
+                          Elbow.L_33  Transform 
+                             Forearm.L_32  Transform 
+                    Shoulder.R_45  Transform 
+                       Arm Pole IK.r_44  Transform 
+                          Arm Pole IK Rotaion.r_43  Transform 
+                             ArmPOLE.r_42  Transform 
+                       Upper Arm.R_41  Transform 
+                          Elbow.R_40  Transform 
+                             Forearm.R_39  Transform 
+  Object_4  Transform MeshFilter MeshRenderer(mesh=Object_4#32 mat=material_0)  
+  Object_6  Transform MeshFilter MeshRenderer(mesh=Object_6#32 mat=material_0)  
+  Object_8  Transform MeshFilter MeshRenderer(mesh=Object_8#32 mat=material_0)  
+  Object_10  Transform MeshFilter MeshRenderer(mesh=Object_10#32 mat=material_0)  
+  Object_12  Transform MeshFilter MeshRenderer(mesh=Object_12#32 mat=material_0)  
+  Object_14  Transform MeshFilter MeshRenderer(mesh=Object_14#24 mat=material_0)  
+  Object_16  Transform MeshFilter MeshRenderer(mesh=Object_16#24 mat=material_0)  
+  Object_21  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_21#3239 mat=Undead_Gear updOff=False)  
+  Object_23  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_23#5584 mat=Undead_Material updOff=False)  
+  Object_24  Transform SkinnedMeshRenderer(bones=80 nonNull=80 root=GLTF_created_0_rootJoint mesh=Object_24#119 mat=material updOff=False)  
+  Object_28  Transform MeshFilter MeshRenderer(mesh=Object_28#70 mat=Undead_Gear)  
+  Object_34  Transform MeshFilter MeshRenderer(mesh=Object_34#103 mat=material_0)  
+  Object_43  Transform MeshFilter MeshRenderer(mesh=Object_43#103 mat=material_0)  
+  Object_90  Transform MeshFilter MeshRenderer(mesh=Object_90#468 mat=Undead_Sword)  
+
+============================== [SOURCE FBX] Assets/ThirdParty/Ziyuan/_fbx/low-poly_orc.fbx
+  根 low-poly_orc  childCount=12
+  Box001_08 - Default_0  Transform MeshFilter MeshRenderer(mesh=Box001_08 - Default_0#24 mat=08_-_Default)  
+  Object_4  Transform 
+     _rootJoint  Transform 
+        Axe_1_Dummy_089  Transform 
+        Bip001_01  Transform 
+           Bip001 Pelvis_02  Transform 
+              Bip001 Spine_03  Transform 
+                 Bip001 Belt_armor_087  Transform 
+                    Bip001 Belt_armorNub_088  Transform 
+                 Bip001 L Thigh_073  Transform 
+                    Bip001 L Calf_074  Transform 
+                       Bip001 L Foot_075  Transform 
+                          Bip001 L Toe0_076  Transform 
+                             Bip001 L Toe0Nub_077  Transform 
+                       Bip001 Leg_armor_-L_078  Transform 
+                          Bip001 Leg_armor_-LNub_079  Transform 
+                 Bip001 R Thigh_080  Transform 
+                    Bip001 R Calf_081  Transform 
+                       Bip001 Leg_armor_-R_085  Transform 
+                          Bip001 Leg_armor_-RNub_086  Transform 
+                       Bip001 R Foot_082  Transform 
+                          Bip001 R Toe0_083  Transform 
+                             Bip001 R Toe0Nub_084  Transform 
+                 Bip001 Spine1_04  Transform 
+                    Bip001 Spine2_05  Transform 
+                       Bip001 Neck_06  Transform 
+                          Bip001 Head_060  Transform 
+                             Bip001 Eye_L_066  Transform 
+                                Bip001 Eye_LNub_067  Transform 
+                             Bip001 Eye_R_068  Transform 
+                                Bip001 Eye_RNub_069  Transform 
+                             Bip001 Head_060_0  Transform 
+                             Bip001 HeadNub_061  Transform 
+                             Bip001 Jaw_down_062  Transform 
+                                Bip001 Jaw_down_062_0  Transform 
+                                Bip001 Jaw_downNub_063  Transform 
+                                Bip001 Lip_064  Transform 
+                                   Bip001 LipNub_065  Transform 
+                             Bip001 Tongue_070  Transform 
+                                Bip001 Tongue02_071  Transform 
+                                   Bip001 TongueNub_072  Transform 
+                          Bip001 L Clavicle_07  Transform 
+                             Bip001 L UpperArm_08  Transform 
+                                Bip001 L Forearm_09  Transform 
+                                   Bip001 Arm_armor_L_010  Transform 
+                                      Bip001 Arm_armor_L_010_0  Transform 
+                                      Bip001 Arm_armor_LNub_011  Transform 
+                             Bip001 Shoulder_012  Transform 
+                                Bip001 Shoulder_012_0  Transform 
+                                Bip001 ShoulderNub_013  Transform 
+                          Bip001 R Clavicle_014  Transform 
+                             Bip001 R UpperArm_015  Transform 
+                                Bip001 R Forearm_016  Transform 
+                                   Bip001 Arm_armor_R_058  Transform 
+                                      Bip001 Arm_armor_R_058_0  Transform 
+                                      Bip001 Arm_armor_RNub_059  Transform 
+                                   Bip001 R Hand_017  Transform 
+                                      Bip001 L Hand_037  Transform 
+                                         Bip001 L Finger0_038  Transform 
+                                            Bip001 L Finger01_039  Transform 
+                                               Bip001 L Finger02_040  Transform 
+                                                  Bip001 L Finger0Nub_041  Transform 
+                                         Bip001 L Finger2_042  Transform 
+                                            Bip001 L Finger21_043  Transform 
+                                               Bip001 L Finger22_044  Transform 
+                                                  Bip001 L Finger2Nub_045  Transform 
+                                         Bip001 L Finger3_046  Transform 
+                                            Bip001 L Finger31_047  Transform 
+                                               Bip001 L Finger32_048  Transform 
+                                                  Bip001 L Finger3Nub_049  Transform 
+                                         Bip001 L Finger4_050  Transform 
+                                            Bip001 L Finger1_054  Transform 
+                                               Bip001 L Finger11_055  Transform 
+                                                  Bip001 L Finger12_056  Transform 
+                                                     Bip001 L Finger1Nub_057  Transform 
+                                            Bip001 L Finger41_051  Transform 
+                                               Bip001 L Finger42_052  Transform 
+                                                  Bip001 L Finger4Nub_053  Transform 
+                                      Bip001 R Finger0_018  Transform 
+                                         Bip001 R Finger01_019  Transform 
+                                            Bip001 R Finger02_020  Transform 
+                                               Bip001 R Finger0Nub_00  Transform 
+                                      Bip001 R Finger1_021  Transform 
+                                         Bip001 R Finger11_022  Transform 
+                                            Bip001 R Finger12_023  Transform 
+                                               Bip001 R Finger1Nub_024  Transform 
+                                      Bip001 R Finger2_025  Transform 
+                                         Bip001 R Finger21_026  Transform 
+                                            Bip001 R Finger22_027  Transform 
+                                               Bip001 R Finger2Nub_028  Transform 
+                                      Bip001 R Finger3_029  Transform 
+                                         Bip001 R Finger31_030  Transform 
+                                            Bip001 R Finger32_031  Transform 
+                                               Bip001 R Finger3Nub_032  Transform 
+                                      Bip001 R Finger4_033  Transform 
+                                         Bip001 R Finger41_034  Transform 
+                                            Bip001 R Finger42_035  Transform 
+                                               Bip001 R Finger4Nub_036  Transform 
+                 Bip001 Spine_03_0  Transform 
+  Object_7  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_7#9755 mat=08_-_Default updOff=False)  
+  Object_9  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_9#317 mat=08_-_Default updOff=False)  
+  Object_11  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_11#216 mat=08_-_Default updOff=False)  
+  Object_13  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_13#629 mat=08_-_Default updOff=False)  
+  Object_15  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_15#832 mat=08_-_Default updOff=False)  
+  Object_17  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_17#143 mat=08_-_Default updOff=False)  
+  Object_19  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_19#131 mat=08_-_Default updOff=False)  
+  Object_21  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_21#143 mat=08_-_Default updOff=False)  
+  Object_23  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_23#131 mat=08_-_Default updOff=False)  
+  Object_25  Transform SkinnedMeshRenderer(bones=97 nonNull=97 root=_rootJoint mesh=Object_25#1002 mat=07_-_Default updOff=False)  
+
