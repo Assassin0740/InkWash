@@ -1,0 +1,6 @@
+===== ev_shader_reload =====
+shader = InkWash/InkCharacter   isSupported = True
+GetShaderMessages 条数 = 0
+★ 无编译消息 ⇒ shader 干净
+HasProperty(_HueKeep) = True   HasProperty(_HueSat) = True
+_HueKeep 默认值 = 0.000   _HueSat 默认值 = 1.000

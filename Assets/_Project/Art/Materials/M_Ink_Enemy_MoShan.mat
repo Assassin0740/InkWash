@@ -48,6 +48,8 @@ Material:
     - _GrainAmp: 0.18
     - _GrainScale: 64
     - _GroundY: 0
+    - _HueKeep: 1
+    - _HueSat: 1
     - _InkDensity: 0.5
     - _LadderSkew: 0.42
     - _MottleScale: 1.6

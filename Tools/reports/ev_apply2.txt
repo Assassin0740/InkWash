@@ -1,0 +1,15 @@
+===== ev_apply2 —— 落盘 _HueKeep / _HueSat =====
+目标 _HueKeep = 1.00   _HueSat = 1.00
+
+落盘完成 6/6 份，回读确认：
+   M_Ink_Enemy_MoShan       _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+   M_Ink_Enemy_MoGuai       _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+   M_Ink_Enemy_MoGu         _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+   M_Ink_Enemy_MoOu_0       _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+   M_Ink_Enemy_MoTu_0       _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+   M_Ink_Enemy_MoYan_0      _HueKeep=1.00  _HueSat=1.00  _ChromaKeep=0.45  _BandBias=0.00
+
+反向确认（必须全为 0.00）：
+   M_Character_Ink          _HueKeep=0.00  OK
+   M_Ink_Boss_Dragon        _HueKeep=0.00  OK
+   M_W_Sword_Ink            _HueKeep=0.00  OK

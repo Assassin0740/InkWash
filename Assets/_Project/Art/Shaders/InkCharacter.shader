@@ -47,6 +47,17 @@ Shader "InkWash/InkCharacter"
         // 保留 8% 原色相：明暗关系全保留（骨头与袍子的明度差仍在、形态可辨），只消灭色相差。
         _ChromaKeep ("墨彩强度（0=纯墨、1=衣料本色透出、>1 更艳）", Range(0, 2)) = 0.45
 
+        // ---- ★ 增量 H：固有色保留（敌人专用）----
+        // 病 7：上面那套"去色"连长在模型上的**部位本色**一起抹掉了 ——
+        //   腿是什么色、武器是什么色、皮甲是什么色，全被统一成墨阶表那一族色。
+        //   而 `_ChromaKeep` 救不回来：它是**零均值色相回填**，只改色相不改明暗，
+        //   对暗贴图（不死兵 linear luma 仅 0.014）回填量只有 ±0.02 —— 等于没生效。
+        // 解法：明度仍取墨阶（保住"墨"的结构），色相改取贴图的**逐像素**本色，
+        //   并把色相方向按 luma 归一化（luma(dir)=1）⇒ 只换色相、明度守恒。
+        // ★ 默认 0 ⇒ 与旧行为逐像素一致，主角/龙/武器/场景不受任何影响。
+        _HueKeep ("固有色保留（0=纯墨、1=各部位本色全显）", Range(0, 1)) = 0
+        _HueSat ("固有色饱和度（1=贴图原样、0=灰）", Range(0, 1)) = 1
+
         // ---- ★ 参照《大神》：**几何轮廓**（反向外扩壳），不是屏幕空间细线 ----
         // 为什么必须走几何：屏幕空间等宽细线本质是"边缘检测"，改来改去都是制图描边。
         // 几何壳能做三件屏幕空间做不到的事：
@@ -154,6 +165,8 @@ Shader "InkWash/InkCharacter"
                 half   _BandBias;
                 half   _InkDensity;
                 half   _ChromaKeep;
+                half   _HueKeep;
+                half   _HueSat;
                 float4 _BrushTex_ST;
                 half   _BrushScale;
                 half   _BrushStrength;
@@ -471,6 +484,23 @@ Shader "InkWash/InkCharacter"
                     color = saturate(color * (1.0h + chroma));
                 }
 
+                // ★ 增量 H：固有色保留（敌人专用）—— 把"腿/身/武器各自的颜色"还回来。
+                //   与上面那条的区别是**作用对象**：`chroma` 只做零均值微调，对暗贴图几乎无效；
+                //   这里直接把像素色相**归一化后替换**到墨色上，因此逐部位的颜色差异真正出现。
+                //   明度守恒：dir 按 luma 归一化 ⇒ dot(cl*dir, LUMA) == cl，只换色相不动明暗。
+                //   _HueKeep = 0 时整块被跳过，与旧行为逐像素一致。
+                half hueKeep = saturate(_HueKeep);
+                if (hueKeep > 0.0h)
+                {
+                    // +1e-4 兜底：纯黑像素（贴图无信息）时 dir 收敛到 (1,1,1) ⇒ 不改变颜色
+                    half3 src = albedoHue + 1e-4h;
+                    half  sl  = max(dot(src, half3(0.2126h, 0.7152h, 0.0722h)), 1e-4h);
+                    half3 dir = src / sl;                              // luma(dir) == 1
+                    dir = 1.0h + (dir - 1.0h) * saturate(_HueSat);     // 饱和度收缩
+                    half  cl  = dot(color, half3(0.2126h, 0.7152h, 0.0722h));
+                    color = lerp(color, saturate(cl * dir), hueKeep);
+                }
+
                 // ③ ★ 直接调制最终颜色（新增）—— 零均值噪声 ⇒ 均值≈1，不会把主体整体压暗。
                 half texMod = (nz.x - 0.5h) * _GrainAmp + (nz.y - 0.5h) * _StrokeAmp * 0.20h;
                 color *= (1.0h + texMod);
@@ -522,6 +552,8 @@ Shader "InkWash/InkCharacter"
                 half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias;
                 half   _InkDensity;
                 half   _ChromaKeep;
+                half   _HueKeep;
+                half   _HueSat;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale; half _GrainAmp; half _StrokeScale; half _StrokeStretch; half _StrokeAmp;
                 half   _MottleScale;
@@ -641,6 +673,8 @@ Shader "InkWash/InkCharacter"
                 half4  _BaseColor; half4 _InkDark; half4 _InkMid; half4 _InkLight;
                 half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias; half _InkDensity;
                 half   _ChromaKeep;
+                half   _HueKeep;
+                half   _HueSat;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale;
                 half   _GrainAmp;
@@ -717,6 +751,8 @@ Shader "InkWash/InkCharacter"
                 half4  _BaseColor; half4 _InkDark; half4 _InkMid; half4 _InkLight;
                 half   _LadderSkew; half _Bands; half _BandSoftness; half _BandBias; half _InkDensity;
                 half   _ChromaKeep;
+                half   _HueKeep;
+                half   _HueSat;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale;
                 half   _GrainAmp;
