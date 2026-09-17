@@ -126,6 +126,66 @@ namespace InkWash.Enemies
                  "  0.08 时直线巡航接近 0、只在真转弯时才甩头。")]
         public float headLeadGain = 0.03f;
 
+        // ── 表演段：复现龙自带飞行动画（`Take 001`, 57.5 s）的结构 ──
+        //
+        // ★ 为什么是"复现"而不是"播动画"：龙在本工程是**程序驱动**的
+        //   （`ActionShowcase` 明确写了「BOSS 墨龙：单独特判（它是程序驱动，不走 Animator）」），
+        //   整套动作由状态机算出来。所以自带动画只能**翻译成参数**接进来。
+        //
+        // ★ 参数怎么来的：把 `Take 001` 逐 0.5 s 采样、按 7.2 s 分段量「质心速度 + 体展」，
+        //   实测结构是 ——
+        //     0.0– 7.2s  均速 194   质心 y 49~719     ⇒ 静默/趴卧
+        //     7.2–14.4s  均速 2197  质心 y −4202~2586 ⇒ 大幅上下游动前进（体展 594→7181）
+        //    14.4–28.8s  均速 ~330                   ⇒ 静默（**连续两段**）
+        //    28.8–43.1s  均速 ~680                   ⇒ 中速移动
+        //    43.1–50.3s  均速 2637                   ⇒ 大俯冲
+        //    50.3–57.5s  均速 1280                   ⇒ 拉起
+        //   即**「移动段 ↔ 静默段」交替**，且静默段常连续出现。
+        //   归一后总行程 ≈ 水平 11.4 m × 垂直 11.0 m / 57.5 s。
+        public bool enablePerformanceCycle = true;
+        [Tooltip("『上下游动前进』每段持续秒数（自带动画实测 ≈7.2 s）")]
+        public float advanceDuration = 7f;
+        [Tooltip("『趴下静默』每段持续秒数（自带动画实测 ≈7.2 s）")]
+        public float restDuration = 7f;
+        [Tooltip("静默段驻留高度（m）——贴地但不落地")]
+        public float restLift = 0.35f;
+        [Tooltip("静默段脊骨波 / 四肢 / 横向摆 / 头部引导的振幅缩放（0 = 完全静止）")]
+        public float restMotionScale = 0.06f;
+        [Tooltip("静默段的水平推进速度缩放（0 = 原地悬停）")]
+        public float restSpeedScale = 0.12f;
+        [Tooltip("上下游动：模型容器**竖直**正弦振幅（m）。与 bodySwayAmp 同构，那条是左右、这条是上下")]
+        public float bodyBobAmp = 1.1f;
+        [Tooltip("上下游动频率（Hz）")]
+        public float bodyBobFreq = 0.22f;
+
+        /// <summary>当前是否处于静默段（供自动化验收断言）。</summary>
+        public bool IsResting => _perfResting;
+        /// <summary>表演段相位名（供自动化验收断言）。</summary>
+        public string PerformancePhaseName => !enablePerformanceCycle ? "-" : (_perfResting ? "Rest" : "Advance");
+
+        private bool _perfResting;
+        private float _perfTimer = -1f;      // <0 = 尚未初始化（从「移动段」起算）
+
+        private float PerfMotionScale => !enablePerformanceCycle ? 1f : (_perfResting ? restMotionScale : 1f);
+        private float PerfSpeedScale => !enablePerformanceCycle ? 1f : (_perfResting ? restSpeedScale : 1f);
+        private float PerfBobScale => !enablePerformanceCycle ? 0f : (_perfResting ? 0f : 1f);
+
+        /// <summary>
+        /// 推进「上下游动前进 ↔ 趴下静默」的相位计时。
+        ///
+        /// ★ 只在盘旋（常态）里调用：攻击段（俯冲/撕咬/扫尾/吐息）各有自己的高度曲线，
+        ///   被静默段打断会出现"俯冲到一半突然贴地"。
+        /// </summary>
+        private void TickPerformanceCycle()
+        {
+            if (!enablePerformanceCycle) { _perfResting = false; _perfTimer = -1f; return; }
+            if (_perfTimer < 0f) { _perfResting = false; _perfTimer = Mathf.Max(0.1f, advanceDuration); }
+            _perfTimer -= Time.deltaTime;
+            if (_perfTimer > 0f) return;
+            _perfResting = !_perfResting;
+            _perfTimer = Mathf.Max(0.1f, _perfResting ? restDuration : advanceDuration);
+        }
+
         private readonly List<Transform> _limbRoots = new List<Transform>();
         private readonly List<int> _limbParentIndex = new List<int>();
         private readonly List<Quaternion> _limbBaseRel = new List<Quaternion>();
@@ -642,7 +702,7 @@ namespace InkWash.Enemies
                 var b = _limbRoots[k];
                 if (b == null) continue;
                 float ph = lp - _limbParentIndex[k] * step + (k % 2 == 0 ? 0f : Mathf.PI);
-                float swing = limbSwingDeg * Mathf.Sin(ph);
+                float swing = limbSwingDeg * PerfMotionScale * Mathf.Sin(ph);
                 // ★ 局部旋转叠加：四肢跟着父脊柱节点走，再叠自己的前后划动
                 b.localRotation = _limbBaseRel[k] * Quaternion.AngleAxis(swing, Vector3.right);
             }
@@ -795,7 +855,9 @@ namespace InkWash.Enemies
         /// <summary>盘旋：绕玩家转 + 跟随玩家 + 长链游动。这是龙的**常态**。</summary>
         private void TickCircling()
         {
-            _currentLift = PhaseHoverHeight;
+            TickPerformanceCycle();
+            // 移动段回到相位巡航高度；静默段贴地驻留（对应自带动画的"趴卧"）
+            _currentLift = _perfResting ? restLift : PhaseHoverHeight;
 
             if (PlayerRef.Exists)
             {
@@ -852,7 +914,8 @@ namespace InkWash.Enemies
                     //   看着像"斜着飘"。
                     transform.rotation = Quaternion.LookRotation(_swimDir, Vector3.up);
                 }
-                MoveHorizontal(_swimDir * swimSpeed * Time.deltaTime);
+                // 静默段把推进速度压下来（复现自带动画"趴下不动"）
+                MoveHorizontal(_swimDir * (swimSpeed * PerfSpeedScale) * Time.deltaTime);
             }
 
             // 长链游动。
@@ -866,14 +929,16 @@ namespace InkWash.Enemies
             //   ★ 传的是**相位**（不是 sin 之后的值）—— 这里曾经把 `sin(2πft)` 的结果当振幅传进去，
             //     而 ApplySpineOffsetsRaw 内部又乘一次 sin，两个正弦相乘 ⇒ 振幅被压扁。
             float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
-            ApplySpineOffsetsRaw(hoverAmplitudeDeg, hoverPitchAmplitudeDeg, _spine.Count,
+            // 静默段把波形压到近乎静止（对应自带动画的"趴卧"段）
+            float perf = PerfMotionScale;
+            ApplySpineOffsetsRaw(hoverAmplitudeDeg * perf, hoverPitchAmplitudeDeg * perf, _spine.Count,
                                  hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase);
 
             // ── 头部引导：按转向速率给头颈叠一个偏航，让头「领」着走 ──
             float dyaw = Vector3.SignedAngle(Flat(_prevSwimDir), Flat(_swimDir), Vector3.up);
             float rate = dyaw / Mathf.Max(1e-4f, Time.deltaTime);
             float wantYaw = Mathf.Clamp(rate * headLeadGain, -headLeadYawDeg, headLeadYawDeg);
-            _headYaw = Mathf.Lerp(_headYaw, wantYaw, 1f - Mathf.Exp(-8f * Time.deltaTime));
+            _headYaw = Mathf.Lerp(_headYaw, wantYaw * PerfMotionScale, 1f - Mathf.Exp(-8f * Time.deltaTime));
             _prevSwimDir = _swimDir;
             ApplyHeadSteer();
         }
@@ -1021,7 +1086,14 @@ namespace InkWash.Enemies
         private void UpdateBodyLift()
         {
             if (_modelRoot == null) return;
-            float want = _modelRootBaseLocalPos.y + bodyLift + (_airborne ? _currentLift : 0f);
+            // ★ 上下游动：模型容器的**竖直**正弦（对应自带动画 7.2–14.4 s 那段大幅上下）。
+            //   与横向 `bodySwayAmp` 同构 —— 那条是"左右"、这条是"上下"，
+            //   两条合起来才是用户要的"上下游动前进"。静默段归零。
+            float bob = 0f;
+            if (_airborne && bodyBobAmp > 0f)
+                bob = bodyBobAmp * PerfBobScale * Mathf.Sin(2f * Mathf.PI * bodyBobFreq * Time.time);
+
+            float want = _modelRootBaseLocalPos.y + bodyLift + (_airborne ? _currentLift : 0f) + bob;
 
             // ★ 上升与下降要用**不同**的速率：
             //   - 下降（俯冲/落地）必须快，慢了就读不出"扑下来咬一下"的冲击感；
@@ -1044,7 +1116,7 @@ namespace InkWash.Enemies
             //   基准必须用 _modelRootBaseLocalPos 而不是当前值 —— 否则每帧累加会漂走。
             float sway = 0f;
             if (_airborne && bodySwayAmp > 0f)
-                sway = bodySwayAmp * Mathf.Sin(2f * Mathf.PI * bodySwayFreq * Time.time);
+                sway = bodySwayAmp * PerfMotionScale * Mathf.Sin(2f * Mathf.PI * bodySwayFreq * Time.time);
 
             _modelRoot.localPosition = new Vector3(
                 _modelRootBaseLocalPos.x + sway,
