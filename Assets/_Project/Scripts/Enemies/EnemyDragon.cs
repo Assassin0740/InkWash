@@ -186,6 +186,73 @@ namespace InkWash.Enemies
             _perfTimer = Mathf.Max(0.1f, _perfResting ? restDuration : advanceDuration);
         }
 
+        // ── 阶段演出：仰头长啸（策划案 §4「阶段切换必须有演出」）──
+        //
+        // ★ 规格原文（`Docs/墨龙BOSS策划案.md:196`）：
+        //   「整条龙**仰头长啸**（脊骨波幅度 **×2.5**，持续 **1.2 s**），
+        //     高度抬升 + 墨晕扩散 —— 让玩家明确知道"它变强了"。」
+        //   高度抬升由 `UpdatePhase` 写 `_currentLift = PhaseHoverHeight` 完成（P1/P2/P3 = 3.6/4.4/5.2 m）。
+        [Tooltip("长啸持续秒数（策划案规格 1.2 s）")]
+        public float roarDuration = 1.2f;
+        [Tooltip("长啸期间脊骨波幅度的倍率（策划案规格 ×2.5）")]
+        public float roarSpineGain = 2.5f;
+        [Tooltip("长啸期间头颈上仰角度（度）——「仰头」那一下")]
+        public float roarHeadRaiseDeg = 30f;
+        [Tooltip("长啸影响尾部起算的骨骼节数（从脊骨末梢往前数）")]
+        public int roarHeadLinks = 4;
+
+        private float _roarTimer;
+        /// <summary>是否正在长啸（供自动化验收断言）。</summary>
+        public bool IsRoaring => _roarTimer > 0f;
+        /// <summary>已触发长啸次数（供自动化验收断言）。</summary>
+        public int RoarCount { get; private set; }
+
+        private float RoarSpineGain => IsRoaring ? roarSpineGain : 1f;
+        /// <summary>1 → 0 的进度（1 = 刚起啸）。</summary>
+        private float RoarProgress01 => roarDuration > 0f ? Mathf.Clamp01(_roarTimer / roarDuration) : 0f;
+
+        /// <summary>起啸：计时 + 墨晕扩散 + 打断静默段（否则啸被 restMotionScale 压掉）。</summary>
+        private void BeginRoar()
+        {
+            _roarTimer = Mathf.Max(0.05f, roarDuration);
+            RoarCount++;
+
+            // 静默段里幅度被压到 6%，长啸会被吃掉 ⇒ 起啸即切回移动段
+            if (_perfResting) { _perfResting = false; _perfTimer = Mathf.Max(0.1f, advanceDuration); }
+
+            // 墨晕扩散：在头部炸一发强墨（表现"它变强了"）
+            if (_spine.Count > 0 && _spine[_spine.Count - 1] != null)
+                InkWash.Effects.InkHitVfx.Spawn(_spine[_spine.Count - 1].position, Vector3.up, roarSpineGain);
+        }
+
+        /// <summary>长啸计时。盘旋与攻击两条路径都要推，否则出招期间啸不完。</summary>
+        private void TickRoar()
+        {
+            if (_roarTimer > 0f) _roarTimer -= Time.deltaTime;
+        }
+
+        /// <summary>
+        /// 长啸期间给头颈叠一个上仰 —— 规格里的「仰头」。
+        /// 与 `DoBreathHover` 同一套写法（绕**容器 right**，见 §3 的轴向教训）。
+        /// 用 sin 包络让"仰起 → 回正"平滑，不硬切。
+        /// </summary>
+        private void ApplyRoarHeadRaise()
+        {
+            if (!IsRoaring || _spine.Count == 0) return;
+            float u = Mathf.Sin(Mathf.PI * (1f - RoarProgress01));       // 0 → 1 → 0
+            float pitch = -roarHeadRaiseDeg * u;                          // 负值 = 上仰
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            int start = Mathf.Max(0, _spine.Count - roarHeadLinks);
+            for (int i = start; i < _spine.Count; i++)
+            {
+                if (_spine[i] == null || i >= _baseRel.Count) continue;
+                int k = i - start;
+                _spine[i].rotation = rootRot
+                    * Quaternion.AngleAxis(pitch * (1f + 0.2f * k), Vector3.right)
+                    * _baseRel[i];
+            }
+        }
+
         private readonly List<Transform> _limbRoots = new List<Transform>();
         private readonly List<int> _limbParentIndex = new List<int>();
         private readonly List<Quaternion> _limbBaseRel = new List<Quaternion>();
@@ -856,6 +923,7 @@ namespace InkWash.Enemies
         private void TickCircling()
         {
             TickPerformanceCycle();
+            TickRoar();
             // 移动段回到相位巡航高度；静默段贴地驻留（对应自带动画的"趴卧"）
             _currentLift = _perfResting ? restLift : PhaseHoverHeight;
 
@@ -930,9 +998,13 @@ namespace InkWash.Enemies
             //     而 ApplySpineOffsetsRaw 内部又乘一次 sin，两个正弦相乘 ⇒ 振幅被压扁。
             float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
             // 静默段把波形压到近乎静止（对应自带动画的"趴卧"段）
-            float perf = PerfMotionScale;
+            // 长啸期间脊骨波幅度 ×2.5（策划案规格）
+            float perf = PerfMotionScale * RoarSpineGain;
             ApplySpineOffsetsRaw(hoverAmplitudeDeg * perf, hoverPitchAmplitudeDeg * perf, _spine.Count,
                                  hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase);
+
+            // 「仰头」那一下叠在波形之上
+            ApplyRoarHeadRaise();
 
             // ── 头部引导：按转向速率给头颈叠一个偏航，让头「领」着走 ──
             float dyaw = Vector3.SignedAngle(Flat(_prevSwimDir), Flat(_swimDir), Vector3.up);
@@ -1057,6 +1129,7 @@ namespace InkWash.Enemies
         // ---------------- 每帧动作 ----------------
         protected override void AttackMovement(float t, float hitAt)
         {
+            TickRoar();
             switch (_attack)
             {
                 case DragonAttack.Bite:
@@ -1475,8 +1548,10 @@ namespace InkWash.Enemies
             int want = r > phase2AtRatio ? 1 : (r > phase3AtRatio ? 2 : 3);
             if (want == _phase) return;
             _phase = want;
-            // 阶段演出的最小表达：盘旋高度立刻抬升（脊骨长啸幅度留给后续迭代）
+            // 高度抬升（P1/P2/P3 = 3.6 / 4.4 / 5.2 m）
             _currentLift = PhaseHoverHeight;
+            // ★ 阶段演出：仰头长啸（策划案 §4「阶段切换必须有演出」）
+            BeginRoar();
         }
 
         /// <summary>盘旋（旧路径：作为 Attack 里的"盘旋"招，legacy）。</summary>
