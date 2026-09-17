@@ -1,0 +1,48 @@
+===== ws_diag：WaveSpawner「一只都不刷」定位 =====
+时间 2026-09-17 00:46:07
+场景 Main　timeScale=1　frame=11912
+
+---------- A. 现场快照（未干预）----------
+RunManager.Instance = [Systems]
+  enabled=True　activeInHierarchy=True
+  ★ autoStartRun=False　State=GameOver　StateAge=48.90s
+  RoomIndex=0　roomsToClear=3
+  rm.spawner = Enemies
+  rm.room = Enemies
+场景里 WaveSpawner 数量 = 1
+  [Enemies] enabled=True　activeInHierarchy=True　autoStart=False
+  waves=4　CurrentWave=0　Spawned=3　SpawnFailed=0　Alive=3　AllCleared=False
+  反射 _running=True　_waveTimer=-0.004171495　_spawnTimer=0.45　_spawnCursor=3　_pointCursor=0
+  spawnCenter=(0.00, 0.00, 0.00)　spawnRadius=7.5　spawnPoints=0
+    wave[0] delay=1.5　共 3 只　Z_Enemy_MoGuai×3 
+    wave[1] delay=2.0　共 4 只　Z_Enemy_MoGuai×2 Z_Enemy_MoGu×2 
+    wave[2] delay=2.0　共 4 只　Z_Enemy_MoGuai×3 Z_Enemy_MoShan×1 
+    wave[3] delay=3.0　共 1 只　Z_Enemy_MoLong×1 
+NavMesh：顶点 235　三角面 95
+玩家 = Player @(0.00, 0.33, -3.00)
+  SamplePosition(spawnCenter, 5m)=True → (0.00, 0.33, 0.00)
+  SamplePosition(玩家, 5m)=True → (0.00, 0.34, -3.00)
+
+---------- B. 静置 3s（不干预）----------
+  3s 后 State=GameOver　CurrentWave=0　Spawned=3　Alive=3　_running=True
+
+---------- C. 显式 RunManager.StartRun() 并观察 12s ----------
+  调用后立即 State=Playing　_running=True　CurrentWave=0　WaveTimer=1.50
+  t=0.0s　State=Playing　Wave=0/4　Spawned=0　Failed=0　Alive=0　WaveTimer=1.50
+  t=1.5s　State=Playing　Wave=0/4　Spawned=0　Failed=0　Alive=0　WaveTimer=0.04
+  t=3.0s　State=Playing　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+  t=4.5s　State=Playing　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+  t=6.0s　State=Playing　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+  t=7.5s　State=Playing　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+  t=9.0s　State=Playing　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+  t=10.5s　State=GameOver　Wave=0/4　Spawned=3　Failed=0　Alive=3　WaveTimer=-0.01
+
+---------- F. Begin() 自愈验证（故意关掉组件后调 Begin）----------
+  关掉后 enabled=False（期望 False）
+  Begin() 后 enabled=True（期望 True）　CurrentWave=0　_running=True
+  5s 后 Spawned=3　Alive=3（期望 >0）
+
+---------- 结论 ----------
+  · RunManager.autoStartRun=false ⇒ 进 Play 停在主菜单，波次不会自己开始。要打战斗必须先 StartRun()（玩家走主菜单「开始一局」按钮）。
+  · WaveSpawner.enabled = True　正常
+  · 最终：Spawned=3　Alive=3
