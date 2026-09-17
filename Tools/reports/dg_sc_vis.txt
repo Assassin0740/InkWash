@@ -3,7 +3,7 @@
 判据：同 tick 背靠背 Camera.Render()，演员渲染器【开】/【关】两帧逐像素求差，差值 > 6
       且两帧均把演员 shadowCastingMode 设为 Off ⇒ 差集是纯几何像素，不含投影
 
-演示场条目清单（共 23 条）：
+演示场条目清单（共 29 条）：
   [00] 主角 墨客 / 待机 Idle
   [01] 主角 墨客 / 走 Walk
   [02] 主角 墨客 / 跑 Run
@@ -21,44 +21,105 @@
   [14] 敌人 墨魇（精英） / 待机
   [15] 敌人 墨魇（精英） / 追击玩家
   [16] 敌人 墨魇（精英） / 发起攻击
-  [17] BOSS 墨龙 / 盘旋 Circling（默认态）
-  [18] BOSS 墨龙 / 俯冲撕咬 Dive→Bite
-  [19] BOSS 墨龙 / 俯冲扫尾 Dive→Sweep
-  [20] BOSS 墨龙 / 吐息 Breath（悬浮放弹）
-  [21] 特效 / 命中溅墨 InkHitVfx
-  [22] 特效 / 落地墨晕 InkLandingBloom
+  [17] 敌人 墨山（重型） / 待机
+  [18] 敌人 墨山（重型） / 追击玩家
+  [19] 敌人 墨山（重型） / 发起攻击
+  [20] 敌人 墨骨（不死兵） / 待机
+  [21] 敌人 墨骨（不死兵） / 追击玩家
+  [22] 敌人 墨骨（不死兵） / 发起攻击
+  [23] BOSS 墨龙 / 盘旋 Circling（默认态）
+  [24] BOSS 墨龙 / 俯冲撕咬 Dive→Bite
+  [25] BOSS 墨龙 / 俯冲扫尾 Dive→Sweep
+  [26] BOSS 墨龙 / 吐息 Breath（悬浮放弹）
+  [27] 特效 / 命中溅墨 InkHitVfx
+  [28] 特效 / 落地墨晕 InkLandingBloom
 
-演示场相机 = Showcase_Camera  1920x1080  ortho=False  fov=45.0  pos=(10.98, 2.02, -3.80)
+演示场相机 = Showcase_Camera  1920x1080  ortho=False  fov=45.0  pos=(8.57, 2.02, -7.93)
 
 ── 墨徒（条目 8，演员 Showcase_Actor_8 activeSelf=True activeInHierarchy=True）
      - MeshRenderer Box001_08 - Default_0  MR mesh=Box001_08 - Default_0 vc=24 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_7  SMR bones=97 非null=0 rootBone=<null> mesh=Object_7 vc=9755 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_9  SMR bones=97 非null=0 rootBone=<null> mesh=Object_9 vc=317 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_11  SMR bones=97 非null=0 rootBone=<null> mesh=Object_11 vc=216 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_13  SMR bones=97 非null=0 rootBone=<null> mesh=Object_13 vc=629 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_15  SMR bones=97 非null=0 rootBone=<null> mesh=Object_15 vc=832 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_17  SMR bones=97 非null=0 rootBone=<null> mesh=Object_17 vc=143 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_19  SMR bones=97 非null=0 rootBone=<null> mesh=Object_19 vc=131 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_21  SMR bones=97 非null=0 rootBone=<null> mesh=Object_21 vc=143 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_23  SMR bones=97 非null=0 rootBone=<null> mesh=Object_23 vc=131 mat=InkWash/InkCharacter
-     - SkinnedMeshRenderer Object_25  SMR bones=97 非null=0 rootBone=<null> mesh=Object_25 vc=1002 mat=InkWash/InkCharacter
-     SMR 合计 10，其中骨骼引用全 null 的 10
-     世界包围盒 center=(3.29, 0.05, -0.37) size=(2.64, 1.18, 2.50)
-     ▶ 纯几何像素 = 0 / 921600 = 0.000%   最大通道差 = 0
+     - SkinnedMeshRenderer Object_7  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_7 vc=9755 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_9  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_9 vc=317 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_11  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_11 vc=216 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_13  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_13 vc=629 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_15  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_15 vc=832 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_17  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_17 vc=143 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_19  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_19 vc=131 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_21  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_21 vc=143 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_23  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_23 vc=131 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_25  SMR bones=97 非null=97 rootBone=_rootJoint mesh=Object_25 vc=1002 mat=InkWash/InkCharacter
+     SMR 合计 10，其中骨骼引用全 null 的 0
+     世界包围盒 center=(2.28, 1.11, -0.90) size=(2.12, 2.24, 2.05)
+     ▶ 纯几何像素 = 9355 / 921600 = 1.015%   最大通道差 = 247
+       屏内范围 x[776,885] y[293,442]  占屏 8.6% x 20.8%
 
-── 墨偶（条目 11）：找不到演员对象
-     activeScene 根对象：Showcase | Player | Showcase_Ground | Showcase_Camera | Showcase_KeyLight | Showcase_FillLight | Showcase_RimLight | dg_sc_vis | dg_sc_vis | 
-     演示场 _status = 敌人：待机（已就位）
+── 墨偶（条目 11，演员 Showcase_Actor_11 activeSelf=True activeInHierarchy=True）
+     - MeshRenderer Skeleton_Mage_Hat  MR mesh=Skeleton_Mage_Hat vc=386 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_ArmLeft  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_ArmLeft vc=670 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_ArmRight  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_ArmRight vc=665 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_Body  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_Body vc=1154 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_Eyes  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_Eyes vc=96 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_Jaw  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_Jaw vc=216 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_LegLeft  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_LegLeft vc=475 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_LegRight  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_LegRight vc=474 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Mage_Skull  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Mage_Skull vc=548 mat=InkWash/InkCharacter
+     SMR 合计 8，其中骨骼引用全 null 的 0
+     世界包围盒 center=(2.30, 1.07, -0.86) size=(2.02, 2.32, 1.92)
+     ▶ 纯几何像素 = 7930 / 921600 = 0.860%   最大通道差 = 248
+       屏内范围 x[796,899] y[301,441]  占屏 8.1% x 19.6%
 
-── 墨魇（条目 14）：找不到演员对象
-     activeScene 根对象：Showcase | Player | Showcase_Ground | Showcase_Camera | Showcase_KeyLight | Showcase_FillLight | Showcase_RimLight | dg_sc_vis | dg_sc_vis | 
-     演示场 _status = 敌人：待机（已就位）
+── 墨魇（条目 14，演员 Showcase_Actor_14 activeSelf=True activeInHierarchy=True）
+     - SkinnedMeshRenderer Skeleton_Golem_ArmLeft  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_ArmLeft vc=987 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_ArmRight  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_ArmRight vc=866 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_Body  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_Body vc=1761 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_Eyes  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_Eyes vc=96 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_Head  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_Head vc=1812 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_Jaw  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_Jaw vc=287 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_LegLeft  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_LegLeft vc=545 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Skeleton_Golem_LegRight  SMR bones=23 非null=23 rootBone=root mesh=Skeleton_Golem_LegRight vc=545 mat=InkWash/InkCharacter
+     SMR 合计 8，其中骨骼引用全 null 的 0
+     世界包围盒 center=(2.41, 1.20, -0.88) size=(2.54, 2.80, 3.17)
+     ▶ 纯几何像素 = 12251 / 921600 = 1.329%   最大通道差 = 248
+       屏内范围 x[798,903] y[294,464]  占屏 8.3% x 23.8%
 
-── 墨龙（条目 17，演员 Showcase_Actor_17 activeSelf=True activeInHierarchy=True）
+── 墨山（条目 17，演员 Showcase_Actor_17 activeSelf=True activeInHierarchy=True）
+     - SkinnedMeshRenderer Object_33  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_33 vc=116 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_35  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_35 vc=79 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_37  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_37 vc=240 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_39  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_39 vc=1108 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_41  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_41 vc=72 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_43  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_43 vc=44 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_45  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_45 vc=165 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_47  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_47 vc=112 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_49  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_49 vc=7401 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_51  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_51 vc=56 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_53  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_53 vc=255 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_55  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_55 vc=58 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_57  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_57 vc=55 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_59  SMR bones=26 非null=26 rootBone=_rootJoint mesh=Object_59 vc=53 mat=InkWash/InkCharacter
+     SMR 合计 14，其中骨骼引用全 null 的 0
+     世界包围盒 center=(2.05, 1.15, -0.61) size=(3.86, 3.18, 3.83)
+     ▶ 纯几何像素 = 12967 / 921600 = 1.407%   最大通道差 = 248
+       屏内范围 x[814,912] y[283,464]  占屏 7.7% x 25.3%
+
+── 墨骨（条目 20，演员 Showcase_Actor_20 activeSelf=True activeInHierarchy=True）
+     - SkinnedMeshRenderer Object_21  SMR bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_21 vc=3239 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_23  SMR bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_23 vc=5584 mat=InkWash/InkCharacter
+     - SkinnedMeshRenderer Object_24  SMR bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_24 vc=119 mat=InkWash/InkCharacter
+     - MeshRenderer Object_28  MR mesh=Object_28 vc=70 mat=InkWash/InkCharacter
+     - MeshRenderer Object_34  MR mesh=Object_34 vc=103 mat=InkWash/InkCharacter
+     - MeshRenderer Object_43  MR mesh=Object_43 vc=103 mat=InkWash/InkCharacter
+     - MeshRenderer Object_90  MR mesh=Object_90 vc=468 mat=InkWash/InkCharacter
+     SMR 合计 3，其中骨骼引用全 null 的 0
+     世界包围盒 center=(2.24, 0.88, -0.94) size=(1.45, 1.72, 1.58)
+     ▶ 纯几何像素 = 4554 / 921600 = 0.494%   最大通道差 = 248
+       屏内范围 x[815,879] y[302,407]  占屏 5.1% x 14.7%
+
+── 墨龙（条目 23，演员 Showcase_Actor_23 activeSelf=True activeInHierarchy=True）
      - SkinnedMeshRenderer Object_281  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_281 vc=28082 mat=InkWash/InkCharacter
      - SkinnedMeshRenderer Object_282  SMR bones=273 非null=273 rootBone=_rootJoint mesh=Object_282 vc=804 mat=InkWash/InkCharacter
      SMR 合计 2，其中骨骼引用全 null 的 0
-     世界包围盒 center=(8.04, 5.63, -2.88) size=(6.41, 2.59, 6.57)
-     ▶ 纯几何像素 = 20145 / 921600 = 2.186%   最大通道差 = 243
-       屏内范围 x[809,1135] y[417,539]  占屏 25.5% x 17.1%
+     世界包围盒 center=(-1.61, 5.18, -12.36) size=(8.41, 2.59, 8.42)
+     ▶ 纯几何像素 = 27314 / 921600 = 2.964%   最大通道差 = 247
+       屏内范围 x[687,1279] y[377,501]  占屏 46.3% x 17.4%
 

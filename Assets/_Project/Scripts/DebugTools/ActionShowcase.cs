@@ -439,9 +439,14 @@ namespace InkWash.DebugTools
             _items.Add(new Item { group = "主角 墨客", label = "重击 HeavyAttack（K）", prefab = null, play = (g, s) => s.DrivePlayer("Heavy") });
 
             // ── 敌人：三个"真身" ──
+            // 注意：墨偶/墨魇的 prefab 文件名【没有 Z_ 前缀】（Enemy_MoOu / Enemy_MoYan），
+            // 而墨徒是 Z_Enemy_MoGuai。写错前缀会让 LoadEnemy 返回 null，
+            // Play() 就会静默退回 actor = _player ⇒ 面板显示"已就位"其实在驱动主角。
             AddEnemy("敌人 墨徒（人形近战）", "Z_Enemy_MoGuai", "墨徒");
-            AddEnemy("敌人 墨偶（远程）", "Z_Enemy_MoOu", "墨偶");
-            AddEnemy("敌人 墨魇（精英）", "Z_Enemy_MoYan", "墨魇");
+            AddEnemy("敌人 墨偶（远程）", "Enemy_MoOu", "墨偶");
+            AddEnemy("敌人 墨魇（精英）", "Enemy_MoYan", "墨魇");
+            AddEnemy("敌人 墨山（重型）", "Z_Enemy_MoShan", "墨山");
+            AddEnemy("敌人 墨骨（不死兵）", "Z_Enemy_MoGu", "墨骨");
 
             // ── BOSS 墨龙：单独特判（它是程序驱动，不走 Animator）──
             _items.Add(new Item

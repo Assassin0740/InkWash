@@ -1,69 +1,71 @@
-清场：销毁残留演员 1 个；ActionShowcase 已停用（相机不再被它接管）
+清场：销毁残留演员 0 个；ActionShowcase 已停用（相机不再被它接管）
 ===== dg_sc_verify v2 —— 演示场内的敌人可见性（正常相机 / 同 tick 差分帧 / 已对准） =====
 相机 = Showcase_Camera　台子·灯光·地面 = ActionShowcase.BuildStage()（游戏同一套）
 判据：相机对准被测对象且 TestPlanesAABB 命中；渲染器开/关两帧逐像素差 > 6 记为几何像素
 只禁 NavMeshAgent，保留 InkMaterialSwap（否则水墨材质换不上，会渲成品红冒充缺材质）
 
 ── Z_Enemy_MoShan
-     SMR Object_33  bones=26 非null=0 rootBone=<null> mesh=Object_33 vc=116 材质=InkWash/InkCharacter
-     SMR Object_35  bones=26 非null=0 rootBone=<null> mesh=Object_35 vc=79 材质=InkWash/InkCharacter
-     SMR Object_37  bones=26 非null=0 rootBone=<null> mesh=Object_37 vc=240 材质=InkWash/InkCharacter
-     SMR Object_39  bones=26 非null=0 rootBone=<null> mesh=Object_39 vc=1108 材质=InkWash/InkCharacter
-     SMR Object_41  bones=26 非null=0 rootBone=<null> mesh=Object_41 vc=72 材质=InkWash/InkCharacter
-     SMR Object_43  bones=26 非null=0 rootBone=<null> mesh=Object_43 vc=44 材质=InkWash/InkCharacter
-     SMR Object_45  bones=26 非null=0 rootBone=<null> mesh=Object_45 vc=165 材质=InkWash/InkCharacter
-     SMR Object_47  bones=26 非null=0 rootBone=<null> mesh=Object_47 vc=112 材质=InkWash/InkCharacter
-     SMR Object_49  bones=26 非null=0 rootBone=<null> mesh=Object_49 vc=7401 材质=InkWash/InkCharacter
-     SMR Object_51  bones=26 非null=0 rootBone=<null> mesh=Object_51 vc=56 材质=InkWash/InkCharacter
-     SMR Object_53  bones=26 非null=0 rootBone=<null> mesh=Object_53 vc=255 材质=InkWash/InkCharacter
-     SMR Object_55  bones=26 非null=0 rootBone=<null> mesh=Object_55 vc=58 材质=InkWash/InkCharacter
-     SMR Object_57  bones=26 非null=0 rootBone=<null> mesh=Object_57 vc=55 材质=InkWash/InkCharacter
-     SMR Object_59  bones=26 非null=0 rootBone=<null> mesh=Object_59 vc=53 材质=InkWash/InkCharacter
-     构成：SMR 14（骨骼全 null 的 14）／ 普通 MeshRenderer 0
-     对准：对象盒 center=(0.42, 0.18, -1.11) size=(2.69, 2.80, 3.18)　相机 pos=(2.49, 2.07, -7.00) dist=6.53　相机在地面之上=True
-     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 0 / 921600 = 0.000%　最大通道差 = 0
+     SMR Object_33  bones=26 非null=26 rootBone=_rootJoint mesh=Object_33 vc=116 材质=InkWash/InkCharacter
+     SMR Object_35  bones=26 非null=26 rootBone=_rootJoint mesh=Object_35 vc=79 材质=InkWash/InkCharacter
+     SMR Object_37  bones=26 非null=26 rootBone=_rootJoint mesh=Object_37 vc=240 材质=InkWash/InkCharacter
+     SMR Object_39  bones=26 非null=26 rootBone=_rootJoint mesh=Object_39 vc=1108 材质=InkWash/InkCharacter
+     SMR Object_41  bones=26 非null=26 rootBone=_rootJoint mesh=Object_41 vc=72 材质=InkWash/InkCharacter
+     SMR Object_43  bones=26 非null=26 rootBone=_rootJoint mesh=Object_43 vc=44 材质=InkWash/InkCharacter
+     SMR Object_45  bones=26 非null=26 rootBone=_rootJoint mesh=Object_45 vc=165 材质=InkWash/InkCharacter
+     SMR Object_47  bones=26 非null=26 rootBone=_rootJoint mesh=Object_47 vc=112 材质=InkWash/InkCharacter
+     SMR Object_49  bones=26 非null=26 rootBone=_rootJoint mesh=Object_49 vc=7401 材质=InkWash/InkCharacter
+     SMR Object_51  bones=26 非null=26 rootBone=_rootJoint mesh=Object_51 vc=56 材质=InkWash/InkCharacter
+     SMR Object_53  bones=26 非null=26 rootBone=_rootJoint mesh=Object_53 vc=255 材质=InkWash/InkCharacter
+     SMR Object_55  bones=26 非null=26 rootBone=_rootJoint mesh=Object_55 vc=58 材质=InkWash/InkCharacter
+     SMR Object_57  bones=26 非null=26 rootBone=_rootJoint mesh=Object_57 vc=55 材质=InkWash/InkCharacter
+     SMR Object_59  bones=26 非null=26 rootBone=_rootJoint mesh=Object_59 vc=53 材质=InkWash/InkCharacter
+     构成：SMR 14（骨骼全 null 的 0）／ 普通 MeshRenderer 0
+     对准：对象盒 center=(0.42, 1.15, 0.14) size=(2.69, 3.18, 2.80)　相机 pos=(2.49, 3.04, -5.76) dist=6.53　相机在地面之上=True
+     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 57778 / 921600 = 6.269%　最大通道差 = 250
+           屏内 x[465,710] y[196,547] 占屏 19.2% x 48.9%　md5 相同=False
 
 ── Z_Enemy_MoGuai
-     SMR Object_7  bones=97 非null=0 rootBone=<null> mesh=Object_7 vc=9755 材质=InkWash/InkCharacter
-     SMR Object_9  bones=97 非null=0 rootBone=<null> mesh=Object_9 vc=317 材质=InkWash/InkCharacter
-     SMR Object_11  bones=97 非null=0 rootBone=<null> mesh=Object_11 vc=216 材质=InkWash/InkCharacter
-     SMR Object_13  bones=97 非null=0 rootBone=<null> mesh=Object_13 vc=629 材质=InkWash/InkCharacter
-     SMR Object_15  bones=97 非null=0 rootBone=<null> mesh=Object_15 vc=832 材质=InkWash/InkCharacter
-     SMR Object_17  bones=97 非null=0 rootBone=<null> mesh=Object_17 vc=143 材质=InkWash/InkCharacter
-     SMR Object_19  bones=97 非null=0 rootBone=<null> mesh=Object_19 vc=131 材质=InkWash/InkCharacter
-     SMR Object_21  bones=97 非null=0 rootBone=<null> mesh=Object_21 vc=143 材质=InkWash/InkCharacter
-     SMR Object_23  bones=97 非null=0 rootBone=<null> mesh=Object_23 vc=131 材质=InkWash/InkCharacter
-     SMR Object_25  bones=97 非null=0 rootBone=<null> mesh=Object_25 vc=1002 材质=InkWash/InkCharacter
+     SMR Object_7  bones=97 非null=97 rootBone=_rootJoint mesh=Object_7 vc=9755 材质=InkWash/InkCharacter
+     SMR Object_9  bones=97 非null=97 rootBone=_rootJoint mesh=Object_9 vc=317 材质=InkWash/InkCharacter
+     SMR Object_11  bones=97 非null=97 rootBone=_rootJoint mesh=Object_11 vc=216 材质=InkWash/InkCharacter
+     SMR Object_13  bones=97 非null=97 rootBone=_rootJoint mesh=Object_13 vc=629 材质=InkWash/InkCharacter
+     SMR Object_15  bones=97 非null=97 rootBone=_rootJoint mesh=Object_15 vc=832 材质=InkWash/InkCharacter
+     SMR Object_17  bones=97 非null=97 rootBone=_rootJoint mesh=Object_17 vc=143 材质=InkWash/InkCharacter
+     SMR Object_19  bones=97 非null=97 rootBone=_rootJoint mesh=Object_19 vc=131 材质=InkWash/InkCharacter
+     SMR Object_21  bones=97 非null=97 rootBone=_rootJoint mesh=Object_21 vc=143 材质=InkWash/InkCharacter
+     SMR Object_23  bones=97 非null=97 rootBone=_rootJoint mesh=Object_23 vc=131 材质=InkWash/InkCharacter
+     SMR Object_25  bones=97 非null=97 rootBone=_rootJoint mesh=Object_25 vc=1002 材质=InkWash/InkCharacter
      MR  Box001_08 - Default_0  mesh=Box001_08 - Default_0 vc=24 材质=InkWash/InkCharacter
-     构成：SMR 10（骨骼全 null 的 10）／ 普通 MeshRenderer 1
-     对准：对象盒 center=(0.16, 0.05, -1.00) size=(1.98, 1.18, 2.24)　相机 pos=(1.48, 1.25, -4.78) dist=4.18　相机在地面之上=True
-     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 1 / 921600 = 0.000%　最大通道差 = 235
-           屏内 x[647,647] y[414,414] 占屏 0.1% x 0.1%　md5 相同=False
-     [只留 SMR] 在视锥内=True　纯几何像素 = 0 / 921600 = 0.000%　最大通道差 = 0
-     [只留 MeshRenderer] 在视锥内=True　纯几何像素 = 1 / 921600 = 0.000%　最大通道差 = 235
-           屏内 x[647,647] y[414,414] 占屏 0.1% x 0.1%　md5 相同=False
+     构成：SMR 10（骨骼全 null 的 0）／ 普通 MeshRenderer 1
+     对准：对象盒 center=(0.16, 1.11, 0.05) size=(1.98, 2.24, 1.18)　相机 pos=(1.48, 2.32, -3.73) dist=4.18　相机在地面之上=True
+     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 85715 / 921600 = 9.301%　最大通道差 = 250
+           屏内 x[469,850] y[153,590] 占屏 29.8% x 60.8%　md5 相同=False
+     [只留 SMR] 在视锥内=True　纯几何像素 = 85715 / 921600 = 9.301%　最大通道差 = 250
+           屏内 x[469,850] y[153,590] 占屏 29.8% x 60.8%　md5 相同=False
+     [只留 MeshRenderer] 在视锥内=True　纯几何像素 = 0 / 921600 = 0.000%　最大通道差 = 0
 
 ── Z_Enemy_MoGu
-     SMR Object_21  bones=80 非null=0 rootBone=<null> mesh=Object_21 vc=3239 材质=InkWash/InkCharacter
-     SMR Object_23  bones=80 非null=0 rootBone=<null> mesh=Object_23 vc=5584 材质=InkWash/InkCharacter
-     SMR Object_24  bones=80 非null=0 rootBone=<null> mesh=Object_24 vc=119 材质=InkWash/InkCharacter
+     SMR Object_21  bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_21 vc=3239 材质=InkWash/InkCharacter
+     SMR Object_23  bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_23 vc=5584 材质=InkWash/InkCharacter
+     SMR Object_24  bones=80 非null=80 rootBone=GLTF_created_0_rootJoint mesh=Object_24 vc=119 材质=InkWash/InkCharacter
      MR  Object_28  mesh=Object_28 vc=70 材质=InkWash/InkCharacter
      MR  Object_34  mesh=Object_34 vc=103 材质=InkWash/InkCharacter
      MR  Object_43  mesh=Object_43 vc=103 材质=InkWash/InkCharacter
      MR  Object_90  mesh=Object_90 vc=468 材质=InkWash/InkCharacter
-     构成：SMR 3（骨骼全 null 的 3）／ 普通 MeshRenderer 4
-     对准：对象盒 center=(0.24, 0.45, -0.64) size=(1.56, 1.31, 1.96)　相机 pos=(1.40, 1.51, -3.96) dist=3.67　相机在地面之上=True
-     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 17785 / 921600 = 1.930%　最大通道差 = 249
-           屏内 x[574,828] y[325,526] 占屏 19.9% x 28.1%　md5 相同=False
-     [只留 SMR] 在视锥内=True　纯几何像素 = 0 / 921600 = 0.000%　最大通道差 = 0
-     [只留 MeshRenderer] 在视锥内=True　纯几何像素 = 17785 / 921600 = 1.930%　最大通道差 = 249
-           屏内 x[574,828] y[325,526] 占屏 19.9% x 28.1%　md5 相同=False
+     构成：SMR 3（骨骼全 null 的 0）／ 普通 MeshRenderer 4
+     对准：对象盒 center=(0.24, 0.88, 0.19) size=(1.56, 1.72, 1.13)　相机 pos=(1.34, 1.89, -2.98) dist=3.50　相机在地面之上=True
+     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 52816 / 921600 = 5.731%　最大通道差 = 250
+           屏内 x[472,801] y[123,514] 占屏 25.8% x 54.4%　md5 相同=False
+     [只留 SMR] 在视锥内=True　纯几何像素 = 45009 / 921600 = 4.884%　最大通道差 = 250
+           屏内 x[472,684] y[123,514] 占屏 16.6% x 54.4%　md5 相同=False
+     [只留 MeshRenderer] 在视锥内=True　纯几何像素 = 25763 / 921600 = 2.795%　最大通道差 = 250
+           屏内 x[490,801] y[155,398] 占屏 24.4% x 33.9%　md5 相同=False
 
 ── Z_Enemy_MoLong
      SMR Object_281  bones=273 非null=273 rootBone=_rootJoint mesh=Object_281 vc=28082 材质=InkWash/InkCharacter
      SMR Object_282  bones=273 非null=273 rootBone=_rootJoint mesh=Object_282 vc=804 材质=InkWash/InkCharacter
      构成：SMR 2（骨骼全 null 的 0）／ 普通 MeshRenderer 0
-     对准：对象盒 center=(1.76, 5.93, 1.67) size=(7.63, 2.59, 7.73)　相机 pos=(6.35, 10.12, -11.44) dist=14.51　相机在地面之上=True
-     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 19012 / 921600 = 2.063%　最大通道差 = 249
-           屏内 x[535,919] y[241,423] 占屏 30.1% x 25.4%　md5 相同=False
+     对准：对象盒 center=(2.02, 5.79, 1.58) size=(7.64, 2.59, 7.74)　相机 pos=(6.62, 9.99, -11.54) dist=14.53　相机在地面之上=True
+     [全部（SMR+MR）] 在视锥内=True　纯几何像素 = 21866 / 921600 = 2.373%　最大通道差 = 250
+           屏内 x[525,964] y[242,418] 占屏 34.4% x 24.6%　md5 相同=False
 

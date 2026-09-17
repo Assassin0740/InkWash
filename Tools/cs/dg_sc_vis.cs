@@ -24,7 +24,7 @@ public class dg_sc_vis : MonoBehaviour
     const string ShotDir    = "D:/Unity Project/InkWash/Tools/screenshots/scene";
     const int DiffTh = 6;
 
-    static readonly string[] Order = { "墨徒", "墨偶", "墨魇", "墨龙" };
+    static readonly string[] Order = { "墨徒", "墨偶", "墨魇", "墨山", "墨骨", "墨龙" };
 
     readonly StringBuilder _sb = new StringBuilder();
     Component _sc; Type _ty;
