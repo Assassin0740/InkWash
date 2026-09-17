@@ -20,7 +20,11 @@ import shutil
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-PROJ = r"D:\Unity Project\InkWash"
+# ★ 别写死盘符/路径：原先硬编码 r"D:\Unity Project\InkWash"，
+#   换机器（D: → E:）后所有源路径都不存在 ⇒ 脚本会把整张清单**静默跳过**、
+#   打印一堆"源不存在"却不报错，看上去像"素材没解压"。
+#   用脚本自身位置反推工程根，任何机器都成立（与 install_qframework.py 同做法）。
+PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = os.path.join(PROJ, "Assets")
 RAW = os.path.join(PROJ, "_RawDownloads")
 SRC = os.path.join(ASSETS, "Ziyuan")          # 当前临时堆放处
@@ -251,7 +255,11 @@ def main():
 
     out = "\n".join(log)
     print(out)
-    with open(os.path.join(PROJ, ".workbuddy", "reorg_report.txt"), "w", encoding="utf-8") as fh:
+    # ★ .workbuddy 在新克隆里可能不存在（它常被 gitignore），必须自建，
+    #   否则脚本会在**跑完全部归置之后**才崩在写报告这一步。
+    _wb = os.path.join(PROJ, ".workbuddy")
+    os.makedirs(_wb, exist_ok=True)
+    with open(os.path.join(_wb, "reorg_report.txt"), "w", encoding="utf-8") as fh:
         fh.write(out)
 
 
