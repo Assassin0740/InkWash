@@ -88,8 +88,11 @@ public class dg_pixel_hist : MonoBehaviour
                       + "  取景 center=" + shot.center.ToString("F3") + " size=" + shot.size.ToString("F3"));
 
         DisableOthers(go);
-        Histogram(shot, new Color32(0, 255, 0, 255), Names[_idx] + "_green", 27.14f);
-        Histogram(shot, new Color32(255, 0, 255, 255), Names[_idx] + "_magenta", 0f);
+        // ★ 哨兵色纪律：绝不用洋红 —— 那是 Unity「材质丢失」的渲染色，看图的任何人在
+        //   视觉上都无法区分「我的画布」与「真的缺材质」。同理不用绿（8-bit RT 抖动 62 > 阈值）。
+        //   选纯蓝 / 纯红：单通道高值，实测抖动 ≤19，且与洋红 (255,0,255) 明显不同。
+        Histogram(shot, new Color32(0, 0, 255, 255), Names[_idx] + "_blue", 0f);
+        Histogram(shot, new Color32(255, 0, 0, 255), Names[_idx] + "_red", 0f);
         RestoreOthers();
         _sb.AppendLine();
 

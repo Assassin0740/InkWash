@@ -46,7 +46,7 @@ public class dg_enemy_wide : MonoBehaviour
         _cam = cg.AddComponent<Camera>();
         _cam.orthographic = true;
         _cam.clearFlags = CameraClearFlags.SolidColor;
-        _cam.backgroundColor = new Color(1f, 0f, 1f);
+        _cam.backgroundColor = new Color(0f, 0f, 1f);   // ★ 哨兵色：纯蓝。绝不用洋红（那是 Unity 缺材质的渲染色）
         _cam.nearClipPlane = 0.05f; _cam.farClipPlane = 2000f;
         _cam.enabled = true;
     }

@@ -32,7 +32,8 @@ public class dg_enemy_cull : MonoBehaviour
     const string ShotDir = "D:/Unity Project/InkWash/Tools/screenshots/enemies";
     const string ReportPath = "D:/Unity Project/InkWash/Tools/reports/dg_enemy_cull.txt";
     const int N = 512;
-    static readonly Color32 Bg = new Color32(255, 0, 255, 255);
+    // ★ 哨兵色：纯蓝。绝不用洋红（Unity 缺材质的渲染色，看图者无法区分画布与真缺材质）
+    static readonly Color32 Bg = new Color32(0, 0, 255, 255);
 
     void Awake()
     {

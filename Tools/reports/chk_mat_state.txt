@@ -1,0 +1,26 @@
+=== 敌人 prefab 材质 / shader 状态（只读，编辑模式）===
+判据：空槽(null)==0 且 shader 名字非空 ⇒ 材质没有丢失
+
+--- MoShan    Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+    SMR=14   无网格=0   材质槽=14   空槽(null)=0
+    材质名: M_Ink_Enemy_MoShan
+    shader: InkWash/InkCharacter
+
+--- MoGuai    Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+    SMR=10   无网格=0   材质槽=10   空槽(null)=0
+    材质名: M_Ink_Enemy_MoGuai
+    shader: InkWash/InkCharacter
+
+--- MoGu    Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab
+    SMR=3   无网格=0   材质槽=3   空槽(null)=0
+    材质名: M_Ink_Enemy_MoGu
+    shader: InkWash/InkCharacter
+
+--- MoLong    Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab
+    SMR=2   无网格=0   材质槽=2   空槽(null)=0
+    材质名: M_Ink_Boss_Dragon
+    shader: InkWash/InkCharacter
+
+--- MoYan : prefab 未找到
+--- MoTu : prefab 未找到
+--- MoOu : prefab 未找到

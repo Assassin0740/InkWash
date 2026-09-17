@@ -37,8 +37,11 @@ public class dg_enemy_probe2 : MonoBehaviour
     const string ReportPath = "D:/Unity Project/InkWash/Tools/reports/dg_enemy_probe2.txt";
     const int N = 640;
 
-    static readonly Color32 BgMagenta = new Color32(255, 0, 255, 255);
-    static readonly Color32 BgGreen = new Color32(0, 255, 0, 255);
+    // ★ 哨兵色纪律：绝不用洋红 —— 那是 Unity「材质丢失」的渲染色，看图的任何人在视觉上
+    //   都无法区分「我的画布」与「真的缺材质」；也不用绿 —— 8-bit RT 抖动最大 62 > 阈值 24
+    //   ⇒ 会凭空多出 25% 假"非背景"像素。纯蓝/纯红单通道实测抖动 ≤21，判据干净。
+    static readonly Color32 BgBlue = new Color32(0, 0, 255, 255);
+    static readonly Color32 BgRed = new Color32(255, 0, 0, 255);
 
     void Awake()
     {
@@ -176,10 +179,10 @@ public class dg_enemy_probe2 : MonoBehaviour
         // ★★ 双背景色对照
         DisableOthers(go);
         var res = new float[4];
-        res[0] = OneShot(shot, BgMagenta, tag + "_magenta_top", true);
-        res[1] = OneShot(shot, BgMagenta, tag + "_magenta_side", false);
-        res[2] = OneShot(shot, BgGreen, tag + "_green_top", true);
-        res[3] = OneShot(shot, BgGreen, tag + "_green_side", false);
+        res[0] = OneShot(shot, BgBlue, tag + "_blue_top", true);
+        res[1] = OneShot(shot, BgBlue, tag + "_blue_side", false);
+        res[2] = OneShot(shot, BgRed, tag + "_red_top", true);
+        res[3] = OneShot(shot, BgRed, tag + "_red_side", false);
         RestoreOthers();
 
         _sb.AppendLine("    像素  品红底 top=" + res[0].ToString("F2") + "%  side=" + res[1].ToString("F2") + "%"
