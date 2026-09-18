@@ -152,6 +152,23 @@ sysinfo.txt
 /Tools/screenshots/enemies/T19/
 /Tools/screenshots/enemies/T19CMP/
 
+# 「第二十/二十一轮 墨龙头部朝向尺子」的逐档截图（H20/H21/H21F，各 9~12 张约 5 MB）。
+# 探针 Tools/cs/drg_headaxis20.cs（20）／drg_head21.cs（21）／drg_headfinal21.cs（出货验收）重跑即可再生成；
+# 叠了水平参考线的结论拼图已入库，不排：
+#   Tools/screenshots/enemies/_墨龙_头部档位_绝对值_v2.png
+#   Tools/screenshots/enemies/_墨龙_头部_改前改后_v1.png
+/Tools/screenshots/enemies/H20/
+/Tools/screenshots/enemies/H21/
+/Tools/screenshots/enemies/H21F/
+
+# 「中国站素材寻源」的中间产物：封面图缓存（几十 MB）与 sitemap 原件（1.2 MB，随时可重下）。
+# 结论在 Docs/素材候选_中国站_v1.png / .md，商品缓存 Tools/reports/store_cn_cache.json 保留。
+/Tools/screenshots/store_cn/
+/Tools/reports/store_cn_sitemap.xml
+
+# ---------- 助手工作区记忆（不属于项目产物，勿入库）----------
+/.workbuddy/
+
 # ---------- 操作系统杂项 ----------
 .DS_Store
 Thumbs.db

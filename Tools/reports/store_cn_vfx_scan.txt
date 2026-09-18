@@ -1,0 +1,1046 @@
+[sitemap] 商品 5711 个，分类 120 个
+[scan] 选中分类 vfx, vfx/particles, vfx/particles/spells, vfx/particles/fire-explosions, vfx/particles/environment, vfx/shaders, tools/particles-effects ⇒ 345 个商品
+[scan] 需抓 343 个商品页（缓存已有 2）
+  25/343  8s  (3.00 个/秒)
+  50/343  16s  (3.10 个/秒)
+  75/343  24s  (3.17 个/秒)
+  100/343  33s  (3.05 个/秒)
+  125/343  41s  (3.05 个/秒)
+  150/343  47s  (3.18 个/秒)
+  175/343  54s  (3.24 个/秒)
+  200/343  61s  (3.27 个/秒)
+  225/343  67s  (3.36 个/秒)
+  250/343  74s  (3.36 个/秒)
+  275/343  84s  (3.28 个/秒)
+  300/343  90s  (3.34 个/秒)
+  325/343  99s  (3.28 个/秒)
+  343/343  104s  (3.31 个/秒)
+[result] 341 条命中（缓存总量 345）
+
+id         名称                         价格       团结引擎版本                 分类/发布者
+----------------------------------------------------------------------------------------------------------------------
+20003693    特效合集超级包 - Vol.2 - URP     ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003822    风格化的光束效果 -Vol.2 -URP      ¥77.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003079   100 个 2D 像素风格特效            ¥198.10  2022.3.62t5            VFX / Ismartal
+20004590   2D shader效果合集              ¥14.00   2022.3.62t7            VFX/着色器 / aiwankeji
+20003910   2D 烟花特效                    ¥42.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003911   2D 烟花特效 - URP              ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20005209   2D射击枪口和冲击 Vol1             ¥77.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002492   2D射击枪口和冲击 Vol2             ¥97.30   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002493   2D射击枪口和冲击 Vol2 - URP       ¥97.30   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003546   2D电弧效果                     ¥34.30   2022.3.62t4            VFX / Maything
+20003781   2D网格线效果                    ¥34.30   2022.3.62t4            VFX / Maything
+20003786   2D蛇形笔刷效果                   ¥13.92   2022.3.62t4            VFX / Maything
+20000892   3A级科幻特效                    ¥144.20  2022.3.61t8            VFX/粒子 / Hovl Studio
+20000891   3D火焰与爆炸                    ¥99.40   2022.3.62t4            VFX/粒子/火焰与爆炸 / Hovl Studio
+20003800   50 项影响                     ¥48.30   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002222   All In 1 3D-Shader         ¥220.50  2022.3.61t9            VFX/着色器 / Seaside Studios
+20002221   All In 1 Sprite Shader     ¥196.00  2022.3.61t9            VFX/着色器 / Seaside Studios
+20002223   All In 1 Vfx Toolkit       ¥294.00  2022.3.61t9            VFX/着色器 / Seaside Studios
+20006552   Area Of Effect             ¥126.00  2022.3.2t3             VFX/粒子 / Lanlan
+20006596   Aura Status Effect         ¥136.50  2022.3.2t3             VFX/粒子 / Lanlan
+20006591   Beam Effect                ¥115.50  2022.3.2t3             VFX/粒子 / Lanlan
+20000557   Beautify 3 - Advanced Po   ¥244.30  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20001537   Blur Toolkit URP - URP全能   ¥98.70   2022.3.2t3             VFX/着色器 / DevDunk
+20004667   Brightness Effect - URP    ¥140.00  2022.3.62t7            VFX/着色器/全屏与镜头效果 / GHB
+20005366   Cartoon Casual VFX Pack    ¥99.81   2022.3.61t6            VFX / LAYERLAB
+20004669   ChameleonX                 免费       2022.3.2t3             VFX/着色器 / TLNEXUS
+20006592   Character Energy Totem S   ¥105.00  2022.3.2t3             VFX/粒子 / Lanlan
+20006595   Character Trail Effect     ¥115.50  2022.3.2t3             VFX/粒子 / Lanlan
+20003548   DNA细胞核粒子效果                 ¥27.30   2022.3.62t4            VFX/粒子 / Maything
+20006345   Double Sided Standard Mo   ¥47.60   2022.3.61t12           VFX/着色器 / Brumble5543
+20000768   Easy Performant Outline    ¥194.60  2022.3.2t3             VFX/着色器/全屏与镜头效果 / Pirate Parrot
+20006593   Elemental Explosion        ¥119.00  2022.3.2t3             VFX/粒子 / Lanlan
+20006586   Global Snow 2              ¥189.00  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20000435   GrassFlow 2                ¥174.99  2022.3.2t3             VFX/着色器 / BoltScripts
+20001730   Highlight Plus 2 - All i   ¥220.50  2022.3.61t6            VFX / Kronnect
+20002603   Infinity Benchmark Suite   免费       2022.3.62t2            VFX/粒子 / 团结引擎
+20002197   LUMINA GI 2024: Real-Tim   ¥483.00  2022.3.62t4            工具/粒子效果 / nasos_333
+20005944   Legacy Particle Pack       免费       2022.3.62t11           VFX/粒子 / 团结引擎
+20006385   Light Beams                ¥47.60   2022.3.61t12           VFX/着色器 / Brumble5543
+20001817   Light Receiver URP - AR    ¥72.80   2022.3.2t3             VFX/着色器 / DevDunk
+20006589   Liquid Volume Pro 2        ¥402.50  2022.3.61t6            VFX/着色器 / Kronnect
+20002009   LitPlus — URP 光照 Shader    ¥34.30   2022.3.61t9            VFX/着色器 / GraphicsCat
+20006590   Loop Buff Skill Effect     ¥126.00  2022.3.2t3             VFX/粒子 / Lanlan
+20001022   POLYGON - Particle FX Pa   ¥238.00  2022.3.62t1b1          VFX/粒子 / Synty Studios
+20001100   Particle Environment&Bac   ¥74.20   2022.3.61t7            VFX/粒子/环境 / BluBlu Games
+20005957   Particle Pack              免费       2022.3.62t1b1          VFX/粒子 / 团结引擎
+20001263   PotaToon                   ¥455.00  2022.3.61t8            VFX/着色器 / Mseon
+20000893   RPG 特效捆绑包                  ¥239.40  2022.3.61t8            VFX/粒子 / Hovl Studio
+20004485   Radiant Global Illuminat   ¥248.50  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20006001   Real Fake Interiors        ¥118.30  2022.3.2t3             VFX / Amplify Creations
+20000949   RealToon （专业动漫/卡通着色器）      ¥174.30  2022.3.61t2            VFX/着色器 / MJQ Studio Works
+20001238   Realistic Explosion Pack   ¥105.00  2022.3.61t8            VFX/粒子/火焰与爆炸 / Saitama Studio
+20005930   Retro Texel Splatting To   ¥49.00   2022.3.62t10           VFX / KE 3D Assets（3D素材)
+20006146   Roguelike 召唤师魔法特效          ¥161.00  2022.3.62t11           VFX/粒子/符文 / Piloto Studio
+20003499   Roguelike 特效 Vol.3         ¥161.00  2022.3.62t5            VFX/粒子/符文 / Piloto Studio
+20002280   Roguelike 魔法 II VFX 套件     ¥168.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002259   Roguelike 魔法特效套装           ¥175.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20000313   SEAMLESS CONVERTER SHADE   ¥24.65   2022.3.62t1b7          VFX/着色器 / Occlusionn
+20000285   Scratch Card               ¥124.60  2022.3.2t3             工具/粒子效果 / Kostiantyn Saietskyi
+20004484   Shiny SSR 2 - Screen Spa   ¥248.50  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20001064   Simple FX - 卡通粒子特效（Carto   免费       2022.3.61t6            VFX/粒子 / Synty Studios
+20004848   Spline Path FX             ¥279.99  2022.3.61t8            VFX / 海灵工坊
+20004128   Touch Effect System | 触控   ¥95.90   2022.3.61t1            VFX/着色器 / octanta_studio
+20003695   UI VFX 合集超级包               ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003698   UI VFX 合集超级包 - URP         ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003719   UI VFX 特效合集 Vol.2          ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20004850   UI特效集合                     ¥489.30  2022.3.61t8            VFX / 海灵工坊
+20004849   UI粒子特效                     ¥209.99  2022.3.61t8            VFX/粒子 / 海灵工坊
+20001813   URP 屏幕空间雾效                 ¥98.00   2022.3.2t3             VFX/着色器/全屏与镜头效果 / DevDunk
+20006584   Umbra Soft Shadows - Bet   ¥189.00  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20001456   UniStorm HDRP - Dynamic    ¥148.40  2022.3.62t1b1          工具/粒子效果 / Black Horizon Studios
+20001218   UniStorm Weather System    ¥298.20  2022.3.62t1b1          工具/粒子效果 / Black Horizon Studios
+20003339   Unique AoE Magic Abiliti   ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006871   Unique AoE Magic Abiliti   ¥140.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006872   Unique AoE Magic Abiliti   ¥119.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006869   Unique Lasers Volume 1     ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006875   Unique Loot Drops Vol. 1   ¥70.00   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006876   Unique Markers & Pings V   ¥70.00   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006877   Unique Orbs Vol. 1         ¥47.60   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006689   Unique Projectiles Vol.    ¥105.00  2022.3.48t3            VFX/粒子 / Gabriel Aguiar Prod
+20006695   Unique Projectiles Vol.    ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006697   Unique Projectiles Vol.    ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006700   Unique Projectiles Vol.    ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006873   Unique Sci-Fi Pack Vol.    ¥119.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006880   Unique Shields & Barrier   ¥56.00   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006881   Unique Shields Vol. 2      ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006874   Unique Stylized Explosio   ¥119.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006878   Unique Sword Slashes Vol   ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006882   Unique Thrusters Vol.1     ¥56.00   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006703   Unique Toon Projectiles    ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006883   Unique VFX Ultra Pack      ¥1270.50 2022.3.48t3            VFX / Gabriel Aguiar Prod
+20004867   VFX - 低聚火焰粒子 | VFX - Low   免费       2022.3.62t2            VFX/粒子/火焰与爆炸 / Game Seed Assets
+20006902   VFX Graph - Earthbender    ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006903   VFX Graph - Electric Orb   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006904   VFX Graph - Fire Attack    ¥47.60   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006905   VFX Graph - Fireworks -    ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006906   VFX Graph - Flamethrower   ¥47.60   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006907   VFX Graph - Ground Slash   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006909   VFX Graph - Hits & Impac   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006910   VFX Graph - Hits & Impac   ¥73.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006911   VFX Graph - Ice Attack -   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006912   VFX Graph - Level Up Eff   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006913   VFX Graph - Lightning Ef   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006915   VFX Graph - Lightning Ef   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006927   VFX Graph - Loot Drops -   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006928   VFX Graph - Magic Orbs -   ¥47.60   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006886   VFX Graph - Mega Pack -    ¥287.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006887   VFX Graph - Mega Pack -    ¥287.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006888   VFX Graph - Mega Pack -    ¥287.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006901   VFX Graph - Mega Pack -    ¥287.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006929   VFX Graph - Meteor Rain    ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006930   VFX Graph - Muzzle Effec   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006931   VFX Graph - Orb Explosio   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006932   VFX Graph - Portal Effec   ¥47.60   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006933   VFX Graph - Procedural E   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006935   VFX Graph - Sci-Fi Shiel   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006938   VFX Graph - Stylized Las   ¥73.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006939   VFX Graph - Stylized Orb   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006940   VFX Graph - Stylized Sla   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006941   VFX Graph - Stylized Smo   ¥73.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006943   VFX Graph - Stylized Tor   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006944   VFX Graph - Summon Creat   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006946   VFX Graph - Sword Slashe   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007065   VFX Graph - Sword Slashe   ¥73.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007067   VFX Graph - Toon Liquids   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007068   VFX Graph - Tsunami Wave   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20006884   VFX Graph - Ultra Mega P   ¥896.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007069   VFX Graph - Vertical Bea   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007070   VFX Graph - Vertical Por   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007071   VFX Graph - Weapon Effec   ¥59.50   2022.3.48t3            VFX / Gabriel Aguiar Prod
+20007077   VFX Graph Project - Thun   ¥105.00  2022.3.48t3            VFX / Gabriel Aguiar Prod
+20001288   Volumetric Fog & Mist 2    ¥315.00  2022.3.61t6            VFX/着色器/全屏与镜头效果 / Kronnect
+20001787   Volumetric Lights 2        ¥290.50  2022.3.61t6            VFX/着色器 / Kronnect
+20002308   Volumetric Liquid In Bot   ¥397.60  2022.3.62t1b4          VFX/着色器 / lcl0723
+20001106   ​​Portal​_​​TeleporterEf   ¥35.00   2022.3.2t3             VFX/粒子 / sunzzs
+20002474   三消游戏特效合集                   ¥146.30  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20000191   上帝光特效生成器                   ¥83.30   2022.3.2t3             VFX / Cheddar Sparks
+20000894   专业剑斩特效                     ¥99.40   2022.3.62t4            VFX/粒子/符文 / Hovl Studio
+20003531   二维文字和照片粒子效果                ¥48.30   2022.3.62t4            VFX/粒子 / Maything
+20002345   仙灵风格化 VFX 入门套件             ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20005692   传送门1                       免费       2022.3.2t3             VFX/粒子 / luffy_1_2_3
+20002243   传送门特效包                     ¥126.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003882   伪3D卡牌旋转                    ¥14.00   2022.3.62t6,2022.3.6   VFX/着色器 / aiwankeji
+20000311   体积光束插件 Volumetric Light    ¥224.00  2022.3.2t3             VFX/着色器 / Tech Salad
+20002264   僵尸与不死族终极合集 —— 12 大家族 + B   ¥525.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002282   光束、激光与射线魔法资源包              ¥126.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20005739   光柱特效1                      免费       2022.3.2t3             VFX/粒子 / luffy_1_2_3
+20003611   六边形波浪滚动效果                  ¥27.30   2022.3.62t4            VFX / Maything
+20002256   写实 ARPG VFX 入门包 —— 火焰法术    ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003502   写实吟游诗人特效                   ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20002276   写实圣骑士 / 神圣魔法特效             ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002248   写实惩戒魔法法术特效包                ¥105.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002241   写实死灵法术特效                   ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002246   写实毒素魔法法术特效                 ¥196.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002244   写实猩红法术特效                   ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20004408   写实环境火焰与爆炸 VFX 特效包！         ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20006504   写实雪景 | Realistic Snow      ¥23.80   2022.3.62t12           VFX/粒子 / AK STUDIO ART
+20004407   写实风暴激涌 VFX 特效包             ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20002245   写实魔法区域光束特效                 ¥105.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20001589   冰雪世界 (Ice World)           ¥70.00   2022.3.61t6            VFX/着色器 / NatureManufacture
+20002339   冰霜 & 寒冰 风格化 VFX 入门套件       ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20001952   几何描边 — 最快的 URP 描边方案        ¥11.20   2022.3.61t9            VFX/着色器 / GraphicsCat
+20002495   动作游戏特效合集                   ¥146.30  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002496   动作游戏特效合集 URP               ¥146.30  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002622   动漫特效包                      ¥80.50   2022.3.62t4            VFX/粒子/符文 / Hovl Studio
+20002271   动漫能力特效包                    ¥175.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20004406   卡通对话气泡 VFX 特效包             ¥195.30  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20004710   卡通打击与投射物特效                 ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20003062   卡通爆炸合集                     ¥81.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003063   卡通爆炸合集 URP                 ¥81.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20004708   卡通表情 VFX 特效包               ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20004403   卡通风击中与状态效果 VFX 特效包         ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20002274   卡通风格农作物收获包                 ¥105.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20000158   卷纸、卷轴或地图                   ¥45.50   2022.3.55t1            VFX/着色器 / danileccn365
+20001995   叠加效果 — URP 物体高亮            ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20002286   召回特效                       ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002247   史莱姆与生物伙伴 —— 366 种变化        ¥119.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20000330   图形锦囊 — URP 效果方案合集          ¥69.30   2022.3.61t9            VFX/着色器 / GraphicsCat
+20003787   圆形环绕粒子效果                   ¥13.92   2022.3.62t4            VFX/粒子 / Maything
+20002340   圣光 & 圣骑士 风格化 VFX 入门套件      ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002623   地图扫描器 VFX                  ¥176.40  2022.3.62t3            VFX/着色器/全屏与镜头效果 / Hovl Studio
+20003825   墨迹化开效果                     ¥13.30   2022.3.62t4            VFX / Maything
+20004816   外框特效集合                     ¥209.30  2022.3.61t8            VFX / 海灵工坊
+20003807   多边形照片爆炸效果                  ¥13.92   2022.3.62t4            VFX / Maything
+20002287   奥术风格化特效入门套件                ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002342   宇宙 & 宇宙风格化 VFX 入门套件        ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002254   寒冰冬季终极合集 —— 12 大家族 + Bos   ¥511.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002355   小丑魔法 风格化 VFX 入门套装          ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002257   屏幕空间特效                     ¥154.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20001948   平面阴影 — 轻量 URP 阴影           ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20002348   幽灵魔法 · 风格化 VFX 入门套件        ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20000290   应用程序 UI 图标动画包： 第 1 卷       ¥188.99  2022.3.61t6            VFX / vvVisualXxx
+20002268   彩虹糖宝箱系统（Pinata Lootbox S   ¥385.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20000666   影子接收器 URP                  ¥74.20   2022.3.2t3             VFX/着色器 / DevDunk
+20006267   懒人式粒子特效百宝箱                 ¥14.00   2022.3.62t11           VFX/粒子 / 1982560278
+20006713   战争类粒子特效资源包WarFX            免费       2022.3.62t8            VFX/粒子/火焰与爆炸 / Rainy1024
+20003912   扑克搓牌效果                     ¥14.00   2022.3.62t6,2022.3.6   VFX/着色器 / aiwankeji
+20002278   打造终极防御游戏体验的                ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20001914   技能范围效果 — 攻击区域高亮显示          ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20003897   抽象草图线条效果                   ¥34.93   2022.3.62t4            VFX / Maything
+20003929   插槽 VFX - 循环精灵图效果           ¥287.00  2022.3.2t3             VFX / CartoonVFX9X
+20003832   撞击影响 Vol.2                 ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003893   数字流动线段效果                   ¥27.93   2022.3.62t4            VFX / Maything
+20003726   文本效果_用户界面效果                ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20000160   新生、地图轨迹标记视觉特效              ¥154.00  2022.3.61t5            VFX/粒子 / vvVisualXxx
+20003869   旋转彩虹效果                     ¥27.93   2022.3.62t4            VFX / Maything
+20003702   无限循环效果                     ¥6.93    2022.3.62t4            VFX / Maything
+20003768   无限拼接循环效果                   ¥6.99    2022.3.62t4            VFX / Maything
+20002281   暗影终极大包（Shadow Ultimate M   ¥511.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002624   更出色的发光球体包 2                ¥122.50  2022.3.62t4            VFX/粒子/符文 / Hovl Studio
+20002253   机器人终极超级合集 —— 12 大家族 + Bo   ¥525.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003612   枝条生长效果                     ¥6.99    2022.3.62t4            VFX / Maything
+20002251   标记 / 提示 / 信号特效 VFX         ¥91.00   2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002250   桌游 / 卡牌游戏风格化魔法特效           ¥91.00   2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003729   棉絮效果                       免费       2022.3.62t4            VFX / Maything
+20002346   棱彩 & 彩虹魔法 风格化 VFX 入门套件     ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003701   模糊背景粒子效果                   ¥4.89    2022.3.62t4            VFX/粒子 / Maything
+20003870   橡皮筋弹跳效果                    ¥13.92   2022.3.62t4            VFX / Maything
+20003500   死灵之握特效包                    ¥196.00  2022.3.62t5            VFX/粒子/符文 / Piloto Studio
+20003966   毛发shader                   ¥4.20    2022.3.62t4            VFX/着色器 / Fantas_Feng
+20002275   水与冰 ARPG 入门资源包             ¥168.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002350   水系魔法 风格化 VFX 入门套件          ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003873   波浪线段图片效果                   ¥27.30   2022.3.62t4            VFX / Maything
+20003530   流体粒子效果                     ¥20.30   2022.3.62t4            VFX/粒子 / Maything
+20003632   流动照片粒子效果                   ¥20.93   2022.3.62t4            VFX/粒子 / Maything
+20003621   流动网格线                      ¥13.92   2022.3.62t4            VFX / Maything
+20003743   涂鸦特效合集                     ¥95.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003752   涂鸦特效合集 - URP               ¥95.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20001128   涂鸦特效第二卷                    ¥144.20  2022.3.2t5             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003536   漩涡线段旋转效果                   ¥69.30   2022.3.62t4            VFX / Maything
+20001590   火与烟——动态的自然 (Fire & Smoke   ¥45.50   2022.3.61t6            VFX/粒子/火焰与爆炸 / NatureManufacture
+20003834   火焰特效合集                     ¥81.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002338   火焰风格化 VFX 入门套装             ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002242   烟雾弹特效 VFX —— 超过 20 种变化     ¥175.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003607   照片流体粒子效果                   ¥34.30   2022.3.62t4            VFX/粒子 / Maything
+20003619   照片漩涡线段效果                   ¥27.30   2022.3.62t4            VFX / Maything
+20003828   照片粒子下雨效果                   ¥13.92   2022.3.62t4            VFX / Maything
+20003831   爆炸效应 Vol3                  ¥77.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003830   爆炸特效 Vol.2 - 像素            ¥77.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20006870   爆炸特效音效资源包                  ¥31.15   2022.3.62t8            VFX/粒子/火焰与爆炸 / Rainy1024
+20002265   爪击斩击特效（Claw Slashes VFX）   ¥126.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003537   爱心粒子效果                     ¥6.93    2022.3.62t4            VFX/粒子 / Maything
+20003577   特效合集超级包 - Vol.1            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003678   特效合集超级包 - Vol.10           ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003639   特效合集超级包 - Vol.2            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003641   特效合集超级包 - Vol.4            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003653   特效合集超级包 - Vol.5            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003672   特效合集超级包 - Vol.6            ¥130.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003673   特效合集超级包 - Vol.7            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003674   特效合集超级包 - Vol.8            ¥175.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003675   特效合集超级包 - Vol.9            ¥144.20  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003676   特效合集超级包 - Vol.9 - URP      ¥144.20  2022.3.2t4             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20006088   现实主义 ARPG 魔法宝石特效           ¥182.00  2022.3.62t11           VFX/粒子/符文 / Piloto Studio
+20003498   现实墨水法术                     ¥189.00  2022.3.62t5            VFX/粒子/符文 / Piloto Studio
+20003821   珊瑚绒毛飘动效果                   ¥27.93   2022.3.62t4            VFX / Maything
+20002337   电击 & 闪电 风格化 VFX 入门套件       ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002349   疾风·风系风格化 VFX 入门套装          ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002476   益智游戏效果合集                   ¥195.30  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003885   益智游戏特效合集 - 超级包             ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003886   益智游戏特效合集 - 超级包 - URP       ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002266   真实 ARPG VFX —— 法力法术        ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002263   真实 ARPG VFX —— 黄金魔法        ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002285   真实感 ARPG 风系魔法技能特效          ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002270   真实感 ARPG——恶魔对天使            ¥189.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20004624   瞄准镜与倍镜着色器                  ¥24.49   2022.3.2t3             VFX/着色器 / Simon_Mczt
+20003895   矩阵迷宫线段效果                   ¥27.93   2022.3.62t4            VFX / Maything
+20001549   科幻全息屏幕着色器 Sci-Fi Hologra   ¥97.30   2022.3.61t6            VFX/着色器 / MaxKill Studios
+20000499   科幻载入屏幕特效包                  ¥137.19  2022.3.61t6            VFX / vvVisualXxx
+20002352   科幻｜科技｜未来风格化 VFX 入门套件       ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20004847   科技风UI特效包                   ¥209.99  2022.3.61t8            VFX / 海灵工坊
+20004813   科技风环境特效                    ¥90.30   2022.3.61t8            VFX/粒子 / 海灵工坊
+20002260   程序化法术指示器 VFX               ¥112.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003703   穿越天际效果                     ¥20.93   2022.3.62t4            VFX / Maything
+20003871   立方体涟漪效果                    ¥13.99   2022.3.62t4            VFX / Maything
+20003620   立方体黑洞效果                    ¥6.93    2022.3.62t4            VFX / Maything
+20002740   简单的2D形状                    ¥23.80   2022.3.62t4            VFX/着色器 / 楠瓜Moenen
+20005560   类 Rogue 游戏火药特效             ¥154.00  2022.3.62t8            VFX/粒子/符文 / Piloto Studio
+20004402   类Roguelike奥术风格特效           ¥154.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20003528   粒子路径效果                     ¥6.93    2022.3.62t4            VFX/粒子 / Maything
+20002258   终极战利品特效包 —— 199 种特效        ¥168.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002255   终极网格特效                     ¥196.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003875   绘制活力四射线段效果                 ¥27.93   2022.3.62t4            VFX / Maything
+20002269   翅膀特效（Wings VFX）——共 23 种翅   ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002344   自然与德鲁伊 风格化 VFX 入门套件        ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003545   舞动的照片粒子效果                  ¥34.30   2022.3.62t4            VFX/粒子 / Maything
+20003700   菌丝照片效果                     ¥27.93   2022.3.62t4            VFX / Maything
+20003728   菌丝生长效果                     ¥4.89    2022.3.62t4            VFX / Maything
+20002134   虚拟仿真通用特效1                  免费       2022.3.2t3             VFX / luffy_1_2_3
+20004631   虚拟仿真通用特效2                  免费       2022.3.2t3             VFX/粒子 / luffy_1_2_3
+20002347   虚空魔法 · 风格化 VFX 入门套件        ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002351   蜂蜜蜜蜂 风格化 VFX 入门套件          ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002240   血液特效基础包                    ¥315.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002341   血液风格化 VFX 入门套件             ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002356   街机像素复古风格化 VFX 入门套件         ¥168.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003575   角色效果 - 力量光环                ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003868   贝塞尔渐变曲线效果                  ¥20.93   2022.3.62t4            VFX / Maything
+20002889   超写实 ARPG 特效合集包（Super Rea   ¥1750.00 2022.3.62t5            VFX/粒子/符文 / Piloto Studio
+20002252   超级魔法特效 FX —— 超过 1400 种独特   ¥1750.00 2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20004823   路径特效—基于LineRender          ¥209.30  2022.3.61t8            VFX / 海灵工坊
+20002284   这个包为你的游戏带来了逼真的 ARPG 拾取效果   ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003857   透视系统 — 阻挡物半透明效果            ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20003524   通用拖尾特效1(URP)               免费       2022.3.2t3             VFX/着色器 / luffy_1_2_3
+20000662   逼真 6D 光照爆炸特效包              ¥80.50   2022.3.61t7            VFX/粒子/火焰与爆炸 / DavideMezzaqui
+20002877   逼真 ARPG 地面猛击特效             ¥182.00  2022.3.62t4            VFX/粒子/符文 / Piloto Studio
+20002878   逼真 ARPG 沙尘特效               ¥182.00  2022.3.62t4            VFX/粒子/符文 / Piloto Studio
+20002887   逼真 ARPG 蜘蛛首领特效             ¥182.00  2022.3.62t5            VFX/粒子/符文 / Piloto Studio
+20002277   逼真堕落魔法 ARPG                ¥196.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002884   逼真月光法术特效                   ¥182.00  2022.3.62t4            VFX/粒子/符文 / Piloto Studio
+20002885   逼真枪手战斗特效                   ¥182.00  2022.3.62t11           VFX/粒子/符文 / Piloto Studio
+20002886   逼真漫画法术特效                   ¥182.00  2022.3.62t3            VFX/粒子/符文 / Piloto Studio
+20005554   逼真的烟花视觉特效 VFX              ¥174.30  2022.3.62t8            VFX/粒子/符文 / Piloto Studio
+20004709   逼真的风暴激涌                    ¥196.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20005556   逼真网格特效（Realistic Mesh VF   ¥182.00  2022.3.62t8            VFX/粒子/符文 / Piloto Studio
+20001992   遮挡效果 — URP 透视 & X-Ray 效果   ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20004404   醉酒效果 VFX 特效包               ¥154.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20004401   锁链特效                       ¥154.00  2022.3.62t7            VFX/粒子/符文 / Piloto Studio
+20001989   锐化效果 — URP 屏幕锐化效果          ¥23.10   2022.3.61t9            VFX/着色器 / GraphicsCat
+20002662   镜面可交互水面                    ¥3.50    2022.3.62t1b6          VFX/着色器 / Unity24Jun
+20004821   镭射光柱特效                     ¥209.30  2022.3.61t8            VFX / 海灵工坊
+20003883   闪电特效 Vol.1                 ¥81.20   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20004868   雨粒子 | Rain Particles       免费       2022.3.62t2            VFX/粒子 / Game Seed Assets
+20004869   雾颗粒 | Fog Particles        免费       2022.3.62t2            VFX/粒子/环境 / Game Seed Assets
+20000889   震撼VR的3D爆炸特效！               ¥74.20   2022.3.61t8            VFX/粒子/火焰与爆炸 / Hovl Studio
+20000387   风格化传送门：第一卷                 ¥174.99  2022.3.61t6            VFX / vvVisualXxx
+20002272   风格化元素光环 / 状态特效             ¥105.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20005340   风格化弹丸 Vol2                 ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20005339   风格化弹丸 Vol3                 ¥98.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20000746   风格化打击效果 第1卷                ¥69.99   2022.3.61t6            VFX / vvVisualXxx
+20002283   风格化水晶与宝石超大包                ¥119.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002267   风格化波浪特效                    ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002279   风格化激光攻击 - 22 个 VFX！        ¥140.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003720   风格化爆炸效果 Vol.2              ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003721   风格化爆炸效果 Vol.2 - URP        ¥49.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003792   风格化的光束效果                   ¥91.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003819   风格化的光束效果 -Vol.2            ¥77.00   2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003874   风车旋转效果                     ¥20.93   2022.3.62t4            VFX / Maything
+20002652   魔法墙特效                      ¥196.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20003879   魔法的效果 -Magic Spell - Vol   ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20003880   魔法的效果 -Magic Spell - Vol   ¥224.00  2022.3.2t3             VFX/粒子/火焰与爆炸 / CartoonVFX9X
+20002354   魔法音乐风格化 VFX 入门套件           ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+20002343   黑暗魔法 风格化 VFX 入门套件          ¥224.00  2022.3.62t2            VFX/粒子/符文 / Piloto Studio
+
+  20003693  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003693
+      此软件包可帮助您轻松快速地制作游戏。
+  20003822  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003822
+      15 种光束特效 URP，让你的游戏更适合移动设备。
+  20003079  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003079
+      共 100 个像素风格 2D 特效
+  20004590  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20004590
+      `2DShader` 是一个面向 Unity 2D 项目的 shader 效果资源包。它提供一组常用的 2D sprite 特效着色器，包括流光、外发光、高斯模糊、双重图像、溶解、马赛克、水波纹等。资源包适用于需要增强视觉表现力的 2D 游戏、UI 特效、动画演示和原型开发。
+  20003910  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003910
+      2D烟花特效 - 用于制作手机游戏
+  20003911  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003911
+      帮助您轻松制作游戏。
+  20005209  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20005209
+      为了帮助您快速轻松地制作游戏。
+  20002492  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002492
+      轻松快捷地制作你的游戏。
+  20002493  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002493
+      轻松帮助您轻松快捷地制作游戏。
+  20003546  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003546
+      这个效果模拟了电弧效果，当中心点移动并靠近小点时，就会产生多条电弧效果！
+  20003781  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003781
+      这个效果把图片和视频转化为网格线来显示！
+  20003786  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003786
+      这个效果模拟蛇的爬行在屏幕上绘制照片，照片绘制时，生成的照片也会产生模糊的效果。
+  20000892  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20000892
+      顶级科幻特效，完美适用于真实感游戏！
+  20000891  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20000891
+      该资源包包含25个特效预制件：15个爆炸，5个火焰特效，5个烟雾特效！
+  20003800  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003800
+      帮助你快速制作动作游戏
+  20002222  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002222
+      改变您的项目！用游戏开发者期待已久的资产，在几分钟内创建引人注目的 3D material。来自 All In 1 Sprite Shader 的创作者，现在为 3D 世界而生！
+  20002221  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002221
+      All In 1 Sprite Shader 旨在为游戏开发者赋能。忘掉 shader 的复杂性，加速您的图形工作流程，实现您的梦想游戏！
+  20002223  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002223
+      All In 1 Vfx Toolkit 让您以最简单、最快速的方式创建令人惊叹的效果。忘掉 shader 和技术限制，是时候创建令人难以置信的 VFX 了！
+  20006552  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006552
+      10个范围效果，拖入场景中就可使用。
+  20006596  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006596
+      共有15种效果，支持Unity 2021.3.0及以上版本，默认效果为URP管线。
+  20006591  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006591
+      共有10种效果，支持Unity 2021.3.0及以上版本，默认效果为URP管线。
+  20000557  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20000557
+      Beautify 是一种全屏图像后期处理效果，实时提升画质，生成清晰生动的场景，含20种高级效果，支持内置管线和URP，优化性能，增强视觉细节，兼容多平台和VR。
+  20001537  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001537
+      Blur Toolkit 是目前最完整的模糊处理包。 它使用多种技术，可在纹理、3D 对象、全屏效果和用户界面 (UI) 上实现高性能且美观的模糊效果!
+  20004667  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20004667
+      Brightness Effect：URP后效插件，调节亮度/对比度/饱和度，支持半径功能。全平台支持。 Brightness Effect: URP plugin for brightness/contrast/saturation adjustment with radius feature. 
+  20005366  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20005366
+      231 个移动端优化粒子特效，涵盖魔法阵、受击、传送门、爆炸等，6 色变体，开箱即用，无外部依赖。
+  20004669  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20004669
+      ·ChameleonX 是一套面向 Unity GUI 特效的 Shader 包集合，专注于为 UI 元素提供溶解、扭曲、流光、菲涅尔、极坐标、旋涡、UV 动画与顶点动画等视觉效果。适合需要快速制作高表现力界面特效、提升 UI 质感与动效表现的项目使用。 ·仅支持Unity URP管线，包括团结引擎
+  20006592  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006592
+      共有10种效果，角色能量护盾效果，支持Unity 2021.3.0及以上版本，默认效果为URP管线。
+  20006595  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006595
+      12个角色轨迹特效，适用于RPG项目，支持Unity 2021.3.0及以上版本。
+  20003548  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003548
+      这个效果使用粒子系统，来模拟出细胞内部的虚幻效果！
+  20006345  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20006345
+      支持双面渲染并保持精准光照效果的 Shader，适用于树叶、布料、纸张等需要显示正反两面的薄片材质，同时保留 Unity Standard Shader 的灵活性。
+  20000768  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20000768
+      轻松为您的游戏添加 2D / 3D 描边效果。 完全兼容 URP、HDRP。 提供无缝集成、高性能表现与灵活自定义选项。
+  20006593  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006593
+      5种元素的爆炸效果，支持 Unity 2021.3.0 及以上版本，默认使用 URP 管道。
+  20006586  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20006586
+      一键式全局积雪效果：无需修改材质即可把场景变成冬季雪景，支持地形、植被与建筑，并提供脚印、降雪与镜头结霜。
+  20000435  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000435
+      GrassFlow是一个完整的植被系统，其核心是一个高度互动/可定制/优化的着色器。 自动处理放置/渲染，由熟悉的绘画工具控制。
+  20001730  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20001730
+      Highlight Plus 2 是 Unity 的终极高亮解决方案。轻松且灵活地为场景中的对象和角色添加轮廓、外发光、叠加、透视以及其他效果。
+  20002603  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20002603
+      本Demo工程展示团结引擎 Infinity 粒子系统的性能优势。
+  20002197  https://assetstore.u3d.cn/packages/tools/particles-effects/assetstore-package-20002197
+      实时体素全局光照 是一款可轻松设置的资源，可为场景提供真实的间接光照效果。该系统完全实时运行，并使用太阳光与场景中的网格物体作为光源。
+  20005944  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20005944
+      这些示例粒子资源可用于您的游戏中，也可帮助您了解如何使用 Unity Particle System 组件和模块来实现特定效果。
+  20006385  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20006385
+      用于创建真实光束、光线体积效果和尘埃模拟效果的 Shader。支持强度、淡出距离、柔和度、纹理移动等参数调节，并提供墙体碰撞控制。
+  20001817  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001817
+      Light Receiver URP 让您能够在透明表面上呈现实时点光源与聚光灯效果！
+  20006589  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20006589
+      容器液体实时渲染：多层液体、可混合液体、气泡与浮力效果，附带 40 余种实验器皿与药水瓶预制体。
+  20002009  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002009
+      增强版 URP 光照 Shader（材质），效果更多，效率更高。
+  20006590  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006590
+      该资源包包含10种循环效果，支持Unity 2021.3.0及以上版本
+  20001022  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20001022
+      Synty Studios™ 荣誉出品 - 一款包含火、水、烟雾、尘埃、污垢、血液、自然、武器、魔法等粒子特效的资产包，为您的 Polygon 风格游戏增色添彩。
+  20001100  https://assetstore.u3d.cn/packages/vfx/particles/environment/assetstore-package-20001100
+      适用于菜单和环境的 **2D 粒子特效包** —— 非常适合奇幻、休闲或可爱风格的游戏。
+  20005957  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20005957
+      一套供您在项目中使用的示例粒子资源集合。可导入到空项目中，或阅读
+  20001263  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001263
+      PotaToon 是一款为 URP Forward(+) 环境与 PC/Console 平台设计的动画风格 Toon 渲染资产。
+  20000893  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20000893
+      海量高品质特效，专为RPG和俯视角游戏打造！
+  20004485  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20004485
+      Radiant GI 为 URP 和内置渲染管线都带来了实时的屏幕空间全局光照，使场景呈现出更加自然的视觉效果。
+  20006001  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006001
+      告别空洞单调的方形假房间！Real Fake Interiors 是一款集烘焙工具与着色器于一体的解决方案，可让假室内效果从任何角度看起来都具有真实的 3D 深度，并支持方形、长方形和高挑房间。兼容 HDRP、URP 和 BIRP。
+  20000949  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000949
+      (一款专业/高级的动漫/卡通着色器，能让您的角色和物体看起来尽可能地接近真实的动漫/卡通效果。) 其他风格化的外观效果也同样可以实现。
+  20001238  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20001238
+      一套逼真的爆炸特效，并附带自定义爆炸生成器。所有内容开箱即用。It's all
+  20005930  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20005930
+      让您的 3D 复古世界呈现出手工像素绘制般的效果，采用锚定于世界空间的像素，即使镜头移动，画面依然更加稳定。这不是后期像素化，而是真正的 Texel Splatting！
+  20006146  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20006146
+      一款动态的 Roguelike 视觉特效包，包含灵魂召唤、幽灵生物、灵体幻影、神秘显现以及空灵魔法特效，专为快节奏奇幻战斗打造。
+  20003499  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20003499
+      一套精心制作的风格化战斗与魔法特效合集，具有大胆的造型、发光光环和绘画感能量效果。非常适合俯视角动作游戏、Roguelike 以及施法类冒险游戏。
+  20002280  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002280
+      本套件包含大量即用型游戏特效（VFX），提供多种风格，助力丰富你的游戏体验！此套件会定期更新新内容，价格也会随内容更新进行调整。 所有特效均经过优化，适用于移动端和主机平台。 兼容以下渲染管线：标准渲染管线（Standard）、通用渲染管线（URP）以及高清渲染管线（HDRP）。
+  20002259  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002259
+      该资源包包含大量即用型游戏特效（VFX），提供多种风格，为你的游戏增添更多变化与表现力！本特效包会非常频繁地更新新内容，价格也会根据新增内容定期进行调整。 所有 VFX 均经过良好优化，适用于移动端与主机平台。 支持 Standard 渲染管线、Universal Render Pipeline（U
+  20000313  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000313
+      Seamless Converter Shader – 一个基于 hex 的 shader，可在所有 Unity pipelines 中移除任何 texture 的 tiling 伪影。
+  20000285  https://assetstore.u3d.cn/packages/tools/particles-effects/assetstore-package-20000285
+      轻松上手的资源包，让你轻松制作刮刮卡！ 只需拖放预制体并设置刮刮卡图片，你的刮刮卡就准备好了！😊
+  20004484  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20004484
+      Shiny SSR 可为您的场景实时添加精美的屏幕空间反射效果，使画面更加真实。 此套装包含 2 个分别针对不同渲染管线优化的包
+  20001064  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20001064
+      Simple FX - 卡通粒子特效 一套 Simple FX 粒子特效资源包，包含多种粒子效果，可与我们的其他 Simple 系列资源搭配使用，轻松为你的项目增添生动有趣的特效表现。 FX 特效系统 血液飞溅、泥土飞溅、灰尘、带碎石的爆炸效果、火焰、蓝色烟花、烟花、火焰喷射器、烟雾、蒸汽、轮胎烟雾
+  20004848  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004848
+      Spline Path FX 借助 Unity 官方的 Spline 系统 与高性能 Shader，为 3D 空间带来震撼的动画路径特效。无论您在制作科幻轨迹、能量流、魔法光束，还是 3D 风格化 UI 过渡 —— 本插件都能让您 无需编写任何代码 即可全部搞定。
+  20004128  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20004128
+      基于着色器、精灵和文字的UI与世界特效。只需将特效预制体添加到场景中即可查看效果。
+  20003695  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003695
+      这个超级软件包可以帮助您轻松快速地创建游戏。
+  20003698  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003698
+      助您轻松快捷地创建游戏。
+  20003719  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003719
+      一系列 UI 特效，助您轻松创建手机游戏。
+  20004850  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004850
+      这是一款多特效插件合集包含：UI Shader FX Pack、UI Path FX、UI & Sprite Shaders、UI Frame FX Pro、UI FX - Particle System
+  20004849  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20004849
+      UI FX – Particle System 专注于以最少的依赖呈现震撼视觉，提供经过优化、即插即用的动态 UI 增强方案。
+  20001813  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20001813
+      高性能 URP 屏幕空间雾效。 拥有独特的双色深度雾与天空盒控制功能，能够精准满足您的创作需求——无论是打造风格化世界还是写实渲染环境，均能完美适配。
+  20006584  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20006584
+      为 URP 提供更真实的平行光柔和阴影与接触阴影：靠近遮挡物时锐利，远处自然柔和，并补足小物体与细节的暗部表现。
+  20001456  https://assetstore.u3d.cn/packages/tools/particles-effects/assetstore-package-20001456
+      UniStorm HDRP 是一款全新的资产包，利用 Unity HDRP 的特性，为您提供 AAA 级体积云、体积雾、云阴影、昼夜系统等功能，并与 UniStorm 广受好评的框架深度集成。
+  20001218  https://assetstore.u3d.cn/packages/tools/particles-effects/assetstore-package-20001218
+      UniStorm 是打造 AAA 级动态天空、天气、云影、大气雾和程序化体积云的终极解决方案。UniStorm 提供调整天空中每个组成部分的选项。
+  20003339  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003339
+      32 种范围魔法技能，包括地面攻击、电击攻击、火焰效果、黑暗魔法等等。
+  20006871  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006871
+      58種範圍魔法技能，包括彗星、流星雨、箭雨、範圍衝擊、增益、減益、垂直攻擊、眩暈等等，涵蓋火焰、冰霜、水、毒素、閃電、虛空、奧術、速度和治療等主題。非常適合角色扮演遊戲或擁有大量技能的遊戲。
+  20006872  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006872
+      29種範圍魔法技能，包括彗星、範圍攻擊、增益效果、垂直攻擊、龍捲風、龜派氣功等。非常適合角色扮演遊戲或擁有大量技能的遊戲。
+  20006869  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006869
+      17 束激光，可自訂，並適用於第一人稱、第三人稱和其他視角。
+  20006875  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006875
+      10 種獨特的掉落物品，每種物品有 6 個稀有度等級。
+  20006876  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006876
+      21 個獨特的區域標記 + 11 個獨特的 Ping 標記 + 10 個獨特的 HUD 標記
+  20006877  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006877
+      18 個採用粒子系統製作的獨特風格化球體。
+  20006689  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006689
+      30 種風格化的投射物，包括咒語、子彈、火球、黑暗魔法、箭矢等等。
+  20006695  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006695
+      60 種投射物，包括能量球、法術、火球、水球、電球等等。
+  20006697  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006697
+      60 種投射物，包括能量球、法術、火球、箭矢、子彈等等。
+  20006700  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006700
+      60 種投射物，包括火球、光球、火箭、閃電、子彈、煙火、飛鏢等等。
+  20006873  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006873
+      40 種科幻特效 - 7 種範圍攻擊、6 種衝擊、5 種戰利品掉落/獎勵、8 種護盾/屏障、3 種門/力場和 11 種推進器。
+  20006880  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006880
+      11 種利用粒子系統製作的獨特護盾和屏障。
+  20006881  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006881
+      17 款採用粒子系統製作的風格化盾牌，涵蓋火焰、水、血液、電力等多種元素！
+  20006874  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006874
+      37 種風格化的爆炸效果，例如地面爆炸、空中爆炸、核彈爆炸、煙霧、垂直爆炸等等。
+  20006878  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006878
+      20 種獨特的劍擊，包括水、火、冰、土、墨、虛空、星河、電、毒、血、自然等等。
+  20006882  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006882
+      11 個採用粒子系統製作的獨特推進器。
+  20006703  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006703
+      50 種卡通投射物，包括法術、炸彈、子彈、火球、水球、漆彈等等。
+  20006883  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006883
+      使用粒子系統製作了 1300 多個 VFX，包括一體化彈道、魔法能力、範圍攻擊、劍擊、命中和衝擊、槍口、雷射光束、戰利品掉落、標記和提示、球體、推進器、護盾和爆炸等等，更多精彩內容即將推出！
+  20004867  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20004867
+      适用于 Unity 的轻量级低多边形火焰 VFX 包，具有​​ 5 种颜色变化、优化的粒子效果以及适用于移动、PC 和休闲游戏的轻松拖放设置。
+  20006902  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006902
+      19種土宗能力完全透過視覺效果圖實現。
+  20006903  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006903
+      10 個完全使用視覺效果圖和著色器圖產生的程式化電力效果。
+  20006904  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006904
+      12種火焰攻擊技能完全透過視覺效果圖實現。
+  20006905  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006905
+      超過 140 種煙火效果，使其成為有史以來最完整的煙火包，完全使用視覺效果圖製作，因此您可以更輕鬆地進行自訂。
+  20006906  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006906
+      5 個火焰噴射器特效完全使用視覺特效圖製作。
+  20006907  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006907
+      11 次地面斬擊完全使用視覺特效圖完成。
+  20006909  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006909
+      18 個打擊和衝擊效果完全使用視覺特效圖完成
+  20006910  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006910
+      25 個打擊和衝擊效果完全使用視覺特效圖完成。
+  20006911  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006911
+      9 種完全使用視覺特效圖製作的風格化冰系攻擊。
+  20006912  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006912
+      12 個蒙皮網格渲染器的升級效果完全使用視覺效果圖完成。
+  20006913  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006913
+      12 個完全使用視覺效果圖實現的閃電特效。
+  20006915  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006915
+      18 次閃電效果完全使用視覺特效圖製作。
+  20006927  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006927
+      25 種掉落物特效完全使用視覺特效圖製作。
+  20006928  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006928
+      12 個魔法球完全使用視覺特效圖製作。
+  20006886  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006886
+      130 多個特效全部使用視覺特效圖和著色器圖完成。
+  20006887  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006887
+      100 多個特效全部使用視覺特效圖和著色器圖完成。
+  20006888  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006888
+      75 個特效全部使用視覺效果圖和著色器圖完成。
+  20006901  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006901
+      100 多個特效全部使用視覺效果圖和著色器圖完成。
+  20006929  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006929
+      13 個完全使用視覺效果圖製作的流星雨特效
+  20006930  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006930
+      10 個槍口特效完全使用視覺特效圖完成。
+  20006931  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006931
+      12個範圍爆炸的球體完全透過視覺效果圖實現。
+  20006932  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006932
+      10 個完全使用視覺效果圖製作的傳送門特效。
+  20006933  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006933
+      12. 完全使用視覺效果圖完成的程序化電子特效。
+  20006935  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006935
+      12 個科幻護盾特效完全使用視覺效果圖和著色器圖來實現。
+  20006938  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006938
+      14 個完全使用視覺特效圖製作的風格化雷射光束。
+  20006939  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006939
+      19 個完全使用視覺效果圖製作的風格化球體。
+  20006940  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006940
+      12 個風格化的斜線，完全使用視覺效果圖完成。
+  20006941  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006941
+      33 種完全使用視覺效果圖實現的風格化煙霧效果
+  20006943  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006943
+      16 個風格化的龍捲風特效，完全使用視覺效果圖和著色器圖來實現。
+  20006944  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006944
+      21 個召喚特效完全使用視覺特效圖製作。
+  20006946  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006946
+      10次​​劍擊完全由視覺特效圖完成。
+  20007065  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007065
+      27 次劍擊完全使用視覺特效圖完成。
+  20007067  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007067
+      42 完全使用視覺效果圖和著色器圖來產生程式產生的液體粒子效果。
+  20007068  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007068
+      8 個完全使用視覺特效圖製作的風格化水波。
+  20006884  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20006884
+      480 個特效完全使用視覺效果圖和著色器圖完成。
+  20007069  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007069
+      10 個完全使用視覺特效圖實現的垂直光束攻擊。
+  20007070  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007070
+      12 個垂直傳送門或增益效果完全透過視覺效果圖實現。
+  20007071  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007071
+      19 種武器特效完全使用視覺特效圖製作。
+  20007077  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20007077
+      這是一個專注於MOBA角色「雷霆領主」視覺特效的專案。它是本課程的成果，課程內容是創造一套魔法技能。因此，該資源包含每個技能的兩個版本。所有特效均使用VFX Graph製作完成。
+  20001288  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20001288
+      Volumetric Fog & Mist 2 是一款顶级高性能体积极雾解决方案，能以极低操作成本为你的 Unity 场景带来电影级沉浸式薄雾与大气深度，视觉冲击力拉满。
+  20001787  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001787
+      Volumetric Lights 2 为您的场景添加下一代照明效果，具有先进的特性，如阴影缓存、半透明阴影贴图和直接投射照明。
+  20002308  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002308
+      It provides high-quality interactive simulations of Translucent/transparent volumetric liquid in closed small container and also is a powerful supplem
+  20001106  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20001106
+      主要用于游戏开发的传送，或者出生点特效。
+  20002474  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002474
+      帮助您轻松制作游戏。
+  20000191  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20000191
+      在你的 Unity 场景中添加唯美光柱效果！ 自定义编辑器让设置轻松便捷，独特着色器实现与环境的无缝视觉融合。针对移动设备和 VR 平台进行了优化。
+  20000894  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20000894
+      用 专业剑斩特效 提升您的动作场景 —— 这是一个为 Unity 打造的动态特效资源，提供高保真、风格化的剑斩粒子特效。
+  20003531  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003531
+      这个插件可以将文字和照片转换为粒子效果，并展示出来！
+  20002345  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002345
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20005692  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20005692
+      可用于虚拟仿真的项目或是部分游戏项目
+  20002243  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002243
+      15 种独特的风格化传送门特效，适用于所有渲染管线！
+  20003882  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20003882
+      在2D场景中实现卡牌或扑克牌的3D旋转效果
+  20000311  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000311
+      简单高效的体积光解决方案，兼容所有平台：Windows PC、Mac OS X、Linux、WebGL、iOS、Android、VR、Oculus Quest、AR、主机、内置/传统渲染管线、SRP（URP 和 HDRP）！
+  20002264  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002264
+      介绍我们的 LEVEL UP 角色系列！ 每个角色包含 3 种不同变身形态，每个阶段都拥有引人入胜的设计。 通过查看我们的其他角色，为你的游戏带来更丰富的深度与成长感。不要错过让你的游戏开发升级的机会——LEVEL UP 系列帮你轻松实现！
+  20002282  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002282
+      本资源包包含 17 个可直接使用的游戏 VFX，涵盖多种魔法风格，为你的游戏增添丰富变化，包括冰、火、水、电击等效果！ 所有 VFX 都经过优化，可在移动设备和主机上流畅运行。 兼容标准渲染管线（Standard）、通用渲染管线（URP）以及高清渲染管线（HDRP）。
+  20005739  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20005739
+      可用于虚拟仿真的项目或是部分游戏项目
+  20003611  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003611
+      这个效果是在屏幕上按顺序绘制六边形，让六边形做出波浪滚动的效果
+  20002256  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002256
+      该资源包包含大量即用型游戏特效（VFX），提供多种风格，为你的游戏增添丰富表现力！本特效包会非常频繁地更新新内容，价格也会根据新增内容定期进行调整。 所有 VFX 均经过良好优化，适用于移动端与主机平台。 支持 Standard 渲染管线、Universal Render Pipeline（URP）
+  20003502  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20003502
+      一套围绕吟游诗人风格魔法打造的写实风格VFX特效包，将音乐、节奏与辅助能力相结合。非常适用于治疗、增益效果以及以表演驱动的玩法系统。
+  20002276  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002276
+      本套装包含大量可直接使用的游戏特效，提供多种风格，让你的游戏视觉更加丰富！该套装会定期更新内容，并相应调整价格以反映最新更新。 所有特效均经过优化，适用于移动端和主机平台。 兼容以下渲染管线：标准渲染管线 (Standard)、通用渲染管线 (URP) 和 高清渲染管线 (HDRP)。
+  20002248  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002248
+      包含 **126 种独特的元素惩戒特效（Smite VFX）**！ 这些特效提供多种魔法变体，例如火焰、水系、电击等，满足丰富的战斗与技能表现需求。 兼容所有渲染管线！请注意：我们的 Shader 与部分 2D 项目不兼容。
+  20002241  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002241
+      踏入禁忌之术，体验 ARPG 死灵法术特效包 —— 一套风格化的黑暗魔法特效合集，融合了幽魂能量、奥术腐蚀以及诡秘的异界光辉。每一个特效都仿佛拥有生命，在流动的动势、破碎的光影与秘术纹样中翻涌，同时保持清晰可读，完美契合快节奏的 ARPG 战斗体验。
+  20002246  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002246
+      踏入剧毒迷雾，体验 ARPG 毒素特效包 —— 一套融合毒液、腐化与炼金能量的风格化法术特效合集。每个特效都脉动着流畅的动势与诡异的光辉，在快节奏的 ARPG 战斗中既视觉冲击力十足，又保持清晰易读。
+  20002244  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002244
+      踏入猩红力量的光辉之中，体验 Crimson VFX —— 一套源自能量、仪式与强烈张力的风格化法术特效合集。每个特效都充满流动感与强烈对比，在保持清晰可读性的同时，呈现出大胆而神秘的视觉表现。
+  20004408  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004408
+      一套写实风格的VFX特效包，包含火焰、爆炸与烟雾效果。具备高冲击力表现、细致的动态细节以及可扩展的强度控制。非常适用于战斗、破坏场景以及沉浸式事件表现。
+  20006504  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006504
+      用于游戏和模拟项目的写实雪景资源，包含高品质雪地纹理和动态降雪粒子效果。
+  20004407  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004407
+      一套写实风暴VFX特效包，包含带电云层、风与闪电效果。非常适用于环境叙事、战斗技能以及沉浸式氛围表现。
+  20002245  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002245
+      该资源包包含大量即用型游戏特效（VFX），提供多种不同风格，为你的游戏增添更多变化与表现力！
+  20001589  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001589
+      海量冰纹理和着色器变体库，支持移动设备。冰可用作湖泊、河流或模型表面。众多选项让您可以控制冰的几乎所有方面。
+  20002339  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002339
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20001952  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001952
+      基于顶点外拓的 URP 描边方案 — 最快的 3D 描边技术。
+  20002495  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002495
+      帮助您轻松制作游戏。
+  20002496  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002496
+      这个软件包可以帮助你轻松创建游戏。
+  20002622  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002622
+      精彩的动漫特效合集!
+  20002271  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002271
+      释放你的 气（KI）能量，收集星球光球，对敌人投掷旋转飞刃——尽在我们超棒的 动漫 VFX 特效包（ANIME VFX Pack）！ ✨⚡
+  20004406  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004406
+      一套专注于对话气泡与漫画风格语言元素的风格化VFX特效包，旨在强化游戏中的沟通表达、角色反应以及UI反馈。
+  20004710  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004710
+      一款风格化的卡通打击与动态投射物视觉特效包，旨在提供清晰的视觉反馈、强烈的打击感以及适配快节奏的游戏体验。非常适用于战斗系统、技能效果、街机射击以及富有表现力的动作场景。
+  20003062  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003062
+      125 种卡通特效，助您轻松制作游戏。
+  20003063  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003063
+      这个软件包可以帮助你制作出精彩的游戏。
+  20004708  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004708
+      一款风格化的卡通表情动画视觉特效包，旨在增强反馈表现、情绪传达与玩家之间的沟通。非常适用于UI反馈、战斗提示、社交系统以及富有表现力的游戏时刻。
+  20004403  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004403
+      一套风格化卡通VFX特效包，包含有力的打击效果和清晰的状态表现。专为快节奏玩法打造，强化战斗反馈、伤害可读性以及角色状态的清晰表达。
+  20002274  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002274
+      使用 Harvest Crops Cartoon Pack（卡通风格农作物收获包） 为你的 Unity 项目打造充满生机、有趣的农场世界吧！ 本资源包包含 300+ 风格化 3D 模型，非常适合 农场模拟、村庄建设、休闲游戏 等项目。
+  20000158  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000158
+      双面着色器，可让你卷起纸张、地图、卷轴等（任何矩形平面物体）。包含噪声效果。（可在 Amplify Shader Editor 或 Shader Graph 中编辑，支持 URP、HDRP）
+  20001995  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001995
+      通过叠加材质提亮物体，内置 5 种高亮效果，适用于提示重点物体。
+  20002286  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002286
+      17 个炫酷的召回特效，非常适合 MOBA 游戏！召回效果包含独立的起飞与到达特效，因此你也可以将它们用于瞬移或生成效果（spawn FX）！ ✅ 兼容所有渲染管线！请注意，我们的着色器不兼容某些 2D 设置。
+  20002247  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002247
+      每个史莱姆生物都带有动画，拥有丰富多样的动作与表情，能够吸引玩家并提升整体游戏体验。从弹跳活泼到安静温和，这些史莱姆伙伴在制作过程中注重每一个细节，确保它们能够自然融入你的游戏美术风格与叙事氛围中。
+  20000330  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000330
+      图形锦囊，集成了多个游戏常用效果方案，让你的游戏有更多现成效果可用。
+  20003787  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003787
+      效果绘制了圆形环绕粒子效果
+  20002340  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002340
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002623  https://assetstore.u3d.cn/packages/vfx/shaders/fullscreen-camera-effects/assetstore-package-20002623
+      后处理地图扫描器。无需编辑你的场景即可运行！
+  20003825  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003825
+      这个效果是模拟墨水遇水化开的效果
+  20004816  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004816
+      All Frame FX In One 是 Unity 的终极一体化边框特效解决方案 —— 将先进的多边形 UI 边框、基于 Shader 的动画特效以及完整的 Mesh Frame 支持整合到同一个强大资产包中。
+  20003807  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003807
+      这个效果是把照片转化为重叠在一起的三角形面片，组成的图像看上去像是用玻璃组成
+  20002287  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002287
+      此套件包含大量即用型游戏特效（VFX），多种风格可为你的游戏增添趣味！ 所有特效均经过优化，可在移动端和主机平台上顺畅运行。 兼容标准渲染管线（Standard）、通用渲染管线（URP）及高画质渲染管线（HDRP）。
+  20002342  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002342
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002254  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002254
+      隆重推出 LEVEL UP 角色系列！该系列中的每个角色都包含 3 种不同形态的进化变身，并在每个等级呈现独特的**冰雪主题设计**。通过探索我们的其他角色，为你的游戏注入更丰富的层次感与成长体验。别错过用 LEVEL UP 系列 全面提升你游戏开发表现力的机会。
+  20002355  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002355
+      这个资源包包含大量可直接用于游戏的 VFX，风格多样，为你的游戏增添更多表现力！本资源包会非常频繁地更新新内容，价格也会根据内容增长进行相应调整。 所有 VFX 都经过良好优化，支持移动端和主机平台。
+  20002257  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002257
+      通过 **Piloto Studio 的屏幕空间状态特效包（Screen-Space Status VFX Pack）**，为玩家提供即时且沉浸式的视觉反馈。 该合集包含 40+ 种极具视觉冲击力的屏幕空间特效，可直接叠加在玩家摄像机之上。非常适合用于表现 RPG、MOBA、Roguelike 或叙
+  20001948  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001948
+      适用于 URP 的轻量级平面阴影方案。
+  20002348  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002348
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20000290  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20000290
+      使用我们广泛收集的高质量、独特的动画图标来增强您的设计。轻松增强界面吸引力并优化性能。
+  20002268  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002268
+      通过这个资源包，为你的项目升级一个完整动画化、建模并设计了音效的宝箱开启序列！ 使用 Sequencer 制作，只需 拖拽即可 将其加入你的游戏中。 兼容所有渲染管线！请注意，某些 2D 项目可能不兼容我们的 Shader。
+  20000666  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20000666
+      影子接收器将在不可见的物体/平面上启用实时阴影
+  20006267  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20006267
+      懒人式粒子特效百宝箱是面向独立游戏开发者的一站式粒子特效管理工具集。内置 13 个专业工具，覆盖 特效浏览、材质配置、性能优化、特效合成全流程。支持 URP 与内置渲染管线，兼容团结引擎。零代码 操作，一键完成材质修复、渲染管线转换、移动端批量优化等繁琐工作，让特效管理变得简单高效。
+  20006713  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20006713
+      War‑FX 基于 Unity 原生粒子系统（Particle System）制作的战争类粒子特效资源包，并非独立第三方特效引擎，专门用于射击、战争、FPS、战场类游戏，快速提供爆炸、火焰、枪口火花、子弹撞击等战斗视觉效果。
+  20003912  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20003912
+      扑克牌的四个角搓牌效果，翻折边缘褶皱效果，翻折后的阴影效果，可动态替换牌面和牌背面
+  20002278  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002278
+      使用 Tower Defense Kit Megapack for Unity 打造史诗级防御阵线！这个强大的资源包包含 13 种独特的防御塔变体，每种防御塔都拥有 5 个升级等级，并配有风格化的视觉特效，用于直观展示它们在游戏中的力量成长与进阶过程。
+  20001914  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001914
+      高亮显示攻击范围，支持圆形、扇形、矩形和线形，支持自定义样式，支持进度显示，可用于移动平台。
+  20003897  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003897
+      这个效果可以将一个3D模型以随机线条的方式重新绘制出来
+  20003929  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003929
+      500 多种插槽特效，助您轻松制作游戏。循环精灵图集
+  20003832  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003832
+      这个特效包可以帮助你轻松制作游戏。
+  20003893  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003893
+      这个效果会展现五彩缤纷的流动的线段，这些线段会根据鼠标的位置而改变流动的方向和速度！
+  20003726  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003726
+      感谢你帮助你把游戏做得这么棒！
+  20000160  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20000160
+      24 种高品质视觉特效让你的游戏焕然一新！这套多功能特效适用于动态物体移动或迷人的新生儿，为每个游戏时刻增添魔力
+  20003869  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003869
+      这个效果使用了圆圈做环绕的动画，来表现彩虹的效果
+  20003702  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003702
+      这个插件模拟了无限循环的效果
+  20003768  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003768
+      这个效果展示了无限的拼接循环的效果
+  20002281  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002281
+      包含 12 个暗影主题家族，每个家族有 3 个角色等级 + 一个狼人 Boss 和 2 个狼仆角色。总计 39 个角色，包括： 狼人（附带 VFX） 狼群 龙 黑暗蘑菇 黑暗生物 骷髅 独眼巨人 蜘蛛 眼睛触手 飞行恶魔 黑暗骑士 黑猫
+  20002624  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002624
+      用于 AAA 级画质的终极能量球合集
+  20002253  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002253
+      隆重推出 LEVEL UP 角色系列！该系列中的每个角色都包含3 种不同形态的进化变身，每个等级都拥有极具吸引力的设计。通过我们的其他角色，为你的游戏注入层次感与成长感。别错过用 LEVEL UP 系列 全面提升你游戏开发表现力的机会。
+  20003612  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003612
+      这个效果是模拟了枝条生长的效果。
+  20002251  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002251
+      通过 **Ultimate Pings & Markers Pack** 强化你游戏的沟通系统——这是一套完整的高可读性风格化标记特效合集，专为游戏内信号提示与团队协作而设计。无论你正在打造战术射击、MOBA、RTS，还是合作玩法体验，这个特效包都能为你提供实时引导玩家所需的一切视觉元素。
+  20002250  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002250
+      该资源包包含 **64 种即用型游戏特效（VFX）**，涵盖多种风格，为你的游戏增添更多表现力与趣味性！
+  20003729  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003729
+      模拟了棉絮飘散的效果
+  20002346  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002346
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20003701  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003701
+      这个效果是用粒子营造出模糊的背景效果
+  20003870  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003870
+      这个效果模拟了橡皮筋弹跳的效果
+  20003500  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20003500
+      一套风格化的死灵法术特效包，包含亡灵之手、幽灵投射物、骨骼与骷髅等元素。非常适用于黑暗魔法技能、诅咒攻击、召唤效果以及奇诡氛围的奇幻战斗场景。
+  20003966  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20003966
+      一款带毛发的猫咪模型。
+  20002275  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002275
+      该资源包包含大量可直接用于游戏的VFX，提供多种风格选择，为你的游戏增添更多表现力！ 所有特效均经过良好优化，适用于移动端和主机平台。 支持标准渲染管线（Standard）、通用渲染管线（URP）以及高清渲染管线（HDRP）。
+  20002350  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002350
+      这个资源包包含大量可直接用于游戏的 VFX 特效，风格多样，为你的游戏增添更多表现力！ 所有 VFX 都经过良好优化，适用于移动端和主机平台。 同时兼容 标准渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP）。
+  20003873  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003873
+      这个效果是把图片转换为波浪线段
+  20003530  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003530
+      这个效果是演示流体物理的效果
+  20003632  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003632
+      这是一个平面的粒子效果，这个效果模拟了液体流动的效果来展示照片！
+  20003621  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003621
+      这个效果使用网格线，让线段呈现出流动的效果。
+  20003743  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003743
+      帮助您快速打造精彩游戏！
+  20003752  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003752
+      帮助您快速、精美地创建游戏！
+  20001128  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20001128
+      这个软件包将帮助您快速、美观地制作游戏！
+  20003536  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003536
+      这个效果会模拟漩涡对直线和颜色的影响，直线会受到漩涡的影响而弯曲
+  20001590  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20001590
+      包含烟雾、火焰和爆炸预制件及着色器。粒子效果支持高清、URP 和 Nature Manufacture 风效，因此能够根据风速、风向和风力做出反应。
+  20003834  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003834
+      炫酷的特效能帮助你打造精彩的游戏
+  20002338  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002338
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002242  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002242
+      超过 20 种烟雾弹特效，专为 FPS 游戏打造，包含多种风格，并配有施放、循环与结束粒子效果。 兼容所有渲染管线！请注意：我们的 Shader 与部分 2D 场景设置不兼容。
+  20003607  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003607
+      这个效果是把照片变成流体
+  20003619  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003619
+      这个效果会把照片用漩涡线条的方式来展现，让平面的照片看上去有线条流动的效果！
+  20003828  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003828
+      这个效果是通过模拟下雨的效果！通过下坠的粒子能显现出照片的轮廓！
+  20003831  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003831
+      这款特效包可以帮助你制作精彩的动作游戏。
+  20003830  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003830
+      这个素材可以帮助你创建超棒的像素游戏
+  20006870  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20006870
+      高品质地面爆炸粒子特效，支持 6D 环境光照响应，爆炸火光会跟随场景灯光自动改变亮度与色调(不同于普通粒子特效)，自带运动矢量、热浪扭曲效果，火焰烟雾颜色可自定义，适配 URP 与 HDRP。包含 20 个开箱即用爆炸预制体，附赠 13 组爆炸音效素材
+  20002265  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002265
+      这个特效包共包含19个VFX，涵盖多种元素变体，如火焰、水、闪电等！
+  20003537  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003537
+      这是一个模拟爱心的粒子效果！
+  20003577  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003577
+      这个软件包可以帮助您快速轻松地制作游戏。
+  20003678  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003678
+      这是一个功能强大的特效包，可轻松创建手机游戏。
+  20003639  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003639
+      用于制作手机游戏的特效合集超级包。
+  20003641  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003641
+      用于制作手机游戏的特效合集。
+  20003653  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003653
+      这个资源可以帮助你轻松快速地创建游戏。
+  20003672  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003672
+      这个资源可以帮助你轻松快捷地制作游戏。
+  20003673  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003673
+      一套超级特效包，让您轻松创建手机游戏。
+  20003674  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003674
+      此软件包可帮助您快速轻松地制作游戏。
+  20003675  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003675
+      此素材包可助您轻松制作游戏。
+  20003676  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003676
+      这个特效包可以帮助你轻松制作游戏。
+  20006088  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20006088
+      一款动态 Roguelike 特效包,包含风暴刃击、闪电爆发、锋利风刃斩击、金属弹射物以及带电武器特效,专为快节奏战斗设计。
+  20003498  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20003498
+      即用型写实墨水特效，具有清晰的笔触和深色调——非常适合法术、封印和诅咒类技能。即拖即用，性能优化，兼容 Standard、URP 和 HDRP。
+  20003821  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003821
+      这个效果模拟了珊瑚绒毛飘动的效果！
+  20002337  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002337
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002349  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002349
+      这个资源包包含大量可直接用于游戏的 VFX 特效，风格多样，为你的游戏增添更多表现力！ 所有 VFX 都经过良好优化，适用于移动端和主机平台。 同时兼容 标准渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP）。
+  20002476  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20002476
+      益智游戏特效合集，助您轻松制作游戏。
+  20003885  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003885
+      助您打造精彩绝伦的游戏。
+  20003886  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003886
+      助您打造精彩绝伦的游戏。
+  20002266  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002266
+      该资源包包含大量即用型 VFX 特效，风格多样，为你的游戏增添丰富视觉表现！ 所有 VFX 均经过性能优化，可直接用于移动端和主机平台。 支持 Standard 渲染管线、Universal Render Pipeline（URP） 以及 High Definition Render Pipelin
+  20002263  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002263
+      该资源包包含大量即用型游戏 VFX 特效，风格多样，为你的游戏增添丰富表现力！ 所有 VFX 均经过性能优化，适用于移动端与主机平台。 支持 Standard 渲染管线、Universal Render Pipeline（URP） 以及 High Definition Render Pipeline
+  20002285  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002285
+      用《真实感 ARPG 风系魔法技能特效包》为你的战斗和魔法系统注入生命——这是一个包含 22 个高品质、即用型风系法术特效的合集，专为真实感且充满动态的游戏体验设计。
+  20002270  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002270
+      将残酷的真实感与黑暗奥术风格带入你的 Unity 项目——使用 “圣光 vs 恶魔 VFX 包”！这是一个高冲击力的手工打造视觉特效合集，灵感来源于《暗黑破坏神》《流放之路》等经典暗黑 ARPG 游戏。
+  20004624  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20004624
+      两个专用着色器,用于创建具有真实无视差渲染的逼真武器光学瞄具。包含6个瞄准镜模型、22个可自定义准星纹理和可调节放大倍率材质。非常适合需要真实瞄准机制的FPS游戏,准星和缩放级别易于修改。
+  20003895  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003895
+      这个效果通过线条绘制迷宫形成矩阵的样式，线条会逐步向外扩展，从而形成非常漂亮的效果！
+  20001549  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001549
+      Sci-Fi Hologram Screen Shader 是一款用于打造科幻全息显示屏的 Unity 着色器。 它可让普通平面网格呈现具有纵深感的 3D 全息效果，非常适合用于 HUD、终端与控制面板界面。
+  20000499  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20000499
+      使用我们的科幻载入屏幕特效包 vol.1 增强手机游戏和应用程序的视觉吸引力！这款多功能套装包含 50 种视觉特效，可为您的项目增添未来感。
+  20002352  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002352
+      这个资源包包含大量可直接用于游戏的 VFX 特效，风格多样，为你的游戏增添更多表现力！ 所有 VFX 都经过良好优化，适用于移动端和主机平台。 同时兼容 标准渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP）。
+  20004847  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004847
+      Sci-Fi UI FX 是一款基于 Shader 的强大 UI 特效合集，专为未来感、科技感的游戏界面而设计。
+  20004813  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20004813
+      这是一款科技风特效包，提供多种类型的科技风环境特效
+  20002260  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002260
+      ⚡ 法术 AOE 指示器 VFX 包 快速创建高精度、高冲击力的法术预警效果。 用这套风格化 AOE（范围效果）指示器 VFX，让你的 RPG、MOBA 和动作游戏瞬间活起来。专为高可读性、强灵活性和视觉冲击力打造，完美适用于技能瞄准、Boss 攻击或玩家施法，让每一次战斗反馈都又狠又准、又爽又清晰
+  20003703  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003703
+      这个效果非常炫酷，犹如穿越天际般！
+  20003871  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003871
+      这个效果是用多个立方体来表现涟漪效果
+  20003620  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003620
+      这个效果是用立方体模拟黑洞坠落的效果
+  20002740  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002740
+      该工具可助你轻松创建 2D 图形。只需添加一个图形组件，即可通过代码或检视面板调整细节。你也可以使用自己创建的材质配合我们的着色器，呈现同样的效果。
+  20005560  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20005560
+      一款风格化的 Roguelike 视觉特效资源包，灵感来源于火药战斗体系，包含爆炸桶、炮击爆炸、子弹冲击、烟雾轨迹以及黑火药反应等混乱且富有冲击力的效果。
+  20004402  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004402
+      一套以卡牌魔法为核心的风格化VFX特效包，专为类Roguelike系统和以技能驱动的玩法设计。非常适用于围绕卡组、抽取机制和奥术组合构建的施法系统。
+  20003528  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003528
+      可以控制粒子沿指定的直线路径或者曲线路径移动。
+  20002258  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002258
+      正在为你的 Unity 游戏寻找高质量的战利品光柱与宝藏特效吗？不用再找了！我们的 Unity 战利品光柱与宝藏 VFX 特效包 正是你的理想选择。通过丰富多样、可高度自定义的战利品光束与宝藏特效，你可以轻松为游戏增添额外的精致感与沉浸感。
+  20002255  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002255
+      ⚡ 元素网格特效 ⚡ 该资源包包含 21 种即用型游戏特效（VFX），涵盖多种元素风格，为你的游戏增添更多表现力与冲击力！
+  20003875  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003875
+      这个效果会让你画的线段充满活力，线段会四处飞舞
+  20002269  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002269
+      让你的角色拥有飞行的力量，使用这些精美打造的 翅膀 VFX 兼容所有渲染管线！请注意，某些 2D 项目可能不兼容 Shader。
+  20002344  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002344
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20003545  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20003545
+      这个效果用粒子和GL画点和线，绘制出照片的轮廓
+  20003700  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003700
+      这个效果会模仿菌丝生长的方式来画出你的照片！你可以看到你的照片绘制的过程
+  20003728  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003728
+      这个效果模拟了菌丝生长时的过程
+  20002134  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20002134
+      可用于虚拟仿真的项目或是部分游戏项目
+  20004631  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20004631
+      可用于虚拟仿真的项目或是部分游戏项目
+  20002347  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002347
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002351  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002351
+      这个资源包包含大量可直接用于游戏的 VFX 特效，风格多样，为你的游戏增添更多表现力！ 所有 VFX 都经过良好优化，适用于移动端和主机平台。 同时兼容 标准渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP）。
+  20002240  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002240
+      为你的 Unity 项目带来电影级的血液、魔法与环境特效。这款前沿的 VFX 特效包采用最先进的 Flipbook 技术打造，在风格化的清晰可读性与真实细节之间实现了完美平衡。
+  20002341  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002341
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+  20002356  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002356
+      该资源包包含大量即用型游戏 VFX，风格多样，能为你的游戏增添丰富表现力！本包会频繁更新新内容，价格也会根据内容更新进行相应调整。 所有 VFX 都经过良好优化，适用于移动端与主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），
+  20003575  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003575
+      帮助您轻松快捷地制作游戏。
+  20003868  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003868
+      这个效果会画出全屏的渐变的贝塞尔曲线
+  20002889  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002889
+      本资源包包含 600+ 个可直接用于游戏的特效（VFX），涵盖多种风格与类型，为你的游戏增添更多变化与表现力！
+  20002252  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002252
+      该资源包包含 **超过 1400 种即用型游戏特效（VFX）**，涵盖多种风格，为你的游戏带来爆炸级的视觉表现与多样性！
+  20004823  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004823
+      Path FX - LineRender 是一款强大且灵活的工具包，用于通过 Unity 的 LineRenderer、TrailRenderer 与 Spline 工作流创建动态动画路径特效。 长期稳定已更新3年
+  20002284  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002284
+      逼真的 ARPG 拾取物、光环与增益效果 (Pickups, Auras & Buffs VFX) 提供了一整套精心制作的特效，完美捕捉现代动作 RPG 中那种黑暗而沉稳的魔法氛围。受《暗黑破坏神 IV》和《流亡黯道 2》的启发，这个资源包能为你的战利品、增益效果以及环境增添电影级的真实感与清晰的游
+  20003857  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20003857
+      自动检测遮挡角色的阻挡物，让阻挡物体半透明。
+  20003524  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20003524
+      一些常用的拖尾效果，可用于游戏开发等内容。
+  20000662  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20000662
+      这是一个包含20种独特爆炸效果的集合，具有自定义的6D光照着色器、运动矢量支持、热失真效果和深度自定义选项。
+  20002877  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002877
+      这套特效包非常适合 ARPG 游戏，包含强力的冲击波与撞击特效，用于砸地、冲刺和近战技能。
+  20002878  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002878
+      适用于游戏的逼真“魔法金色沙尘”特效，适合沙漠、古代遗迹与埃及/法老风格魔法主题；战斗中清晰易读，针对移动端/主机/PC 优化，并兼容 Built-in（Standard）、URP 与 HDRP。
+  20002887  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002887
+      这套特效包为你提供即用型的写实“蜘蛛 Boss”战斗特效：蛛网射击、毒液爆发与凶狠的血液命中特效，专为任何 ARPG 的 Boss 战营造真实危险感。
+  20002277  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002277
+      堕落魔法特效包提供了一套高保真、黑暗魔法视觉效果，专为逼真的动作 RPG 和电影级游戏体验打造。灵感来源于《暗黑破坏神 IV》和《流放之路》的视觉风格，这些特效展现了腐化、衰败与不稳定能量，同时具备精确的物理光照效果。
+  20002884  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002884
+      银色/青色/蓝色系的月光法术特效，包含符文与五芒星图案；拖拽即用，针对移动端/主机优化，并兼容 Built-in（Standard）、URP 与 HDRP。
+  20002885  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002885
+      25 个可拖拽即用的预制体（Prefabs），涵盖枪口火光、枪火射击、弹道/投射物、子弹命中、火箭/导弹、炸弹与爆炸特效；针对移动端/主机/PC 优化，并兼容 Built-in（Standard）、URP 与 HDRP。
+  20002886  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002886
+      电影级星光、流星拖尾、行星轨道系统、重力场与黑洞特效；针对移动端/主机优化，并兼容 Built-in（Standard）、URP 与 HDRP。
+  20005554  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20005554
+      风格化特效资源包，包含逼真的烟花效果、电影级爆炸绽放、鲜艳色彩以及真实的庆典氛围。非常适用于活动场景、过场动画、环境搭建以及沉浸式游戏时刻。
+  20004709  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004709
+      逼真的风暴视觉特效包，包含带电云层、强风与闪电效果。非常适用于环境叙事、战斗技能以及沉浸式氛围表现。
+  20005556  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20005556
+      一款基于网格（Mesh）的逼真视觉特效资源包，包含动态光环（Aura）与状态效果，可直接附加到角色模型和各类网格对象上。
+  20001992  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001992
+      基于 URP 的遮挡显示系统，显示障碍物背后的对象轮廓。
+  20004404  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004404
+      一套围绕饮品主题打造的风格化VFX特效包，将葡萄酒、啤酒与液体动态融合，带来富有表现力的玩法反馈。
+  20004401  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20004401
+      一个围绕锁链、传送门和腐化能量构建的黑暗奇幻VFX特效包。非常适用于控制类技能、召唤机制以及以仪式驱动的高强度战斗系统。
+  20001989  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20001989
+      URP 后期锐化：提升场景和界面的清晰度，可用于提升画质。
+  20002662  https://assetstore.u3d.cn/packages/vfx/shaders/assetstore-package-20002662
+      镜像水面效果，并且可以点击产生波纹
+  20004821  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20004821
+      Laser Beam FX 是您在 Unity 中创建震撼激光束特效的利器。
+  20003883  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003883
+      手机游戏的闪电特效。
+  20004868  https://assetstore.u3d.cn/packages/vfx/particles/assetstore-package-20004868
+      适用于 Unity 的逼真、性能友好的雨粒子系统。非常适合开放世界、恐怖游戏和手机游戏。包括奖励雪。
+  20004869  https://assetstore.u3d.cn/packages/vfx/particles/environment/assetstore-package-20004869
+      用于 Unity 游戏的简单且轻量级的雾粒子系统。通过优化的性能轻松创建大气雾或云效果，非常适合移动、PC 和休闲项目。
+  20000889  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20000889
+      该资源包包含65个专为VR制作的3D网格爆炸效果。
+  20000387  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20000387
+      ✨ 风格化传送门：第一卷 ✨ 是一个包含42个传送门的集合。每个传送门使用一个着色器，即使没有后期处理效果也很棒，并且宽度可调。非常适合游戏！
+  20002272  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002272
+      想在你的 Unity 项目中炫酷展示角色的元素能力或状态效果吗？那就选择 风格化元素光环 / 状态 VFX（Stylized Elemental Auras/Status VFX） 吧！
+  20005340  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20005340
+      这个特效包可以帮助你轻松快速地制作游戏。
+  20005339  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20005339
+      这款特效包可以帮助您快速轻松地创建游戏。
+  20000746  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20000746
+      使用 **风格化打击效果包 第1卷** 提升您的游戏品质！ 该套装包含 **40 种多用途特效**，非常适合三消类及其他各类游戏。 **移动端友好、易于集成** —— 为每个细节增添活力与动感！
+  20002283  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002283
+      为你的游戏增添闪亮与色彩，这个风格化水晶与宝石包（Stylized Crystals & Gems Pack）包含 240 个模型和独特水晶着色器，呈现出鲜艳且风格化的外观。非常适合 RPG、采矿系统、战利品、魔法制作和奇幻环境使用。
+  20002267  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002267
+      22 种波浪 VFX，非常适合 MOBA 和 ARPG 游戏！每个特效都融合了元素力量，其中一些还带有强烈的光效冲击，让战斗瞬间更震撼！ 部分波浪效果经过高度定制，例如 火焰主题波浪 完全以熔岩为灵感设计，个性十足。 兼容所有渲染管线！请注意，某些 2D 项目可能不兼容 Shader。
+  20002279  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002279
+      22 个独特光束特效，完美适用于 MOBA 游戏！ 兼容所有渲染管线！请注意，我们的着色器不兼容某些 2D 设置。
+  20003720  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003720
+      助您轻松快速地创建动作游戏。
+  20003721  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003721
+      助您轻松快速地创建动作游戏。
+  20003792  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003792
+      这个素材包可以帮助你快速制作游戏。
+  20003819  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003819
+      这个资源可以帮助你打造一款精彩的游戏。
+  20003874  https://assetstore.u3d.cn/packages/vfx/assetstore-package-20003874
+      这个效果会展现漂亮的风车旋转的效果
+  20002652  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002652
+      包含40种独特的元素魔法屏障特效。 此外，还包含一个强大的脚本，使这些魔法墙能够实现100%可调整与重新定位。 兼容所有渲染管线！请注意，我们的着色器在部分2D设置中不兼容
+  20003879  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003879
+      让您轻松快捷地制作游戏。
+  20003880  https://assetstore.u3d.cn/packages/vfx/particles/fire-explosions/assetstore-package-20003880
+      这款特效包可以帮助您轻松快速地创建游戏。
+  20002354  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002354
+      为你的战斗注入节奏，为音乐赋予魔法，让法术充满风格！ Disco VFX Pack 是一套包含 72 个风格化、音乐主题视觉特效 的合集，专为快速、炫酷、充满乐趣的玩法打造。灵感源自迪斯科美学、复古合成器氛围以及 DJ 点燃全场的混乱能量，让你可以旋转黑胶、投下节拍，用声音的力量碾压敌人。
+  20002343  https://assetstore.u3d.cn/packages/vfx/particles/spells/assetstore-package-20002343
+      该资源包包含大量可直接用于游戏的 VFX，涵盖多种风格与表现形式，为你的游戏增添更多视觉亮点！ 所有特效都经过良好性能优化，适用于移动端和主机平台。 同时支持 Unity 内置渲染管线（Built-in）、通用渲染管线（URP） 以及 高清渲染管线（HDRP），即插即用，兼容性拉满。
+
