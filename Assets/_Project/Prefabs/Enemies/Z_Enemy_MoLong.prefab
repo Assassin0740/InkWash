@@ -394,7 +394,7 @@ MonoBehaviour:
   hoverPitchAmplitudeDeg: 16
   bodySwayAmp: 1
   bodySwayFreq: 0.27
-  limbSwingDeg: 14
+  limbSwingDeg: 25
   limbSwingFreq: 0.27
   limbMinDescendants: 2
   limbPhaseStepDeg: 60
@@ -441,8 +441,16 @@ MonoBehaviour:
   orbitAngularSpeedDeg: 40
   orbitLateralAmp: 0
   orbitLateralWaves: 3
-  pathWaveAmpDeg: 30
+  pathWaveAmpDeg: 0
   pathWaveCount: 3
+  swimWaveAmp: 1.15
+  swimWaveCount: 1
+  swimWaveFreq: 0.45
+  swimWaveTailGain: 1.15
+  swimWaveHeadGain: 1
+  swimWaveEnvPow: 3
+  hoverStationary: 1
+  hoverStationaryYawDeg: 0
   diveSpeedMul: 2.6
   diveMinInterval: 1.2
   phase2AtRatio: 0.65

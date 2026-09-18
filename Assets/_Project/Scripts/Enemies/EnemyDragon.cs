@@ -123,9 +123,9 @@ namespace InkWash.Enemies
         //   其中 `脊柱[0] drgon_03` 下挂 3 条大链（后代 27 / 19 / 19 根骨），
         //   `脊柱[1..10]` 各挂 1 根单骨（背鳍）。
         //   旧代码只驱动脊柱 ⇒ **四肢从头到尾没动过**，这就是"很虚假"的来源。
-        [Tooltip("★ 四肢（脊柱之外的分支骨）摆动幅度（度）。0 = 关闭")]
-        public float limbSwingDeg = 14f;
-        [Tooltip("四肢摆动频率（Hz）")]
+        [Tooltip("★ 四肢摆动幅度（度）。0 = 关闭。旧值 14° 在 8 m 长的身子上读不出来（用户反馈：爪子没动）⇒ 25°")]
+        public float limbSwingDeg = 25f;
+        [Tooltip("（已废弃，不再读取）四肢相位现在跟随主行波 swimWaveFreq。保留仅为序列化兼容")]
         public float limbSwingFreq = 0.27f;
         [Tooltip("分支骨至少要有多少个后代才当成「肢体」来驱动 —— 用来滤掉背鳍那种单骨")]
         public int limbMinDescendants = 2;
@@ -184,7 +184,10 @@ namespace InkWash.Enemies
         private bool _perfResting;
         private float _perfTimer = -1f;      // <0 = 尚未初始化（从「移动段」起算）
 
-        private float PerfMotionScale => !enablePerformanceCycle ? 1f : (_perfResting ? restMotionScale : 1f);
+        // ★ 原地悬停时强制满幅度：静默段会把波形压到 0.5 倍、把高度拉到 4.5 m，
+        //   调形态时这两个都是干扰 —— 波形一会儿大一会儿小，读数没有意义。
+        private float PerfMotionScale => hoverStationary ? 1f
+            : (!enablePerformanceCycle ? 1f : (_perfResting ? restMotionScale : 1f));
         private float PerfSpeedScale => !enablePerformanceCycle ? 1f : (_perfResting ? restSpeedScale : 1f);
         private float PerfBobScale => !enablePerformanceCycle ? 0f : (_perfResting ? 0f : 1f);
 
@@ -379,13 +382,45 @@ namespace InkWash.Enemies
         public float orbitLateralAmp = 0f;
         [Tooltip("（已废弃，不再读取）")]
         public float orbitLateralWaves = 3f;
-        [Tooltip("★★ 蛇形路径振幅（度）—— 把**航向**绕竖直轴左右摆动的幅度。\n" +
-                 "摆航向走出来的才是 S 形轨迹；旧实现摆的是「离玩家的远近」⇒ 花瓣形。")]
-        public float pathWaveAmpDeg = 30f;
-        [Tooltip("★★ 绕玩家一圈里的蛇行波数。3 ≈ 明显的左右蜿蜒；越大越碎")]
+        [Tooltip("（已废弃，不再读取）★ 摆航向属于「整体的移动贴合 sin」，用户已否掉 —— 蛇形现在由**身体形状**承担（见 swimWave* 系列）。仅为序列化兼容保留")]
+        public float pathWaveAmpDeg = 0f;
+        [Tooltip("（已废弃，不再读取）")]
         public float pathWaveCount = 3f;
+
+        // ================= ★★ 蛇形游动：让**骨骼**排布成 sin 曲线 =================
+        // 用户原话：「要让他的身体里面的骨骼贴合 sin，而不是整体的移动贴合 sin」。
+        //
+        // 旧做法是「给每节一个绕容器 up 的偏转角 yaw_i = A·sin(ph_i)」，两个根本毛病：
+        //   ① 身体形状 = 偏转角的**积分** ⇒ 实际形状是 cos（与设定相位差 90°），
+        //      相邻节只有 22.5° 相位差时积分还额外衰减 ⇒ 振幅读不出来；
+        //   ② 它控制的是"每节朝哪"，位置靠父子链累积 ⇒ 形状畸变，无法保证是 sin。
+        // 现在改成"先算曲线上的目标点、再让每节指向下一个目标点"（见 ApplySerpentineSpine）。
+        [Tooltip("侧向摆幅（m）—— 链相对轴线的最大横向偏移（单侧）。真蛇 ≈ 身长 10~15%")]
+        public float swimWaveAmp = 1.15f;
+        [Tooltip("★ 身长内的完整波数。1.0 = 尾→头正好一个完整波（一个正弯 + 一个负弯 = 一个 S）。" +
+                 "真蛇游动的波长 ≈ 1~2 倍身长 ⇒ W ∈ [0.5, 1.0]。越大越像波浪，越小越像一个弓")]
+        public float swimWaveCount = 1.0f;
+        [Tooltip("波沿身体传播的频率（Hz）—— 越大 = 像蛇推水越快")]
+        public float swimWaveFreq = 0.45f;
+        [Tooltip("★ 尾端包络增益（乘在 sin(πu) 上的线性渐变）。1.15 = 尾部略大于中段（真蛇尾巴最灵活）")]
+        public float swimWaveTailGain = 1.15f;
+        [Tooltip("★ 头端包络增益。1.0 = 与中段同幅")]
+        public float swimWaveHeadGain = 1.0f;
+        [Tooltip("（已废弃，不再读取）旧包络指数 env = sin(πu)^n —— 两端归零 ⇒ 头和尾都不动。" +
+                 "保留仅为序列化兼容，默认值与 prefab 同为 3")]
+        public float swimWaveEnvPow = 3f;
+        [Tooltip("★★ 原地悬停（**调形态专用**）：打开时龙不前进、不转向、不改朝向、高度恒定，" +
+                 "并忽略静默段的幅度缩放 —— 把身体波形单独择出来看。" +
+                 "用户要求「龙原地不动去做动作，先把这个动作做好了再动」⇒ 调蛇形期间保持开启。")]
+        public bool hoverStationary = true;
+        [Tooltip("原地悬停时，航线轴线的朝向（度，绕世界 Y）。0 = 用 prefab 摆好的朝向；" +
+                 "90 = 原地右转 90°（方便从侧后方看清左右摆动）")]
+        public float hoverStationaryYawDeg = 0f;
         private float _orbitPhase;
         private Vector3 _swimDir = Vector3.forward;
+        /// <summary>原地悬停：进入盘旋那一刻的朝向基准 + 是否已初始化。</summary>
+        private bool _stationaryInit;
+        private Quaternion _stationaryBaseRot = Quaternion.identity;
         [Tooltip("俯冲期水平移动速度倍率（× circleMoveSpeed）")]
         public float diveSpeedMul = 2.6f;
         [Tooltip("I4：两次俯冲之间的最小间隔（秒）。低于 1.2 s 玩家没有喘息窗口")]
@@ -473,6 +508,20 @@ namespace InkWash.Enemies
         ///   换成容器局部系后，绕 (0,1,0) 转就**一定**是左右摆，与骨骼 roll 完全无关。
         /// </summary>
         private readonly List<Quaternion> _baseRel = new List<Quaternion>();
+
+        // ★★ 蛇形游动（位置级 sin 贴合）用的三张表 —— 全部在基准姿态下采一次，之后只读。
+        //
+        // `_baseSegLocal[i]`：第 i 节 → 第 i+1 节的**段方向**，表达为模型容器局部系。
+        //   为什么不能直接当作 `Vector3.forward`：那只有在 `straightenSpine = true`
+        //   （拉直基准）时才成立。存成实测值就与"基准是不是直线"解耦，两种配置都对。
+        //   长度 = `_spine.Count`（末节沿用前一个 —— 末节没有"下一节"，
+        //   但它的旋转仍决定**头骨的朝向**，必须一起驱动）。
+        private readonly List<Vector3> _baseSegLocal = new List<Vector3>();
+        // `_segLen[i]`：第 i 节 → 第 i+1 节的**骨长**（世界单位）。刚性骨骼 ⇒ 恒定。
+        //   长度 = `_spine.Count - 1`。
+        private readonly List<float> _segLen = new List<float>();
+        // 每帧复用的切向缓存（**不复用就会每帧 new 数组 ⇒ 稳态产生 GC**，项目有"0 B GC"要求）
+        private Vector3[] _serpTan;
 
         private DragonAttack _attack;
         private float _orbitAngle;
@@ -664,6 +713,47 @@ namespace InkWash.Enemies
                 if (_spine[i] == null) { _baseRel.Add(Quaternion.identity); continue; }
                 _baseRel.Add(Quaternion.Inverse(rootRot) * _spine[i].rotation);
             }
+            // 同一时刻采「容器空间段方向 + 骨长」——蛇形驱动要按骨长在曲线上推进，
+            // 必须与 `_baseRel` 出自**同一次**基准姿态，否则两者描述的姿势不是同一条链。
+            CaptureSegments();
+        }
+
+        /// <summary>
+        /// 采「容器空间段方向」与「逐节骨长」。基准姿态下随 `CaptureBaseRel()` 一起采一次。
+        ///
+        /// ★ 段方向必须存成**容器局部系**（和 `_baseRel` 同一参考系）：
+        ///   驱动时要算 `FromToRotation(基准段方向, 曲线切向)`，
+        ///   两个向量只有在同一参考系里才有意义。
+        ///
+        /// ★ 为什么不用 `Vector3.forward` 当基准段方向（那样能少存一张表）：
+        ///   只有当 `straightenSpine = true`（基准被拉直成一条 +Z 直线）时它才成立。
+        ///   实测值表与"基准是不是直线"解耦 —— 关掉拉直也照样对。
+        ///
+        /// ★ 末节沿用前一节：`_spine[Count-1]` 没有"下一节"，但它的旋转仍决定**头骨朝向**，
+        ///   不驱动它头部就会僵在基准姿态。表长取 `_spine.Count`，与 `_baseRel` 对齐。
+        /// </summary>
+        private void CaptureSegments()
+        {
+            _baseSegLocal.Clear();
+            _segLen.Clear();
+            if (_spine.Count < 2) return;
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            Quaternion invRoot = Quaternion.Inverse(rootRot);
+
+            for (int i = 0; i + 1 < _spine.Count; i++)
+            {
+                if (_spine[i] == null || _spine[i + 1] == null)
+                {
+                    _baseSegLocal.Add(Vector3.forward);
+                    _segLen.Add(0f);
+                    continue;
+                }
+                Vector3 d = _spine[i + 1].position - _spine[i].position;
+                _segLen.Add(d.magnitude);
+                _baseSegLocal.Add(d.sqrMagnitude > 1e-12f ? invRoot * d.normalized : Vector3.forward);
+            }
+            if (_baseSegLocal.Count > 0) _baseSegLocal.Add(_baseSegLocal[_baseSegLocal.Count - 1]);
         }
 
         /// <summary>
@@ -779,24 +869,33 @@ namespace InkWash.Enemies
         }
 
         /// <summary>
-        /// 四肢正弦摆动：绕**容器 right** 前后划（像划水/蹬腿），相位沿身体依次错开，
-        /// 左右两侧（同一父节点的第 1、2 个分支）反相，避免"同手同脚"。
+        /// 四肢划水：绕**容器 right**（世界侧向）前后划，相位跟随主行波、各肢依次错开。
+        /// ★ 绝不能用骨骼自己的局部 `Vector3.right`：每条腿的局部轴朝向都不一样，
+        ///   同一个角套上去，有的腿在前后划、有的其实在绕轴自转 ⇒ 读起来就是爪子没动。
         /// </summary>
         private void ApplyLimbMotion(float phase)
         {
             if (_limbRoots.Count == 0 || limbSwingDeg <= 0f) return;
 
-            float lp = 2f * Mathf.PI * limbSwingFreq * Time.time;
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
             float step = limbPhaseStepDeg * Mathf.Deg2Rad;
 
             for (int k = 0; k < _limbRoots.Count && k < _limbBaseRel.Count; k++)
             {
                 var b = _limbRoots[k];
                 if (b == null) continue;
-                float ph = lp - _limbParentIndex[k] * step + (k % 2 == 0 ? 0f : Mathf.PI);
+
+                // ★ 相位**跟随主行波**（用传进来的 phase，不再自己用 Time.time 起一个 0.27 Hz 的拍子）：
+                //   四肢变成"身体波扫到它时才划一下"，而不是自顾自地摆。
+                float ph = phase + (_limbParentIndex[k] + k) * step + (k % 2 == 0 ? 0f : Mathf.PI);
                 float swing = limbSwingDeg * PerfMotionScale * Mathf.Sin(ph);
-                // ★ 局部旋转叠加：四肢跟着父脊柱节点走，再叠自己的前后划动
-                b.localRotation = _limbBaseRel[k] * Quaternion.AngleAxis(swing, Vector3.right);
+
+                // ★★ 轴换算到**父节点空间**（localRotation 的定义域）再左乘到基准上：
+                //   世界侧向 → 父空间，然后绝对写入（无累积）。父节点转、腿跟着转，同时叠自己的划水角。
+                Vector3 axis = Vector3.right;
+                Transform par = b.parent;
+                if (par != null) axis = par.InverseTransformDirection(rootRot * Vector3.right);
+                b.localRotation = Quaternion.AngleAxis(swing, axis) * _limbBaseRel[k];
             }
         }
 
@@ -950,9 +1049,25 @@ namespace InkWash.Enemies
             TickPerformanceCycle();
             TickRoar();
             // 移动段回到相位巡航高度；静默段贴地驻留（对应自带动画的"趴卧"）
-            _currentLift = _perfResting ? restLift : PhaseHoverHeight;
+            // ★ 原地悬停时高度恒定：静默段会把龙从 7 m 拉到 4.5 m，调形态时是纯干扰。
+            _currentLift = (hoverStationary || !_perfResting) ? PhaseHoverHeight : restLift;
 
-            if (PlayerRef.Exists)
+            // ★★ 原地悬停（调形态模式）：朝向锁定、位置一动不动。
+            //   用户要求「龙原地不动去做动作，先把这个动作做好了再动」。
+            //   朝向用**进入盘旋那一刻**的朝向做基准，再叠 `hoverStationaryYawDeg`
+            //   ⇒ 改取景角度不用动 prefab，也不用让龙自己转。
+            if (hoverStationary)
+            {
+                if (!_stationaryInit)
+                {
+                    _stationaryInit = true;
+                    _stationaryBaseRot = transform.rotation;
+                }
+                transform.rotation = Quaternion.Euler(0f, hoverStationaryYawDeg, 0f) * _stationaryBaseRot;
+            }
+            else _stationaryInit = false;
+
+            if (PlayerRef.Exists && !hoverStationary)
             {
                 // ── 巡游：**前进**，不是绕轨道 ──
                 //
@@ -1000,8 +1115,12 @@ namespace InkWash.Enemies
                 //      而同一括号里 err 修正量级相近 ⇒ 蛇行被半径修正吃掉，肉眼看不见。
                 //   ⇒ 现在改成**把航向绕竖直轴摆动**：摆的是"朝哪游"，轨迹才是蛇形。
                 Vector3 baseDir = (tangent + radial * (err * swimRadiusGain * pull)).normalized;
-                float serpDeg = pathWaveAmpDeg * Mathf.Sin(_orbitPhase * pathWaveCount);
-                Vector3 wantDir = (Quaternion.AngleAxis(serpDeg, Vector3.up) * baseDir).normalized;
+                // ★★ 不再把航线**左右摆**（原 `pathWaveAmpDeg · sin(_orbitPhase · pathWaveCount)`）。
+                //   用户已否掉这条路：「要让他的身体里面的骨骼贴合 sin，**而不是整体的移动贴合 sin**」。
+                //   摆航向 = 让质心走 S 形轨迹，身体依旧是根直杆 ⇒ 正是"整体移动贴合 sin"。
+                //   现在蛇形完全由**身体形状**承担（见 ApplySerpentineSpine），
+                //   航线只负责"沿大弧线绕着玩家巡游"这一件事，越平顺越好。
+                Vector3 wantDir = baseDir;
 
                 // ★ 帧率无关转向。旧写法 `Mathf.Clamp01(turnRate * dt)` 在 dt=0.005 s（200 fps）时
                 //   每帧只转 0.55%，转 90° 要 2 秒、期间飞出 16 m
@@ -1030,23 +1149,27 @@ namespace InkWash.Enemies
             //   现在改成：相位步进 15°（≈ 一个身长一个波）+ 垂直面小幅起伏 + 头稳尾摆包络。
             //   ★ 传的是**相位**（不是 sin 之后的值）—— 这里曾经把 `sin(2πft)` 的结果当振幅传进去，
             //     而 ApplySpineOffsetsRaw 内部又乘一次 sin，两个正弦相乘 ⇒ 振幅被压扁。
-            float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
-            // 静默段把波形压到近乎静止（对应自带动画的"趴卧"段）
-            // 长啸期间脊骨波幅度 ×2.5（策划案规格）
+            // 蛇形游动：把整条脊骨**排布到一条 sin 中心线上**（位置级贴合）。
+            //
+            // ★ 这一行替换掉了旧的 `ApplySpineOffsetsRaw(hoverAmplitudeDeg, hoverPitchAmplitudeDeg, ...)`。
+            //   旧写法给的是"每节绕容器 up 的偏转角"，身体形状是它的**积分** ⇒ 实际是 cos、
+            //   且相邻节相位差不够大时还会衰减。见 ApplySerpentineSpine 顶部的完整对照。
+            // ★ 传的是**相位**（不是 sin 之后的值）：旧代码曾把 `sin(2πft)` 的结果当振幅传进来，
+            //   驱动内部又乘一次 sin ⇒ 两个正弦相乘，振幅被压扁。
+            float phase = 2f * Mathf.PI * swimWaveFreq * Time.time;
+            // 静默段把波形压小（对应自带动画的"趴卧"段）；长啸期间脊骨幅度 ×2.5（策划案规格）
             float perf = PerfMotionScale * RoarSpineGain;
-            ApplySpineOffsetsRaw(hoverAmplitudeDeg * perf, hoverPitchAmplitudeDeg * perf, _spine.Count,
-                                 hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase);
+            ApplySerpentineSpine(perf, phase);
 
             // 「仰头」那一下叠在波形之上
             ApplyRoarHeadRaise();
 
-            // ── 头部引导：按转向速率给头颈叠一个偏航，让头「领」着走 ──
-            float dyaw = Vector3.SignedAngle(Flat(_prevSwimDir), Flat(_swimDir), Vector3.up);
-            float rate = dyaw / Mathf.Max(1e-4f, Time.deltaTime);
-            float wantYaw = Mathf.Clamp(rate * headLeadGain, -headLeadYawDeg, headLeadYawDeg);
-            _headYaw = Mathf.Lerp(_headYaw, wantYaw * PerfMotionScale, 1f - Mathf.Exp(-8f * Time.deltaTime));
+            // ★ 不再调用 ApplyHeadSteer()：它是**事后左乘**（`add * _spine[i].rotation`），
+            //   会把刚写好的 sin 形状揉歪 —— 与本轮"骨骼精确贴合 sin"的目标直接冲突。
+            //   而"头领着走"的观感已由曲线本身给出：中心线的轴向就是容器前向，
+            //   容器转向时头端切向跟着转（头端 env→0 ⇒ 头沿轴线，天然先转）。
+            _headYaw = 0f;
             _prevSwimDir = _swimDir;
-            ApplyHeadSteer();
         }
 
         /// <summary>盘旋高度由 Update 里的 MoveTowards 负责；这里只保证目标高度正确。</summary>
@@ -1758,6 +1881,145 @@ namespace InkWash.Enemies
             ApplyLimbMotion(phase);
         }
 
+        // ==================================================================
+        //  ★★ 蛇形游动：让**骨骼**排布成 sin 曲线（位置级贴合）
+        // ==================================================================
+        //
+        // 【为什么要换掉旧做法】用户原话：「要让他的身体里面的骨骼贴合 sin，
+        //   而不是整体的移动贴合 sin」。
+        //   旧驱动（ApplySpineOffsetsRaw）给每节一个绕容器 up 的**偏转角**
+        //   `yaw_i = A·sin(phase + i·step)`，靠父子链累积出形状。两个根本毛病：
+        //     ① 侧向**位置** = 偏转角的**积分** ⇒ 真实形状是 cos（与设定相位差 90°），
+        //        相邻节只差 22.5° 时积分还额外衰减 ⇒ 振幅被吃掉，形状也不是设定那条 sin；
+        //     ② 它控制的是"每节朝哪"，位置完全靠累积 ⇒ 形状畸变，无法保证是 sin。
+        //   现在改成：**先算曲线上的目标点，再让每节指向下一个目标点**。
+        //
+        // 【算法】
+        //   ① 世界空间定义中心线（`origin` = 链根 = 尾侧，`fwd`/`right` = 容器前向/右向）：
+        //        P(u) = origin + fwd·(u·axialLen) + right·(amp·env(u)·sin(2π·W·u + phase))
+        //        env(u) = sin(πu)^p  ⇒ **u=0 与 u=1 处都为 0**
+        //      ⚠⚠ 这条旧设计**已被用户实测否掉**：两端归零 ⇒ 端点的切向 = 纯轴向 ⇒
+        //        第 0 节（尾）与第 23 节（头）几乎不转。用户的原话是
+        //        「现在这个头和后面的爪子，还有尾巴都没有动呢」。
+        //      ★ 更正一个曾经想当然的前提：「曲线起点必须落在链根上」是**不必要的**。
+        //        驱动只用曲线的**方向**（相邻点的差），lat(0) 是否为 0 只会让整条曲线平移，
+        //        不会改变任何一节的方向 ⇒ **包络两端可以任意非零**。
+        //   ② 逐节按**累计骨长比例**取 u ⇒ u 恰好铺满 [0, 1]，波形在整条身长上完整展开。
+        //      （旧版"弦长 = 骨长"在弯曲曲线上走不完 u：实测轴向跨度 6.85 m / 折线 8.27 m
+        //        ⇒ 头段 17% 的波形被切掉，头端只到 u≈0.83。）
+        //   ③ 旋转：`rotation = rootRot · FromToRotation(基准段方向, 切向) · _baseRel[i]`
+        //      —— **绝对写入**，每帧从基准重算 ⇒ 无累积
+        //      （对比：事后左乘会让 24 节累积 500°，身长 7.5→3.3 m，见 ApplySpineOffsetsRaw 的注释）。
+        //
+        // 【一个必须知道的几何上限】链是刚性直杆，曲线不能"拧"过某条线，否则会出现
+        //   **折返**（点在 u 方向上的投影速度为负）⇒ 弦长反解不单调、形状自交。
+        //   判据：`amp · max|d/du[env·sin]| < axialLen`（= 链总骨长）。
+        //   在 W=1.25 / env=sin²πu 下该系数 ≈ 8.4 ⇒ amp < 总骨长/8.4 ≈ 0.98（本龙 8.27 m）。
+        //   调大 swimWaveCount 会线性抬高这个系数 —— 改参数后务必用 `drg_serp` 复测"无折返"。
+
+        /// <summary>中心线上参数 u 处的点（世界空间）。u 在 [0,1] 上对应「尾→头」的整条身长。</summary>
+        private static Vector3 SerpPoint(Vector3 origin, Vector3 fwd, Vector3 right, float axialLen,
+                                         float amp, float waveCount, float tailGain, float headGain,
+                                         float phase, float u)
+        {
+            // ★★ 包络 = sin(πu) × 线性增益。指数**必须是 1**，这一条同时卡住了两个相反的约束：
+            //
+            //  【约束 A：端点的"方向"必须会变】—— 端点动不动，全看 env'(0) / env'(1) 是否恒 0：
+            //    env = sin(πu)^n（n≥2）时 env'(0) = n·sin^{n-1}(0)·cos(0)·π = 0，**恒成立**
+            //      ⇒ 曲线在 u=0 处的切向 = 纯轴向 ⇒ 第 0 节永远不转。用户反馈的
+            //        「头和尾巴都没有动」正是这个，而且**与相位无关**，调幅度救不回来。
+            //    env = sin(πu)^1 时 env'(0) = π ≠ 0
+            //      ⇒ 端点切向 = atan(π·amp·sin(φ) / axialLen)，随相位来回摆 ⇒ 极差 ≠ 0。
+            //
+            //  【约束 B：端点的"位置"必须归零】—— 链的第 0 节**位置**被父级 `_rootJoint`
+            //    钉死，所以链的实际横向形状 = 曲线横向值 − 曲线在起点的值。
+            //    若 lat(0) ≠ 0（上一版把包络改成纯线性渐变，就是这种情况），这个差值在
+            //    某些相位下会**全体同号** ⇒ 身体退化成单侧 C 形。
+            //    实测证据（drg_form 段 B 帧 00，W=1.0、线性包络）：i=6..15 的 lat 全是负的，
+            //    对应截图 dfm_0072 里那个"一条弧"的形状。
+            //    env 两端归零 ⇒ lat(0) ≡ 0（与相位无关）⇒ 形状恒有正有负 ⇒ 始终是 S。
+            //
+            //  ⇒ 两条要求同时满足的唯一简单解就是 env = sin(πu)^1 × 增益。
+            float uc = Mathf.Clamp01(u);
+            float env = Mathf.Sin(Mathf.PI * uc) * Mathf.Lerp(tailGain, headGain, uc);
+            float lat = amp * env * Mathf.Sin(2f * Mathf.PI * waveCount * u + phase);
+            return origin + fwd * (u * axialLen) + right * lat;
+        }
+
+        // ★ `SolveSerpU`（在曲线上按"弦长 = 骨长"反解 u）已删除：
+        //   它在弯曲曲线上走不完 u ∈ [0,1]（实测只到 0.83）⇒ 头段 17% 的波形被切掉，
+        //   而且每帧 24 次迭代二分，纯开销。现在改用累计骨长比例直接取 u
+        //   （见 ApplySerpentineSpine），一行代替一整段求解器。
+
+        /// <summary>
+        /// 蛇形游动的主驱动：把整条脊骨**排布到一条 sin 中心线上**。
+        /// 姿态相关的取舍见本节顶部长注释。
+        /// </summary>
+        /// <param name="ampScale">整体幅度缩放（静默段 / 长啸用；1 = 正常）</param>
+        /// <param name="phase">行波相位（弧度）—— 由 <see cref="swimWaveFreq"/> 与 Time.time 决定</param>
+        private void ApplySerpentineSpine(float ampScale, float phase)
+        {
+            int n = _spine.Count;
+            if (n < 3) return;
+            if (_baseRel.Count < n) CaptureBaseRel();
+            if (_baseSegLocal.Count < n || _segLen.Count < n - 1) CaptureSegments();
+            if (_baseSegLocal.Count < n || _segLen.Count < n - 1) return;
+
+            Vector3 origin = _spine[0] != null ? _spine[0].position : transform.position;
+            // ★ 用**容器当前前向**而不是 `_swimDir`：本方法在 `transform.rotation = LookRotation(_swimDir)`
+            //   **之后**调用，两者已一致；用 transform.forward 少一层耦合。
+            Vector3 fwd = Flat(transform.forward);
+            if (fwd.sqrMagnitude < 1e-6f) fwd = Vector3.forward;
+            fwd.Normalize();
+            Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
+
+            float total = 0f;
+            for (int i = 0; i < n - 1; i++) total += _segLen[i];
+            if (total < 1e-3f) return;
+
+            float amp = swimWaveAmp * ampScale;
+            float W = Mathf.Max(0.05f, swimWaveCount);
+            float tg = swimWaveTailGain;
+            float hg = swimWaveHeadGain;
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            Quaternion invRoot = Quaternion.Inverse(rootRot);
+
+            if (_serpTan == null || _serpTan.Length < n) _serpTan = new Vector3[n];
+            Vector3[] tan = _serpTan;
+
+            // ── 逐节在曲线上取值，得到每节的**目标段方向** ──
+            // ★★ 自变量改成「**累计骨长比例**」，不用旧版的「弦长 = 骨长」反解。
+            //   旧版保证「本节点到上一点的直线距离 = 骨长」，这在**弯曲**的曲线上意味着
+            //   每节要吃掉的弧长比轴向步长大 ⇒ 走完 Σ骨长 = 8.266 m 时参数只到 u ≈ 0.83
+            //   （实测轴向跨度 6.85 m）⇒ 头段 17% 的波形被切掉。
+            //   现在 u = 累计骨长 / 总骨长，恰好铺满 [0, 1]：波形在整条身长上完整展开。
+            //   （链的位置仍由父子链按骨长累积 ⇒ 身长恒为 Σ骨长，不受取点方式影响。）
+            float acc = 0f;
+            Vector3 prev = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, 0f);
+            for (int i = 0; i + 1 < n; i++)
+            {
+                acc += _segLen[i];
+                float uh = total > 1e-6f ? Mathf.Clamp01(acc / total) : 0f;
+                Vector3 p = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, uh);
+                Vector3 d = p - prev;
+                tan[i] = d.sqrMagnitude > 1e-12f ? d.normalized : fwd;
+                prev = p;
+            }
+            tan[n - 1] = tan[n - 2];        // 末节没有下一节，沿用头段方向（头骨朝向仍要驱动）
+
+            // ── 绝对写入：每节从基准重算，无累积 ──
+            for (int i = 0; i < n; i++)
+            {
+                if (_spine[i] == null) continue;
+                Vector3 tLocal = invRoot * tan[i];
+                Quaternion q = Quaternion.FromToRotation(_baseSegLocal[i], tLocal);
+                _spine[i].rotation = rootRot * q * _baseRel[i];
+            }
+
+            ApplyLimbMotion(phase);
+        }
+
         /// <summary>回落到地面（只在旧行为 aerialLoop=false 时用到）。</summary>
         private void EndHover()
         {
@@ -1782,6 +2044,8 @@ namespace InkWash.Enemies
             _swimDir = Flat(transform.forward);
             if (_swimDir.sqrMagnitude < 1e-4f) _swimDir = Vector3.forward;
             _swimDir.Normalize();
+            // 原地悬停：每次进盘旋都重新取朝向基准（否则会沿用上一次的残留）
+            _stationaryInit = false;
         }
 
         /// <summary>

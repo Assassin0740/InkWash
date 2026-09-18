@@ -43,8 +43,9 @@ if (!string.IsNullOrEmpty(loc) && File.Exists(loc))
 
     // ---------- ② DLL 文件内容判据（mtime 会撒谎） ----------
     string txt = File.ReadAllText(loc);
-    foreach (var sym in new string[] { "diveSpiralAmp", "diveSpiralVertAmp", "diveSwimScale",
-                                       "ApplySwimWave", "AddSpinePitch", "waveAmpHeadGain" })
+    foreach (var sym in new string[] { "ApplySerpentineSpine", "SerpPoint", "SolveSerpU",
+                                       "CaptureSegments", "swimWaveEnvPow", "swimWaveAmp",
+                                       "swimWaveCount", "ApplySerpentineSpine" })
     {
         int c = 0, i = 0;
         while ((i = txt.IndexOf(sym, i, StringComparison.Ordinal)) >= 0) { c++; i += sym.Length; }
@@ -69,10 +70,9 @@ if (comp == null)
 sb.AppendLine("");
 sb.AppendLine("=== 实例化后回读的默认值（★ 权威） ===");
 foreach (var name in new string[] {
-    "diveSpiralAmp", "diveSpiralTurns", "diveSpiralVertAmp", "diveSwimScale",
-    "hoverAmplitudeDeg", "hoverPitchAmplitudeDeg", "hoverFrequency", "hoverPhaseStepDeg",
-    "restMotionScale", "restLift", "restSpeedScale", "waveAmpHeadGain",
-    "bodySwayAmp", "breathProjectileSpeed", "orbitLateralAmp" })
+    "swimWaveAmp", "swimWaveCount", "swimWaveFreq", "swimWaveEnvPow",
+    "pathWaveAmpDeg", "diveSpiralAmp", "restMotionScale",
+    "restLift", "restSpeedScale", "hoverAmplitudeDeg" })
 {
     var f = t.GetField(name, BindingFlags.Public | BindingFlags.Instance);
     sb.AppendLine("  " + name.PadRight(24) + " = " + (f == null ? "(字段不存在)" : f.GetValue(comp).ToString()));
@@ -86,7 +86,7 @@ UnityEngine.Object.DestroyImmediate(go);
 
 // ---------- 判定 ----------
 sb.AppendLine("");
-sb.AppendLine(">>> 期望：diveSpiralAmp = 3（不是 2.2）、AddSpinePitch 已删除。");
+sb.AppendLine(">>> 期望：swimWaveAmp=1.15 / swimWaveCount=1.8 / swimWaveEnvPow=3 / pathWaveAmpDeg=0");
 
 Debug.Log("[drg_ver]\n" + sb.ToString());
 return sb.ToString();
