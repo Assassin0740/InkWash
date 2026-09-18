@@ -120,9 +120,23 @@ namespace InkWash.Enemies
         public float bodySwayFreq = 0.27f;
         // ── 四肢 / 分支骨 ──
         // 实测骨架：24 节脊柱单链之外还有 **77 个分支节点**（龙身共 280 个 Transform），
-        //   其中 `脊柱[0] drgon_03` 下挂 3 条大链（后代 27 / 19 / 19 根骨），
-        //   `脊柱[1..10]` 各挂 1 根单骨（背鳍）。
+        //   其中 `脊柱[0] drgon_03` 下挂 3 条大链、`脊柱[13] drgon_016` 下挂 2 条、
+        //   `脊柱[22] drgon_025` 下挂 **14 条**，`脊柱[1..10]` 各挂 1 根单骨（背鳍）。
         //   旧代码只驱动脊柱 ⇒ **四肢从头到尾没动过**，这就是"很虚假"的来源。
+        //
+        // ★★★ 第十七轮更正：「分支骨 = 四肢」这个假设**是错的**。
+        //   探针 `drg_axis` 实测（报告 `Tools/reports/drg_axis_before.txt`）：
+        //   19 条被驱动的分支里**只有 4 条是腿**，其余 15 条是**整条尾巴 + 头部装饰簇**：
+        //     drgon_0206 父=脊柱[0]  子树 28 骨 / 伸展 **3.24 m** / 首子方向 (0.02, 0.11, −0.99)
+        //                ⇒ 沿**身体轴**伸出的 3.24 m 长链 = **整条尾巴**
+        //     drgon_054 … drgon_0138（共 **14 条**）父=脊柱[22] = **头饰簇**（鬃 / 须 / 角 / 颌）
+        //   把 ±limbSwingDeg 绕容器 right 套到这 15 条上，就直接产生了用户这轮的反馈：
+        //     · 尾巴绕**横轴**上下翻 ⇒ 末端上下走 ±3.24·sin25° ≈ ±1.37 m
+        //       ⇒「尾巴不在同一个水平线上、单独摆动」
+        //     · 头饰簇乱翻 ⇒ 头顶一片炸毛，看着就像「头歪了、跟落枕一样」
+        //   ★ 同一次探针也证明**脊柱本身完全水平**：段方向 pitch 恒 0.00°、
+        //     链高差 ySpread 恒 0.000 m、复形旋转轴偏离容器 up 0.00°（纯 yaw）。
+        //     所以"歪"不是波形算错，而是**这 15 条非腿分支被当成腿驱动**。
         [Tooltip("★ 四肢摆动幅度（度）。0 = 关闭。旧值 14° 在 8 m 长的身子上读不出来（用户反馈：爪子没动）⇒ 25°")]
         public float limbSwingDeg = 25f;
         [Tooltip("（已废弃，不再读取）四肢相位现在跟随主行波 swimWaveFreq。保留仅为序列化兼容")]
@@ -131,6 +145,15 @@ namespace InkWash.Enemies
         public int limbMinDescendants = 2;
         [Tooltip("相邻肢体之间的相位差（度），让四肢像划水一样依次摆动")]
         public float limbPhaseStepDeg = 60f;
+        [Tooltip("★ 距**头端**这么多节以内的分支不划水（头饰簇：鬃 / 须 / 角 / 颌）。\n" +
+                 "实测这条龙的 `脊柱[22]` 一个节就挂出 **14 条**分支，全按 ±limbSwingDeg 驱动\n" +
+                 "⇒ 头顶炸毛，看起来像「头歪了、落枕」（用户第十七轮反馈）。\n" +
+                 "2 = 排除 `脊柱[Count-2]` 与 `脊柱[Count-1]` 上的分支。")]
+        public int limbHeadExcludeLinks = 2;
+        [Tooltip("★ 分支首子方向与**身体轴（容器 +Z）**的 |dot| 达到此值 ⇒ 判为「沿身体轴延伸的分支」（**尾巴**），不划水。\n" +
+                 "实测：尾巴 `drgon_0206` |dot| = 0.99（伸展 3.24 m）；四条腿只有 0.10 ~ 0.49。\n" +
+                 "尾巴绕容器 right 摆 ±25° 会让末端上下走 ±1.37 m ⇒「尾巴不在同一水平线上」（用户反馈）。")]
+        public float limbTailAxisDot = 0.80f;
         // ── 头部引导 ──
         [Tooltip("★ 头部引导偏航上限（度）：转弯时头先转、身体再跟，别让头被身体拖着走。\n" +
                  "★ 实测：18° 会**长期顶满**（头一直歪着，比不引导更难看），收敛到 8°。")]
@@ -277,6 +300,16 @@ namespace InkWash.Enemies
         private readonly List<Transform> _limbRoots = new List<Transform>();
         private readonly List<int> _limbParentIndex = new List<int>();
         private readonly List<Quaternion> _limbBaseRel = new List<Quaternion>();
+        /// <summary>
+        /// `_limbRoots[k]` 是否参与划水。分类规则见 `ResolveLimbs`（第十七轮加）。
+        /// ★ 为什么必须有这张表：`_limbRoots` 是**几何收集**的产物，不是"四条腿"的语义列表 ——
+        ///   实测 19 条里只有 4 条是腿，另有整条尾巴（3.24 m）和 14 条头饰簇。
+        /// </summary>
+        private readonly List<bool> _limbDriven = new List<bool>();
+        /// <summary>`_limbRoots[k]` 首子方向与容器前向(+Z)的 |dot| —— 诊断用，判定"沿身体轴 ⇒ 尾巴"的依据。</summary>
+        private readonly List<float> _limbAxisDot = new List<float>();
+        /// <summary>`_limbDriven` 里为 true 的条数（探针回读用；0 表示分类过严）。</summary>
+        private int _limbDrivenCount;
         private Vector3 _prevSwimDir = Vector3.forward;
         private float _headYaw;
         [Header("★ 拉直基准（覆盖骨架自带的 C/S 弯姿）")]
@@ -813,21 +846,37 @@ namespace InkWash.Enemies
         }
 
         /// <summary>
-        /// 收集**脊柱之外**的分支骨（四肢 / 鳍 / 爪），并记下它们的容器系基准姿态。
+        /// 收集**脊柱之外**的分支骨，并**筛出真正的腿**。
         ///
         /// 为什么必须单独收集：`ResolveSpine()` 每层只取「第一个非 SMR 子节点」，
         /// 采到的是纯脊柱单链；四肢是**旁挂的分支**，旧代码从来没碰过它们 ⇒ 龙游动时爪子纹丝不动。
-        /// 判据用「后代数量 ≥ limbMinDescendants」：背鳍那种单骨会被滤掉，只驱动真正的肢体链。
+        /// 判据用「后代数量 ≥ limbMinDescendants」：背鳍那种单骨会被滤掉。
+        ///
+        /// ★★ 但「分支骨 = 四肢」这个假设是错的（第十七轮实测更正，见字段区）：
+        ///   几何收集会连带把 **整条尾巴**（`drgon_0206`，3.24 m，沿身体轴）和
+        ///   **14 条头饰簇**（父节点 `脊柱[22]`）一起收进来。它们一旦被当腿驱动：
+        ///     · 尾巴绕横轴上下翻 ⇒ 末端上下走 ±1.37 m（用户："尾巴不在同一水平线上"）
+        ///     · 头饰乱翻 ⇒ 头顶炸毛（用户："头歪了、跟落枕一样"）
+        ///   所以这里再加**两条语义筛选**，两条都是尺度无关的：
+        ///     ① `i >= 脊柱.Count - limbHeadExcludeLinks` ⇒ 头部若干节上的分支不驱动（头饰簇）；
+        ///     ② 首子方向与容器 +Z 的 |dot| ≥ `limbTailAxisDot` ⇒ 沿身体轴延伸 ⇒ 是尾巴，不驱动。
         /// </summary>
         private void ResolveLimbs()
         {
             _limbRoots.Clear();
             _limbParentIndex.Clear();
             _limbBaseRel.Clear();
+            _limbDriven.Clear();
+            _limbAxisDot.Clear();
+            _limbDrivenCount = 0;
             if (_spine.Count == 0) return;
 
             var inSpine = new HashSet<Transform>();
             for (int i = 0; i < _spine.Count; i++) if (_spine[i] != null) inSpine.Add(_spine[i]);
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            Quaternion invRoot = Quaternion.Inverse(rootRot);
+            int headStart = Mathf.Max(0, _spine.Count - Mathf.Max(0, limbHeadExcludeLinks));
 
             for (int i = 0; i < _spine.Count; i++)
             {
@@ -838,8 +887,22 @@ namespace InkWash.Enemies
                     var c = t.GetChild(k);
                     if (c == null || inSpine.Contains(c)) continue;
                     if (CountDescendants(c) < limbMinDescendants) continue;
+
+                    // ① 沿身体轴？—— 在**容器局部系**里身体轴就是 +Z，所以只需看方向的 z 分量。
+                    Vector3 dirC = Vector3.zero;
+                    if (c.childCount > 0) dirC = invRoot * (c.GetChild(0).position - c.position);
+                    if (dirC.sqrMagnitude > 1e-12f) dirC.Normalize();
+                    float axisDot = Mathf.Abs(dirC.z);
+                    bool alongBody = axisDot >= limbTailAxisDot;
+
+                    // ② 挂在头端若干节上？—— 头饰簇
+                    bool headSide = i >= headStart;
+
                     _limbRoots.Add(c);
                     _limbParentIndex.Add(i);
+                    _limbDriven.Add(!alongBody && !headSide);
+                    _limbAxisDot.Add(axisDot);
+                    if (!alongBody && !headSide) _limbDrivenCount++;
                 }
             }
 
@@ -872,6 +935,9 @@ namespace InkWash.Enemies
         /// 四肢划水：绕**容器 right**（世界侧向）前后划，相位跟随主行波、各肢依次错开。
         /// ★ 绝不能用骨骼自己的局部 `Vector3.right`：每条腿的局部轴朝向都不一样，
         ///   同一个角套上去，有的腿在前后划、有的其实在绕轴自转 ⇒ 读起来就是爪子没动。
+        /// ★★ 只驱动 `_limbDriven[k]` 为 true 的分支 —— 尾巴与头饰簇必须保持**刚性**，
+        ///   它们跟着父脊柱节点走就够了（这样尾巴自然躺在身体延长的水平线上，
+        ///   头饰自然跟着头，不会自顾自地翻）。
         /// </summary>
         private void ApplyLimbMotion(float phase)
         {
@@ -882,6 +948,9 @@ namespace InkWash.Enemies
 
             for (int k = 0; k < _limbRoots.Count && k < _limbBaseRel.Count; k++)
             {
+                // ★ 非腿分支（整条尾巴 / 14 条头饰簇）不划水，见 ResolveLimbs 的筛选规则
+                if (k < _limbDriven.Count && !_limbDriven[k]) continue;
+
                 var b = _limbRoots[k];
                 if (b == null) continue;
 

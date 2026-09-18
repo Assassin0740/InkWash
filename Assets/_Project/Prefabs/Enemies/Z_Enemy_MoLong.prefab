@@ -398,6 +398,8 @@ MonoBehaviour:
   limbSwingFreq: 0.27
   limbMinDescendants: 2
   limbPhaseStepDeg: 60
+  limbHeadExcludeLinks: 2
+  limbTailAxisDot: 0.8
   headLeadYawDeg: 8
   headLeadGain: 0.03
   enablePerformanceCycle: 1
