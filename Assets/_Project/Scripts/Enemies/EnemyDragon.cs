@@ -79,7 +79,7 @@ namespace InkWash.Enemies
         public float breathPhaseStepDeg = 18f;
         public int breathHeadLinks = 4;
         public GameObject breathProjectilePrefab;
-        public float breathProjectileSpeed = 15f;
+        public float breathProjectileSpeed = 16f;
         public float breathProjectileDamage = 14f;
         public int breathProjectileCount = 3;
         public float breathSpreadDeg = 9f;
@@ -115,7 +115,7 @@ namespace InkWash.Enemies
         [Tooltip("★ 整体横向摆幅（m）—— 用户的「让它跟着正弦波移动」。" +
                  "只转骨骼时 i=0（尾/根侧）是支点、位移恒为 0（探针实测 0.000）⇒ 看着像「只有中间在动」。\n" +
                  "给模型容器叠一个横向正弦，整条龙（含尾端）才真的都在动。")]
-        public float bodySwayAmp = 1.6f;
+        public float bodySwayAmp = 1f;
         [Tooltip("整体横向正弦的频率（Hz）。与 hoverFrequency 同频最自然（身体摆 = 路径摆）")]
         public float bodySwayFreq = 0.27f;
         // ── 四肢 / 分支骨 ──
@@ -161,12 +161,16 @@ namespace InkWash.Enemies
         public float advanceDuration = 7f;
         [Tooltip("『趴下静默』每段持续秒数（自带动画实测 ≈7.2 s）")]
         public float restDuration = 7f;
-        [Tooltip("静默段驻留高度（m）——贴地但不落地")]
-        public float restLift = 0.35f;
-        [Tooltip("静默段脊骨波 / 四肢 / 横向摆 / 头部引导的振幅缩放（0 = 完全静止）")]
-        public float restMotionScale = 0.06f;
-        [Tooltip("静默段的水平推进速度缩放（0 = 原地悬停）")]
-        public float restSpeedScale = 0.12f;
+        // ★ 下面三个「静默段」默认值必须与 Z_Enemy_MoLong.prefab 上的序列化值逐位一致。
+        //   第十四轮改这组值时只改了 prefab、漏改这里 ⇒ 演示场（走 prefab）验收通过，
+        //   但源码里仍留着「静默段把身体完全拉直 + 贴地 0.35 m」的旧行为，
+        //   组件一旦被 Reset / prefab 重建回退就会复活。检查工具：Tools/check_prefab_overrides.py
+        [Tooltip("静默段驻留高度（m）——贴地但不落地。prefab 同步为 4.5")]
+        public float restLift = 4.5f;
+        [Tooltip("静默段脊骨波 / 四肢 / 横向摆 / 头部引导的振幅缩放（0 = 完全静止）。prefab 同步为 0.5")]
+        public float restMotionScale = 0.5f;
+        [Tooltip("静默段的水平推进速度缩放（0 = 原地悬停）。prefab 同步为 0.45")]
+        public float restSpeedScale = 0.45f;
         [Tooltip("上下游动：模型容器**竖直**正弦振幅（m）。与 bodySwayAmp 同构，那条是左右、这条是上下")]
         public float bodyBobAmp = 1.1f;
         [Tooltip("上下游动频率（Hz）")]
@@ -371,8 +375,8 @@ namespace InkWash.Enemies
         public float swimRadiusGain = 0.12f;
         [Tooltip("轨道角速度（°/s）。线速度 ≈ hoverOrbitRadius × 此值 × π/180")]
         public float orbitAngularSpeedDeg = 40f;
-        [Tooltip("（已废弃，不再读取）旧实现把蛇行加在「进出」分量上 ⇒ 轨迹是花瓣形而非 S 形")]
-        public float orbitLateralAmp = 2.6f;
+        [Tooltip("（已废弃，不再读取）旧实现把蛇行加在「进出」分量上 ⇒ 轨迹是花瓣形而非 S 形。仅为序列化兼容保留，默认值与 prefab 同为 0")]
+        public float orbitLateralAmp = 0f;
         [Tooltip("（已废弃，不再读取）")]
         public float orbitLateralWaves = 3f;
         [Tooltip("★★ 蛇形路径振幅（度）—— 把**航向**绕竖直轴左右摆动的幅度。\n" +
