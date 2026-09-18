@@ -191,22 +191,18 @@ namespace InkWash.Enemies
                  "   头簇刚性挂在 `spine[n-2]` 上只能跟着甩：`drg_headnod` 实测一个行波周期内\n" +
                  "   **吻部仰角极差 49.65°、偏航极差 13.42°**（用户第三次反馈「头没面向前方 / 歪了」）。\n" +
                  "   ⇒ 这个静态值只能定**平均档位**，摆动幅度要动 `swimWaveHeadGain`（见该字段）。")]
-        // ★★ 第二十八轮（实测）：三值由 TCP 桥在 Play 模式实测反解。
-        //   第一版只把**骨轴**（025→00）对齐了脖子（roll −65.46 那组），但颅骨网格相对
-        //   drgon_00 还自带 **FBX 原生安装仰角（实测视觉吻部仍上仰 17°~22°，用户：「龙头还是抬头的」）**。
-        //   第二版按「叶骨质心」反解——但须骨/下颌骨把质心带偏，对齐的不是颅骨视觉轴
-        //   （用户截图实证：脖子水平、颅骨下折 ~40-50°）。
-        //   第三版（终）：**图像伺服**——侧视顶轮廓 Theil-Sen 修 pitch、顶视 PCA 修 yaw，
-        //   闭环迭代到侧视折角 ~4° / 顶视偏航 ~0°，双视角截图目视验证
-        //   （侧视：颅骨水平前伸与脖子线连续；顶视：双角双须对称无偏航）。
-        //   ★ 教训：叶骨质心/全身 PCA 都会被须骨和贴骨的脖子段顶点稀释，
-        //     骨骼侧的测量永远要用「眼睛在回路里」的图像证据兜底。
+        // ★★ 第二十八轮·终局（2026-09-18）：三轮自动反解全部宣告失败——
+        //   ① 骨轴对齐（roll −65.46 组）→ 颅骨网格仍上仰；② 叶骨质心 → 须骨/下颌骨带偏，颅骨下折 40-50°；
+        //   ③ 图像伺服（顶轮廓/PCA）→ 双视角目视"过关"后用户实测：「头完全反过来了」。
+        //   ★ 根因共性：所有自动量测都被须骨、蒙皮顶点或视角欺骗，**机器看不见审美**。
+        //   拍板：**人眼在回路**——三值归零（= FBX 原生姿态），由用户按 F9 呼出
+        //   调参窗口（本文件底部 HeadTunerWindow）实时拧滑条定终值，然后把数值粘回来落盘。
         //   与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
-        public float headAlignPitchDeg = -59.6478f;
+        public float headAlignPitchDeg = 0f;
         [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
-        public float headAlignYawDeg = 62.8458f;
+        public float headAlignYawDeg = 0f;
         [Tooltip("头部滚转对齐（度，绕身体轴）")]
-        public float headAlignRollDeg = -136.6705f;
+        public float headAlignRollDeg = 0f;
         [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
                  "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
         public int headAlignLinks = 2;
@@ -2496,6 +2492,85 @@ namespace InkWash.Enemies
 
         /// <summary>头部对齐从第几节开始作用（链条末尾 `headAlignLinks` 节）。</summary>
         private int HeadAlignFrom(int n) => Mathf.Max(0, n - Mathf.Max(1, headAlignLinks));
+
+        #region 龙头对齐调参面板（第二十八轮·终，F9 开关）
+
+        // ★★ 应用户要求：「你给我一个操控的方便的调整数据的东西，我来帮你把头调整准确的位置」。
+        //   自动反解三轮皆败（见 headAlignPitchDeg 注释），改为**人眼在回路**：
+        //   Play 中按 F9 呼出窗口，滑条/数字框实时改 headAlign 三旋钮
+        //   （HeadAlignExtra 每帧现算 ⇒ 改动当帧生效），调好后点「复制数值」粘给 Claude 落盘。
+        //   ★ 慢动作按钮（0.1×/0.02×）：把盘旋放慢到近冻结，Update 仍在跑 ⇒ 滑条改动实时可见。
+        private static bool _headTunerOn;
+        private Rect _headTunerRect = new Rect(24f, 80f, 372f, 240f);
+
+        protected virtual void OnGUI()
+        {
+            var e = Event.current;
+            if (e != null && e.type == EventType.KeyDown && e.keyCode == KeyCode.F9)
+            {
+                _headTunerOn = !_headTunerOn;
+                e.Use();
+            }
+            if (!_headTunerOn) return;
+            _headTunerRect = GUILayout.Window(GetInstanceID(), _headTunerRect, HeadTunerWindow,
+                "龙头对齐调参（相对脖子）· F9 开/关");
+        }
+
+        private void HeadTunerWindow(int id)
+        {
+            GUILayout.Label("拧到「鼻子顺着脖子朝外」为止；数字框可直接输入精确值。");
+            headAlignPitchDeg = KnobRow("抬头 Pitch", headAlignPitchDeg, -90f, 90f, "正=抬头");
+            headAlignYawDeg = KnobRow("偏航 Yaw", headAlignYawDeg, -180f, 180f, "正=转身体左侧");
+            headAlignRollDeg = KnobRow("滚转 Roll", headAlignRollDeg, -180f, 180f, "绕身体轴");
+
+            GUILayout.Space(6f);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("游戏速度", GUILayout.Width(62f));
+            float cur = Time.timeScale;
+            foreach (float sp in new[] { 1f, 0.1f, 0.02f })
+            {
+                bool on = Mathf.Abs(cur - sp) < 0.005f;
+                var style = on ? GUI.skin.box : GUI.skin.button;
+                if (GUILayout.Button(sp == 1f ? "1×" : sp.ToString("0.##") + "×", style)) Time.timeScale = sp;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("归零（FBX 原生姿态）"))
+            {
+                headAlignPitchDeg = 0f; headAlignYawDeg = 0f; headAlignRollDeg = 0f;
+            }
+            if (GUILayout.Button("复制数值（粘给 Claude 落盘）"))
+            {
+                string s = string.Format("headAlign: pitch={0}, yaw={1}, roll={2}",
+                    headAlignPitchDeg.ToString("F2"),
+                    headAlignYawDeg.ToString("F2"),
+                    headAlignRollDeg.ToString("F2"));
+                GUIUtility.systemCopyBuffer = s;
+                Debug.Log("[HeadTuner] " + s);
+            }
+            GUILayout.EndHorizontal();
+
+            GUI.DragWindow();
+        }
+
+        /// <summary>一行旋钮：标签 + 滑条 + 数字框（非法输入保留原值）。</summary>
+        private float KnobRow(string label, float v, float min, float max, string hint)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label, GUILayout.Width(78f));
+            GUILayout.Label(hint, GUI.skin.box, GUILayout.Width(88f));
+            v = GUILayout.HorizontalSlider(v, min, max);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(78f);
+            string s = GUILayout.TextField(v.ToString("F1"), GUILayout.Width(64f));
+            if (float.TryParse(s, out float parsed)) v = Mathf.Clamp(parsed, min, max);
+            GUILayout.EndHorizontal();
+            return v;
+        }
+
+        #endregion
 
         /// <summary>
         /// 尾巴水平化（第十八轮）。
