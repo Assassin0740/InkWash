@@ -194,13 +194,19 @@ namespace InkWash.Enemies
         // ★★ 第二十八轮（实测）：三值由 TCP 桥在 Play 模式实测反解。
         //   第一版只把**骨轴**（025→00）对齐了脖子（roll −65.46 那组），但颅骨网格相对
         //   drgon_00 还自带 **FBX 原生安装仰角（实测视觉吻部仍上仰 17°~22°，用户：「龙头还是抬头的」）**。
-        //   第二版改为以「视觉吻部」（头簇前缘叶骨质心方向）对齐容器水平前向反解，
-        //   应用后截图验证吻部水平前伸。与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
-        public float headAlignPitchDeg = 2.7707f;
+        //   第二版按「叶骨质心」反解——但须骨/下颌骨把质心带偏，对齐的不是颅骨视觉轴
+        //   （用户截图实证：脖子水平、颅骨下折 ~40-50°）。
+        //   第三版（终）：**图像伺服**——侧视顶轮廓 Theil-Sen 修 pitch、顶视 PCA 修 yaw，
+        //   闭环迭代到侧视折角 ~4° / 顶视偏航 ~0°，双视角截图目视验证
+        //   （侧视：颅骨水平前伸与脖子线连续；顶视：双角双须对称无偏航）。
+        //   ★ 教训：叶骨质心/全身 PCA 都会被须骨和贴骨的脖子段顶点稀释，
+        //     骨骼侧的测量永远要用「眼睛在回路里」的图像证据兜底。
+        //   与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
+        public float headAlignPitchDeg = -59.6478f;
         [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
-        public float headAlignYawDeg = -16.6325f;
+        public float headAlignYawDeg = 62.8458f;
         [Tooltip("头部滚转对齐（度，绕身体轴）")]
-        public float headAlignRollDeg = -29.7997f;
+        public float headAlignRollDeg = -136.6705f;
         [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
                  "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
         public int headAlignLinks = 2;
