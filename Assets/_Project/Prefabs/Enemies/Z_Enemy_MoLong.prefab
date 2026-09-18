@@ -460,7 +460,7 @@ MonoBehaviour:
   swimWaveTailGain: 1.15
   swimWaveHeadGain: 1
   swimWaveEnvPow: 3
-  hoverStationary: 1
+  hoverStationary: 0
   hoverStationaryYawDeg: 0
   diveSpeedMul: 2.6
   diveMinInterval: 1.2

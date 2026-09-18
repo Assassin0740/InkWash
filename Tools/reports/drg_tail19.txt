@@ -1,0 +1,58 @@
+=== drg_tail19：尾巴是否跟上身体的 sin（第十九轮）===
+条目 idx=23  label=BOSS 墨龙 / 盘旋 Circling（默认态）
+帧步长钉死 30 fps；每模式 200 tick = 6.667 s = 3.000 个驱动周期
+每 2 tick 存一帧 ⇒ 每模式 100 帧
+
+── 运行期强制（不落盘）──
+  hoverStationary          False → False
+  enablePerformanceCycle   True → False
+
+── 生效参数 ──
+  hoverStationary          = False
+  hoverStationaryYawDeg    = 0
+  swimWaveAmp              = 1.15
+  swimWaveCount            = 1
+  swimWaveFreq             = 0.45
+  swimWaveTailGain         = 1.15
+  swimWaveHeadGain         = 1
+  enablePerformanceCycle   = False
+  limbSwingDeg             = 25
+  limbSweepBackDeg         = 60
+  tailLevel                = True
+  tailFollowBodyWave       = True
+  tailFollowGain           = 0.9
+  tailWaveAmp              = 0.35
+  tailWaveSpan             = 0.5
+  tailPhaseLagDeg          = 0
+  headAlignPitchDeg        = 30
+  headAlignLinks           = 2
+
+脊柱节数 = 24   尾巴链节数 = 13
+
+── 第一遍：修后 tailFollowBodyWave = true ──
+
+── 第二遍：修前 tailFollowBodyWave = false（旧版独立行波）──
+
+══════ 判据 ══════
+
+① 接点折角 kink = Angle(身体首节方向, −尾巴首节方向)  —— 波形连续的话恒 ≈ 0°
+   修后 follow = true      min 0.02°     max 10.18°    均值 6.11°     极差 10.16°
+   修前 follow = false     min 0.42°     max 31.82°    均值 20.67°    极差 31.40°
+
+② 横向摆幅（p2p，单位 m）
+                         尾尖            身体中段
+   修后 follow = true      1.982         1.750
+   修前 follow = false     0.686         1.750
+
+③ 帧间廓形互相关位移（站为单位；负 = 波形往「尾尖」方向走）
+   身体段与尾巴段**同号 = 同向传播**；异号 = 两条波对着撞
+                         身体段 kBody         尾巴段 kTail
+   修后 follow = true      0.000             0.000
+   修前 follow = false     0.000             0.000
+
+④ 解调空间相位斜率（rad/m，沿链从尾尖到头的方向）
+   跟随模式：整条链（含接点）应当是**同一个斜率**（= 2π·W/身体总骨长）
+   修后 follow = true      尾巴段斜率 0.745    身体段斜率 0.554    ｜尾尖振幅 0.973   身体中段振幅 0.857
+   修前 follow = false     尾巴段斜率 0.717    身体段斜率 0.554    ｜尾尖振幅 0.342   身体中段振幅 0.857
+
+PNG：T19/t19a_%04d.png（修后）＋ T19/t19b_%04d.png（修前），各 100 帧

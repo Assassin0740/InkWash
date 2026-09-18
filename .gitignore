@@ -144,6 +144,14 @@ sysinfo.txt
 #   同轮结论图 Tools/screenshots/enemies/FIX/（头 5 档扫描）与 HDR/（基准 vs 驱动）
 /Tools/screenshots/enemies/LP/
 
+# 「第十九轮 墨龙 尾巴跟随身体 sin 波形」交付录像的**逐帧原图**
+# （T19 200 张 / 155 MB；T19CMP 是相位对齐后的并排对照图 100 张 / 56 MB）。
+# 探针 Tools/cs/drg_tail19.cs 重跑即可再生成；成品与结论图已入库：
+#   Tools/screenshots/enemies/_墨龙_尾巴跟随_v1_对照.mp4（100 帧 = 整 3 周期，无缝循环）
+#   Tools/screenshots/enemies/_墨龙_头部档位对照_v1.png（H19/ 六档头特写拼图，6.6 MB 保留）
+/Tools/screenshots/enemies/T19/
+/Tools/screenshots/enemies/T19CMP/
+
 # ---------- 操作系统杂项 ----------
 .DS_Store
 Thumbs.db
