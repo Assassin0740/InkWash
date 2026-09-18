@@ -1,0 +1,22 @@
+=== drg_loop：第十八轮交付录像（连续循环）===
+条目 idx=23  label=BOSS 墨龙 / 盘旋 Circling（默认态）
+帧步长钉死 30 fps；A/B 各 134 帧（= 整 2 个周期），C 67 帧（1 个周期）
+
+── 生效参数（prefab 值，不再由探针改）──
+  hoverStationary        = True
+  swimWaveAmp            = 1.15
+  swimWaveCount          = 1
+  swimWaveFreq           = 0.45
+  limbSwingDeg           = 25
+  limbSweepBackDeg       = 60
+  tailLevel              = True
+  tailWaveAmp            = 0.35
+  tailWaveSpan           = 0.5
+  headAlignPitchDeg      = 30
+  headAlignYawDeg        = 0
+  headAlignRollDeg       = 0
+  headAlignLinks         = 2
+
+  尾巴链节数 = 13
+
+PNG 总数 = 335（LP/lp_%04d.png，顺序：side×134 → q34×134 → head×67）

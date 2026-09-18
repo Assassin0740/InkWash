@@ -154,6 +154,55 @@ namespace InkWash.Enemies
                  "实测：尾巴 `drgon_0206` |dot| = 0.99（伸展 3.24 m）；四条腿只有 0.10 ~ 0.49。\n" +
                  "尾巴绕容器 right 摆 ±25° 会让末端上下走 ±1.37 m ⇒「尾巴不在同一水平线上」（用户反馈）。")]
         public float limbTailAxisDot = 0.80f;
+
+        // ── 第十八轮：头 / 尾 / 四肢的**姿态校正** ──
+        //
+        // ★★ 为什么需要这一组（`drg_rest` 实测，报告 Tools/reports/drg_rest.txt）：
+        //   把 `swimWaveAmp = 0` 打进去 —— 曲线的 lat 恒 0 ⇒ `FromToRotation` 恒单位四元数
+        //   ⇒ 脊骨回到**纯基准姿态**；再和正常驱动**同机位**逐项对照，两组数字**逐位相同**：
+        //     尾尖绝对抬升 Δy = 0.265 m（中段累计 0.799 m）
+        //     头扇（26 枚叶子骨）均值方向 vs 颈段方向 = 52.43°
+        //     四条腿首段 dot(容器 fwd) = 0.490 / 0.283 / 0.099 / −0.351（前三条在**往前伸**）
+        //   ⇒ 这一轮用户说的「头歪 / 尾巴翘 / 爪子该往后」**一条都不是波形造成的**，
+        //     而是**模型基准姿态**自带的：`StraightenSpineBase()` 只把脊柱链本身拉直，
+        //     头簇与尾巴是挂在脊柱节点上的**刚性分支**，从来没有被校正过。
+        //
+        //   ⇒ 上一轮"已修好"判错的**真正原因是判据口径**：量的是"分支末端 y 的**极差**"，
+        //     刚性分支的极差恒 0 ⇒ 判 ✅，而它的**绝对值**一直翘着 0.265 m。
+        //     「量波动」≠「量位置」。见坑表条目 24。
+        [Tooltip("★ 头部俯仰对齐（度，**抬头为正**）。\n" +
+                 "头簇挂在 `_spine[Count-2]` 上、姿态是模型原生的：实测头扇方向偏离颈段 52.4°、" +
+                 "质心高出颈轴 0.292 m，读起来就是「头没顺着脖子、落枕」。\n" +
+                 "正值抬头，0 = 关闭（保持原生）。只转**头簇那一节**，脖子本身不动 —— " +
+                 "所以头是「整块绕颈根转」，不会把脖子的 sin 形状揉歪。\n" +
+                 "★ 30 是**量出来的**：对头簇 50 枚骨（不含鬃须角颌）做 PCA，第一主轴在容器系里是 " +
+                 "(−0.584,−0.503,−0.637)、俯仰 30.21°（轴朝下）、展布 0.864 m / 垂直半径 0.359 m " +
+                 "（扁平度 2.41 ⇒ 长轴可信）⇒ 抬头 30.2° 正好让长轴水平。出图 p30 与肉眼判断一致。")]
+        public float headAlignPitchDeg = 30f;
+        [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
+        public float headAlignYawDeg = 0f;
+        [Tooltip("头部滚转对齐（度，绕身体轴）")]
+        public float headAlignRollDeg = 0f;
+        [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
+                 "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
+        public int headAlignLinks = 2;
+
+        [Tooltip("★ 尾巴水平化：把整条尾链的段方向**压回水平面**（只保留偏航摆动）。\n" +
+                 "实测（drg_head）尾巴逐节 pitch 从 −6° 一路爬到 −33°，末端抬升 0.265 m、" +
+                 "中段累计 0.799 m ⇒ 用户「尾巴末端是歪的，翘起来了，应该保持同一水平线的高度」")]
+        public bool tailLevel = true;
+        [Tooltip("尾巴水平摆幅（m）：与身体行波同相位的横向波，尾根 0 → 尾尖最大。0 = 尾巴笔直")]
+        public float tailWaveAmp = 0.35f;
+        [Tooltip("尾巴上铺几个波（相对尾长）")]
+        public float tailWaveSpan = 0.5f;
+        [Tooltip("尾巴波相对身体行波的相位滞后（度）—— 让波看起来是**从身体流到尾巴上**")]
+        public float tailPhaseLagDeg = 0f;
+
+        [Tooltip("★ 四肢后掠（度）：飞行时爪子该**往后收**，而不是像趴地那样往前摊。\n" +
+                 "按左右侧自动定符号（h.x 的符号），并限幅在此角度内 ⇒ 绝不会把腿甩过身体中线。\n" +
+                 "实测四条腿首段 dot(容器 fwd) = 0.49 / 0.28 / 0.10 / −0.35 ⇒ 前三条在往前伸。")]
+        public float limbSweepBackDeg = 60f;
+
         // ── 头部引导 ──
         [Tooltip("★ 头部引导偏航上限（度）：转弯时头先转、身体再跟，别让头被身体拖着走。\n" +
                  "★ 实测：18° 会**长期顶满**（头一直歪着，比不引导更难看），收敛到 8°。")]
@@ -310,6 +359,19 @@ namespace InkWash.Enemies
         private readonly List<float> _limbAxisDot = new List<float>();
         /// <summary>`_limbDriven` 里为 true 的条数（探针回读用；0 表示分类过严）。</summary>
         private int _limbDrivenCount;
+        /// <summary>`_limbRoots[k]` 首子方向在**容器局部系**里的基准值（第十八轮加）。
+        /// 运行时据此算「这条腿要绕容器 up 转多少度才算往后」，与 `limbSweepBackDeg` 实时联动。</summary>
+        private readonly List<Vector3> _limbBaseDirLocal = new List<Vector3>();
+
+        // ── 尾巴链（第十八轮：尾巴不再是"刚性挂在脊柱[0] 上的分支"，而是可驱动的一条链）──
+        private readonly List<Transform> _tailChain = new List<Transform>();
+        private readonly List<Quaternion> _tailBaseRel = new List<Quaternion>();
+        /// <summary>尾巴链的**基准局部旋转**（父节点系）—— `EndHover()` 复位用。</summary>
+        private readonly List<Quaternion> _tailBaseLocalRot = new List<Quaternion>();
+        private readonly List<Vector3> _tailBaseSegLocal = new List<Vector3>();
+        private readonly List<float> _tailSegLen = new List<float>();
+        private float _tailTotalLen;
+        private Vector3[] _tailTan;
         private Vector3 _prevSwimDir = Vector3.forward;
         private float _headYaw;
         [Header("★ 拉直基准（覆盖骨架自带的 C/S 弯姿）")]
@@ -921,6 +983,104 @@ namespace InkWash.Enemies
             //   局部旋转这版仍然保留：它让四肢**跟着脊柱的起伏一起动**，比世界旋转更自然。
             for (int k = 0; k < _limbRoots.Count; k++)
                 _limbBaseRel.Add(_limbRoots[k].localRotation);
+
+            // ★ 第十八轮：后掠角要按"这条腿在容器水平面里朝哪"来算，所以把基准首子方向也存一份
+            _limbBaseDirLocal.Clear();
+            for (int k = 0; k < _limbRoots.Count; k++)
+            {
+                var b = _limbRoots[k];
+                Vector3 d = Vector3.zero;
+                if (b != null && b.childCount > 0) d = invRoot * (b.GetChild(0).position - b.position);
+                if (d.sqrMagnitude > 1e-12f) d.Normalize();
+                _limbBaseDirLocal.Add(d);
+            }
+
+            // ★ 第十八轮：把整条尾巴采出来（它从"刚性分支"升级为可驱动的链，见 ApplyTailLevel）
+            CaptureTailChain(invRoot);
+        }
+
+        /// <summary>
+        /// 采集**整条尾巴**（第十八轮）。
+        ///
+        /// ★ 为什么不再让尾巴当"刚性分支"：`drg_head` 实测尾巴逐节 pitch 从 −6° 爬到 −33°
+        ///   （**基准姿态**自带，amp=0 时一样），末端绝对抬升 0.265 m、中段累计 0.799 m
+        ///   ⇒ 用户「尾巴末端翘起来了，应该保持同一水平线的高度」。
+        ///   冻成刚性只解决了"不单独摆动"，没解决"翘"。要压平就必须**逐节重写段方向**。
+        ///
+        /// ★ 选尾巴的判据：非驱动（`_limbDriven == false`）且 |首子方向 · 容器 +Z| ≥ `limbTailAxisDot`，
+        ///   再取**伸展最长**的一条 —— 实测唯一满足的是 `drgon_0206`（伸展 3.24 m / 28 骨）。
+        ///   头饰簇里也有两条 |z| ≥ 0.8 的（`drgon_061` / `drgon_0138`，伸展 0.24 / 0.69 m），
+        ///   用"伸展最长"把它们排除掉。
+        ///
+        /// ★ 主轴链怎么挑：每层选「与**上一段方向**夹角最小」的子节点。
+        ///   不选"离根最远" —— 尾巴中段会分出鳍，离根最远的往往是一条横向短鳍，
+        ///   那样会把主轴拐上歧路（链会突然拐 90°）。
+        /// </summary>
+        private void CaptureTailChain(Quaternion invRoot)
+        {
+            _tailChain.Clear();
+            _tailBaseRel.Clear();
+            _tailBaseLocalRot.Clear();
+            _tailBaseSegLocal.Clear();
+            _tailSegLen.Clear();
+            _tailTotalLen = 0f;
+
+            Transform best = null; float bestReach = -1f;
+            for (int k = 0; k < _limbRoots.Count && k < _limbDriven.Count; k++)
+            {
+                if (_limbDriven[k]) continue;
+                if (k >= _limbAxisDot.Count || _limbAxisDot[k] < limbTailAxisDot) continue;
+                var b = _limbRoots[k];
+                if (b == null) continue;
+                float reach = 0f;
+                var stack = new Stack<Transform>();
+                stack.Push(b);
+                while (stack.Count > 0)
+                {
+                    var t = stack.Pop();
+                    reach = Mathf.Max(reach, (t.position - b.position).magnitude);
+                    for (int c = 0; c < t.childCount; c++) stack.Push(t.GetChild(c));
+                }
+                if (reach > bestReach) { bestReach = reach; best = b; }
+            }
+            if (best == null) return;
+
+            var cur = best;
+            _tailChain.Add(cur);
+            Vector3 prevDir = cur.childCount > 0 ? (cur.GetChild(0).position - cur.position).normalized : Vector3.back;
+            while (cur != null && cur.childCount > 0 && _tailChain.Count < 64)
+            {
+                Transform next = null; float bestDot = -2f;
+                for (int c = 0; c < cur.childCount; c++)
+                {
+                    var ch = cur.GetChild(c);
+                    Vector3 d = ch.position - cur.position;
+                    if (d.sqrMagnitude < 1e-12f) continue;
+                    float dot = Vector3.Dot(d.normalized, prevDir);
+                    if (dot > bestDot) { bestDot = dot; next = ch; }
+                }
+                if (next == null) break;
+                prevDir = (next.position - cur.position).normalized;
+                _tailChain.Add(next);
+                cur = next;
+            }
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            for (int i = 0; i < _tailChain.Count; i++)
+            {
+                var t = _tailChain[i];
+                _tailBaseRel.Add(Quaternion.Inverse(rootRot) * t.rotation);
+                _tailBaseLocalRot.Add(t.localRotation);
+                if (i + 1 < _tailChain.Count)
+                {
+                    Vector3 d = _tailChain[i + 1].position - t.position;
+                    _tailSegLen.Add(d.magnitude);
+                    _tailBaseSegLocal.Add(d.sqrMagnitude > 1e-12f ? invRoot * d.normalized : Vector3.back);
+                    _tailTotalLen += d.magnitude;
+                }
+            }
+            // 末节沿用前一节（它没有"下一节"，但朝向仍要驱动）——与 CaptureSegments 同一口径
+            if (_tailBaseSegLocal.Count > 0) _tailBaseSegLocal.Add(_tailBaseSegLocal[_tailBaseSegLocal.Count - 1]);
         }
 
         private static int CountDescendants(Transform t)
@@ -961,10 +1121,36 @@ namespace InkWash.Enemies
 
                 // ★★ 轴换算到**父节点空间**（localRotation 的定义域）再左乘到基准上：
                 //   世界侧向 → 父空间，然后绝对写入（无累积）。父节点转、腿跟着转，同时叠自己的划水角。
-                Vector3 axis = Vector3.right;
+                Vector3 axisUp = Vector3.up, axisRight = Vector3.right;
                 Transform par = b.parent;
-                if (par != null) axis = par.InverseTransformDirection(rootRot * Vector3.right);
-                b.localRotation = Quaternion.AngleAxis(swing, axis) * _limbBaseRel[k];
+                if (par != null)
+                {
+                    axisUp = par.InverseTransformDirection(rootRot * Vector3.up);
+                    axisRight = par.InverseTransformDirection(rootRot * Vector3.right);
+                }
+
+                // ★★ 后掠（第十八轮）：飞行时爪子该**往后收**，不是像趴地那样往前摊。
+                //   实测四条腿基准首段 dot(容器 fwd) = 0.49 / 0.28 / 0.10 / −0.35 —— 前三条在往前伸。
+                //   算法：把首段投影到容器水平面，朝"侧向 + 向后"的目标方向转，**限幅**在
+                //   `limbSweepBackDeg` 以内。限幅保证腿绝不会被甩过身体中线
+                //   （裸符号旋转会：`drgon_0175` 的侧向分量只有 0.34，一转就把 x 翻号）。
+                float sweep = 0f;
+                if (limbSweepBackDeg > 0f && k < _limbBaseDirLocal.Count)
+                {
+                    Vector3 h = _limbBaseDirLocal[k];
+                    h.y = 0f;
+                    if (h.sqrMagnitude > 1e-6f)
+                    {
+                        h.Normalize();
+                        var tgt = new Vector3(Mathf.Sign(h.x) * 0.70711f, 0f, -0.70711f);
+                        sweep = Mathf.Clamp(Vector3.SignedAngle(h, tgt, Vector3.up),
+                                            -limbSweepBackDeg, limbSweepBackDeg);
+                    }
+                }
+
+                b.localRotation = Quaternion.AngleAxis(sweep, axisUp)
+                                * Quaternion.AngleAxis(swing, axisRight)
+                                * _limbBaseRel[k];
             }
         }
 
@@ -1903,6 +2089,9 @@ namespace InkWash.Enemies
             if (_baseRel.Count < _spine.Count) CaptureBaseRel();   // 防御：基准未就绪则补采
             int n = links <= 0 ? _spine.Count : Mathf.Min(links, _spine.Count);
             float step = phaseStepDeg * Mathf.Deg2Rad;
+            bool alignHead = HeadAlignActive;
+            Quaternion headExtra = HeadAlignExtra;
+            int headFrom = HeadAlignFrom(n);
 
             // ★★ 弯曲轴：一律用**模型容器空间的语义轴**，绝不用骨骼局部轴。
             //
@@ -1937,14 +2126,20 @@ namespace InkWash.Enemies
                 //   逐节累加的弯曲由链式父子关系自然产生（与原来的"逐节增量"等价）。
                 // ★ 额外整身俯仰（尾→头 线性包络）：与行波**在同一个绝对写入里**合成 ⇒ 无累积。
                 float ex = extraPitchDeg * Mathf.Lerp(extraRootGain, extraHeadGain, t);
-                _spine[i].rotation = rootRot
-                                     * Quaternion.AngleAxis(ex, Vector3.right)    // 整身俯仰（最外层）
-                                     * Quaternion.AngleAxis(yaw, Vector3.up)      // 左右
-                                     * Quaternion.AngleAxis(pitch, Vector3.right) // 俯仰
-                                     * _baseRel[i];
+                // ★ 头部对齐（第十八轮）：与 ApplySerpentineSpine 用同一套规则 ——
+                //   只作用在末尾 `headAlignLinks` 节上 ⇒ 头簇整块绕颈根转，脖子不受影响。
+                //   两条驱动路径（本方法 / ApplySerpentineSpine）必须**行为一致**，
+                //   否则攻击相位里一进一出，头会"啪"地弹一下。
+                Quaternion q = Quaternion.AngleAxis(ex, Vector3.right)
+                             * Quaternion.AngleAxis(yaw, Vector3.up)
+                             * Quaternion.AngleAxis(pitch, Vector3.right);
+                if (alignHead && i >= headFrom) q = headExtra * q;
+                _spine[i].rotation = rootRot * q * _baseRel[i];
             }
             // 未驱动的节保持基准姿态
             for (int i = n; i < _spine.Count; i++) _spine[i].localRotation = _baseRot[i];
+
+            ApplyTailLevel(phase);
 
             // 四肢（脊柱之外的分支骨）跟着一起摆 —— 否则只有身子在动、爪子钉着不动
             ApplyLimbMotion(phase);
@@ -2077,16 +2272,111 @@ namespace InkWash.Enemies
             }
             tan[n - 1] = tan[n - 2];        // 末节没有下一节，沿用头段方向（头骨朝向仍要驱动）
 
+            // ── 头部对齐（第十八轮）──
+            // ★ 为什么作用在**末节**上一点就够：头簇（39 枚叶子骨 + 14 条鬃/须/角/颌）整块挂在
+            //   `_spine[Count-2]` 下，而 `_spine[Count-1]` 是**无几何的链尾骨** ——
+            //   所以旋转 `Count-2` ⇒ 头整块绕颈根转，**脖子本身一动不动**，
+            //   不会像旧的 ApplyHeadSteer 那样"事后左乘把 sin 形状揉歪"。
+            // ★ 用**整旋转**（`extra * q`）而不是只转目标方向：只转方向的话，
+            //   `FromToRotation` 是最小旋转、绕骨轴的 roll 不受控 ⇒ 头会"转过去了但扭着"。
+            Quaternion headExtra = Quaternion.Euler(-headAlignPitchDeg, headAlignYawDeg, headAlignRollDeg);
+            bool alignHead = HeadAlignActive;
+            int headFrom = HeadAlignFrom(n);
+
             // ── 绝对写入：每节从基准重算，无累积 ──
             for (int i = 0; i < n; i++)
             {
                 if (_spine[i] == null) continue;
                 Vector3 tLocal = invRoot * tan[i];
                 Quaternion q = Quaternion.FromToRotation(_baseSegLocal[i], tLocal);
+                if (alignHead && i >= headFrom) q = headExtra * q;
                 _spine[i].rotation = rootRot * q * _baseRel[i];
             }
 
+            ApplyTailLevel(phase);
             ApplyLimbMotion(phase);
+        }
+
+        /// <summary>头部对齐是否生效（三条角度全 0 或节数 ≤ 0 时视为关闭）。</summary>
+        private bool HeadAlignActive =>
+            headAlignLinks > 0 && (headAlignPitchDeg != 0f || headAlignYawDeg != 0f || headAlignRollDeg != 0f);
+
+        /// <summary>
+        /// 头部对齐的旋转（**容器局部系**）。
+        /// `headAlignPitchDeg` 以「抬头为正」命名，而 Unity 的 `Euler.x > 0` 是**低头**，所以这里取负号。
+        /// </summary>
+        private Quaternion HeadAlignExtra =>
+            Quaternion.Euler(-headAlignPitchDeg, headAlignYawDeg, headAlignRollDeg);
+
+        /// <summary>头部对齐从第几节开始作用（链条末尾 `headAlignLinks` 节）。</summary>
+        private int HeadAlignFrom(int n) => Mathf.Max(0, n - Mathf.Max(1, headAlignLinks));
+
+        /// <summary>
+        /// 尾巴水平化（第十八轮）。
+        ///
+        /// ★ 为什么要单独驱动尾巴：`drg_head` 实测尾巴**逐节 pitch 从 −6° 爬到 −33°**
+        ///   （基准姿态自带，amp=0 时一样），末端绝对抬升 0.265 m、中段累计 0.799 m
+        ///   ⇒ 用户「尾巴末端是歪的，翘起来了，应该保持同一水平线的高度」。
+        ///   上一轮把尾巴整条冻成刚性分支，只解决了"不单独摆动"，**没解决"翘"**。
+        ///
+        /// ★ 做法与脊柱同源：在**水平面内**铺一条中心线，逐节取切线当目标段方向。
+        ///   `back` 与 `right` 都水平 ⇒ 目标段方向**恒在水平面内** ⇒ 尾巴永远不离水平线；
+        ///   同时横向叠一个与身体同相位的行波 ⇒ 不是一根死棍子（用户要「动画要不断重复」）。
+        ///   横向包络用 `amp·u`（尾根 0 → 尾尖最大）：尾根为 0 才与身体**无缝相接**，
+        ///   否则尾巴根部会相对身体突然横移一个常量。
+        ///
+        /// ★ 必须**绝对写入**（每帧从基准重算）—— 叠乘会累积，见坑表条目 16。
+        /// </summary>
+        private void ApplyTailLevel(float phase)
+        {
+            int n = _tailChain.Count;
+            if (!tailLevel || n < 2) return;
+            if (_tailBaseRel.Count < n || _tailBaseSegLocal.Count < n || _tailSegLen.Count < n - 1) return;
+
+            Vector3 origin = _tailChain[0] != null ? _tailChain[0].position : transform.position;
+            // 与脊柱同源：都用**容器当前前向**（本方法在 ApplySerpentineSpine 里、LookRotation 之后调用）
+            Vector3 fwd = Flat(transform.forward);
+            if (fwd.sqrMagnitude < 1e-6f) fwd = Vector3.forward;
+            fwd.Normalize();
+            Vector3 back = -fwd;
+            Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
+
+            float L = Mathf.Max(1e-3f, _tailTotalLen);
+            float ph = phase + tailPhaseLagDeg * Mathf.Deg2Rad;
+
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            Quaternion invRoot = Quaternion.Inverse(rootRot);
+
+            if (_tailTan == null || _tailTan.Length < n) _tailTan = new Vector3[n];
+            Vector3[] tan = _tailTan;
+
+            float acc = 0f;
+            Vector3 prev = TailPoint(origin, back, right, L, ph, 0f);
+            for (int i = 0; i + 1 < n; i++)
+            {
+                acc += _tailSegLen[i];
+                float u = Mathf.Clamp01(acc / L);
+                Vector3 p = TailPoint(origin, back, right, L, ph, u);
+                Vector3 d = p - prev;
+                tan[i] = d.sqrMagnitude > 1e-12f ? d.normalized : back;
+                prev = p;
+            }
+            tan[n - 1] = tan[n - 2];
+
+            for (int i = 0; i < n; i++)
+            {
+                if (_tailChain[i] == null) continue;
+                Vector3 tLocal = invRoot * tan[i];
+                Quaternion q = Quaternion.FromToRotation(_tailBaseSegLocal[i], tLocal);
+                _tailChain[i].rotation = rootRot * q * _tailBaseRel[i];
+            }
+        }
+
+        /// <summary>尾巴中心线上参数 u 处的点（世界空间）。u 在 [0,1] 上对应「尾根→尾尖」。</summary>
+        private Vector3 TailPoint(Vector3 origin, Vector3 back, Vector3 right, float L, float phase, float u)
+        {
+            float lat = tailWaveAmp * u * Mathf.Sin(2f * Mathf.PI * tailWaveSpan * u + phase);
+            return origin + back * (u * L) + right * lat;
         }
 
         /// <summary>回落到地面（只在旧行为 aerialLoop=false 时用到）。</summary>
@@ -2095,6 +2385,10 @@ namespace InkWash.Enemies
             _airborne = false;
             _currentLift = 0f;
             for (int i = 0; i < _spine.Count; i++) _spine[i].localRotation = _baseRot[i];
+            // ★ 尾巴也要一起复位（第十八轮起尾巴是**被驱动**的链；不复位就会留着一个扭曲姿态，
+            //   下次起飞第一帧会看见它"弹"回基准）
+            for (int i = 0; i < _tailChain.Count && i < _tailBaseLocalRot.Count; i++)
+                if (_tailChain[i] != null) _tailChain[i].localRotation = _tailBaseLocalRot[i];
             if (_modelRoot != null)
                 _modelRoot.localPosition = _modelRootBaseLocalPos + Vector3.up * bodyLift;
         }

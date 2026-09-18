@@ -138,6 +138,12 @@ sysinfo.txt
 /Tools/screenshots/enemies/QM_*.png
 /Tools/screenshots/enemies/QN_*.png
 
+# 「第十八轮 墨龙 头/尾/四肢姿态校正」交付录像的**逐帧原图**（LP/ 335 张 / 240 MB）。
+# 探针 Tools/cs/drg_loop.cs 重跑即可再生成；成品视频与结论对照图已入库：
+#   Tools/screenshots/enemies/_墨龙_连续循环_v3.mp4（134 帧 = 整 2 周期，无缝循环）
+#   同轮结论图 Tools/screenshots/enemies/FIX/（头 5 档扫描）与 HDR/（基准 vs 驱动）
+/Tools/screenshots/enemies/LP/
+
 # ---------- 操作系统杂项 ----------
 .DS_Store
 Thumbs.db
