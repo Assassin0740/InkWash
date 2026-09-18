@@ -1,0 +1,167 @@
+=== 0. 渲染管线 ===
+  currentRenderPipeline = UniversalRenderPipelineAsset / URP-HighFidelity
+
+=== 1. 材质 → 着色器（判 URP 会不会洋红）===
+  材质总数 227，不同着色器 28 个
+     1 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   GUI/Text Shader
+             例: Assets/UnityTechnologies/ParticlePack/TextMesh Pro/Fonts/LiberationSans.ttf
+     9 个  ❌ 内置管线 ⇒ URP 下洋红   Legacy Shaders/Particles/Additive
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/Flame02.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/LightningTrail.mat
+     3 个  ❌ 内置管线 ⇒ URP 下洋红   Legacy Shaders/Particles/Additive (Soft)
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_Smoke.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Smoke/WFXM_M_Smoke.mat
+     9 个  ❌ 内置管线 ⇒ URP 下洋红   Legacy Shaders/Particles/Alpha Blended
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/SandSwirls.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Weapon Effects/Materials/GoopMist.mat
+     7 个  ❌ 内置管线 ⇒ URP 下洋红   Particles/Standard Unlit
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/CandleFlame.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/FireFlyTrail.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Shader Graphs/Dissolve_URP
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/Dissolve.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Shaders/Dissolve_URP.shadergraph
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Shader Graphs/Ice_URP
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Magic Effects/Materials/Ice.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Magic Effects/Shaders/Ice_URP.shadergraph
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Shader Graphs/Respawn_URP
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/Respawn.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Shaders/Respawn_URP.shadergraph
+     1 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Simple/Unlit Vertex Color_Alpha
+             例: Assets/SimpleFX/Materials/FX_Base.mat
+     1 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Skybox/Procedural
+             例: Assets/UnityTechnologies/ParticlePack/Shared/Environment/Materials/Skybox.mat
+     5 个  ❌ 内置管线 ⇒ URP 下洋红   Sprites/Default
+             例: Assets/Fog Particles/Bonus/Materials & Textures/Snow.mat
+             例: Assets/Fog Particles/Material/Fog-Material Blue.mat
+    14 个  ❌ 内置管线 ⇒ URP 下洋红   Standard
+             例: Assets/WarFX Assets/WarFX/Demo/Assets/WFX_Demo_M_Checker Wall.mat
+             例: Assets/WarFX Assets/WarFX/Demo/Assets/WFX_Demo_M_Checker.mat
+     4 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   TextMeshPro/Mobile/Distance Field
+             例: Assets/UnityTechnologies/ParticlePack/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
+             例: Assets/UnityTechnologies/ParticlePack/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+    18 个  ✅ URP 原生   Universal Render Pipeline/Lit
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/PlasmaExplosion.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/candle.mat
+    37 个  ✅ URP 原生   Universal Render Pipeline/Particles/Lit
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/DebrisParticle.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/Dust.mat
+    29 个  ✅ URP 原生   Universal Render Pipeline/Particles/Unlit
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/Embers.mat
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Fire & Explosion Effects/Materials/EnergyExplosion.mat
+     1 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   Unlit/FireFlyNew
+             例: Assets/UnityTechnologies/ParticlePack/EffectExamples/Misc Effects/Materials/FireFly.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Additive (Soft) Alpha8
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_SmokeSpikeStretched.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Smoke/WFXM_M_SmokeSpikeStretched.mat
+    40 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Additive Alpha8
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Flames/WFX_M_ExplosionFlames Add.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Flames/WFX_M_FlameMine Add.mat
+    12 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Alpha Blended (No Soft Particles)
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Bullet Holes/WFX_BulletHole Concrete.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Bullet Holes/WFX_BulletHole Generic Dirt.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Multiply Alpha8
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Misc/WFX_M_SmallDotsInv Mult.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Misc/WFXM_M_SmallDotsInv Mult.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Multiply Soft Tint
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_Smoke SoftMult.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Smoke/WFXM_M_Smoke SoftMult.mat
+     6 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Scroll/Additive
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Flames/WFX_M_FlameSmall ScrollAdd.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Flames/WFX_M_NukeFlames ScrollAdd.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Scroll/Alpha Blended
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_SmokeGrenade AB.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Smoke/WFXM_M_SmokeGrenade AB.mat
+     4 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Scroll/Multiply Soft Tint
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_SmokeScroll SoftMult Average.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_SmokeScroll SoftMult.mat
+     6 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Scroll/Smoke
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_ExplosiveSmoke.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Smoke/WFX_M_SmokeGrenadeWhite.mat
+     4 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Transparent Diffuse
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Bullet Holes/WFX_BulletHole Concrete Lighted.mat
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Bullet Holes/WFX_BulletHole Wood Lighted.mat
+     2 个  ⚠ 作者自定义（当 ❌ 处理，看图为证）   WFX/Transparent Specular
+             例: Assets/WarFX Assets/WarFX/Desktop/Materials/Bullet Holes/WFX_BulletHole Metal Lighted.mat
+             例: Assets/WarFX Assets/WarFX/Mobile/Materials/Bullet Holes/WFXM_BulletHole Metal Lighted.mat
+  ── 合计：URP 可用 84 / 需换材质 47 + 自定义 96 ──
+
+=== 2. 关键贴图（项目要「只取贴图」，所以这才是能用的东西）===
+  贴图                                                     尺寸        格式                alpha源       有alpha sRGB  mips
+  Lightning.tif                               512x512     DXT5                FromInput     True   True  True
+  LightningTrail.tif                          128x128     DXT1                FromInput     False  True  True
+  EnergyEffect.tif                            2048x2048   DXT5                FromInput     True   True  True
+  SparkParticle.tif                           256x256     DXT5                FromInput     True   True  True
+  SmokeLoop.tif                               2048x2048   DXT5                FromInput     True   True  True
+  SmokeLoop02.tif                             2048x2048   DXT5                FromInput     True   True  True
+  SmokePuff.png                               2048x2048   DXT5                FromInput     True   True  True
+  Smoke Sprite Sheet.png                      256x256     DXT5                FromInput     True   True  False
+  WFX_T_SmokeLoopAlpha.tga                    256x256     DXT5                FromInput     True   False True
+  WFX_T_SmokeNoise.tga                        256x256     DXT5                FromInput     True   False True
+  WFX_T_SmokeSpikeStretched A8.tga            256x256     Alpha8              FromGrayScale False  False True
+  WFX_T_GlowCircle A8.png                     64x64       Alpha8              FromGrayScale False  False True
+
+=== 3. 本次特效相关族：逐材质判定 ===
+  [可直用] DebrisParticle                 ← Universal Render Pipeline/Particles/Lit
+  [可直用] Dust                           ← Universal Render Pipeline/Particles/Lit
+  [可直用] Embers                         ← Universal Render Pipeline/Particles/Unlit
+  [可直用] EnergyExplosion                ← Universal Render Pipeline/Particles/Unlit
+  [可直用] EnergyShockwave                ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Explosion                      ← Universal Render Pipeline/Particles/Unlit
+  [可直用] ExplosionDistortion            ← Universal Render Pipeline/Particles/Unlit
+  [可直用] fireball                       ← Universal Render Pipeline/Particles/Unlit
+  [可直用] FireExplosion                  ← Universal Render Pipeline/Particles/Unlit
+  [要重建] Flame02                        ← Legacy Shaders/Particles/Additive
+  [可直用] Flame03                        ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Flame04                        ← Universal Render Pipeline/Particles/Unlit
+  [可直用] LargeFlame01                   ← Universal Render Pipeline/Particles/Unlit
+  [可直用] LargeFlame02                   ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Lightning                      ← Universal Render Pipeline/Particles/Unlit
+  [要重建] LightningTrail                 ← Legacy Shaders/Particles/Additive
+  [可直用] MediumFlame01                  ← Universal Render Pipeline/Particles/Unlit
+  [可直用] MediumFlame02                  ← Universal Render Pipeline/Particles/Unlit
+  [可直用] MediumFlame03                  ← Universal Render Pipeline/Particles/Unlit
+  [可直用] PlasmaExplosion                ← Universal Render Pipeline/Lit
+  [要重建] PlasmaFire                     ← Legacy Shaders/Particles/Additive
+  [可直用] SandParticle                   ← Universal Render Pipeline/Particles/Lit
+  [可直用] SmokeDark                      ← Universal Render Pipeline/Particles/Lit
+  [可直用] TinyFlame                      ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Dust                           ← Universal Render Pipeline/Particles/Lit
+  [要重建] Embers                         ← Particles/Standard Unlit
+  [要重建] Flame01                        ← Particles/Standard Unlit
+  [可直用] GroundFog                      ← Universal Render Pipeline/Particles/Lit
+  [要重建] HeatDistortion                 ← Particles/Standard Unlit
+  [可直用] RockDebris                     ← Universal Render Pipeline/Particles/Lit
+  [可直用] SandParticle                   ← Universal Render Pipeline/Particles/Lit
+  [可直用] Smoke02                        ← Universal Render Pipeline/Particles/Lit
+  [可直用] SmokeLight                     ← Universal Render Pipeline/Particles/Lit
+  [可直用] SmokeySteam01                  ← Universal Render Pipeline/Particles/Lit
+  [可直用] SmokeySteam02                  ← Universal Render Pipeline/Particles/Lit
+  [可直用] SmokeySteam03                  ← Universal Render Pipeline/Particles/Lit
+  [要重建] Twinkle                        ← Particles/Standard Unlit
+  [要重建] wispySmoke                     ← Particles/Standard Unlit
+  [可直用] candle                         ← Universal Render Pipeline/Lit
+  [要重建] CandleFlame                    ← Particles/Standard Unlit
+  [要重建] Dissolve                       ← Shader Graphs/Dissolve_URP
+  [可直用] DissolveChunks                 ← Universal Render Pipeline/Particles/Lit
+  [可直用] DustMote                       ← Universal Render Pipeline/Particles/Unlit
+  [可直用] ElectricalSparks               ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Embers                         ← Universal Render Pipeline/Particles/Unlit
+  [要重建] FireFly                        ← Unlit/FireFlyNew
+  [要重建] FireFlyTrail                   ← Particles/Standard Unlit
+  [要重建] Respawn                        ← Shader Graphs/Respawn_URP
+  [要重建] SandSwirls                     ← Legacy Shaders/Particles/Alpha Blended
+  [可直用] SmokePuff                      ← Universal Render Pipeline/Particles/Lit
+  [可直用] Sparks                         ← Universal Render Pipeline/Lit
+  [可直用] SpawnTrail                     ← Universal Render Pipeline/Particles/Unlit
+  [可直用] EarthCrack                     ← Universal Render Pipeline/Particles/Lit
+  [可直用] Embers                         ← Universal Render Pipeline/Particles/Unlit
+  [可直用] Fireball                       ← Universal Render Pipeline/Particles/Unlit
+  [要重建] Ice                            ← Shader Graphs/Ice_URP
+  [可直用] IceMist                        ← Universal Render Pipeline/Particles/Unlit
+  [可直用] IceTrail                       ← Universal Render Pipeline/Particles/Unlit
+  [可直用] RockDust                       ← Universal Render Pipeline/Particles/Unlit
+  [可直用] RockSpike                      ← Universal Render Pipeline/Particles/Lit
+
+=== 4. 结论 ===
+  · URP 原生材质 = 可以直接拖进场景；其余一律渲染成洋红，只能拿它的贴图。
+  · 有alpha=False 的贴图不能直接当粒子贴图（会渲染成实心方块）—— 见第 2 节那一列。

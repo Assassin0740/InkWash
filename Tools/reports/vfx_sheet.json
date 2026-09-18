@@ -1,0 +1,122 @@
+{
+ "01_SparksElec": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "1.10",
+  "n": 1815,
+  "urp": "非URP",
+  "shaders": "Universal Render Pipeline/Particles/Unlit | Standard"
+ },
+ "02_SparksEffect": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "1.10",
+  "n": 1649,
+  "urp": "全URP",
+  "shaders": "Universal Render Pipeline/Lit"
+ },
+ "03_ParticlesLight": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "0.35",
+  "n": 0,
+  "urp": "全URP",
+  "shaders": "(无渲染器)"
+ },
+ "04_EnergyExplosion": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "0.35",
+  "n": 29588,
+  "urp": "全URP",
+  "shaders": "Universal Render Pipeline/Particles/Unlit"
+ },
+ "05_PlasmaExplosion": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "0.35",
+  "n": 91237,
+  "urp": "非URP",
+  "shaders": "Legacy Shaders/Particles/Additive | Universal Render Pipeline/Lit | Legacy Shaders/Particles/Alpha Blended Premultiply"
+ },
+ "06_SmokeEffect": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "0.35",
+  "n": 95399,
+  "urp": "全URP",
+  "shaders": "Universal Render Pipeline/Particles/Lit"
+ },
+ "07_GroundFog": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "0.35",
+  "n": 116595,
+  "urp": "全URP",
+  "shaders": "Universal Render Pipeline/Particles/Lit"
+ },
+ "08_RisingSteam": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "2.40",
+  "n": 62930,
+  "urp": "非URP",
+  "shaders": "Particles/Standard Unlit"
+ },
+ "09_DustMotes": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "0.35",
+  "n": 824,
+  "urp": "全URP",
+  "shaders": "Universal Render Pipeline/Particles/Unlit"
+ },
+ "10_FogBlue": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "1.10",
+  "n": 117039,
+  "urp": "非URP",
+  "shaders": "Sprites/Default"
+ },
+ "11_SimpleFXSmoke": {
+  "magenta": 0.0,
+  "group": "烟",
+  "t": "2.40",
+  "n": 24502,
+  "urp": "非URP",
+  "shaders": "Simple/Unlit Vertex Color_Alpha"
+ },
+ "12_WFX_GrenadeBlack": {
+  "magenta": 0.0,
+  "group": "黑烟",
+  "t": "2.40",
+  "n": 28117,
+  "urp": "非URP",
+  "shaders": "WFX/Scroll/Multiply Soft Tint | WFX/Multiply Soft Tint"
+ },
+ "13_WFX_FireBlackSmoke": {
+  "magenta": 0.0,
+  "group": "黑烟",
+  "t": "0.35",
+  "n": 42860,
+  "urp": "非URP",
+  "shaders": "Legacy Shaders/Particles/Additive | WFX/Additive Alpha8 | WFX/Scroll/Multiply Soft Tint"
+ },
+ "14_WFX_GrenadeABBlack": {
+  "magenta": 0.0,
+  "group": "黑烟",
+  "t": "1.10",
+  "n": 97946,
+  "urp": "非URP",
+  "shaders": "WFX/Scroll/Alpha Blended | WFX/Multiply Soft Tint"
+ },
+ "15_SimpleFXLightray": {
+  "magenta": 0.0,
+  "group": "电弧",
+  "t": "0.35",
+  "n": 128186,
+  "urp": "非URP",
+  "shaders": "Legacy Shaders/Particles/Additive (Soft)"
+ }
+}

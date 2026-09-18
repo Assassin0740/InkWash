@@ -1,0 +1,25 @@
+=== 粒子 prefab 实物对照（编辑模式 Simulate + 自校准取景）===
+相机固定朝 +Z / 正交 / 中灰背景 / 取景迭代 3 次收紧 / 三个时刻取内容像素最多者
+
+tag                   归类  选用时刻  内容px   占画幅   系统数  材质着色器
+--------------------------------------------------------------------------------
+01_SparksElec         电弧    1.10         1815    0.94%    1    [非URP 1] Universal Render Pipeline/Particles/Unlit | Standard
+02_SparksEffect       电弧    1.10         1649    0.85%    4    [全URP] Universal Render Pipeline/Lit
+03_ParticlesLight     电弧    0.35            0    0.00%    0    [全URP] (无渲染器)
+04_EnergyExplosion    电弧    0.35        29588   15.28%    4    [全URP] Universal Render Pipeline/Particles/Unlit
+05_PlasmaExplosion    电弧    0.35        91237   47.13%    5    [非URP 2] Legacy Shaders/Particles/Additive | Universal Render Pipeline/Lit | Legacy Shaders/Particles/Alpha Blended Premultiply
+15_SimpleFXLightray   电弧    0.35       128186   66.21%    0    [非URP 1] Legacy Shaders/Particles/Additive (Soft)
+06_SmokeEffect        烟     0.35        95399   49.28%    1    [全URP] Universal Render Pipeline/Particles/Lit
+07_GroundFog          烟     0.35       116595   60.22%    1    [全URP] Universal Render Pipeline/Particles/Lit
+08_RisingSteam        烟     2.40        62930   32.51%    1    [非URP 1] Particles/Standard Unlit
+09_DustMotes          烟     0.35          824    0.43%    1    [全URP] Universal Render Pipeline/Particles/Unlit
+10_FogBlue            烟     1.10       117039   60.45%    1    [非URP 1] Sprites/Default
+11_SimpleFXSmoke      烟     2.40        24502   12.66%    1    [非URP 1] Simple/Unlit Vertex Color_Alpha
+12_WFX_GrenadeBlack   黑烟    2.40        28117   14.52%    2    [非URP 2] WFX/Scroll/Multiply Soft Tint | WFX/Multiply Soft Tint
+13_WFX_FireBlackSmoke 黑烟    0.35        42860   22.14%    3    [非URP 3] Legacy Shaders/Particles/Additive | WFX/Additive Alpha8 | WFX/Scroll/Multiply Soft Tint
+14_WFX_GrenadeABBlack 黑烟    1.10        97946   50.59%    2    [非URP 2] WFX/Scroll/Alpha Blended | WFX/Multiply Soft Tint
+
+渲染有内容（内容像素 > 800）：14 个；过稀/失败：1 个
+★ 过稀的两种可能：① Simulate 在编辑模式对该 prefab 无效 ② 该特效本来就稀疏（如远处的符文光点）。
+★ 「非URP」= 材质着色器不是 Universal Render Pipeline/* ⇒ 拖进场景是洋红，只能取它的贴图。
+★ 「占画幅%」= 内容像素占全画幅比例，太低说明取景仍偏松（看图上应该占 5%~40%）。

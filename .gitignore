@@ -82,6 +82,32 @@ sysinfo.txt
 /Assets/W_Sword/
 /Assets/W_Sword.meta
 
+# ---------- 墨龙特效用的 4 个粒子包（Unity 中国资源商店，**全部免费**）----------
+# 授权：Unity 商店标准 EULA，**不可再分发素材本体** ⇒ 同 ThirdParty 逻辑，入库即再分发。
+# 体积：合计 255 MB，且是可重新下载的只读素材，版本控制无收益。
+# 复原：`python Tools/install_store_pkg.py --id <ID> --publisher <发布者> --name <名>`，
+#       从本机商店缓存 .unitypackage 解包（保 GUID）到 Assets/ThirdParty/<发布者>/<名>/。
+#       4 个包都在缓存里，已用 --dry 验过顶层目录一一对上。
+#   · 20005957 团结引擎/Particle Pack  ← 电弧与烟雾主力，**闪电就出自这里**
+#   · 20006713 Rainy1024/WarFX         ← 黑烟主力（另有 170 个 prefab 可挖）
+#   · 20004869 Game Seed Assets/雾颗粒 ← 蓝/紫/红/白雾
+#   · 20001064 Synty Studios/SimpleFX  ← 卡通粒子（FBX 模型型，非贴图型）
+#
+# ⚠ 两件要记住的事：
+# ① 这 4 个包**自带 .cs 脚本**（WarFX 16 个含一个 Editor 脚本、Particle Pack 7 个）。
+#    它们不入库 ⇒ **不同机器编译出的程序集不一样**。若哪天报「某类型找不到」，
+#    先查是不是缺这几个包，而不是先怀疑工程代码。
+# ② 材质在 URP 下**不会**变洋红 —— 实测 15 个 prefab 全部正常渲染（见
+#    Tools/reports/vfx_sheet.txt）。别再按「内置管线着色器 = 洋红」去筛。
+/Assets/UnityTechnologies/
+/Assets/UnityTechnologies.meta
+/Assets/WarFX Assets/
+/Assets/WarFX Assets.meta
+/Assets/Fog Particles/
+/Assets/Fog Particles.meta
+/Assets/SimpleFX/
+/Assets/SimpleFX.meta
+
 # QFramework 的生成目录：由 CodeGenKit 在运行时/编辑器里产出，
 # 且产出它的 QFramework 本身就在 /Assets/ThirdParty/ 里（不入库）。
 # 放进版本控制只会造成"克隆下来有个空壳目录"的困惑。
@@ -170,6 +196,11 @@ sysinfo.txt
 # 结论在 Docs/素材候选_中国站_v1.png / .md，商品缓存 Tools/reports/store_cn_cache.json 保留。
 /Tools/screenshots/store_cn/
 /Tools/reports/store_cn_sitemap.xml
+
+# 「新导入粒子素材的实物对照」15 张单图（重跑 Tools/cs/q_vfxsheet.cs 即再生成）。
+# 判分明细 Tools/reports/vfx_sheet.txt 入库；拼好的结论图入库，不排：
+#   Tools/screenshots/vfx/_粒子素材_实物对照_v1.png
+/Tools/screenshots/vfx/[0-9]*
 
 # ---------- 助手工作区记忆（不属于项目产物，勿入库）----------
 /.workbuddy/

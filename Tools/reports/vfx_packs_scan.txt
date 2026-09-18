@@ -1,0 +1,117 @@
+==============================================================================
+新导入 VFX 素材包盘点
+==============================================================================
+
+── 1. 包规模 ──
+  Particle Pack（Unity 官方）    830 文件    168.72 MB
+        {'.meta': 446, '.tif': 105, '.mat': 102, '.prefab': 60, '.png': 30, '.fbx': 24, '.shader': 17, '.exr': 12, '.asset': 8}
+  WarFX（战争粒子）                873 文件     75.68 MB
+        {'.meta': 472, '.prefab': 170, '.mat': 106, '.tga': 54, '.png': 33, '.cs': 16, '.shader': 11, '.txt': 4, '.fbx': 4}
+  Fog Particles（雾颗粒）          39 文件      7.69 MB
+        {'.meta': 22, '.prefab': 6, '.mat': 6, '.png': 3, '.unity': 1, '.pdf': 1}
+  SimpleFX（卡通粒子）              86 文件      2.53 MB
+        {'.meta': 45, '.prefab': 25, '.mat': 7, '.fbx': 6, '.shader': 1, '.unity': 1, '.lighting': 1}
+
+── 2. 贴图清单（241 张）──
+
+  【电弧/电光】命中 20 张
+      2895.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\EnergyEffect.tif
+       372.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\Lightning.tif
+        23.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\LightningTrail.tif
+       158.9 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\shockwave.tif
+        33.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\SparkParticle.tif
+        33.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Weapon Effects\Textures\SparkParticle.tif
+         6.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Misc\WFX_T_GlowCircle A8.png
+         3.6 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Misc\WFX_T_GlowPalet A8.png
+        12.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Misc\WFX_T_GroundGlow A8.tga
+         3.2 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Misc\WFX_T_Sparks Metal A8.png
+       192.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\MuzzleFlashes\WFX_T_MF Sparks RIFLE1 A8.tga
+        59.8 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\MuzzleFlashes\WFX_T_MF Sparks RIFLE2 A8.tga
+        48.1 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\MuzzleFlashes\WFX_T_MF Sparks RIFLE3 A8.tga
+         6.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Misc\WFXM_T_GlowCircle A8.png
+         3.6 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Misc\WFXM_T_GlowPalet A8.png
+        12.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Misc\WFXM_T_GroundGlow A8.tga
+         3.2 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Misc\WFXM_T_Sparks Metal A8.png
+       192.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\MuzzleFlashes\WFXM_T_MF Sparks RIFLE1 A8.tga
+        59.8 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\MuzzleFlashes\WFXM_T_MF Sparks RIFLE2 A8.tga
+        48.1 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\MuzzleFlashes\WFXM_T_MF Sparks RIFLE3 A8.tga
+
+  【烟/雾】命中 27 张
+        90.3 KB  Assets/Fog Particles\Texture\Smoke Sprite Sheet.png
+      2793.6 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\SmokePuff01.tif
+       970.2 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\SmokePuff02.png
+      1387.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\SmokePuffNormal.tif
+        35.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Magic Effects\Textures\DustPuffSmall.png
+       970.2 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Magic Effects\Textures\SmokePuff02.png
+       978.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\Clouds.tif
+        27.9 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\DustMote.png
+        35.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\DustPuffSmall.png
+      3015.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\SmokePuff.png
+      2422.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Textures\SmokeySteam.tif
+      1945.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\SmokeLoop.tif
+      1381.3 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\SmokeLoop02.tif
+       797.2 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\SmokePuff04.png
+      1387.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\SmokePuff04Normal.tif
+      3852.8 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\WispySmokeNormal.tif
+      2422.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\smokeysteam.tif
+      3236.9 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Smoke & Steam Effects\Textures\wispySmoke.tif
+        35.1 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Weapon Effects\Textures\DustPuffSmallParticleSheet.png
+       256.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Smoke\WFX_T_SmokeLoopAlpha Average.tga
+       256.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Smoke\WFX_T_SmokeLoopAlpha.tga
+       222.8 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Smoke\WFX_T_SmokeNoise.tga
+        60.8 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Smoke\WFX_T_SmokeSpikeStretched A8.tga
+       256.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Smoke\WFXM_T_SmokeLoopAlpha Average.tga
+       256.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Smoke\WFXM_T_SmokeLoopAlpha.tga
+       222.8 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Smoke\WFXM_T_SmokeNoise.tga
+        60.8 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Smoke\WFXM_T_SmokeSpikeStretched A8.tga
+
+  【通用闪光/拖尾】命中 8 张
+        23.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Fire & Explosion Effects\Textures\LightningTrail.tif
+        74.6 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Weapon Effects\Textures\GoopStreakAlbedo.tif
+       149.4 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Weapon Effects\Textures\GoopStreakNormal.tif
+      1212.7 KB  Assets/UnityTechnologies\ParticlePack\EffectExamples\Weapon Effects\Textures\MuzzleFlashFront.tif
+       192.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Flames\WFX_T_StarFlames A8.tga
+         6.0 KB  Assets/WarFX Assets\WarFX\Desktop\Textures\Misc\WFX_T_GlowCircle A8.png
+       192.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Flames\WFXM_T_StarFlames A8.tga
+         6.0 KB  Assets/WarFX Assets\WarFX\Mobile\Textures\Misc\WFXM_T_GlowCircle A8.png
+
+── 3. 材质 → 着色器（判 URP 是否变洋红）──
+  材质总数 221，用到 19 个不同着色器
+      48 个材质  guid=0000000000000000f000000000000000  (内建/包内，需在编辑器里解名字)
+              例: Flame02.mat, LightningTrail.mat, PlasmaFire.mat
+      40 个材质  guid=76840267cd7c0e64292ec296b1769b24  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Particle Add A8.shader
+              例: WFX_M_ExplosionFlames Add.mat, WFX_M_FlameMine Add.mat, WFX_M_FlameThrower Stream.mat
+      37 个材质  guid=b7839dad95683814aa64166edc107ae2  (内建/包内，需在编辑器里解名字)
+              例: DebrisParticle.mat, Dust.mat, SandParticle.mat
+      29 个材质  guid=0406db5a14f94604a8c57ccfbc9f3b46  (内建/包内，需在编辑器里解名字)
+              例: Embers.mat, EnergyExplosion.mat, EnergyShockwave.mat
+      18 个材质  guid=933532a4fcc9baf4fa0491de14d08ed7  (内建/包内，需在编辑器里解名字)
+              例: PlasmaExplosion.mat, candle.mat, Sparks.mat
+      12 个材质  guid=1f056903eb75cee4591fce095534ce2e  → Assets/WarFX Assets\WarFX\Shaders\WFX_S AlphaBlend NoSoftParticles.shader
+              例: WFX_BulletHole Concrete.mat, WFX_BulletHole Generic Dirt.mat, WFX_BulletHole Generic Sand.mat
+       6 个材质  guid=7439add42f7e65b4dbc36568299dde17  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Add Scroll.shader
+              例: WFX_M_FlameSmall ScrollAdd.mat, WFX_M_NukeFlames ScrollAdd.mat, WFX_M_SmokeScroll Add.mat
+       6 个材质  guid=179c22242d881384a9a9b7abd22a944b  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Smoke Scroll.shader
+              例: WFX_M_ExplosiveSmoke.mat, WFX_M_SmokeGrenadeWhite.mat, WFX_M_SmokeNoise.mat
+       4 个材质  guid=edb905ac1dd1f8d4688248976976eae3  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Alpha-Diffuse TintColor.shader
+              例: WFX_BulletHole Concrete Lighted.mat, WFX_BulletHole Wood Lighted.mat, WFXM_BulletHole Concrete Lighted.mat
+       4 个材质  guid=d07d6d0a86d4865468e58eacf94364ae  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Multiply Soft Scroll.shader
+              例: WFX_M_SmokeScroll SoftMult Average.mat, WFX_M_SmokeScroll SoftMult.mat, WFXM_M_SmokeScroll SoftMult Average.mat
+       3 个材质  guid=(无)  (内建/包内，需在编辑器里解名字)
+              例: Ice.mat, Dissolve.mat, Respawn.mat
+       2 个材质  guid=fe393ace9b354375a9cb14cdbbc28be4  → Assets/UnityTechnologies\ParticlePack\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader
+              例: LiberationSans SDF - Drop Shadow.mat, LiberationSans SDF - Outline.mat
+       2 个材质  guid=b3ceb26205c43c94e95f75d80c0868e1  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Alpha-Specular TintColor.shader
+              例: WFX_BulletHole Metal Lighted.mat, WFXM_BulletHole Metal Lighted.mat
+       2 个材质  guid=27aa926a717dbfe44b4b79e7d91fa71d  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Particle Multiply A8.shader
+              例: WFX_M_SmallDotsInv Mult.mat, WFXM_M_SmallDotsInv Mult.mat
+       2 个材质  guid=60ec2dfa19167834fbf25b2bced33360  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Multiply Soft.shader
+              例: WFX_M_Smoke SoftMult.mat, WFXM_M_Smoke SoftMult.mat
+       2 个材质  guid=09d92980be5e5784abdd803fac1a30e4  → Assets/WarFX Assets\WarFX\Shaders\WFX_S AlphaBlend Scroll.shader
+              例: WFX_M_SmokeGrenade AB.mat, WFXM_M_SmokeGrenade AB.mat
+       2 个材质  guid=7da55032bc1723749a4a351ea0d98969  → Assets/WarFX Assets\WarFX\Shaders\WFX_S Particle AddSoft A8.shader
+              例: WFX_M_SmokeSpikeStretched.mat, WFXM_M_SmokeSpikeStretched.mat
+       1 个材质  guid=dc9ad51526a07884ab0982f5273e9b5d  → Assets/UnityTechnologies\ParticlePack\EffectExamples\Misc Effects\Shaders\FireFly.shader
+              例: FireFly.mat
+       1 个材质  guid=125f31ba4cdefb2469a075f509877b02  → Assets/SimpleFX\Materials\UnlitVertexColour_Alpha.shader
+              例: FX_Base.mat
