@@ -400,10 +400,12 @@ MonoBehaviour:
   limbPhaseStepDeg: 60
   limbHeadExcludeLinks: 2
   limbTailAxisDot: 0.8
-  headAlignPitchDeg: -12
+  headAlignPitchDeg: 0
   headAlignYawDeg: 0
   headAlignRollDeg: 0
   headAlignLinks: 2
+  headLockToBase: 1
+  headLockUseRestPose: 1
   tailLevel: 1
   tailWaveAmp: 0.35
   tailWaveSpan: 0.5
@@ -421,6 +423,7 @@ MonoBehaviour:
   bodyBobFreq: 0.22
   roarDuration: 1.2
   roarSpineGain: 2.5
+  stormVfx: 1
   roarHeadRaiseDeg: 30
   roarHeadLinks: 4
   straightenSpine: 1

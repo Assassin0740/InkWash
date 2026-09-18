@@ -1,0 +1,12 @@
+=== drg_storm_ab：弧带看不见的归因（同机位切 ZTest / 切 bias）===
+条目：盘旋 idx=23（选盘旋 —— 侧视条目青像素为 0，这里定位到底为什么）
+  [bias0.0_ZTest4(不推)]  活跃电弧 10  走廊 18061 px  走廊内青 0  全屏青 52  ｜ mat=InkWash/InkArc ZTest=4 I=1 ｜ 槽0 go.active=True mr.enabled=True verts=16 spanValid=True v0=(-1.00, 7.97, -13.68) v1=(-0.97, 8.11, -13.59)
+  [bias0.8_ZTest4(现状)]  活跃电弧 10  走廊 17967 px  走廊内青 0  全屏青 0  ｜ mat=InkWash/InkArc ZTest=4 I=1 ｜ 槽0 go.active=True mr.enabled=True verts=16 spanValid=True v0=(-5.93, 6.83, -12.73) v1=(-5.84, 7.04, -12.74)
+  [bias0.8_ZTest8(Always)]  活跃电弧 10  走廊 18010 px  走廊内青 0  全屏青 0  ｜ mat=InkWash/InkArc ZTest=8 I=1 ｜ 槽0 go.active=True mr.enabled=True verts=16 spanValid=True v0=(-11.30, 7.42, -6.77) v1=(-11.31, 7.32, -6.73)
+  [bias3.0_ZTest4]  活跃电弧 10  走廊 18033 px  走廊内青 0  全屏青 0  ｜ mat=InkWash/InkArc ZTest=4 I=1 ｜ 槽0 go.active=True mr.enabled=True verts=16 spanValid=True v0=(-10.02, 9.03, -2.42) v1=(-10.05, 9.17, -2.35)
+  [bias2.0_ZTest8]  活跃电弧 10  走廊 17938 px  走廊内青 0  全屏青 0  ｜ mat=InkWash/InkArc ZTest=8 I=1 ｜ 槽0 go.active=True mr.enabled=True verts=16 spanValid=True v0=(-4.85, 8.95, -0.37) v1=(-4.91, 9.16, -0.38)
+
+★ 怎么读：
+  · 「ZTest8(Always)」明显 > 「ZTest4(现状)」 ⇒ **被龙自己的皮深度剔除**；
+    正解是加大 arcCamBias（本次三档里还带了 bias=3.0 那一档做交叉验证）。
+  · 三档都 ≈ 0 ⇒ **根本没画出来**，去查条数/材质/网格，别再碰深度。

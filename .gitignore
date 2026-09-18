@@ -202,6 +202,29 @@ sysinfo.txt
 #   Tools/screenshots/vfx/_粒子素材_实物对照_v1.png
 /Tools/screenshots/vfx/[0-9]*
 
+# 「第二十三轮 墨龙风暴特效」录像的**逐帧原图**（vid/ 与 vid_all/ 各 306 张，合计 324 MB）。
+# 探针 Tools/cs/drg_storm23.cs 重跑即可再生成；成品视频已入库：
+#   Tools/screenshots/enemies/S23/_墨龙风暴_v1.mp4（150 帧 @30fps，1.5 MB）
+# 判分明细 Tools/reports/drg_storm23.txt 入库；四条目的实拍图 s23_*_side/_q.png（10 张）保留。
+/Tools/screenshots/enemies/S23/vid/
+/Tools/screenshots/enemies/S23/vid_all/
+/Tools/screenshots/enemies/S23/diag/
+
+# 「第二十四~二十七轮 墨龙头部」探针的逐档/逐机位原图（每档 3 视角 + 宽景，约 6~22 MB/目录）。
+# 探针 Tools/cs/drg_headnod.cs（24）／drg_headlock.cs（25）／drg_headref.cs（26）／
+#      drg_headfix.cs（27）重跑即可再生成；**结论性拼图与叠图保留**（下面 `_` 开头的白名单）：
+#   H25/_头锁定基准_v2.png（不锁 / 锁 pitch=0 / 锁 pitch=−12 三档）
+#   H27/_头锁定换基_v3.png（rest / old / new 三档 × 三视角 + 宽景）
+#   H27/_对照_side|top|front.png（rest vs 出货档的像素级叠图）
+/Tools/screenshots/enemies/H24/*.png
+/Tools/screenshots/enemies/H25/*.png
+/Tools/screenshots/enemies/H26/*.png
+/Tools/screenshots/enemies/H27/*.png
+!/Tools/screenshots/enemies/H24/_*.png
+!/Tools/screenshots/enemies/H25/_*.png
+!/Tools/screenshots/enemies/H26/_*.png
+!/Tools/screenshots/enemies/H27/_*.png
+
 # ---------- 助手工作区记忆（不属于项目产物，勿入库）----------
 /.workbuddy/
 

@@ -6,41 +6,43 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 
-// drg_headaxis20.cs —— 第二十轮：用「蒙皮网格顶点」量头部**真实朝向**，出带参考线的图交用户定基准
+// drg_headnod.cs —— 第二十四轮：查明「移动时龙头上下甩 ~50°」的成因，并验证一个可自调的旋钮
 //
-// 为什么又换尺子（前两把都废了）
-//   第十八轮：头簇骨 **PCA 第一主轴** ⇒ 量的是"颈+颅那坨质量的走向"，不是吻部指向。
-//   第十九轮：头簇**质心仰角** ⇒ 被鬃/须/角/颌那堆骨拖着走（30° 时报 −6.68°，与肉眼相反）。
-//   两把都是「质量分布类统计量」。本轮改用**几何极值**：
-//     吻部 = 「正中矢状面附近、最靠前的那撮顶点」；颈根 = 「正中面附近最靠后的那撮顶点」。
-//     吻部轴 = 吻端质心 − 颈根质心。**这是几何定义的，不含任何"骨头语义"假设。**
+// 【缘起】用户第三次反馈头部：「龙头要始终面向前方，现在还是有问题」。
+//   用 drg_headaxis20 的 Pass A 实测（pitch=0、纯基准、三个行波相位）：
+//       相位 0.00 → 吻部仰角 −33.83° ｜ 0.30 → +15.88° ｜ 0.60 → −33.33°
+//   ⇒ **极差 49.7°**。而同机位出图目视确认：0.00 那张脖子+头明显下折、0.30 那张平视略抬。
+//   ⇒ 不是尺子瞎了，是**真的在点头**。
 //
-// ★ 关键手法：**不读 mesh.vertices**（FBX 导入默认关 Read/Write ⇒ 静默返回空），
-//   改用 `SkinnedMeshRenderer.BakeMesh()` 拿**当前姿势**的蒙皮结果（不受 Read/Write 限制）。
-//   BakeMesh 返回的空间（局部/世界）各 Unity 版本不一 —— 本探针**自己判**：
-//   分别按两种解释映射到世界，与**骨架质心**比距离，取近的那个，并把判据打进报告。
+// 【机制】SerpPoint 的中心线是**纯水平**的（fwd = Flat(transform.forward)、right = Cross(up,fwd)），
+//   所以每节的目标切向 tan[i] 都在水平面内。但写入用的是
+//       q = FromToRotation(_baseSegLocal[i], tan[i])
+//   这是**最小旋转**：基准段方向 a 本身是倾斜的（模型原生大 C/S 弯），
+//   b 在水平面内左右摆时，cross(a,b) 这个轴跟着转 ⇒ 合成旋转必然带出俯仰/滚转。
+//   头簇（39 叶 + 鬃/须/角/颌）刚性挂在 spine[22] 上 ⇒ 整块被甩出面外。
+//   ★ 旧驱动 ApplySpineOffsetsRaw 用的是 AngleAxis(yaw, up) —— 绕世界 up 的**纯偏航**，
+//     所以**不产生**仰角变化。那条「头不会随行波俯仰（实测 6 相位极差 0.01°）」的注释
+//     写于旧驱动时期，换成蛇形驱动后已经**失效**，必须改掉（坑表条目 46）。
 //
-// 报告什么
-//   · 吻部轴在「容器语义系」里的**仰角 / 偏航角**（仰角 = 判断"头抬没抬"的那把尺子）
-//   · 颅顶轴（颈根→头顶）的仰角，两个一起看才能分清"抬头"和"颅顶翘"
-//   · 段长/横向展布/顶点数 —— 用来判断吻部截取有没有被胡须污染
-//   · 归一化屏幕坐标（颈根 / 吻端 / 颈根后 / 颅顶），交给 Python 在图上画参考线
+// 【被验证的旋钮】SerpPoint 里 env(u) = sin(πu)·Lerp(tg, hg, u)，于是
+//       env'(1) = π·cos(π)·hg + sin(π)·(hg−tg) = −π·hg
+//   ⇒ **hg = 0 时 env'(1) = 0** ⇒ lat'(1) = 0 ⇒ 头端切向 = 纯轴向、**与相位无关**
+//   ⇒ q 恒定 ⇒ 头不再随波甩。而尾端 env'(0) = π·tg 不受影响（尾巴照旧摆）。
+//   本探针就是来验这条推理的：扫 hg ∈ {1.0（现值）, 0.5, 0.0} × 三相位，看仰角极差。
 //
-// 出图条件（与 head19 同）：钉 30 fps、固定相机、每档等同一行波相位
-//   ★ 与 head19 的区别：head19 用 hoverStationary=true（静止），
-//     本轮用 **hoverStationary=false（正常巡游）** —— 用户抱怨的就是"正常移动"时的头。
+// 手法：hoverStationary = true（冻结位置/朝向，但**蛇形波照跑**）、pitch = 0（纯基准）、
+//       钉 30 fps、侧视相机只算一次 ⇒ 三张图可以直接叠着看。
 
-public class drg_headaxis20 : MonoBehaviour
+public class drg_headnod : MonoBehaviour
 {
-    const string DIR = "D:/Unity Project/InkWash/Tools/screenshots/enemies/H20";
-    const string RP = "D:/Unity Project/InkWash/Tools/reports/drg_headaxis20.txt";
+    const string DIR = "D:/Unity Project/InkWash/Tools/screenshots/enemies/H24";
+    const string RP = "D:/Unity Project/InkWash/Tools/reports/drg_headnod.txt";
     const string KEY = "墨龙";
     const int W = 900, H = 600;
     const float DRIVE_HZ = 0.45f;
 
     static readonly float[] PHASES = new float[] { 0.00f, 0.30f, 0.60f };
-    static readonly float[] REL = new float[] { -10f, -5f, 0f, 5f, 10f, 15f };
-    const float PHASE_B = 0.30f;
+    static readonly float[] HGS = new float[] { 1.00f, 0.50f, 0.00f };
 
     static readonly BindingFlags BF = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 
@@ -54,22 +56,20 @@ public class drg_headaxis20 : MonoBehaviour
     Transform _drgT, _modelRoot, _headPivot;
     System.Collections.IList _spine;
     SkinnedMeshRenderer[] _smrs;
-    Camera _camS, _camQ;
-    Vector3 _center; float _dist, _distQ;
+    Camera _camS;
+    Vector3 _center; float _dist;
     int _NS;
 
-    // 容器语义系（都在 modelRoot 局部空间里）
     Vector3 _fwdL, _upL, _latL;
     Vector3 _pivotL;
 
-    // 当前帧量到的头几何
     int _headN, _coreN;
     float _fmin, _fmax, _latMax;
     Vector3 _tipL, _rearL, _topL, _botL;
     float _elevMuzzle, _yawMuzzle, _elevSkull, _fwdSpan, _tipSpread;
     string _spaceNote = "";
-    bool _v = true;                 // 诊断只在第一遍打印
-    const int NC = 9;               // BakeMesh 空间候选数
+    bool _v = true;
+    const int NC = 9;
 
     void Start() { StartCoroutine(Run()); }
 
@@ -116,110 +116,93 @@ public class drg_headaxis20 : MonoBehaviour
         _modelRoot = _dt.GetField("_modelRoot", BF).GetValue(_drg) as Transform;
         var fPitch = _dt.GetField("headAlignPitchDeg", BF);
         var fLinks = _dt.GetField("headAlignLinks", BF);
-        if (_spine == null || _modelRoot == null || fPitch == null) { _sb.AppendLine("× 字段缺失"); yield return Done(); }
+        var fHg = _dt.GetField("swimWaveHeadGain", BF);
+        var fHover = _dt.GetField("hoverStationary", BF);
+        var fPerf = _dt.GetField("enablePerformanceCycle", BF);
+        if (_spine == null || _modelRoot == null || fPitch == null || fHg == null)
+        { _sb.AppendLine("× 字段缺失"); yield return Done(); }
         _NS = _spine.Count;
         _headPivot = _spine[_NS - 2] as Transform;
         _smrs = _go.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
-        _sb.AppendLine("=== drg_headaxis20：蒙皮网格量头部真实朝向（第二十轮）===");
+        _sb.AppendLine("=== drg_headnod：头随行波点头 —— swimWaveHeadGain 是不是那把钥匙（第二十四轮）===");
         _sb.AppendLine("条目 idx=" + idx + "  label=" + found);
         _sb.AppendLine("脊柱 " + _NS + " 节｜headAlignLinks=" + (fLinks != null ? fLinks.GetValue(_drg).ToString() : "?")
+                       + "｜swimWaveHeadGain 现值=" + fHg.GetValue(_drg).ToString()
                        + "｜SkinnedMeshRenderer " + _smrs.Length + " 个");
-        _sb.AppendLine("★ 正常巡游（hoverStationary=false），关省电循环；钉 30 fps；相机只算一次");
+        _sb.AppendLine("★ hoverStationary=true（位置/朝向冻结，**蛇形波照跑**）｜headAlignPitchDeg=0（纯模型基准）");
+        _sb.AppendLine("★ 钉 30 fps｜侧视相机只算一次 ⇒ 各档图可直接叠看");
         _sb.AppendLine();
 
-        // ── 正常巡游姿态，但**冻住位置与朝向** ──
-        // ★ 必须 true：hoverStationary 只冻结 position/rotation（见 TickCircling 1316~1333），
-        //   **蛇形波照跑** ⇒ 姿态仍是巡游态。若设 false，龙在几十秒里飞出十几米，
-        //   而相机是开跑前算一次的 ⇒ 后面几档全被甩出画面（实测屏幕 x 到 6.8）。
-        _dt.GetField("hoverStationary", BF).SetValue(_drg, true);
-        _dt.GetField("enablePerformanceCycle", BF).SetValue(_drg, false);
+        // ── 冻结位置与朝向；关省电循环；pitch 归零 ──
+        fHover.SetValue(_drg, true);
+        fPerf.SetValue(_drg, false);
         fPitch.SetValue(_drg, 0f);
         for (int i = 0; i < 20; i++) yield return null;
 
-        // ── 先量一次拿到「吻端 / 颈根」标志点，再据此取景 ──
-        // ★ 用「头簇包围球」取景**不够**：头簇含鬃/须/角的长链（最长一条 10 节），
-        //   其**质心**离吻部很远 ⇒ 实测整颗头被推出画面右缘（归一化 x 到 1.27 > 1）。
-        //   改用「吻端–颈根连线」的中点当视心、以连线长度定半径，必定框住。
-        yield return WaitPhase(PHASE_B);
+        // ── 取景：以「吻端–颈根连线」中点为视心（不能只用头簇包围球：含鬃/须长链会把头推出画面）──
+        yield return WaitPhase(PHASES[1]);
         Measure();
         Vector3 midL = (_rearL + _tipL) * 0.5f;
         float span2 = Mathf.Max(0.5f, (_tipL - _rearL).magnitude);
         _center = _modelRoot.TransformPoint(midL);
         float rad = span2 * 1.8f + 0.50f;
-        _camS = MakeCam("PROBE_CAM_H20S");
-        _camQ = MakeCam("PROBE_CAM_H20Q");
-        float k = rad / Mathf.Sin(_camS.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        _dist = k;
-        _distQ = k * 1.18f;
-        AimSide(); AimQ();
-        _sb.AppendLine("取景：吻端–颈根 " + span2.ToString("F3") + " m，以其中点为视心，半径 "
-                       + rad.ToString("F3") + "，侧视距 " + _dist.ToString("F2"));
-        _sb.AppendLine();
-        // ── Pass A：三个相位，看头会不会随波"点头" ──
-        _sb.AppendLine("── Pass A：pitch=0（纯模型基准）下，头随行波相位的变化 ──");
-        _sb.AppendLine("  相位     吻部仰角     吻部偏航    颅顶仰角   前向跨度");
-        float elevAtB = 0f;
-        foreach (float ph in PHASES)
-        {
-            yield return WaitPhase(ph);
-            Measure();
-            // ★ 每个相位**也出图**：Pass A 报的"仰角极差 49.6°"必须是眼睛能看见的点头，
-            //   否则就是尺子（吻端/颅顶的投影极值采样）在跳簇 —— 同机位、同 pitch=0，可直接对照。
-            File.WriteAllBytes(DIR + "/hn_phase_" + Mathf.RoundToInt(ph * 100f).ToString("D3") + ".png", Shot(_camS));
-            _sb.AppendLine("  " + Pad(ph.ToString("F2"), 8)
-                           + Pad(_elevMuzzle.ToString("F2") + "°", 12)
-                           + Pad(_yawMuzzle.ToString("F2") + "°", 12)
-                           + Pad(_elevSkull.ToString("F2") + "°", 12)
-                           + _fwdSpan.ToString("F3") + " m");
-            if (Mathf.Abs(ph - PHASE_B) < 1e-4f) elevAtB = _elevMuzzle;
-            _v = false;
-        }
-        _sb.AppendLine();
-        float pStar = -elevAtB;          // 让吻部轴恰好在水平面上的那档 pitch
-        _sb.AppendLine("★ 由 Pass A 解出：pitch = " + Pad(pStar.ToString("F2"), 8)
-                       + "° 时吻部轴**恰好水平**（elev ≈ 0）");
-        _sb.AppendLine("  ⇒ 下面的档位都是「相对吻部水平」的偏置 rel，绝对档位 = p* + rel");
+        _camS = MakeCam("PROBE_CAM_H24S");
+        _dist = rad / Mathf.Sin(_camS.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        AimSide();
+        _sb.AppendLine("取景：吻端–颈根 " + span2.ToString("F3") + " m，侧视距 " + _dist.ToString("F2"));
         _sb.AppendLine();
 
-        // ── Pass B：出图 ──
-        _sb.AppendLine("── Pass B：相位 " + PHASE_B.ToString("F2") + "，六档出图（rel 相对「吻部水平」）──");
-        _sb.AppendLine("  rel    绝对pitch   吻部仰角    吻部偏航    颅顶仰角   头顶点数  正中面顶点  吻端簇展布");
-        foreach (float rel in REL)
+        // ── 主表：hg × 相位 的吻部仰角 ──
+        _sb.AppendLine("── swimWaveHeadGain × 行波相位 ⇒ 吻部仰角（度）──");
+        _sb.AppendLine("   hg      ph0.00     ph0.30     ph0.60     极差      吻部偏航极差");
+        float[] p000 = null;
+        foreach (float hg in HGS)
         {
-            float p = pStar + rel;
-            fPitch.SetValue(_drg, p);
+            fHg.SetValue(_drg, hg);
             yield return null;
-            yield return WaitPhase(PHASE_B);
-
-            Measure();
-            string tag = Tag(rel);
-            File.WriteAllBytes(DIR + "/h20_side_" + tag + ".png", Shot(_camS));
-            File.WriteAllBytes(DIR + "/h20_q_" + tag + ".png", Shot(_camQ));
-
-            _sb.AppendLine("  " + Pad(Sgn(rel), 7) + Pad(p.ToString("F2"), 11)
-                           + Pad(_elevMuzzle.ToString("F2") + "°", 12)
-                           + Pad(_yawMuzzle.ToString("F2") + "°", 12)
-                           + Pad(_elevSkull.ToString("F2") + "°", 12)
-                           + Pad(_headN.ToString(), 9) + Pad(_coreN.ToString(), 11)
-                           + _tipSpread.ToString("F3"));
-            DumpScreen(rel);
+            var elev = new float[PHASES.Length];
+            var yaw = new float[PHASES.Length];
+            for (int k = 0; k < PHASES.Length; k++)
+            {
+                yield return WaitPhase(PHASES[k]);
+                Measure();
+                elev[k] = _elevMuzzle; yaw[k] = _yawMuzzle;
+                if (Mathf.Abs(hg - 1f) < 1e-4f)
+                {
+                    File.WriteAllBytes(DIR + "/hn2_hg100_ph" + ((int)(PHASES[k] * 100)).ToString("D3") + ".png", Shot(_camS));
+                    DumpScreen(hg, PHASES[k]);
+                }
+                if (Mathf.Abs(hg - 0f) < 1e-4f)
+                    File.WriteAllBytes(DIR + "/hn2_hg000_ph" + ((int)(PHASES[k] * 100)).ToString("D3") + ".png", Shot(_camS));
+                _v = false;
+            }
+            float eMin = Mathf.Min(elev), eMax = Mathf.Max(elev);
+            float yMin = Mathf.Min(yaw), yMax = Mathf.Max(yaw);
+            if (p000 == null) p000 = elev;
+            _sb.AppendLine("  " + Pad(hg.ToString("F2"), 8)
+                           + Pad(elev[0].ToString("F2") + "°", 11)
+                           + Pad(elev[1].ToString("F2") + "°", 11)
+                           + Pad(elev[2].ToString("F2") + "°", 11)
+                           + Pad((eMax - eMin).ToString("F2") + "°", 11)
+                           + (yMax - yMin).ToString("F2") + "°");
         }
+        fHg.SetValue(_drg, HGS[0]);
 
         _sb.AppendLine();
-        _sb.AppendLine("★ 三条读数怎么用：");
-        _sb.AppendLine("  · 吻部仰角 = 主判据。0° 那张 = 吻部轴严格水平。");
-        _sb.AppendLine("  · 吻部偏航 ≠ 0 说明头**歪向一侧**（pitch 修不了，要动 headAlignYawDeg）。");
-        _sb.AppendLine("  · 颅顶仰角 与 吻部仰角 差很多 ⇒ 是「颅顶翘/下巴抬」而不是「整头转」。");
-        _sb.AppendLine("★ 别只看数字：看 h20_side_*.png（已由 make_head20_axis.py 叠上参考线）。");
+        _sb.AppendLine("★ 读法：");
+        _sb.AppendLine("  · 「极差」= 移动一个行波周期内，头上下甩了多少度。**越小越像「头始终面向前方」**。");
+        _sb.AppendLine("  · hg=1.00 是本工程现值。若 hg=0.00 的极差≈0 ⇒ 用户只需在 Inspector 把");
+        _sb.AppendLine("    EnemyDragon.swimWaveHeadGain 改成 0（无需改代码）。");
+        _sb.AppendLine("  · 代价：hg 越小，**头端的身子**摆幅越小（波在接近头处收敛成直杆）。");
+        _sb.AppendLine("    这是「头朝向」与「头端随波」的取舍，属审美，由用户拍板。");
         _sb.AppendLine(_spaceNote);
 
         if (_camS != null) { if (_camS.targetTexture != null) UnityEngine.Object.Destroy(_camS.targetTexture); UnityEngine.Object.Destroy(_camS.gameObject); }
-        if (_camQ != null) { if (_camQ.targetTexture != null) UnityEngine.Object.Destroy(_camQ.targetTexture); UnityEngine.Object.Destroy(_camQ.gameObject); }
         yield return Done();
     }
 
-    // ───────────────────────── 量 ─────────────────────────
+    // ───────────────────────── 量（口径与 drg_headaxis20 一致，便于对照）─────────────────────────
 
     void Measure()
     {
@@ -238,12 +221,10 @@ public class drg_headaxis20 : MonoBehaviour
 
         _pivotL = inv.MultiplyPoint3x4(_headPivot.position);
 
-        // ★ 前向的正负：以"尾 → 头"为准，不靠任何约定
         Vector3 tailL = inv.MultiplyPoint3x4(((Transform)_spine[0]).position);
         Vector3 headL = inv.MultiplyPoint3x4(((Transform)_spine[_NS - 2]).position);
         if (Vector3.Dot(headL - tailL, _fwdL) < 0f) { _fwdL = -_fwdL; _latL = -_latL; }
 
-        // 收集头区顶点（比颈根再往后留 0.15 m，免得把颅底切掉）
         var head = new List<Vector3>();
         for (int i = 0; i < world.Count; i++)
         {
@@ -265,8 +246,7 @@ public class drg_headaxis20 : MonoBehaviour
         _fmin = fmin; _fmax = fmax; _latMax = latMax;
         _fwdSpan = fmax - fmin;
 
-        // ★ 正中矢状面薄片：吻部在正中面上，鬃/须/角在两侧 ⇒ 用横向阈值把后者剔掉
-        float latCut = Mathf.Max(0.05f, latMax * 0.22f);   // 收紧：正中面要窄，才能只剩吻部
+        float latCut = Mathf.Max(0.05f, latMax * 0.22f);
         var core = new List<Vector3>();
         for (int i = 0; i < _headN; i++)
         {
@@ -285,7 +265,6 @@ public class drg_headaxis20 : MonoBehaviour
         }
         float cspan = Mathf.Max(1e-4f, cfmax - cfmin);
 
-        // 吻端 = 最前 2% 的质心；颈根后 = 最后 12% 的质心
         Vector3 tipAcc = Vector3.zero; int tipN = 0;
         Vector3 rearAcc = Vector3.zero; int rearN = 0;
         Vector3 topAcc = Vector3.zero; int topN = 0;
@@ -312,7 +291,6 @@ public class drg_headaxis20 : MonoBehaviour
         _topL = topN > 0 ? topAcc / topN : _tipL;
         _botL = botN > 0 ? botAcc / botN : _rearL;
 
-        // 吻端簇的展布：展布大 ⇒ 截到的是鬃/须而不是吻 ⇒ 该档读数不可信
         float tipSpread = 0f;
         for (int i = 0; i < _coreN; i++)
         {
@@ -328,7 +306,6 @@ public class drg_headaxis20 : MonoBehaviour
         _elevSkull = Mathf.Asin(Mathf.Clamp(Vector3.Dot(s.normalized, _upL), -1f, 1f)) * Mathf.Rad2Deg;
     }
 
-    // 候选空间：把 BakeMesh 的原始顶点映射到世界的 N 种可能解释
     struct Cand
     {
         public string name;
@@ -338,21 +315,12 @@ public class drg_headaxis20 : MonoBehaviour
 
     /// <summary>
     /// BakeMesh 拿当前姿势的顶点，返回**世界空间**。
-    ///
-    /// ★★ 这一步栽过两次，记录在此：
-    ///   · 第一版按"质心距骨架近的赢"判局部/世界 —— 两种解释分别离 3.47 / 16.28 m，**都不近** ⇒ 判错。
-    ///   · 诊断后发现真因：本模型 SMR 的 `lossyScale = 0.0024`（FBX 单位是厘米级），
-    ///     而 BakeMesh 给的顶点云**几乎不随龙飞行变化** ⇒ 它落在**龙的局部空间**里，
-    ///     既不是 `smr.transform` 局部，也不是世界。
-    ///   ⇒ 正解：**别猜，枚举候选空间，拿骨架当裁判**。
-    ///     判据：把 24 枚脊骨的世界坐标投进去，**落在点云包围盒内的比例**越高越可信
-    ///     （网格必须包住自己的骨架 —— 这是最强的物理约束）。
-    ///     次要判据：点云尺寸与骨架尺寸同量级；再次：质心距。
+    /// ★ 别猜 BakeMesh 在哪个空间 —— 枚举 9 个候选，拿**骨架**当裁判（网格必须包住自己的骨架）。
+    ///   本模型 SMR 的 lossyScale = 0.0024（FBX 厘米级），带缩放的候选项会把点云压成 0.03 m。
     /// </summary>
     List<Vector3> GatherWorld()
     {
-        bool vb = _v;                     // 诊断只在第一遍打印，免得报告被刷屏
-        // 骨架参考
+        bool vb = _v;
         var bPts = new List<Vector3>();
         Vector3 bMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         Vector3 bMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
@@ -368,7 +336,6 @@ public class drg_headaxis20 : MonoBehaviour
         if (bPts.Count > 0) bCen /= bPts.Count;
         float bSize = Mathf.Max(0.1f, (bMax - bMin).magnitude);
 
-        // 每个 SMR：原始顶点 + 候选矩阵
         var raws = new List<Vector3[]>();
         var mats = new List<Matrix4x4[]>();
         var tmp = new Mesh();
@@ -378,7 +345,6 @@ public class drg_headaxis20 : MonoBehaviour
             var smr = _smrs[s];
             if (smr == null || smr.sharedMesh == null) { if (vb) _sb.AppendLine("  [SMR " + s + "] 空"); continue; }
             if (vb) _sb.AppendLine("  [SMR " + s + "] " + smr.name + "  lossy=" + smr.transform.lossyScale.ToString("F5")
-                           + "  rootBone=" + (smr.rootBone != null ? smr.rootBone.name : "null")
                            + "  bounds.size=" + smr.localBounds.size.ToString("F2"));
             Mesh m = tmp;
             try { smr.BakeMesh(m); } catch (Exception e) { if (vb) _sb.AppendLine("    × BakeMesh: " + e.GetType().Name); continue; }
@@ -387,14 +353,11 @@ public class drg_headaxis20 : MonoBehaviour
             smrUsed++;
             var rb = smr.rootBone != null ? smr.rootBone : _modelRoot;
             var ms = new Matrix4x4[NC];
-            ms[0] = Matrix4x4.identity;                       // 原样（BakeMesh 自己在某个局部空间里给）
-            ms[1] = smr.transform.localToWorldMatrix;         // SMR 自己（带缩放）
-            ms[2] = _modelRoot.localToWorldMatrix;            // 龙的模型容器（带缩放）
-            ms[3] = _headPivot.localToWorldMatrix;            // 颈根骨（带缩放）
-            ms[4] = rb.localToWorldMatrix;                    // rootBone（带缩放）
-            // ★★ 「单位缩放 TRS」组：BakeMesh 很可能返回「某骨的位置/朝向 + **世界尺度**」的顶点
-            //    （即已吃掉绑定缩放）。本模型 SMR lossyScale = 0.0024，带缩放那组会把点云压成
-            //    0.03 m 的一团 —— 正是前两版踩的坑。
+            ms[0] = Matrix4x4.identity;
+            ms[1] = smr.transform.localToWorldMatrix;
+            ms[2] = _modelRoot.localToWorldMatrix;
+            ms[3] = _headPivot.localToWorldMatrix;
+            ms[4] = rb.localToWorldMatrix;
             ms[5] = Matrix4x4.TRS(_modelRoot.position, _modelRoot.rotation, Vector3.one);
             ms[6] = Matrix4x4.TRS(smr.transform.position, smr.transform.rotation, Vector3.one);
             ms[7] = Matrix4x4.TRS(rb.position, rb.rotation, Vector3.one);
@@ -411,10 +374,9 @@ public class drg_headaxis20 : MonoBehaviour
         }
         if (vb) _sb.AppendLine("  骨架：质心 " + bCen.ToString("F2") + "  尺寸 " + bSize.ToString("F2") + " m");
 
-        // ── 打分：对每个候选空间，统计"脊骨落在点云包围盒内"的比例 ──
         string[] NM = new string[] { "原样", "SMR(带缩放)", "modelRoot(带缩放)", "颈根骨(带缩放)", "rootBone(带缩放)", "modelRoot(单位缩放)", "SMR(单位缩放)", "rootBone(单位缩放)", "颈根骨(单位缩放)" };
         int best = -1; float bestScore = -1f;
-        int stride = Mathf.Max(1, raws[0].Length / 4000);     // 抽样打分，省时间
+        int stride = Mathf.Max(1, raws[0].Length / 4000);
         for (int c = 0; c < NC; c++)
         {
             Vector3 cMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
@@ -462,20 +424,11 @@ public class drg_headaxis20 : MonoBehaviour
         return outw;
     }
 
-    static Vector3 Mean(List<Vector3> v)
+    void DumpScreen(float hg, float ph)
     {
-        if (v.Count == 0) return Vector3.zero;
-        Vector3 a = Vector3.zero;
-        for (int i = 0; i < v.Count; i++) a += v[i];
-        return a / v.Count;
-    }
-
-    /// <summary>把关键点投到屏幕（PNG 像素系，左上为原点），交给 Python 画参考线。</summary>
-    void DumpScreen(float rel)
-    {
-        string s = "SCREEN rel=" + Sgn(rel)
-                   + " neck " + SP(_pivotL) + " tip " + SP(_tipL)
-                   + " rear " + SP(_rearL) + " top " + SP(_topL) + " bot " + SP(_botL)
+        string s = "SCREEN hg=" + hg.ToString("F2") + " ph=" + ph.ToString("F2")
+                   + " neck " + SP(_pivotL) + " tip " + SP(_tipL) + " rear " + SP(_rearL)
+                   + " top " + SP(_topL) + " bot " + SP(_botL)
                    + " refA " + SP(_rearL - 1.6f * _fwdL) + " refB " + SP(_rearL + 1.6f * _fwdL);
         _sb.AppendLine("    " + s);
     }
@@ -509,27 +462,8 @@ public class drg_headaxis20 : MonoBehaviour
         _camS.transform.LookAt(_center, Vector3.up);
     }
 
-    void AimQ()
-    {
-        Vector3 fwd = Flat(_drgT.forward).normalized;
-        Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
-        Vector3 dir = (-right * 0.40f + fwd * 0.74f + Vector3.up * 0.54f).normalized;
-        _camQ.transform.position = _center + dir * _distQ;
-        _camQ.transform.LookAt(_center, Vector3.up);
-    }
-
-    static void CollectPos(Transform t, List<Vector3> outp)
-    {
-        outp.Add(t.position);
-        for (int i = 0; i < t.childCount; i++) CollectPos(t.GetChild(i), outp);
-    }
-
     byte[] Shot(Camera cam)
     {
-        // ★ 相机常驻 RT。 **只有在 targetTexture 绑着时**才按 RT 尺寸算；
-        //   不绑就用 Game view 的分辨率 —— 而我在旧版里每次 Shot 都临时建/销毁 RT，
-        //   于是 DumpScreen 时 targetTexture 已是 null ⇒ 归一化分母用了 Game view 宽度
-        //   ⇒ 屏幕坐标整体偏大（实测归一化 x 到 1.20，头被算到画面之外）。
         if (cam.targetTexture == null) cam.targetTexture = new RenderTexture(W, H, 24);
         cam.Render();
         var prev = RenderTexture.active;
@@ -553,34 +487,22 @@ public class drg_headaxis20 : MonoBehaviour
         c.nearClipPlane = 0.03f;
         c.farClipPlane = 5000f;
         c.enabled = false;
-        c.targetTexture = new RenderTexture(W, H, 24);   // 常驻，见 Shot() 的注释
+        c.targetTexture = new RenderTexture(W, H, 24);
         return c;
     }
 
     static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
     static string Pad(string s, int n) { return s.Length >= n ? s : s + new string(' ', n - s.Length); }
 
-    static string Sgn(float p)
-    {
-        string s = (p >= 0f ? "p" : "m") + Mathf.Abs(Mathf.RoundToInt(p)).ToString("D2");
-        return s;
-    }
-
-    static string Tag(float rel)
-    {
-        string s = (rel >= 0f ? "relp" : "relm") + Mathf.Abs(Mathf.RoundToInt(rel)).ToString("D2");
-        return s;
-    }
-
     IEnumerator Done()
     {
         Time.captureFramerate = 0;
         try { File.WriteAllText(RP, _sb.ToString()); } catch { }
-        Debug.Log("[drg_headaxis20] 写入 " + RP);
+        Debug.Log("[drg_headnod] 写入 " + RP);
         yield return null;
     }
 }
 
-var __hostH20 = new GameObject("drg_headaxis20");
-__hostH20.AddComponent<drg_headaxis20>();
-return "DRG_HEADAXIS20_STARTED";
+var __hostH24 = new GameObject("drg_headnod");
+__hostH24.AddComponent<drg_headnod>();
+return "DRG_HEADNOD_STARTED";

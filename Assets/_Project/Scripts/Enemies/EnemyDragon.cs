@@ -44,7 +44,7 @@ namespace InkWash.Enemies
     ///   所以那些 `SetTrigger` 调用是**安全空转**，不需要改基类（基类已经对 null Animator 做了保护）。
     /// </summary>
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyDragon : EnemyBase
+    public class EnemyDragon : EnemyBase, InkWash.Effects.IDragonSpineSource
     {
         public enum DragonAttack { TailSweep, Bite, Breath, HoverOrbit }
 
@@ -177,10 +177,21 @@ namespace InkWash.Enemies
                  "   那把尺子量的是「颈根后 0.15 m → 吻端」的**弦**，而龙头的颅骨/角整块长在这条弦**上方** " +
                  "⇒ 弦水平时眼睛仍然读作「头抬着」。⇒ 尺子有固定的**朝上偏置**，" +
                  "只可用于**相对档位比较**；绝对档位一律以「十档扫描出图 + 真实世界水平线 + 人眼」为准（坑表 36）。\n" +
-                 "★ 现值 −12 出自第二十二轮十档扫描（+3 到 −24 步长 3）。旧值 30 出自第十八轮的「头簇 PCA 第一主轴俯仰 30.2°」" +
+                 "★★ 第二十六轮更正（本条**作废**，见坑表条目 48）：以上档位全部是在**拉直之后**的基准上对照的，" +
+                 "而拉直把颈根（头簇挂点 `drgon_025`）拧了 **93.37°** ⇒ 那些「档位」建立在歪基准上。" +
+                 "现在 `headLockUseRestPose` 默认锁 **FBX 原生姿态**，实测（`drg_headfix`，同一物件同机位）：" +
+                 "pitch=−12 时头仍偏 **12.00°**（= headExtra 的角度）；pitch=0 时偏 **0.00°**、" +
+                 "俯仰/偏航/滚转三列与 FBX 基准帧逐个相同 ⇒ **现值改为 0**。\n" +
+                 "★ 旧记录（仅供追溯）：−12 出自第二十二轮十档扫描；更早的 30 出自第十八轮「头簇 PCA 第一主轴俯仰 30.2°」" +
                  "—— 那把尺子量的是**颈+颅的质量走向**，不是吻部指向，属坑表条目 29。\n" +
-                 "★ 头**不会**随行波俯仰（行波是纯偏航；实测 6 相位仰角极差 0.01°）⇒ 一个静态值就能完全定死。")]
-        public float headAlignPitchDeg = -12f;
+                 "★★ 第二十四轮更正（此前这里写的「头不会随行波俯仰、一个静态值就能定死」是**错的**）：\n" +
+                 "   那是**旧驱动**（`ApplySpineOffsetsRaw`，绕世界 up 的纯偏航）时期的结论。\n" +
+                 "   换成蛇形驱动 `ApplySerpentineSpine` 后，写入用的是\n" +
+                 "   `FromToRotation(倾斜的基准段方向, 水平切向)` —— **最小旋转**在切向左右摆时会带出俯仰，\n" +
+                 "   头簇刚性挂在 `spine[n-2]` 上只能跟着甩：`drg_headnod` 实测一个行波周期内\n" +
+                 "   **吻部仰角极差 49.65°、偏航极差 13.42°**（用户第三次反馈「头没面向前方 / 歪了」）。\n" +
+                 "   ⇒ 这个静态值只能定**平均档位**，摆动幅度要动 `swimWaveHeadGain`（见该字段）。")]
+        public float headAlignPitchDeg = 0f;
         [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
         public float headAlignYawDeg = 0f;
         [Tooltip("头部滚转对齐（度，绕身体轴）")]
@@ -188,6 +199,27 @@ namespace InkWash.Enemies
         [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
                  "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
         public int headAlignLinks = 2;
+
+        [Tooltip("★★ 头部锁定基准姿态（第二十五轮）：末尾 `headAlignLinks` 节**不跟随行波**，" +
+                 "直接采用基准朝向 ⇒ 移动时头纹丝不动地朝前（= 模型原生姿态 + 上面三条对齐角）。\n" +
+                 "★ 为什么必须锁：`FromToRotation(倾斜基准段, 水平切向)` 是**最小旋转**，" +
+                 "切向左右摆时会把偏航**耦合出俯仰** ⇒ 头簇刚性挂在 `spine[n-2]` 上只能跟着甩" +
+                 "（`drg_headnod` 实测一个行波周期内吻部仰角极差 49.65°、偏航 13.42°）。\n" +
+                 "★ 与 `swimWaveHeadGain = 0` 的区别：那个把**头端一大段**的波都抽掉（脖子变直杆），" +
+                 "这个只锁末尾 `headAlignLinks` 节 ⇒ **脖子照常摆动**，头绕颈根稳住。\n" +
+                 "★ 关掉则回到「头跟着曲线切向走」的旧行为。")]
+        public bool headLockToBase = true;
+
+        [Tooltip("★★ 头锁定用哪份基准（第二十六轮，坑表 48）：\n" +
+                 "true（默认、推荐）= **FBX 原生基准姿态**（拉直之前采的 `_restRel`）\n" +
+                 "   ⇒ 头的方向与位置回到模型师傅摆的那个样子（用户：「这个 FBX 精致姿态里面头的位置就是对的，" +
+                 "跟脖子的相对位置是对的，方向也是」）。\n" +
+                 "false = 旧行为：锁拉直**之后**的 `_baseRel`。\n" +
+                 "★ 为什么旧行为必定歪：`StraightenSpineBase()` 会把 `_spine[Count-2]`（颈根 = 头簇挂点）" +
+                 "也转过去，实测 `drgon_025` 被转 **93.37°**、段方向偏 **66.56°**；" +
+                 "而头簇是**刚性分支、从不被驱动** ⇒ 头的世界朝向完全取决于这一节。" +
+                 "锁拉直后的基准 = 把头**永久钉在一个被转歪了 93° 的姿态**上。")]
+        public bool headLockUseRestPose = true;
 
         [Tooltip("★ 尾巴水平化：把整条尾链的段方向**压回水平面**（只保留偏航摆动）。\n" +
                  "实测（drg_head）尾巴逐节 pitch 从 −6° 一路爬到 −33°，末端抬升 0.265 m、" +
@@ -509,7 +541,20 @@ namespace InkWash.Enemies
         public float swimWaveFreq = 0.45f;
         [Tooltip("★ 尾端包络增益（乘在 sin(πu) 上的线性渐变）。1.15 = 尾部略大于中段（真蛇尾巴最灵活）")]
         public float swimWaveTailGain = 1.15f;
-        [Tooltip("★ 头端包络增益。1.0 = 与中段同幅")]
+        [Tooltip("★ 头端包络增益。1.0 = 与中段同幅。\n" +
+                 "★★ 第二十四轮：这一格是**「移动时龙头乱甩」的总开关**，用户可直接在 Inspector 调。\n" +
+                 "   机制：env(u) = sin(πu)·Lerp(tg, hg, u) ⇒ env'(1) = −π·hg。\n" +
+                 "   hg > 0 ⇒ 头端切向随行波相位摆动 ⇒ 经 `FromToRotation(倾斜基准段, 切向)` 的\n" +
+                 "   最小旋转放大成**仰角**摆动（不是纯偏航，见 headAlignPitchDeg 的注解）。\n" +
+                 "   hg = 0 ⇒ env'(1) = 0 ⇒ 头端切向恒为轴向、**与相位无关** ⇒ 头不动。\n" +
+                 "   实测（drg_headnod，hoverStationary + 三相位 + 吻部轴几何量）：\n" +
+                 "     hg 1.00 → 仰角极差 **49.65°**、偏航极差 13.42°（现值，明显「歪 + 点头」）\n" +
+                 "     hg 0.50 → 仰角极差 48.12°、偏航极差 21.81°（**更差**，别往中间调）\n" +
+                 "     hg 0.00 → 仰角极差 **0.55°**、偏航极差 **0.74°**（≈ 完全定住）\n" +
+                 "   ★ 代价：头端的身子摆幅随之减小（波在接近头处收敛成直杆）。\n" +
+                 "     这是「头朝向稳定」与「头端随波」的取舍，属审美，由用户拍板。\n" +
+                 "   ★ hg = 0 时吻部仍有约 −7.4° 的**静态**下俯 ⇒ 再用 `headAlignPitchDeg` 抬回来\n" +
+                 "     （该尺子对值的斜率实测 ≈ 0.71 °/°，即想抬 7° 就把值往正向加约 10）。")]
         public float swimWaveHeadGain = 1.0f;
         [Tooltip("（已废弃，不再读取）旧包络指数 env = sin(πu)^n —— 两端归零 ⇒ 头和尾都不动。" +
                  "保留仅为序列化兼容，默认值与 prefab 同为 3")]
@@ -614,6 +659,25 @@ namespace InkWash.Enemies
         /// </summary>
         private readonly List<Quaternion> _baseRel = new List<Quaternion>();
 
+        /// <summary>
+        /// ★★ 第二十六轮（坑表 48）：**拉直之前**的「FBX 原生基准姿态」，表达为模型容器局部系。
+        ///
+        /// 为什么必须单独存一份：`StraightenSpineBase()` 是**全局**姿态改写 ——
+        ///   它把整条脊骨（含 `_spine[Count-2]` = 颈根 = 头簇挂点）逐节转成一条直线。
+        ///   实测（`drg_headref`）：`_spine[22] = drgon_025` 被转了 **93.37°**、段方向偏 **66.56°**
+        ///   （正是基准姿态里那个 65.6° 的颈折）。而头簇（39 枚叶子骨 + 14 条鬃/须/角/颌）
+        ///   是**刚性分支、从不被驱动** ⇒ 头的世界朝向 **完全等于** `_spine[Count-2].rotation`
+        ///   × 常数 ⇒ **拉直那一步就把头整块甩歪了**。
+        ///
+        /// 于是「头永远锁定在拉直后的姿态」= 锁定在一个歪姿态上 ⇒
+        /// 用户看到的「不锁 / 锁 pitch=0 / 锁 pitch=−12 **三档全是歪的**」。
+        ///
+        /// ⇒ 头锁定要用的是**这一份**（FBX 原生），不是 `_baseRel`（拉直后）。
+        ///   蛇形驱动仍必须用拉直后的 `_baseRel` / `_baseSegLocal`：那是「一条蛇」的前提。
+        /// 长度 = `_spine.Count`。
+        /// </summary>
+        private readonly List<Quaternion> _restRel = new List<Quaternion>();
+
         // ★★ 蛇形游动（位置级 sin 贴合）用的三张表 —— 全部在基准姿态下采一次，之后只读。
         //
         // `_baseSegLocal[i]`：第 i 节 → 第 i+1 节的**段方向**，表达为模型容器局部系。
@@ -669,6 +733,7 @@ namespace InkWash.Enemies
             _spine.Clear();
             _baseRot.Clear();
             _baseRel.Clear();
+            _restRel.Clear();
 
             Transform start = spineRoot;
             if (start == null)
@@ -752,6 +817,10 @@ namespace InkWash.Enemies
                 else _modelRoot = _spine[0].parent;
             }
 
+            // ★★ 第二十六轮（坑表 48）：**必须在拉直之前**采「FBX 原生基准姿态」。
+            //   拉直会把颈根（头簇挂点）也转过去（实测 93.37°）⇒ 头被整块甩歪，
+            //   而头锁定要的正是「用户认可的那个 FBX 姿态」。**顺序不能反**。
+            CaptureRestRel();
             if (straightenSpine) StraightenSpineBase();
             // ★ 不开拉直时也要采一次，保证 _baseRel 与 _spine 等长（驱动写世界旋转要靠它）。
             else CaptureBaseRel();
@@ -821,6 +890,21 @@ namespace InkWash.Enemies
             // 同一时刻采「容器空间段方向 + 骨长」——蛇形驱动要按骨长在曲线上推进，
             // 必须与 `_baseRel` 出自**同一次**基准姿态，否则两者描述的姿势不是同一条链。
             CaptureSegments();
+        }
+
+        /// <summary>
+        /// 把**拉直之前**的脊骨姿态记成相对模型容器的 `_restRel` —— 即「FBX 原生基准姿态」。
+        /// ★ 必须在 `StraightenSpineBase()` **之前**调用；只给「头锁定」用，不参与蛇形驱动。
+        /// </summary>
+        private void CaptureRestRel()
+        {
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            _restRel.Clear();
+            for (int i = 0; i < _spine.Count; i++)
+            {
+                if (_spine[i] == null) { _restRel.Add(Quaternion.identity); continue; }
+                _restRel.Add(Quaternion.Inverse(rootRot) * _spine[i].rotation);
+            }
         }
 
         /// <summary>
@@ -1980,6 +2064,11 @@ namespace InkWash.Enemies
             //     放这个位置还能让下面的 A1 统计（`_airborneRatio`）读到**本帧**的真实高度。
             UpdateBodyLift();
 
+            // ★ 风暴特效必须排在 `base.Update()`（状态机）与 `UpdateBodyLift()` **之后**：
+            //   骨节的世界旋转是在状态机里写的、容器高度是 `UpdateBodyLift` 写的，
+            //   特效要沿脊骨取点、要拿口部位置 ⇒ 早一帧取到的是上一帧的姿态，电弧会"黏在身后"。
+            TickStorm();
+
             // 判定线段每帧贴合骨链（只在判定窗口开着时才有开销）
             SyncHitboxToSpine();
 
@@ -2102,6 +2191,7 @@ namespace InkWash.Enemies
             bool alignHead = HeadAlignActive;
             Quaternion headExtra = HeadAlignExtra;
             int headFrom = HeadAlignFrom(n);
+            bool lockHead = headLockToBase && headAlignLinks > 0;
 
             // ★★ 弯曲轴：一律用**模型容器空间的语义轴**，绝不用骨骼局部轴。
             //
@@ -2140,6 +2230,18 @@ namespace InkWash.Enemies
                 //   只作用在末尾 `headAlignLinks` 节上 ⇒ 头簇整块绕颈根转，脖子不受影响。
                 //   两条驱动路径（本方法 / ApplySerpentineSpine）必须**行为一致**，
                 //   否则攻击相位里一进一出，头会"啪"地弹一下。
+                // ★★ 头锁定基准（与 ApplySerpentineSpine 同一逻辑）：两条驱动路径必须行为一致，
+                //   否则攻击相位一进一出、头会「啪」地弹一下。
+                if (lockHead && i >= headFrom)
+                {
+                    // ★★ 第二十六轮（坑表 48）：默认锁**拉直之前**的 FBX 原生姿态。
+                    //   锁拉直后的 `_baseRel` 会把头永久钉在「被拉直转歪 93°」的姿态上 ——
+                    //   这正是用户说的「三档全是歪的」。两条驱动路径必须选同一个源。
+                    Quaternion hb = (headLockUseRestPose && _restRel.Count == _spine.Count)
+                                    ? _restRel[i] : _baseRel[i];
+                    _spine[i].rotation = rootRot * headExtra * hb;
+                    continue;
+                }
                 Quaternion q = Quaternion.AngleAxis(ex, Vector3.right)
                              * Quaternion.AngleAxis(yaw, Vector3.up)
                              * Quaternion.AngleAxis(pitch, Vector3.right);
@@ -2294,9 +2396,25 @@ namespace InkWash.Enemies
             int headFrom = HeadAlignFrom(n);
 
             // ── 绝对写入：每节从基准重算，无累积 ──
+            // ★★ 第二十五轮「头锁定基准」（用户：「龙头要始终面向前方」）：
+            //   末尾 `headAlignLinks` 节**不读曲线切向**，直接采用基准朝向
+            //   ⇒ 跳过 `FromToRotation` ⇒ 头簇停在基准姿态、**与行波相位无关**。
+            //   为什么必须锁：`FromToRotation(倾斜基准段, 水平切向)` 是最小旋转，
+            //   切向左右摆时把偏航耦合出俯仰（`drg_headnod` 实测吻部仰角极差 49.65°）。
+            bool lockHead = headLockToBase && headAlignLinks > 0;
             for (int i = 0; i < n; i++)
             {
                 if (_spine[i] == null) continue;
+                if (lockHead && i >= headFrom)
+                {
+                    // ★★ 第二十六轮（坑表 48）：默认锁**拉直之前**的 FBX 原生姿态。
+                    //   锁拉直后的 `_baseRel` 会把头永久钉在「被拉直转歪 93°」的姿态上 ——
+                    //   这正是用户说的「三档全是歪的」。两条驱动路径必须选同一个源。
+                    Quaternion hb = (headLockUseRestPose && _restRel.Count == _spine.Count)
+                                    ? _restRel[i] : _baseRel[i];
+                    _spine[i].rotation = rootRot * headExtra * hb;
+                    continue;
+                }
                 Vector3 tLocal = invRoot * tan[i];
                 Quaternion q = Quaternion.FromToRotation(_baseSegLocal[i], tLocal);
                 if (alignHead && i >= headFrom) q = headExtra * q;
@@ -2596,9 +2714,119 @@ namespace InkWash.Enemies
             return _spine[Mathf.Min(_spine.Count - 1, _spine.Count / 2)].position;
         }
 
+        // ══════════════════════════════════════════════════════════════════════
+        //  「风暴特效」接口层（第二十三轮）
+        //
+        //  设计：`Docs/墨龙特效设计.md`。分两层 ——
+        //    玩法层（这里）只回答"现在是什么姿态、每帧要不要张嘴喷"，
+        //    表现层（`InkWash.Effects.DragonStormVfx`）自己决定"几条电弧、多浓的烟"。
+        //  ⇒ **阈值与条数都不在龙这边**：龙改了招式不会连带把特效调参调歪，
+        //    特效调参也不会碰玩法代码（`工程坑表` 一·「一个阈值被两个身份不同的对象共用迟早出事」）。
+        //
+        //  ★ 为什么只在 `Update()` 里**一处**驱动，而不是按设计文档 §三 那张表
+        //    分散到 `DoDiveTell` / `DoDiveTravel` / `DoStrikeBite` … 里各写一行：
+        //    分散写要保证"每条路径都到达、且都不重复"，而这张状态表有 8 行、
+        //    还有 `_dive`/`_attack`/`IsRoaring` 三个维度交叉 —— 少写一处就静默漏特效。
+        //    集中一处读**本帧的最终状态**（在 `base.Update()` 跑完状态机之后）既不会漏，
+        //    也不会因为调用顺序不同而算出不同的值。文档 §三 那张表仍然是**唯一真相**，
+        //    只是把"查表"这件事收敛到了一个 `switch` 里。
+        // ══════════════════════════════════════════════════════════════════════
+
+        [Header("风暴特效（青白细电弧 + 纯墨黑烟）")]
+        [Tooltip("关掉就完全不画（调试用）。真值表见 Docs/墨龙特效设计.md §三")]
+        public bool stormVfx = true;
+
+        /// <summary>链节数（i 小 = 尾/根侧，i 大 = 头侧）。<see cref="InkWash.Effects.IDragonSpineSource"/></summary>
+        public int SpineCount => _spine.Count;
+
+        /// <summary>第 i 节的世界位置。越界夹取；链空时给 <c>transform.position</c>。</summary>
+        public Vector3 GetSpinePosition(int i)
+        {
+            int n = _spine.Count;
+            if (n == 0) return transform.position;
+            var t = _spine[Mathf.Clamp(i, 0, n - 1)];
+            return t != null ? t.position : transform.position;
+        }
+
+        /// <summary>
+        /// 第 i 节"沿链前进"的单位方向（相邻节点差分）。
+        /// ★ 用**差分**而不是 `transform.forward`：骨节的局部轴在拉直/驱动之后与容器轴
+        ///   不再对齐（`工程坑表` 三·「不用骨骼局部轴做几何约定」），差分才永远指向下一节。
+        /// </summary>
+        public Vector3 GetSpineDirection(int i)
+        {
+            int n = _spine.Count;
+            if (n < 2) return transform.forward;
+            int a = Mathf.Clamp(i, 0, n - 2);
+            var ta = _spine[a]; var tb = _spine[a + 1];
+            if (ta == null || tb == null) return transform.forward;
+            Vector3 d = tb.position - ta.position;
+            return d.sqrMagnitude < 1e-8f ? transform.forward : d.normalized;
+        }
+
+        /// <summary>口部位置（喷息 / 喷烟的发射点）。与既有 <see cref="GetHeadPosition"/> 同口径。</summary>
+        public Vector3 GetMouthPosition() { return GetHeadPosition(); }
+
+        /// <summary>口部朝向（喷息主方向）。</summary>
+        public Vector3 GetMouthForward()
+        {
+            int n = _spine.Count;
+            if (n == 0) return transform.forward;
+            var last = _spine[n - 1];
+            if (last == null) return transform.forward;
+            Vector3 f = last.forward;
+            return f.sqrMagnitude < 1e-6f ? transform.forward : f.normalized;
+        }
+
+        /// <summary>本帧的姿态 → 特效姿态。真值表见 <c>Docs/墨龙特效设计.md</c> §三。</summary>
+        private InkWash.Effects.DragonStormVfx.Pose CurrentStormPose(out float mouth01)
+        {
+            mouth01 = 0f;
+            // 死亡 / 未起飞 ⇒ 全关。地面上的龙不该带电弧（设计文档 §三 最后一行）
+            if (!stormVfx || !IsAlive || !_airborne) return InkWash.Effects.DragonStormVfx.Pose.Off;
+
+            // 阶段演出的长啸：比常态亮一档（文档 §三 没这一行，是补的 —— 长啸本就该带电）
+            if (IsRoaring) return InkWash.Effects.DragonStormVfx.Pose.Roar;
+
+            switch (_attack)
+            {
+                case DragonAttack.Bite:
+                case DragonAttack.TailSweep:
+                    switch (_dive)
+                    {
+                        case DivePhase.Tell: return InkWash.Effects.DragonStormVfx.Pose.Tell;
+                        case DivePhase.Dive: return InkWash.Effects.DragonStormVfx.Pose.Dive;
+                        case DivePhase.Strike: return InkWash.Effects.DragonStormVfx.Pose.Strike;
+                        case DivePhase.Recover: return InkWash.Effects.DragonStormVfx.Pose.Recover;
+                    }
+                    return InkWash.Effects.DragonStormVfx.Pose.Idle;
+
+                case DragonAttack.Breath:
+                    mouth01 = 1f;       // 吐息：口部向前喷烟（用户定案「只有口部向前喷」）
+                    return InkWash.Effects.DragonStormVfx.Pose.Breath;
+
+                case DragonAttack.HoverOrbit:
+                    return InkWash.Effects.DragonStormVfx.Pose.Idle;
+            }
+            return InkWash.Effects.DragonStormVfx.Pose.Idle;
+        }
+
+        /// <summary>每帧一次：把姿态报给表现层（见上面的接口层说明）。</summary>
+        private void TickStorm()
+        {
+            float mouth01;
+            var pose = CurrentStormPose(out mouth01);
+            InkWash.Effects.DragonStormVfx.Drive(this, pose, mouth01);
+        }
+
         public override bool TakeDamage(DamageInfo info)
         {
             bool ok = base.TakeDamage(info);
+            // 受击瞬时放电（设计文档 §三：8~10 条，0.25 s 后回落）。纯表现，与"改不改动作"无关。
+            // 强度按"这一下占了最大生命的多少"归一 —— 重击更炸，蹭一下就只是噼啪。
+            if (ok)
+                InkWash.Effects.DragonStormVfx.Burst(
+                    maxHealth > 0f ? Mathf.Clamp01(info.amount / (maxHealth * 0.08f)) : 1f);
             // 龙是 Boss：被打不改动作，但受击时**必须能被打断盘旋**，否则玩家打不到它
             if (ok && _airborne && UnityEngine.Random.value < 0.45f) EndHover();
             return ok;
@@ -2607,6 +2835,8 @@ namespace InkWash.Enemies
         protected override void OnDied()
         {
             base.OnDied();
+            // 死亡 ⇒ 全套关闭（设计文档 §三 最后一行）。烟让它自己散，不硬收。
+            InkWash.Effects.DragonStormVfx.Shut();
             EndHover();
         }
     }
