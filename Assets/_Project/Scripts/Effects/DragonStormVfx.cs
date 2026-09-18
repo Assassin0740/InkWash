@@ -400,6 +400,20 @@ namespace InkWash.Effects
             float dt = Time.deltaTime;
             if (dt <= 0f) dt = 0.02f;
 
+            // ★★ 龙已销毁的假空探测（第二十八轮实测）：`_src` 是接口引用，
+            //   `!= null` 走**引用比较**，探测不到 Unity 的"托管还活着、原生已销毁"。
+            //   龙销毁后 Drive 不再被调用，_arcTarget/_smokeTarget 停在旧值 ⇒ 电弧每帧重生，
+            //   `SpineLerp → GetSpinePosition` 摸已销毁骨头的 `transform` ⇒ MissingReferenceException 刷屏。
+            //   这里把假空归正为真 null，并立即按 Off 收场（烟自然散掉）。
+            if (_src != null && (_src as UnityEngine.Object) == null)
+            {
+                _src = null;
+                _pose = Pose.Off;
+                _mouth01 = 0f;
+                _arcTarget = 0f;
+                _smokeTarget = 0f;
+            }
+
             // ── 条数：整数、阶梯式变化（不是插值）──
             _arcStepTimer -= dt;
             if (_arcStepTimer <= 0f)

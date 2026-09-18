@@ -400,9 +400,9 @@ MonoBehaviour:
   limbPhaseStepDeg: 60
   limbHeadExcludeLinks: 2
   limbTailAxisDot: 0.8
-  headAlignPitchDeg: 1.8097
-  headAlignYawDeg: -2.8152
-  headAlignRollDeg: -65.4602
+  headAlignPitchDeg: 2.7707
+  headAlignYawDeg: -16.6325
+  headAlignRollDeg: -29.7997
   headAlignLinks: 2
   headLockToBase: 1
   headLockUseRestPose: 1

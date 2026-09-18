@@ -191,15 +191,16 @@ namespace InkWash.Enemies
                  "   头簇刚性挂在 `spine[n-2]` 上只能跟着甩：`drg_headnod` 实测一个行波周期内\n" +
                  "   **吻部仰角极差 49.65°、偏航极差 13.42°**（用户第三次反馈「头没面向前方 / 歪了」）。\n" +
                  "   ⇒ 这个静态值只能定**平均档位**，摆动幅度要动 `swimWaveHeadGain`（见该字段）。")]
-        // ★★ 第二十八轮（实测）：三值由 TCP 桥在 Play 模式实测反解 —— 鼻子方向(025→00)
-        //   与脖子朝外方向(024→025) 在 FBX 原生局部系差 65.58°（yaw −54.7°/pitch −44.3° 是
-        //   容器系读数；真修正主体在 024 骨骼局部 roll 上，因拉直的最小旋转带逐节 roll）。
-        //   应用后连续采样 angle(nose,neck)=0.00°。与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
-        public float headAlignPitchDeg = 1.8097f;
+        // ★★ 第二十八轮（实测）：三值由 TCP 桥在 Play 模式实测反解。
+        //   第一版只把**骨轴**（025→00）对齐了脖子（roll −65.46 那组），但颅骨网格相对
+        //   drgon_00 还自带 **FBX 原生安装仰角（实测视觉吻部仍上仰 17°~22°，用户：「龙头还是抬头的」）**。
+        //   第二版改为以「视觉吻部」（头簇前缘叶骨质心方向）对齐容器水平前向反解，
+        //   应用后截图验证吻部水平前伸。与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
+        public float headAlignPitchDeg = 2.7707f;
         [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
-        public float headAlignYawDeg = -2.8152f;
+        public float headAlignYawDeg = -16.6325f;
         [Tooltip("头部滚转对齐（度，绕身体轴）")]
-        public float headAlignRollDeg = -65.4602f;
+        public float headAlignRollDeg = -29.7997f;
         [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
                  "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
         public int headAlignLinks = 2;
@@ -732,6 +733,12 @@ namespace InkWash.Enemies
             ResolveSpine();
             EnsureHitbox();
             ResolveLimbs();      // 必须在 ResolveSpine（含拉直）之后：基准要取拉直后的姿态
+        }
+
+        /// <summary>销毁时显式关掉风暴特效（双保险：表现层 Update 里还有假空归正的兜底）。</summary>
+        protected virtual void OnDestroy()
+        {
+            InkWash.Effects.DragonStormVfx.Shut();
         }
 
         /// <summary>
@@ -2812,13 +2819,20 @@ namespace InkWash.Enemies
         public Vector3 GetMouthPosition() { return GetHeadPosition(); }
 
         /// <summary>口部朝向（喷息主方向）。</summary>
+        /// ★ 第二十八轮：改用「颈根(_spine[n-3]) → 鼻尖(_spine[n-1])」的**弦方向**，
+        ///   不再用 `_spine[n-1].forward` 骨骼局部轴 ——
+        ///   ① 坑表三·「不用骨骼局部轴做几何约定」：头部对齐旋钮（headAlign*）作用在骨骼
+        ///      局部系上，骨轴朝向会随调参漂移（实测 knobs 调平后骨轴上仰 57.2°、段方向 −18.4°，
+        ///      而视觉吻部水平 ⇒ 只有弦方向与所见一致）；
+        ///   ② 弦方向随攻击俯仰自然跟踪（俯冲/拉起时颈根与鼻尖一起动）。
         public Vector3 GetMouthForward()
         {
             int n = _spine.Count;
-            if (n == 0) return transform.forward;
-            var last = _spine[n - 1];
-            if (last == null) return transform.forward;
-            Vector3 f = last.forward;
+            if (n < 2) return transform.forward;
+            var a = _spine[n - 3] != null ? _spine[n - 3] : _spine[0];
+            var b = _spine[n - 1];
+            if (a == null || b == null) return transform.forward;
+            Vector3 f = b.position - a.position;
             return f.sqrMagnitude < 1e-6f ? transform.forward : f.normalized;
         }
 
