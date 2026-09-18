@@ -191,11 +191,15 @@ namespace InkWash.Enemies
                  "   头簇刚性挂在 `spine[n-2]` 上只能跟着甩：`drg_headnod` 实测一个行波周期内\n" +
                  "   **吻部仰角极差 49.65°、偏航极差 13.42°**（用户第三次反馈「头没面向前方 / 歪了」）。\n" +
                  "   ⇒ 这个静态值只能定**平均档位**，摆动幅度要动 `swimWaveHeadGain`（见该字段）。")]
-        public float headAlignPitchDeg = 0f;
+        // ★★ 第二十八轮（实测）：三值由 TCP 桥在 Play 模式实测反解 —— 鼻子方向(025→00)
+        //   与脖子朝外方向(024→025) 在 FBX 原生局部系差 65.58°（yaw −54.7°/pitch −44.3° 是
+        //   容器系读数；真修正主体在 024 骨骼局部 roll 上，因拉直的最小旋转带逐节 roll）。
+        //   应用后连续采样 angle(nose,neck)=0.00°。与 Z_Enemy_MoLong.prefab 保持一致（门禁 0 不一致）。
+        public float headAlignPitchDeg = 1.8097f;
         [Tooltip("头部偏航对齐（度，绕容器 up；正 = 转向身体左侧）")]
-        public float headAlignYawDeg = 0f;
+        public float headAlignYawDeg = -2.8152f;
         [Tooltip("头部滚转对齐（度，绕身体轴）")]
-        public float headAlignRollDeg = 0f;
+        public float headAlignRollDeg = -65.4602f;
         [Tooltip("头部对齐作用在脊柱末尾几节上。实测头簇挂在 `_spine[Count-2]`，" +
                  "所以取 2 才覆盖到它（`Count-1` 是无几何的链尾骨）。")]
         public int headAlignLinks = 2;

@@ -400,14 +400,16 @@ MonoBehaviour:
   limbPhaseStepDeg: 60
   limbHeadExcludeLinks: 2
   limbTailAxisDot: 0.8
-  headAlignPitchDeg: 0
-  headAlignYawDeg: 0
-  headAlignRollDeg: 0
+  headAlignPitchDeg: 1.8097
+  headAlignYawDeg: -2.8152
+  headAlignRollDeg: -65.4602
   headAlignLinks: 2
   headLockToBase: 1
   headLockUseRestPose: 1
   headNeckFollowWeight: 1
   tailLevel: 1
+  tailFollowBodyWave: 1
+  tailFollowGain: 0.9
   tailWaveAmp: 0.35
   tailWaveSpan: 0.5
   tailPhaseLagDeg: 0
@@ -424,7 +426,6 @@ MonoBehaviour:
   bodyBobFreq: 0.22
   roarDuration: 1.2
   roarSpineGain: 2.5
-  stormVfx: 1
   roarHeadRaiseDeg: 30
   roarHeadLinks: 4
   straightenSpine: 1
@@ -463,12 +464,6 @@ MonoBehaviour:
   swimWaveFreq: 0.45
   swimWaveTailGain: 1.15
   swimWaveHeadGain: 1
-  diveSpiralAmp: 3
-  diveSpiralTurns: 1.5
-  diveSpiralVertAmp: 1.6
-  diveSwimScale: 0.85
-  tailFollowBodyWave: 1
-  tailFollowGain: 0.9
   swimWaveEnvPow: 3
   hoverStationary: 0
   hoverStationaryYawDeg: 0
@@ -495,7 +490,12 @@ MonoBehaviour:
   _lastDiveEndTime: -99
   liftSpeed: 14
   strikeLift: 1.05
+  diveSpiralAmp: 3
+  diveSpiralTurns: 1.5
+  diveSpiralVertAmp: 1.6
+  diveSwimScale: 0.85
   sweepLift: 0.65
+  stormVfx: 1
 --- !u!4 &5493170584508413210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8379593388799904744, guid: 85f247e87b3926549b4b89cc4295f8d4,
