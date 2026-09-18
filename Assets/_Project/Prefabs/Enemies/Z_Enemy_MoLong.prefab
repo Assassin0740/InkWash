@@ -406,6 +406,7 @@ MonoBehaviour:
   headAlignLinks: 2
   headLockToBase: 1
   headLockUseRestPose: 1
+  headNeckFollowWeight: 1
   tailLevel: 1
   tailWaveAmp: 0.35
   tailWaveSpan: 0.5

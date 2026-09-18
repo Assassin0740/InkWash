@@ -225,6 +225,13 @@ sysinfo.txt
 !/Tools/screenshots/enemies/H26/_*.png
 !/Tools/screenshots/enemies/H27/_*.png
 
+# 第二十七轮「头随颈」：H28 = 2 档 × 6 时刻 × (俯视/前视) + 2 张远景，共 26 张逐格原图（约 4 MB）。
+# 保留结论图：
+#   H28/_头随颈_v1_俯视.png（A 绝对锁 / B 随颈 × 6 时刻，每格带实测「头−颈」角）
+#   H28/_头随颈_v1_前视.png（同数据 · 沿身轴看，偏航最直观）
+/Tools/screenshots/enemies/H28/*.png
+!/Tools/screenshots/enemies/H28/_*.png
+
 # ---------- 助手工作区记忆（不属于项目产物，勿入库）----------
 /.workbuddy/
 

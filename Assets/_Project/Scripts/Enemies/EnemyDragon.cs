@@ -221,6 +221,20 @@ namespace InkWash.Enemies
                  "锁拉直后的基准 = 把头**永久钉在一个被转歪了 93° 的姿态**上。")]
         public bool headLockUseRestPose = true;
 
+        [Tooltip("★★ 头部「随颈」权重（第二十七轮，坑表 50）：0 = 容器系绝对锁（上一轮行为），1 = 完全随颈。\n" +
+                 "背景（用户：「现在确实是面对到位置了，但是脖子动的时候，头一直保持一个方向没有旋转，要面向过来」）：\n" +
+                 "  上一轮换基把头**方向**修对了，但写点是 `rotation = rootRot · headExtra · _restRel[i]`\n" +
+                 "  —— 这是**相对容器**的绝对锁：容器一转头就跟着转（所以「面向前方」那条成立），\n" +
+                 "  可**脖子自己摆（行波）时头一动不动** ⇒ 头成了钉在颈根上的装饰，读起来「是死的」。\n" +
+                 "★ 实测量级（drg_headfollow27，按 67 帧 = 整周期采样，captureFramerate 已钉）：\n" +
+                 "  w=0 时头载体容器系偏航极差 **0.00°**（真的没动）；\n" +
+                 "  w=1 时改成 `R_i = R_{i−1} · headExtra · (inv(_restRel[i−1]) · _restRel[i])`\n" +
+                 "  即「与**父节**保持 FBX 原生局部角」⇒ 父节在哪头就在哪，脖子摆头跟着摆。\n" +
+                 "★ w=0 逐位等于旧行为（可溯源）；中间值是两者的球面插值，只调「头甩多大」。\n" +
+                 "★ 两条驱动路径（`ApplySpineOffsetsRaw` / `ApplySerpentineSpine`）必须同权重，\n" +
+                 "  否则攻击相位一进一出头会「啪」地弹一下。")]
+        public float headNeckFollowWeight = 1f;
+
         [Tooltip("★ 尾巴水平化：把整条尾链的段方向**压回水平面**（只保留偏航摆动）。\n" +
                  "实测（drg_head）尾巴逐节 pitch 从 −6° 一路爬到 −33°，末端抬升 0.265 m、" +
                  "中段累计 0.799 m ⇒ 用户「尾巴末端是歪的，翘起来了，应该保持同一水平线的高度」")]
@@ -2237,9 +2251,22 @@ namespace InkWash.Enemies
                     // ★★ 第二十六轮（坑表 48）：默认锁**拉直之前**的 FBX 原生姿态。
                     //   锁拉直后的 `_baseRel` 会把头永久钉在「被拉直转歪 93°」的姿态上 ——
                     //   这正是用户说的「三档全是歪的」。两条驱动路径必须选同一个源。
-                    Quaternion hb = (headLockUseRestPose && _restRel.Count == _spine.Count)
-                                    ? _restRel[i] : _baseRel[i];
-                    _spine[i].rotation = rootRot * headExtra * hb;
+                    var src = (headLockUseRestPose && _restRel.Count == _spine.Count) ? _restRel : _baseRel;
+                    // ★★ 第二十七轮（坑表 50）：**相对容器**的绝对锁 ⇒ 脖子摆、头不摆。
+                    //   用户：「脖子动的时候，头一直保持一个方向没有旋转，要面向过来」。
+                    //   改成「与父节保持 FBX 原生局部角」= 父节在哪头就在哪。
+                    //   ★ `headExtra` 放在父节之后、局部偏置之前 ⇒ 仍是「相对父节抬/转头」。
+                    //   ★ `hw = 0` 走原式（逐位等于旧行为，便于溯源与回退）。
+                    Quaternion qAbs = rootRot * headExtra * src[i];
+                    float hw = Mathf.Clamp01(headNeckFollowWeight);
+                    if (hw <= 0f || i <= 0 || _spine[i - 1] == null)
+                    {
+                        _spine[i].rotation = qAbs;
+                        continue;
+                    }
+                    Quaternion lRel = Quaternion.Inverse(src[i - 1]) * src[i];
+                    Quaternion qRel = _spine[i - 1].rotation * headExtra * lRel;
+                    _spine[i].rotation = hw >= 1f ? qRel : Quaternion.Slerp(qAbs, qRel, hw);
                     continue;
                 }
                 Quaternion q = Quaternion.AngleAxis(ex, Vector3.right)
@@ -2410,9 +2437,22 @@ namespace InkWash.Enemies
                     // ★★ 第二十六轮（坑表 48）：默认锁**拉直之前**的 FBX 原生姿态。
                     //   锁拉直后的 `_baseRel` 会把头永久钉在「被拉直转歪 93°」的姿态上 ——
                     //   这正是用户说的「三档全是歪的」。两条驱动路径必须选同一个源。
-                    Quaternion hb = (headLockUseRestPose && _restRel.Count == _spine.Count)
-                                    ? _restRel[i] : _baseRel[i];
-                    _spine[i].rotation = rootRot * headExtra * hb;
+                    var src = (headLockUseRestPose && _restRel.Count == _spine.Count) ? _restRel : _baseRel;
+                    // ★★ 第二十七轮（坑表 50）：**相对容器**的绝对锁 ⇒ 脖子摆、头不摆。
+                    //   用户：「脖子动的时候，头一直保持一个方向没有旋转，要面向过来」。
+                    //   改成「与父节保持 FBX 原生局部角」= 父节在哪头就在哪。
+                    //   ★ `headExtra` 放在父节之后、局部偏置之前 ⇒ 仍是「相对父节抬/转头」。
+                    //   ★ `hw = 0` 走原式（逐位等于旧行为，便于溯源与回退）。
+                    Quaternion qAbs = rootRot * headExtra * src[i];
+                    float hw = Mathf.Clamp01(headNeckFollowWeight);
+                    if (hw <= 0f || i <= 0 || _spine[i - 1] == null)
+                    {
+                        _spine[i].rotation = qAbs;
+                        continue;
+                    }
+                    Quaternion lRel = Quaternion.Inverse(src[i - 1]) * src[i];
+                    Quaternion qRel = _spine[i - 1].rotation * headExtra * lRel;
+                    _spine[i].rotation = hw >= 1f ? qRel : Quaternion.Slerp(qAbs, qRel, hw);
                     continue;
                 }
                 Vector3 tLocal = invRoot * tan[i];
