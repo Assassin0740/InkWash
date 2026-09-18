@@ -400,7 +400,7 @@ MonoBehaviour:
   limbPhaseStepDeg: 60
   limbHeadExcludeLinks: 2
   limbTailAxisDot: 0.8
-  headAlignPitchDeg: 30
+  headAlignPitchDeg: 3
   headAlignYawDeg: 0
   headAlignRollDeg: 0
   headAlignLinks: 2
@@ -459,6 +459,12 @@ MonoBehaviour:
   swimWaveFreq: 0.45
   swimWaveTailGain: 1.15
   swimWaveHeadGain: 1
+  diveSpiralAmp: 3
+  diveSpiralTurns: 1.5
+  diveSpiralVertAmp: 1.6
+  diveSwimScale: 0.85
+  tailFollowBodyWave: 1
+  tailFollowGain: 0.9
   swimWaveEnvPow: 3
   hoverStationary: 0
   hoverStationaryYawDeg: 0
