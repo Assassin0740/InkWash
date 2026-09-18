@@ -400,7 +400,7 @@ MonoBehaviour:
   limbPhaseStepDeg: 60
   limbHeadExcludeLinks: 2
   limbTailAxisDot: 0.8
-  headAlignPitchDeg: 3
+  headAlignPitchDeg: -12
   headAlignYawDeg: 0
   headAlignRollDeg: 0
   headAlignLinks: 2

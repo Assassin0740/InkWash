@@ -18,7 +18,9 @@ sb.AppendLine("isPlaying = " + EditorApplication.isPlaying);
 // ① 源码默认值
 const string CS = "Assets/_Project/Scripts/Enemies/EnemyDragon.cs";
 var txt = File.ReadAllText(CS);
-var m = Regex.Match(txt, @"public\s+float\s+headAlignPitchDeg\s*=\s*([0-9.]+)f");
+// ★ 必须是 (-?[0-9.]+)：headAlignPitchDeg 现在可以是**负数**，
+//   少了那个负号会让 `= -12f` 解析失败，于是①永远报「解析失败」而没人发现。
+var m = Regex.Match(txt, @"public\s+float\s+headAlignPitchDeg\s*=\s*(-?[0-9.]+)f");
 sb.AppendLine("① 源码默认值        = " + (m.Success ? m.Groups[1].Value : "解析失败"));
 
 // ② prefab 上的序列化值

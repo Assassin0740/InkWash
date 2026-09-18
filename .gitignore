@@ -152,14 +152,19 @@ sysinfo.txt
 /Tools/screenshots/enemies/T19/
 /Tools/screenshots/enemies/T19CMP/
 
-# 「第二十/二十一轮 墨龙头部朝向尺子」的逐档截图（H20/H21/H21F，各 9~12 张约 5 MB）。
-# 探针 Tools/cs/drg_headaxis20.cs（20）／drg_head21.cs（21）／drg_headfinal21.cs（出货验收）重跑即可再生成；
-# 叠了水平参考线的结论拼图已入库，不排：
-#   Tools/screenshots/enemies/_墨龙_头部档位_绝对值_v2.png
-#   Tools/screenshots/enemies/_墨龙_头部_改前改后_v1.png
+# 「第二十~二十二轮 墨龙头部俯仰尺子/定档」的逐档原图（H20/H21/H21F/H22，各 9~20 张约 5~11 MB/目录）。
+# 探针 Tools/cs/drg_headaxis20.cs（20）／drg_head21.cs（21）／drg_headfinal21.cs（21 出货验收）
+#      ／drg_headscan22.cs（22 十档扫描）重跑即可再生成；
+# 叠了真实世界水平线 + 裁头放大的结论图已入库，不排：
+#   Tools/screenshots/enemies/_墨龙_头部档位_绝对值_v2.png   （0/5/-5/-15/-23/-30 六档）
+#   Tools/screenshots/enemies/_墨龙_头部_改前改后_v1.png     （30 vs 3）
+#   Tools/screenshots/enemies/_墨龙_头部_定档扫描_v4.png     （+3 ~ -24 十档，挑选图）
+#   Tools/screenshots/enemies/_墨龙_头部_三代对照_v5.png     （30 / 3 / -12）
+#   Tools/screenshots/enemies/_墨龙_头部_放大对照_v3.png     （六档裁头放大）
 /Tools/screenshots/enemies/H20/
 /Tools/screenshots/enemies/H21/
 /Tools/screenshots/enemies/H21F/
+/Tools/screenshots/enemies/H22/
 
 # 「中国站素材寻源」的中间产物：封面图缓存（几十 MB）与 sitemap 原件（1.2 MB，随时可重下）。
 # 结论在 Docs/素材候选_中国站_v1.png / .md，商品缓存 Tools/reports/store_cn_cache.json 保留。
