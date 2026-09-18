@@ -85,25 +85,39 @@ namespace InkWash.Enemies
         public float breathSpreadDeg = 9f;
 
         [Header("动作 · 盘旋")]
-        public float hoverHeight = 3.6f;
+        [Tooltip("★ 改本节任何数值都必须同时改 Z_Enemy_MoLong.prefab —— prefab 里序列化了同名键，\n" +
+                 "  只改 C# 默认值不生效（本项目硬规矩 #6）。")]
+        public float hoverHeight = 7.0f;
         public float hoverOrbitRadius = 11f;
         public float hoverOrbitSpeedDeg = 55f;
-        [Tooltip("★ 沿链的弯曲振幅（度/节）。旧值 11 太小 ⇒ 实测每节只弯 0.2~9.7°，龙是僵的。\n" +
-                 "16 = 按交接文档 §3.3 的建议值上调（修好轴向后再上调到 14~18 看观感）。\n" +
-                 "★ 改这个值必须同时改 Z_Enemy_MoLong.prefab —— prefab 里序列化了同名键。")]
-        public float hoverAmplitudeDeg = 16f;
-        [Tooltip("★ 游动频率（Hz）。真实蛇形游动是**低频**，旧值 0.55 偏快但可接受")]
-        public float hoverFrequency = 0.45f;
-        [Tooltip("★ 相位步进（度/节）。这是决定「波长」的关键：波长(节数) = 360 / 此值。旧值 40 ⇒ 每 9 节一个完整波（24 节里塞 2.7 个波，像搓衣板）；新值 15 ⇒ 约每 24 节一个完整波，即身体长 ≈ 一个波长 —— 这才是真实蛇/龙的游动")]
-        public float hoverPhaseStepDeg = 15f;
-        [Tooltip("★ 垂直面弯曲振幅（度/节）。真实游动不是纯水平摆尾，身体会上下起伏；只做水平摆动是「扁片在转」，加上这个才有立体游动感")]
-        public float hoverPitchAmplitudeDeg = 1.5f;
+        [Tooltip("★★ 沿链的弯曲振幅（度/节）—— 「像不像真龙」的第一决定量。\n" +
+                 "★ 它不等于「侧摆幅度」：链的侧向偏移 ≈ 振幅 × 波长 / (2π)。\n" +
+                 "  16° ⇒ 侧摆仅 0.47 m，而身长 8.2 m ＝ **只有 5.7%** ⇒ 肉眼就是一根直棍。\n" +
+                 "  35° ⇒ 侧摆约 1.4 m ＝ 身长的 17%，与真蛇（10~15%）、游戏里的龙（≈20%）同量级。\n" +
+                 "★ 尾侧还会再乘 waveAmpRootGain(1.30) ⇒ 尾端实际约 45°/节。")]
+        public float hoverAmplitudeDeg = 35f;
+        [Tooltip("★ 游动频率（Hz）。真实蛇形游动是**低频**。\n" +
+                 "★ 振幅从 16° 拉到 35° 之后，0.45 Hz 会显得急躁 ⇒ 降到 0.27\n" +
+                 "  （约 3.7 s 一个周期），巨物感 / 重量感才出得来。")]
+        public float hoverFrequency = 0.27f;
+        [Tooltip("★★ 相位步进（度/节）—— 决定「波长」：波长(节数) = 360 / 此值。\n" +
+                 "  15° ⇒ 24 节 ＝ **恰好一个整波**。此时正弯与负弯在积分上**精确抵消**，\n" +
+                 "        头尾都回到中轴线上 ⇒ 身体读起来仍是「直」的，只是中段鼓一下。\n" +
+                 "  22.5° ⇒ 每 16 节一个波、24 节 ＝ **1.5 个波** ⇒ 头尾朝相反方向，\n" +
+                 "        才是有进有出的「S 形」，同时避开了整波的自我抵消。")]
+        public float hoverPhaseStepDeg = 22.5f;
+        [Tooltip("★★ 垂直面弯曲振幅（度/节）—— 决定「扁片 / 立体」。\n" +
+                 "★ 真正决定观感的是**垂直与水平的振幅比**，不是相位：\n" +
+                 "  旧值 1.5 / 16 ＝ 9% ⇒ 近乎纯水平摆动，每条骨都只在水平面里转，\n" +
+                 "  整条龙就是一张「会摆的扁片」。\n" +
+                 "  龙是三维游动物，垂直要占水平的 40~60%（16 / 35 ≈ 46%）。")]
+        public float hoverPitchAmplitudeDeg = 16f;
         [Tooltip("★ 整体横向摆幅（m）—— 用户的「让它跟着正弦波移动」。" +
                  "只转骨骼时 i=0（尾/根侧）是支点、位移恒为 0（探针实测 0.000）⇒ 看着像「只有中间在动」。\n" +
                  "给模型容器叠一个横向正弦，整条龙（含尾端）才真的都在动。")]
         public float bodySwayAmp = 1.6f;
         [Tooltip("整体横向正弦的频率（Hz）。与 hoverFrequency 同频最自然（身体摆 = 路径摆）")]
-        public float bodySwayFreq = 0.45f;
+        public float bodySwayFreq = 0.27f;
         // ── 四肢 / 分支骨 ──
         // 实测骨架：24 节脊柱单链之外还有 **77 个分支节点**（龙身共 280 个 Transform），
         //   其中 `脊柱[0] drgon_03` 下挂 3 条大链（后代 27 / 19 / 19 根骨），
@@ -112,7 +126,7 @@ namespace InkWash.Enemies
         [Tooltip("★ 四肢（脊柱之外的分支骨）摆动幅度（度）。0 = 关闭")]
         public float limbSwingDeg = 14f;
         [Tooltip("四肢摆动频率（Hz）")]
-        public float limbSwingFreq = 0.45f;
+        public float limbSwingFreq = 0.27f;
         [Tooltip("分支骨至少要有多少个后代才当成「肢体」来驱动 —— 用来滤掉背鳍那种单骨")]
         public int limbMinDescendants = 2;
         [Tooltip("相邻肢体之间的相位差（度），让四肢像划水一样依次摆动")]
@@ -278,8 +292,10 @@ namespace InkWash.Enemies
         //   换成新名字，prefab 里没有对应键 ⇒ C# 默认值直接生效。
         [Tooltip("链首（_spine[0] = 根/尾侧）的摆幅增益")]
         public float waveAmpRootGain = 1.30f;
-        [Tooltip("链尾（_spine[Count-1] = 头侧）的摆幅增益。头要稳，所以小")]
-        public float waveAmpHeadGain = 0.30f;
+        [Tooltip("链尾（_spine[Count-1] = 头侧）的摆幅增益。头要稳，所以比尾小。\n" +
+                 "★ 旧值 0.30 配 16° 振幅 ⇒ 头部只弯 4.8°，等于头基本不动、身体在它后面自己扭。\n" +
+                 "  用户要「头也摆，但比尾小」⇒ 0.55（头约 19°、尾约 45°，差 2.4 倍）。")]
+        public float waveAmpHeadGain = 0.55f;
 
         // ================= 判定盒（兜底 + 逐帧贴合骨链）=================
         // ★★ 先更正一条**我踩过的结论**（留在这里防复发）：
@@ -350,15 +366,20 @@ namespace InkWash.Enemies
         [Tooltip("巡游前进速度（m/s）—— 龙真正向前游的速度")]
         public float swimSpeed = 8.0f;
         [Tooltip("转向速率。越大转得越急；小 = 大弧线悠然巡游")]
-        public float swimTurnRate = 1.1f;
+        public float swimTurnRate = 1.5f;
         [Tooltip("半径偏差 → 向内/向外转向的增益（把龙拉回 hoverOrbitRadius）")]
         public float swimRadiusGain = 0.12f;
         [Tooltip("轨道角速度（°/s）。线速度 ≈ hoverOrbitRadius × 此值 × π/180")]
         public float orbitAngularSpeedDeg = 40f;
-        [Tooltip("★ 轨迹的左右蛇行振幅（m）—— 这才是「蜿蜒前进」的可见量")]
+        [Tooltip("（已废弃，不再读取）旧实现把蛇行加在「进出」分量上 ⇒ 轨迹是花瓣形而非 S 形")]
         public float orbitLateralAmp = 2.6f;
-        [Tooltip("★ 绕一圈里的蛇行波数。越大越碎；3 ≈ 明显的左右蜿蜒")]
+        [Tooltip("（已废弃，不再读取）")]
         public float orbitLateralWaves = 3f;
+        [Tooltip("★★ 蛇形路径振幅（度）—— 把**航向**绕竖直轴左右摆动的幅度。\n" +
+                 "摆航向走出来的才是 S 形轨迹；旧实现摆的是「离玩家的远近」⇒ 花瓣形。")]
+        public float pathWaveAmpDeg = 30f;
+        [Tooltip("★★ 绕玩家一圈里的蛇行波数。3 ≈ 明显的左右蜿蜒；越大越碎")]
+        public float pathWaveCount = 3f;
         private float _orbitPhase;
         private Vector3 _swimDir = Vector3.forward;
         [Tooltip("俯冲期水平移动速度倍率（× circleMoveSpeed）")]
@@ -371,9 +392,9 @@ namespace InkWash.Enemies
         public float phase2AtRatio = 0.65f;
         public float phase3AtRatio = 0.30f;
         [Tooltip("各阶段的盘旋高度（m）")]
-        public float hoverHeightP1 = 3.6f;
-        public float hoverHeightP2 = 4.4f;
-        public float hoverHeightP3 = 5.2f;
+        public float hoverHeightP1 = 7.0f;
+        public float hoverHeightP2 = 8.0f;
+        public float hoverHeightP3 = 9.0f;
         [Tooltip("各阶段的俯冲冷却（秒）")]
         public float diveCooldownP1 = 2.4f;
         public float diveCooldownP2 = 1.8f;
@@ -966,8 +987,17 @@ namespace InkWash.Enemies
                 // ★ 蛇行：把「目标方向」本身左右摆（沿 radial = 垂直于前进方向），
                 //   这样走出来的**轨迹**才是波浪。只让身体摆而路径是直线，
                 //   观感仍然是"直着飘" —— 用户要的是"左右蜿蜒**前进**"，两者都要。
-                float lateral = orbitLateralAmp * Mathf.Sin(_orbitPhase * orbitLateralWaves) * 0.12f;
-                Vector3 wantDir = (tangent + radial * (lateral + err * swimRadiusGain * pull)).normalized;
+                //
+                // ★★ 旧写法：`tangent + radial * (orbitLateralAmp * sin(...) * 0.12f + err * gain)`
+                //   有两个叠加的问题，实测轨迹接近一个圆（用户："这个移动没有做"）：
+                //   ① 蛇行加在 **radial（离玩家的远近）** 分量上 ⇒ 走出来的是"忽远忽近的
+                //      花瓣形"，不是"左右蜿蜒的 S 形"；
+                //   ② 那个 `* 0.12f` 把 2.6 m 的标称摆幅压成 ±0.31 的方向偏置，
+                //      而同一括号里 err 修正量级相近 ⇒ 蛇行被半径修正吃掉，肉眼看不见。
+                //   ⇒ 现在改成**把航向绕竖直轴摆动**：摆的是"朝哪游"，轨迹才是蛇形。
+                Vector3 baseDir = (tangent + radial * (err * swimRadiusGain * pull)).normalized;
+                float serpDeg = pathWaveAmpDeg * Mathf.Sin(_orbitPhase * pathWaveCount);
+                Vector3 wantDir = (Quaternion.AngleAxis(serpDeg, Vector3.up) * baseDir).normalized;
 
                 // ★ 帧率无关转向。旧写法 `Mathf.Clamp01(turnRate * dt)` 在 dt=0.005 s（200 fps）时
                 //   每帧只转 0.55%，转 90° 要 2 秒、期间飞出 16 m
@@ -1288,20 +1318,10 @@ namespace InkWash.Enemies
         private void DoDiveTell(float u)
         {
             _currentLift = Mathf.Lerp(DesiredHoverY, DesiredHoverY + 0.35f, u);   // 微微上抬蓄力
-            // 头颈下压俯角（越靠末端越明显）
-            float pitch = 26f * u;
-            int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
-            // ★ 俯仰必须绕**容器 right**，不能用骨骼局部 X —— 拉直后局部 X 与链方向近乎平行，
-            //   绕它转是"拧麻花"而不是"低头"（dg_axis 实测夹角 164.5°）。
-            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
-            for (int i = 0; i < _spine.Count; i++)
-            {
-                if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
-                int k = i - start;
-                _spine[i].rotation = rootRot
-                    * Quaternion.AngleAxis(pitch * (1f + 0.12f * k), Vector3.right)
-                    * _baseRel[i];
-            }
+            // ★ 蓄势期也保持 S 形 + 整身下压蓄力（头侧 1.35 / 尾侧 0.45）。
+            //   旧代码在这里什么都不做 ⇒ 身体从「预兆」起就已经僵住了。
+            //   俯仰与游动波在**同一次绝对写入**里合成，见 ApplySpineOffsetsRaw 的 remarks。
+            ApplySwimWave(diveSwimScale, 26f * u, 0.45f, 1.35f);
             FacePlayer(Time.deltaTime);
         }
 
@@ -1341,8 +1361,21 @@ namespace InkWash.Enemies
 
         private void DoDiveTravel(float u)
         {
-            // 水平：起点 → 预判落点（匀速）
+            // ── 水平：起点 → 预判落点（匀速）+ ★ 螺旋横摆 ──
             Vector3 want = Vector3.Lerp(_diveStart, _diveTarget, u);
+
+            // ★★ 螺旋 / 蜿蜒俯冲（第二阶段定案）：
+            //   旧实现是**直线**插值 ⇒ 读起来是「一根棍子戳下来」。
+            //   现在在「起点→落点」这条主轴的水平法向上叠一个正弦摆动。
+            //   摆幅取 sin(2π·turns·u)：u=0 与 u=1 都归零 ⇒ 与盘旋段 / 咬击段首尾无缝。
+            Vector3 flatAxis = Flat(_diveTarget - _diveStart);
+            if (diveSpiralAmp > 0.001f && flatAxis.sqrMagnitude > 0.01f)
+            {
+                Vector3 side = Vector3.Cross(Vector3.up, flatAxis.normalized);   // 主轴的水平右法向
+                float sw = Mathf.Sin(2f * Mathf.PI * diveSpiralTurns * u);
+                want += side * (diveSpiralAmp * sw);
+            }
+
             Vector3 delta = Flat(want) - Flat(transform.position);
             float speed = circleMoveSpeed * diveSpeedMul;
             Vector3 step = delta.sqrMagnitude > 1e-6f
@@ -1350,9 +1383,20 @@ namespace InkWash.Enemies
                 : Vector3.zero;
             MoveHorizontal(step);
 
-            // 竖直：ease-in 落向打击高度（重力感）——**不落到地面**（见 strikeLift 注释）
+            // ── 竖直：ease-in 落向打击高度（重力感）——**不落到地面**（见 strikeLift 注释）──
             float g = u * u;
-            _currentLift = Mathf.Lerp(DesiredHoverY + 0.35f, strikeLift, g);
+            float lift = Mathf.Lerp(DesiredHoverY + 0.35f, strikeLift, g);
+            // ★ 与横向**错开 90°**（cos）的竖直起伏，用 u·(1−u)·4 包络保证两端归零。
+            //   横摆 + 纵摆相位差 90° 才读得出「螺旋」；同相位只会读成"之字形斜落"。
+            if (diveSpiralVertAmp > 0.001f)
+            {
+                float envU = u * (1f - u) * 4f;
+                lift += diveSpiralVertAmp * Mathf.Cos(2f * Mathf.PI * diveSpiralTurns * u) * envU;
+            }
+            _currentLift = lift;
+
+            // ★ 俯冲全程保持游动波（用户原话：「时时刻刻都要遵循这个道理」）
+            ApplySwimWave(diveSwimScale);
 
             // 朝向落点
             if (Flat(delta).sqrMagnitude > 1e-4f)
@@ -1382,16 +1426,14 @@ namespace InkWash.Enemies
             PassThroughStep(1f);                 // 穿过：判定帧之后继续沿俯冲方向滑出
             float snap = Mathf.Sin(Mathf.PI * Mathf.Clamp01(u * 1.4f));   // 快速咬一下
             float pitch = -biteAmplitudeDeg * (1f - snap * 0.5f);
-            int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
-            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
-            for (int i = 0; i < _spine.Count; i++)
-            {
-                if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
-                int k = i - start;
-                _spine[i].rotation = rootRot
-                    * Quaternion.AngleAxis(pitch * (1f + 0.15f * k), Vector3.right)
-                    * _baseRel[i];
-            }
+
+            // ★★ 整身扑咬（第二阶段定案）：
+            //   旧实现只对 `_spine.Count - biteHeadLinks` 之后的几节施加俯仰 ——
+            //   即**只有脖子在点头**，6 m 长的身子纹丝不动，读起来就是"很僵硬"。
+            //   现在用**一条包络**铺开：尾 0.45 → 头 1.60 ⇒ 尾巴也跟着甩过来，整身"扑"下去，
+            //   头颈那一段自然压得更狠（咬合的最后一口）。
+            //   ★ 与游动波在同一次绝对写入里合成 —— 绝不能再事后左乘（会累积成 500°+）。
+            ApplySwimWave(diveSwimScale, pitch, 0.45f, 1.6f);
         }
 
         /// <summary>
@@ -1405,6 +1447,50 @@ namespace InkWash.Enemies
         ///   1.05 m 是"龙头够得着人、龙腹仍明显离地"的折中（主角身高约 1.75 m）。
         /// </summary>
         public float strikeLift = 1.05f;
+
+        // ──────────────────────────────────────────────────────────────
+        // ★★ 第二阶段（用户逐项定案）：螺旋/蜿蜒俯冲 + 整身扑咬
+        //
+        //   用户原话：「沿着 S 飞，然后在攻击的时候也要沿着 S 飞，**时时刻刻**都要遵循这个道理」。
+        //   ⇒ 俯冲**不是**"把身体拉直了冲下去"。旧实现在 Tell/Dive/Strike/Recover 四个相位里
+        //     **一次都没调用** `ApplySpineOffsetsRaw` ⇒ 身体在整段攻击里是硬的，
+        //     只有头颈几节在动。这是"动作僵硬"的另一半来源（另一半见第十四轮运动核）。
+        // ──────────────────────────────────────────────────────────────
+
+        [Tooltip("★ 俯冲时的横向蛇形摆幅（m）。0 = 旧行为（直线冲）。")]
+        public float diveSpiralAmp = 3.0f;
+
+        [Tooltip("★ 俯冲全程的螺旋圈数。1.5 ≈ 明显地「拧」着下来。")]
+        public float diveSpiralTurns = 1.5f;
+
+        [Tooltip("★ 俯冲时的竖直起伏幅度（m）—— 与横向错开相位才读得出「螺旋」。")]
+        public float diveSpiralVertAmp = 1.6f;
+
+        [Tooltip("★ 俯冲 / 咬击 / 拉起时保留多少游动波（1 = 与高空巡游同幅）。")]
+        public float diveSwimScale = 0.85f;
+
+        /// <summary>
+        /// ★★ 把「游动波」单独抽出来，供俯冲 / 咬击 / 拉起复用。
+        /// 这是「时时刻刻沿 S 飞」的唯一落地点：只要相位用 `Time.time` 连续走，
+        /// 各相位之间切换时波形就是连续的，不会"啪"地弹一下。
+        /// </summary>
+        private void ApplySwimWave(float scale, float extraPitchDeg = 0f,
+                                   float extraRootGain = 1f, float extraHeadGain = 1f)
+        {
+            if (_spine.Count == 0) return;
+            float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
+            ApplySpineOffsetsRaw(hoverAmplitudeDeg * scale, hoverPitchAmplitudeDeg * scale, _spine.Count,
+                                 hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase,
+                                 extraPitchDeg, extraRootGain, extraHeadGain);
+        }
+
+        // ★ 这里曾有一个 `AddSpinePitch(deg, rootGain, headGain)` —— 它对每节 `rotation`
+        //   **事后左乘**一个俯仰角。09-18 实测证明这个写法**必然把身体拧死**，故删除：
+        //     Transform 是父子链，而 `rotation` setter 写的是**世界旋转** —— 父骨一转，
+        //     所有子骨的世界旋转跟着变，于是"逐节左乘"就成了**累积**。
+        //     实测 24 节累积 500°+，首尾直线 7.5 m → **3.3 m**，画面里龙蜷成一个圈。
+        //   ⇒ 现在改走 `ApplySpineOffsetsRaw(..., extraPitchDeg, extraRootGain, extraHeadGain)`，
+        //     与游动波在**同一次绝对写入**里合成（每帧从 `_baseRel` 重算 ⇒ 无累积）。
 
         /// <summary>扫尾：贴地横扫，24 节脊骨自根向梢传播。</summary>
         private void DoStrikeSweep(float u)
@@ -1426,16 +1512,10 @@ namespace InkWash.Enemies
         {
             _currentLift = Mathf.Lerp(strikeLift, DesiredHoverY, Mathf.SmoothStep(0f, 1f, u));
             PassThroughStep(1f - u);             // 穿过收尾：随拉起把前冲速度线性收掉
-            float pitch = -18f * (1f - u);      // 头颈上抬的余韵
-            int start = Mathf.Max(0, _spine.Count - biteHeadLinks);
-            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
-            for (int i = 0; i < _spine.Count; i++)
-            {
-                if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
-                _spine[i].rotation = rootRot
-                    * Quaternion.AngleAxis(pitch, Vector3.right)
-                    * _baseRel[i];
-            }
+            // ★ 拉起全程保持 S 形 + 整身上抬的余韵（头侧 1.2 / 尾侧 0.4），把刚才「扑」下去的姿态收回。
+            //   这一相位结束时控制权要交回 `TickCircling`，若这里绷直、下一帧又摆起来，
+            //   画面上就是一次「抽搐」。
+            ApplySwimWave(diveSwimScale, -18f * (1f - u), 0.4f, 1.2f);
         }
 
         /// <summary>
@@ -1602,19 +1682,27 @@ namespace InkWash.Enemies
         ///   一个完整波长占 `360/φ` 节。**身体长度 ≈ 一个波长**才像真游动；
         ///   波长短（φ 大）会在身上塞进好几个波，看起来像搓衣板。
         /// </summary>
-        private void ApplySpineOffsetsRaw(float yawMaxDeg, float pitchMaxDeg, int links, float phaseStepDeg)
+        /// <param name="rootGain">链首 i=0（**尾 / 根侧**）的振幅增益。</param>
+        /// <param name="headGain">链末 i=n-1（**头侧**）的振幅增益（&gt;1 表示放大）。</param>
+        /// <param name="phase">当前波相位（弧度）。**由调用方给**；传 &lt;0 表示"用 sweepFrequency 自己算"。</param>
+        /// <param name="extraPitchDeg">★★ 额外整身俯仰（度）——「整身扑咬 / 蓄势低头 / 拉起」用它。</param>
+        /// <param name="extraRootGain">额外俯仰在链首（尾）的增益。</param>
+        /// <param name="extraHeadGain">额外俯仰在链末（头）的增益。</param>
+        /// <remarks>
+        /// ★★ 额外俯仰**必须在这里合并、随同一次绝对写入落地**，绝不能事后对 `rotation` 再左乘一遍。
+        ///
+        ///   为什么（09-18 实测踩过）：这些 Transform 是**父子链**。事后左乘 = "读当前世界旋转再乘"，
+        ///   而父骨一转，所有子骨的**世界旋转会跟着变** ⇒ 逐个乘下去就**累积**了：
+        ///   实测 24 节 × 平均增益 0.9 ⇒ 累积 500° 以上，身体当场卷成一团，
+        ///   首尾直线从 7.5 m 塌到 **3.3 m**（画面里就是"龙蜷成一个圈"）。
+        ///   绝对式写入（`= rootRot · … · _baseRel[i]`）天然无累积，因为每帧都从基准重算。
+        /// </remarks>
+        private void ApplySpineOffsetsRaw(float yawMaxDeg, float pitchMaxDeg, int links, float phaseStepDeg,
+                                          float rootGain = 1f, float headGain = 1f, float phase = -1f,
+                                          float extraPitchDeg = 0f,
+                                          float extraRootGain = 1f, float extraHeadGain = 1f)
         {
-            ApplySpineOffsetsRaw(yawMaxDeg, pitchMaxDeg, links, phaseStepDeg, 1f, 1f,
-                2f * Mathf.PI * sweepFrequency * Time.time);
-        }
-
-        /// <param name="headGain">链首的振幅增益（0~1 通常）。</param>
-        /// <param name="tailGain">链尾的振幅增益（&gt;1 表示放大）。</param>
-        /// <param name="phase">当前波相位（弧度）。**由调用方给**，见上面注释。</param>
-        private void ApplySpineOffsetsRaw(float yawMaxDeg, float pitchMaxDeg, int links,
-                                          float phaseStepDeg, float headGain, float tailGain,
-                                          float phase)
-        {
+            if (phase < 0f) phase = 2f * Mathf.PI * sweepFrequency * Time.time;
             if (_spine.Count == 0) return;
             if (_baseRel.Count < _spine.Count) CaptureBaseRel();   // 防御：基准未就绪则补采
             int n = links <= 0 ? _spine.Count : Mathf.Min(links, _spine.Count);
@@ -1633,8 +1721,14 @@ namespace InkWash.Enemies
 
             for (int i = 0; i < n; i++)
             {
-                float ph = phase - i * step;
-                float env = Mathf.Lerp(headGain, tailGain, n <= 1 ? 0f : i / (float)(n - 1));
+                // ★★ 相位前的符号 = 行波的**传播方向**，不是随手写的。
+                //   i 小 = 尾/根侧，i 大 = 头侧（见本文件 270 行附近的两条独立证据）。
+                //   `phase - i·step` ⇒ 波峰随 t 增大从 i=0 流向 i=n-1 ＝ **尾→头**（反的）；
+                //   `phase + i·step` ⇒ **头→尾**，才是真蛇/真龙（头先转向、身体再跟）。
+                //   旧代码是减号 ⇒ 波形在动但"读不出生命力"，是用户说的"僵硬"来源之一。
+                float ph = phase + i * step;
+                float t = n <= 1 ? 0f : i / (float)(n - 1);
+                float env = Mathf.Lerp(rootGain, headGain, t);      // i=0 尾侧 → i=n-1 头侧
 
                 // 水平行波（左右蛇形）
                 float yaw = yawMaxDeg * env * Mathf.Sin(ph);
@@ -1645,7 +1739,10 @@ namespace InkWash.Enemies
                 // ★ 写**世界旋转**（`rotation`）而非 `localRotation`：每节的角度是"相对基准的绝对角"，
                 //   不受父节点影响 ⇒ 波形严格是 sin(phase − i·φ)，正是"行波"；
                 //   逐节累加的弯曲由链式父子关系自然产生（与原来的"逐节增量"等价）。
+                // ★ 额外整身俯仰（尾→头 线性包络）：与行波**在同一个绝对写入里**合成 ⇒ 无累积。
+                float ex = extraPitchDeg * Mathf.Lerp(extraRootGain, extraHeadGain, t);
                 _spine[i].rotation = rootRot
+                                     * Quaternion.AngleAxis(ex, Vector3.right)    // 整身俯仰（最外层）
                                      * Quaternion.AngleAxis(yaw, Vector3.up)      // 左右
                                      * Quaternion.AngleAxis(pitch, Vector3.right) // 俯仰
                                      * _baseRel[i];

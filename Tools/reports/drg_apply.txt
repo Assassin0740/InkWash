@@ -1,0 +1,46 @@
+=== drg_apply：墨龙运动核参数落盘 ===
+prefab = Assets/_Project/Prefabs/Enemies/Z_Enemy_MoLong.prefab
+isPlaying = False
+
+── 旧值 ──
+   hoverHeight             3.6
+   hoverAmplitudeDeg       16
+   hoverFrequency          0.45
+   hoverPhaseStepDeg       15
+   hoverPitchAmplitudeDeg  1.5
+   waveAmpRootGain         1.3
+   waveAmpHeadGain         0.3
+   bodySwayAmp             1.6
+   bodySwayFreq            0.45
+   limbSwingFreq           0.45
+   swimTurnRate            1.1
+   pathWaveAmpDeg          <无此字段>
+   pathWaveCount           <无此字段>
+   hoverHeightP1           3.6
+   hoverHeightP2           4.4
+   hoverHeightP3           5.2
+   orbitLateralAmp         2.6
+
+── 已写入 15 个字段；跳过（无字段）: pathWaveAmpDeg pathWaveCount  ──
+
+── 磁盘回读（.prefab 文件文本）──
+   hoverHeight: 7
+   hoverAmplitudeDeg: 35
+   hoverFrequency: 0.27
+   hoverPhaseStepDeg: 22.5
+   hoverPitchAmplitudeDeg: 16
+   waveAmpRootGain: 1.3
+   waveAmpHeadGain: 0.55
+   bodySwayAmp: 1
+   bodySwayFreq: 0.27
+   limbSwingDeg: 14
+   limbSwingFreq: 0.27
+   swimSpeed: 8
+   swimTurnRate: 1.5
+   swimRadiusGain: 0.12
+   pathWaveAmpDeg: <文件里没有这个键 ⇒ 用 C# 默认值>
+   pathWaveCount: <文件里没有这个键 ⇒ 用 C# 默认值>
+   orbitLateralAmp: 0
+   hoverHeightP1: 7
+   hoverHeightP2: 8
+   hoverHeightP3: 9

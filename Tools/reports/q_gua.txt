@@ -1,0 +1,65 @@
+════════════════════════════════════════════════════
+prefab = Z_Enemy_MoGuai   Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGuai.prefab
+节点总数 = 112   MR = 1   SMR = 10
+
+── 渲染器（父链已标出）──
+  [MR ] /Z_Enemy_MoGuai/Visual/Model/Box001_08 - Default_0   v=24 mat=M_Ink_Enemy_MoGuai  bounds=(0.00, -2.50, 0.00)/(5.00, 5.00, 5.00)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_7   v=9755 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(25.36, 77.92, 940.48)/(1248.56, 904.30, 1996.53)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_9   v=317 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(-210.52, 107.61, 1653.01)/(518.17, 380.97, 420.63)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_11   v=216 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(-0.73, -138.26, 1197.37)/(229.43, 146.91, 238.03)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_13   v=629 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(6.45, 41.64, 862.47)/(768.56, 584.09, 751.19)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_15   v=832 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(47.74, -41.65, 1665.54)/(107.93, 95.76, 65.47)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_17   v=143 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(-330.01, -168.84, 1302.60)/(296.48, 390.11, 349.09)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_19   v=131 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(-254.77, -144.34, 484.77)/(275.94, 250.44, 465.10)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_21   v=143 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(449.14, 159.80, 1056.79)/(358.11, 334.56, 402.13)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_23   v=131 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(252.26, 46.83, 476.89)/(248.93, 321.73, 461.15)
+  [SMR] /Z_Enemy_MoGuai/Visual/Model/Object_25   v=1002 bones=97(null=0) root=_rootJoint mat=M_Ink_Enemy_MoGuai  lb=(285.02, -172.26, 927.57)/(1766.05, 685.19, 736.41)
+
+── 关键字命中节点 ──
+  【关键字:axe】/Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Axe_1_Dummy_089   lp=(301.058, -150.241, 990.403)  子=0  渲染器=无
+  【关键字:hand】/Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06/Bip001 R Clavicle_014/Bip001 R UpperArm_015/Bip001 R Forearm_016/Bip001 R Hand_017   lp=(-284.212, -0.001, 0.002)  子=6  渲染器=无
+  【关键字:hand】/Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06/Bip001 R Clavicle_014/Bip001 R UpperArm_015/Bip001 R Forearm_016/Bip001 R Hand_017/Bip001 L Hand_037   lp=(-27.597, 33.159, -791.967)  子=4  渲染器=无
+
+════════════════════════════════════════════════════
+prefab = Z_Enemy_MoShan   Assets/_Project/Prefabs/Enemies/Z_Enemy_MoShan.prefab
+节点总数 = 44   MR = 0   SMR = 14
+
+── 渲染器（父链已标出）──
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_33   v=116 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.01, 0.49, 0.00)/(0.64, 0.24, 0.69)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_35   v=79 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.19, 0.41, 0.10)/(0.04, 0.02, 0.04)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_37   v=240 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.17, 0.45, 0.13)/(0.07, 0.14, 0.12)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_39   v=1108 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.08, 1.12, 0.26)/(0.13, 0.06, 0.06)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_41   v=72 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.18, 1.22, 0.20)/(0.10, 0.10, 0.06)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_43   v=44 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.00, 1.26, 0.22)/(0.13, 0.14, 0.07)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_45   v=165 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(-0.10, 0.32, -0.05)/(0.47, 0.52, 0.57)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_47   v=112 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.14, 0.36, 0.09)/(0.25, 0.25, 0.33)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_49   v=7401 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.21, 0.54, 0.07)/(1.33, 1.55, 1.38)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_51   v=56 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.51, 0.97, -0.30)/(0.06, 0.07, 0.07)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_53   v=255 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.48, 0.82, -0.38)/(0.22, 0.40, 0.45)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_55   v=58 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.08, 1.06, 0.28)/(0.18, 0.10, 0.05)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_57   v=55 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.08, 1.05, 0.30)/(0.08, 0.05, 0.03)
+  [SMR] /Z_Enemy_MoShan/Visual/Model/Object_59   v=53 bones=26(null=0) root=_rootJoint mat=M_Ink_Enemy_MoShan  lb=(0.08, 1.05, 0.30)/(0.04, 0.03, 0.02)
+
+── 关键字命中节点 ──
+  【关键字:hand】/Z_Enemy_MoShan/Visual/Model/Object_5/_rootJoint/mixamorig:Hips_00/mixamorig:Spine_01/mixamorig:Spine1_02/mixamorig:Spine2_03/mixamorig:LeftShoulder_07/mixamorig:LeftArm_08/mixamorig:LeftForeArm_09/mixamorig:LeftHand_010   lp=(0.000, 0.259, 0.000)  子=0  渲染器=无
+  【关键字:hand】/Z_Enemy_MoShan/Visual/Model/Object_5/_rootJoint/mixamorig:Hips_00/mixamorig:Spine_01/mixamorig:Spine1_02/mixamorig:Spine2_03/mixamorig:RightShoulder_011/mixamorig:RightArm_012/mixamorig:RightForeArm_013/mixamorig:RightHand_014   lp=(0.000, 0.258, 0.000)  子=0  渲染器=无
+
+════════════════════════════════════════════════════
+prefab = Z_Enemy_MoGu   Assets/_Project/Prefabs/Enemies/Z_Enemy_MoGu.prefab
+节点总数 = 92   MR = 4   SMR = 3
+
+── 渲染器（父链已标出）──
+  [SMR] /Z_Enemy_MoGu/Visual/Model/Object_21   v=3239 bones=80(null=0) root=GLTF_created_0_rootJoint mat=M_Ink_Enemy_MoGu  lb=(-0.63, 42.18, 7.87)/(62.33, 95.24, 48.65)
+  [SMR] /Z_Enemy_MoGu/Visual/Model/Object_23   v=5584 bones=80(null=0) root=GLTF_created_0_rootJoint mat=M_Ink_Enemy_MoGu  lb=(-0.51, 46.41, 12.55)/(59.24, 98.41, 61.98)
+  [SMR] /Z_Enemy_MoGu/Visual/Model/Object_24   v=119 bones=80(null=0) root=GLTF_created_0_rootJoint mat=M_Ink_Enemy_MoGu  lb=(0.94, 82.53, 36.64)/(3.21, 3.92, 3.88)
+  [MR ] /Z_Enemy_MoGu/Visual/Model/Object_28   v=70 mat=M_Ink_Enemy_MoGu  bounds=(0.64, 18.99, 120.98)/(75.46, 31.21, 71.47)
+  [MR ] /Z_Enemy_MoGu/Visual/Model/Object_34   v=103 mat=M_Ink_Enemy_MoGu  bounds=(-0.02, -0.05, -1.61)/(1.93, 1.95, 5.22)
+  [MR ] /Z_Enemy_MoGu/Visual/Model/Object_43   v=103 mat=M_Ink_Enemy_MoGu  bounds=(-0.02, -0.05, -1.61)/(1.93, 1.95, 5.22)
+  [MR ] /Z_Enemy_MoGu/Visual/Model/Object_90   v=468 mat=M_Ink_Enemy_MoGu  bounds=(142.71, -51.60, 148.63)/(40.78, 180.49, 7.16)
+
+── 关键字命中节点 ──
+  【关键字:hand】/Z_Enemy_MoGu/Visual/Model/GLTF_created_0/GLTF_created_0_rootJoint/Root Bone_94/ArmIK.l_69/Hand.L_68   lp=(0.000, 0.000, 0.000)  子=5  渲染器=无
+  【关键字:hand】/Z_Enemy_MoGu/Visual/Model/GLTF_created_0/GLTF_created_0_rootJoint/Root Bone_94/ArmIK.r_87/Hand.R_86   lp=(0.000, 0.000, 0.000)  子=5  渲染器=无
+  【关键字:bow】/Z_Enemy_MoGu/Visual/Model/GLTF_created_0/GLTF_created_0_rootJoint/Root Bone_94/Pelvis_52/Torso IK_50/Torso_49/Shoulder.L_38/Upper Arm.L_34/Elbow.L_33   lp=(0.000, 16.167, 0.000)  子=1  渲染器=无
+  【关键字:bow】/Z_Enemy_MoGu/Visual/Model/GLTF_created_0/GLTF_created_0_rootJoint/Root Bone_94/Pelvis_52/Torso IK_50/Torso_49/Shoulder.R_45/Upper Arm.R_41/Elbow.R_40   lp=(0.000, 16.167, 0.000)  子=1  渲染器=无
+

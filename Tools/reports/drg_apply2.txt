@@ -1,0 +1,17 @@
+=== drg_apply2：静默段改造 ===
+isPlaying = False
+
+── 旧值 ──
+   restMotionScale   0.06
+   restLift          0.35
+   restSpeedScale    0.12
+
+已写入 3 个字段
+
+── 磁盘回读（.prefab 文本）──
+   enablePerformanceCycle: 1
+   advanceDuration: 7
+   restDuration: 7
+   restMotionScale: 0.5
+   restLift: 4.5
+   restSpeedScale: 0.45

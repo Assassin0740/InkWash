@@ -1,0 +1,74 @@
+SMR 总数 = 9
+
+── Skeleton_Minion_ArmLeft
+   mesh      = Skeleton_Minion_ArmLeft  v=527  subMesh=1
+   localBounds center=(-0.550, 1.104, 0.003)  size=(0.838, 0.197, 0.204)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_ArmRight
+   mesh      = Skeleton_Minion_ArmRight  v=527  subMesh=1
+   localBounds center=(0.550, 1.104, 0.003)  size=(0.838, 0.197, 0.204)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_Body
+   mesh      = Skeleton_Minion_Body  v=2112  subMesh=1
+   localBounds center=(0.000, 0.901, 0.003)  size=(0.738, 1.048, 0.688)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_Cloak
+   mesh      = Skeleton_Minion_Cloak  v=325  subMesh=1
+   localBounds center=(0.000, 1.055, 0.014)  size=(0.871, 0.514, 0.745)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_Eyes
+   mesh      = Skeleton_Minion_Eyes  v=96  subMesh=1
+   localBounds center=(0.000, 1.641, 0.260)  size=(0.460, 0.126, 0.076)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_Head
+   mesh      = Skeleton_Minion_Head  v=701  subMesh=1
+   localBounds center=(0.000, 1.740, -0.002)  size=(0.871, 0.852, 0.912)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_Jaw
+   mesh      = Skeleton_Minion_Jaw  v=197  subMesh=1
+   localBounds center=(0.000, 1.355, 0.115)  size=(0.455, 0.323, 0.399)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_LegLeft
+   mesh      = Skeleton_Minion_LegLeft  v=574  subMesh=1
+   localBounds center=(-0.169, 0.179, 0.046)  size=(0.238, 0.716, 0.474)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+
+── Skeleton_Minion_LegRight
+   mesh      = Skeleton_Minion_LegRight  v=575  subMesh=1
+   localBounds center=(0.169, 0.179, 0.046)  size=(0.238, 0.716, 0.474)
+   rootBone  = root
+   updateWhenOffscreen = False
+   bones(23) = root, hips, spine, chest, upperarm.l, lowerarm.l, wrist.l, hand.l, handslot.l, upperarm.r, lowerarm.r, wrist.r, hand.r, handslot.r, head, upperleg.l, lowerleg.l, foot.l, toes.l, upperleg.r, lowerleg.r, foot.r, toes.r
+   bindposes = 23
+

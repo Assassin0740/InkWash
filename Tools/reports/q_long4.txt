@@ -1,0 +1,46 @@
+墨龙条目 = 4 个: 盘旋 Circling（默认态） | 俯冲撕咬 Dive→Bite | 俯冲扫尾 Dive→Sweep | 吐息 Breath（悬浮放弹）
+
+══════ [23] 盘旋 Circling（默认态） ══════
+  _limbRoots.Count = 19    limbSwingDeg = 14
+    t0  招=TailSweep      高度目标=3.60   实用高度=4.69   airborne=True  worldY=0.05
+    t1  招=TailSweep      高度目标=3.60   实用高度=4.70   airborne=True  worldY=0.05
+    t2  招=TailSweep      高度目标=3.60   实用高度=4.67   airborne=True  worldY=0.05
+    t3  招=TailSweep      高度目标=3.60   实用高度=4.58   airborne=True  worldY=0.05
+    t4  招=TailSweep      高度目标=3.60   实用高度=4.49   airborne=True  worldY=0.05
+    t5  招=TailSweep      高度目标=3.60   实用高度=4.34   airborne=True  worldY=0.05
+    t6  招=TailSweep      高度目标=3.60   实用高度=4.19   airborne=True  worldY=0.05
+    t7  招=TailSweep      高度目标=3.60   实用高度=3.97   airborne=True  worldY=0.05
+
+══════ [24] 俯冲撕咬 Dive→Bite ══════
+  _limbRoots.Count = 19    limbSwingDeg = 14
+    t0  招=TailSweep      高度目标=3.60   实用高度=3.50   airborne=True  worldY=0.05
+    t1  招=TailSweep      高度目标=3.60   实用高度=3.27   airborne=True  worldY=0.05
+    t2  招=TailSweep      高度目标=3.60   实用高度=3.11   airborne=True  worldY=0.05
+    t3  招=TailSweep      高度目标=3.60   实用高度=2.91   airborne=True  worldY=0.05
+    t4  招=TailSweep      高度目标=3.60   实用高度=2.78   airborne=True  worldY=0.05
+    t5  招=Bite           高度目标=3.70   实用高度=2.74   airborne=True  worldY=0.05
+    t6  招=Bite           高度目标=3.82   实用高度=2.79   airborne=True  worldY=0.05
+    t7  招=Bite           高度目标=3.93   实用高度=2.84   airborne=True  worldY=0.05
+
+══════ [25] 俯冲扫尾 Dive→Sweep ══════
+  _limbRoots.Count = 19    limbSwingDeg = 14
+    t0  招=TailSweep      高度目标=3.60   实用高度=2.56   airborne=True  worldY=0.05
+    t1  招=TailSweep      高度目标=3.60   实用高度=2.66   airborne=True  worldY=0.05
+    t2  招=TailSweep      高度目标=3.60   实用高度=2.78   airborne=True  worldY=0.05
+    t3  招=TailSweep      高度目标=3.60   实用高度=2.96   airborne=True  worldY=0.05
+    t4  招=TailSweep      高度目标=3.60   实用高度=3.11   airborne=True  worldY=0.05
+    t5  招=TailSweep      高度目标=3.76   实用高度=3.51   airborne=True  worldY=0.05
+    t6  招=TailSweep      高度目标=3.88   实用高度=3.81   airborne=True  worldY=0.05
+    t7  招=TailSweep      高度目标=3.83   实用高度=4.00   airborne=True  worldY=0.05
+
+══════ [26] 吐息 Breath（悬浮放弹） ══════
+  _limbRoots.Count = 19    limbSwingDeg = 14
+    t0  招=TailSweep      高度目标=3.60   实用高度=4.15   airborne=True  worldY=0.05
+    t1  招=TailSweep      高度目标=3.60   实用高度=4.38   airborne=True  worldY=0.05
+    t2  招=TailSweep      高度目标=3.60   实用高度=4.49   airborne=True  worldY=0.05
+    t3  招=TailSweep      高度目标=3.60   实用高度=4.61   airborne=True  worldY=0.05
+    t4  招=TailSweep      高度目标=3.60   实用高度=4.66   airborne=True  worldY=0.05
+    t5  招=Breath         高度目标=3.60   实用高度=4.70   airborne=True  worldY=0.05
+    t6  招=Breath         高度目标=3.60   实用高度=4.69   airborne=True  worldY=0.05
+    t7  招=Breath         高度目标=3.60   实用高度=4.64   airborne=True  worldY=0.05
+

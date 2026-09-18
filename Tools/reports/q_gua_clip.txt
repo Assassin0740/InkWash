@@ -1,0 +1,30 @@
+controller = Assets/_Project/Animations/Enemies/Z_Orc.controller
+剪辑数 = 6
+
+── Object_4|ANM_ORC_Roar_Object_4   时长=3.00s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+── Object_4|ANM_RUN_Object_4   时长=1.33s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+── Object_4|ANM_ORC_LIGHT_ATTACK_Object_4   时长=1.67s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+── Object_4|ANM_DAMAGED_Object_4   时长=1.07s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+── Object_4|ANM_DEATH_Object_4   时长=1.00s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+── Object_4|ANM_ATTACK_CRIT_Object_4   时长=2.00s  曲线=130  对象曲线=0  含Axe=0
+   样例路径:  :: RootT.x |  :: RootT.y |  :: RootT.z |  :: RootQ.x
+
+层数 = 1   参数 = 5
+  层[0] Base Layer 状态=6 : Idle Run Attack Hit Dead Attack2 
+
+===== 绑定姿态位置 =====
+  _rootJoint             world=(-0.163, 0.001, 0.055)  parent=Object_4  子=2
+  Bip001 Spine_03        world=(-0.046, 1.200, -0.011)  parent=Bip001 Spine_03  子=0
+  Bip001 R Hand_017      world=(0.785, 1.331, 0.171)  parent=Bip001 R Forearm_016  子=6
+  Bip001 L Hand_037      world=(0.092, 1.029, 0.641)  parent=Bip001 R Hand_017  子=4
+  Axe_1_Dummy_089        world=(0.174, 1.111, 0.229)  parent=_rootJoint  子=0
+  |Axe − RHand| = 0.651 m
+  |Axe − LHand| = 0.428 m
+  Axe 世界朝向 up=(0.986, -0.111, -0.127) fwd=(0.169, 0.617, 0.769)
+  → 挂到 RHand 下应设 localPosition = (0.2213, -0.1460, -0.5948, 1.0000)
+  → 挂到 RHand 下应设 localRotation = (-0.3157, 0.6390, 0.6918, 0.1160)  euler=(286.79, 266.83, 237.23)

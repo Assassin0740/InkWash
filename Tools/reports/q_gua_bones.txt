@@ -1,0 +1,43 @@
+===== SMR 清单 =====
+  Object_7                 bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_9                 bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_11                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_13                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_15                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_17                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_19                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_21                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_23                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  Object_25                bones=97 bindposes=97 rootBone=Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+
+Object_25 节点路径 = Z_Enemy_MoGuai/Visual/Model/Object_25
+  localPos=(-0.426, -4.452, 0.144)  localScale=(0.0029, 0.0029, 0.0029)
+  骨骼[96] = Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Axe_1_Dummy_089  ← Axe 相关
+
+===== 以 Object_7（身体，正常跟随）为基准，逐元素对比 bones =====
+  Object_9                 不同元素=0
+  Object_11                不同元素=0
+  Object_13                不同元素=0
+  Object_15                不同元素=0
+  Object_17                不同元素=0
+  Object_19                不同元素=0
+  Object_21                不同元素=0
+  Object_23                不同元素=0
+  Object_25                不同元素=0
+
+===== Object_7 的 bones 前 10 / 后 5 =====
+  [0] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint
+  [1] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01
+  [2] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02
+  [3] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03
+  [4] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04
+  [5] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05
+  [6] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06
+  [7] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06/Bip001 L Clavicle_07
+  [8] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06/Bip001 L Clavicle_07/Bip001 L UpperArm_08
+  [9] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine1_04/Bip001 Spine2_05/Bip001 Neck_06/Bip001 L Clavicle_07/Bip001 L UpperArm_08/Bip001 L Forearm_09
+  [92] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 R Thigh_080/Bip001 R Calf_081/Bip001 Leg_armor_-R_085/Bip001 Leg_armor_-RNub_086
+  [93] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Belt_armor_087
+  [94] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Belt_armor_087/Bip001 Belt_armorNub_088
+  [95] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Bip001_01/Bip001 Pelvis_02/Bip001 Spine_03/Bip001 Spine_03_0
+  [96] Z_Enemy_MoGuai/Visual/Model/Object_4/_rootJoint/Axe_1_Dummy_089

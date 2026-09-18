@@ -128,6 +128,15 @@ sysinfo.txt
 #   before_*（改前基线）+ v5_P1_0*（四变体分层定位「灰面」主因）+ v6_P1/P2/P3_0*（修复后三层视角复核）。
 /Tools/screenshots/ground/
 /Tools/screenshots/ground_before/
+# 「敌人实渲 0 像素」那轮排查的探针逐件拆解图（QA_/QG_/QGA_/QL_/QM_/QN_ 共 62 张 / 40 MB）。
+# 探针（Tools/cs/q_gua*.cs / q_long*.cs / q_motu*.cs）重跑即可再生成；报告文本已入库。
+# 该轮结论性证据见 Docs/敌人0像素-诊断记录.md 与 Tools/reports/q_*.txt，不另存图示。
+/Tools/screenshots/enemies/QA_*.png
+/Tools/screenshots/enemies/QG_*.png
+/Tools/screenshots/enemies/QGA_*.png
+/Tools/screenshots/enemies/QL_*.png
+/Tools/screenshots/enemies/QM_*.png
+/Tools/screenshots/enemies/QN_*.png
 
 # ---------- 操作系统杂项 ----------
 .DS_Store

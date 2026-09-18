@@ -1,0 +1,63 @@
+=== drg_dive：墨龙「螺旋俯冲 + 整身扑咬」验收（第二阶段）===
+条目 idx=23  label=BOSS 墨龙 / 盘旋 Circling（默认态）
+captureFramerate = 30   frames = 150   强制攻击帧 = 40
+
+── 运行时参数回读（第二阶段新字段）──
+   diveSpiralAmp           2.2
+   diveSpiralTurns         1.5
+   diveSpiralVertAmp       1.6
+   diveSwimScale           0.85
+   hoverAmplitudeDeg       35
+   hoverPitchAmplitudeDeg  16
+   hoverPhaseStepDeg       22.5
+   hoverFrequency          0.27
+   waveAmpRootGain         1.3
+   waveAmpHeadGain         0.55
+   strikeLift              1.05
+   biteHeadLinks           5
+
+_spine.Count = 24   _baseRel.Count = 24   _modelRoot = Visual
+
+帧 000  phase=-        弦垂距=0.88   身长=7.49   lift=7.00
+帧 015  phase=-        弦垂距=1.02   身长=7.49   lift=7.00
+帧 030  phase=-        弦垂距=0.98   身长=7.38   lift=7.00
+帧 045  phase=Tell     弦垂距=0.65   身长=7.64   lift=7.17
+帧 060  phase=Dive     弦垂距=0.80   身长=7.71   lift=5.48
+帧 075  phase=Recover  弦垂距=0.91   身长=7.68   lift=1.49
+帧 090  phase=Recover  弦垂距=0.80   身长=7.61   lift=6.76
+帧 105  phase=Recover  弦垂距=0.77   身长=7.42   lift=7.00
+帧 120  phase=Recover  弦垂距=0.98   身长=7.52   lift=7.00
+帧 135  phase=Recover  弦垂距=1.04   身长=7.43   lift=7.00
+
+===== 汇总：按相位分组 =====
+  [全程]     帧数=150  弦垂距 最小=0.00  均值=0.89 m
+  [攻击段]   帧数=48  弦垂距 最小=0.62  均值=0.83 m
+  [盘旋段]   帧数=102  弦垂距 最小=0.00  均值=0.92 m  ← 基线
+
+★ 判据① 攻击段 / 盘旋段 弦垂距比 = 0.90   （合格线 ≥0.70；旧实现攻击段身体是直的 ⇒ 比值会很低）
+       攻击段弦垂距最小值 = 0.62 m（不得≈0）
+
+★ 判据② 俯冲段轨迹横向偏离直线 最大 = 1.00 m   （合格线 ≥1.0 m；旧实现是直线 ⇒ ≈0）
+       俯冲段水平行程 = 4.55 m   竖直落差(lift) = 5.98 m
+       俯冲段帧数 = 13  ≈ 0.43 s
+
+===== 判据③ 逐节旋转极差（度）=====
+  [00] drgon_03       极差=45.49   ✓
+  [02] drgon_05       极差=43.22   ✓
+  [04] drgon_07       极差=40.93   ✓
+  [06] drgon_09       极差=41.24   ✓
+  [08] drgon_011      极差=40.24   ✓
+  [10] drgon_013      极差=42.82   ✓
+  [12] drgon_015      极差=43.74   ✓
+  [14] drgon_017      极差=37.74   ✓
+  [16] drgon_019      极差=37.27   ✓
+  [18] drgon_021      极差=38.38   ✓
+  [20] drgon_023      极差=47.05   ✓
+  [22] drgon_025      极差=53.30   ✓
+  [23] drgon_00       极差=55.18   ✓
+  摆动显著的节数 = 24 / 24
+  ★ 尾部侧（i 小）极差只要不是 0，就说明「整身扑咬」真的让尾巴也动了
+
+PNG 帧数 = 150  → D:/Unity Project/InkWash/Tools/screenshots/enemies/DRD
+高度(lift) 序列（每 5 帧取一个）:
+   7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.2 7.3 5.2 5.5 1.1 1.1 1.5 3.2 5.3 6.8 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 7.0 

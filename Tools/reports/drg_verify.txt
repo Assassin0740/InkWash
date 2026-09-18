@@ -1,0 +1,50 @@
+=== drg_verify：墨龙运动核验收 ===
+条目 idx=23  label=BOSS 墨龙 / 盘旋 Circling（默认态）
+captureFramerate = 30   frames = 240
+
+── 运行时参数回读 ──
+   hoverAmplitudeDeg       35
+   hoverPhaseStepDeg       22.5
+   hoverPitchAmplitudeDeg  16
+   hoverFrequency          0.27
+   waveAmpRootGain         1.3
+   waveAmpHeadGain         0.55
+   pathWaveAmpDeg          30
+   pathWaveCount           3
+   swimTurnRate            1.5
+   hoverHeightP1           7
+   hoverHeightP2           8
+   hoverHeightP3           9
+
+_spine.Count = 24   _baseRel.Count = 24   _modelRoot = Visual
+
+帧 0  弦垂距=0.88 m  身长=7.48 m  Y跨度=0.60  XZ跨度=7.58  半径=5.81
+帧 120  弦垂距=0.99 m  身长=7.52 m  Y跨度=0.64  XZ跨度=7.52  半径=10.84
+
+===== 汇总 =====
+  弦垂距（身体弯了多少）  最小=0.39  最大=1.05  均值=0.86 m
+  身长（保险丝 7~9 m）    最小=7.36  最大=8.07 m
+  Y 跨度（垂直）          最小=0.29  最大=0.75  均值=0.64 m
+  XZ 跨度（水平）         最小=7.35  最大=8.07  均值=7.54 m
+  弦垂距·水平分量(左右)    均值=0.85 m
+  弦垂距·垂直分量(上下)    均值=0.41 m
+  ★ 垂直/水平 比          = 0.48   （旧值 1.5/35 ≈ 0.04 ⇒ 扁片；0.35~0.60 才是三维游动）
+  半径（路径判据）        最小=4.27  最大=11.45  波动=7.18 m
+
+===== 每节实际偏移角的极差（度）=====
+  [00] drgon_03       极差=35.10   ✓
+  [02] drgon_05       极差=33.34   ✓
+  [04] drgon_07       极差=31.58   ✓
+  [06] drgon_09       极差=24.20   ✓
+  [08] drgon_011      极差=28.06   ✓
+  [10] drgon_013      极差=26.29   ✓
+  [12] drgon_015      极差=24.53   ✓
+  [14] drgon_017      极差=18.48   ✓
+  [16] drgon_019      极差=21.01   ✓
+  [18] drgon_021      极差=19.25   ✓
+  [20] drgon_023      极差=19.70   ✓
+  [22] drgon_025      极差=19.20   ✓
+  [23] drgon_00       极差=20.69   ✓
+  摆动显著的节数 = 24 / 24
+
+PNG 帧数 = 240  → D:/Unity Project/InkWash/Tools/screenshots/enemies/DRV

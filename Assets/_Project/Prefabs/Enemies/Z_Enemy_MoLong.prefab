@@ -385,22 +385,74 @@ MonoBehaviour:
   breathProjectileDamage: 14
   breathProjectileCount: 3
   breathSpreadDeg: 9
-  hoverHeight: 3.6
+  hoverHeight: 7
   hoverOrbitRadius: 11
   hoverOrbitSpeedDeg: 55
-  hoverAmplitudeDeg: 16
-  swimSpeed: 8
-  swimTurnRate: 1.1
-  swimRadiusGain: 0.12
-  hoverFrequency: 0.45
-  hoverPhaseStepDeg: 15
-  hoverPitchAmplitudeDeg: 1.5
+  hoverAmplitudeDeg: 35
+  hoverFrequency: 0.27
+  hoverPhaseStepDeg: 22.5
+  hoverPitchAmplitudeDeg: 16
+  bodySwayAmp: 1
+  bodySwayFreq: 0.27
+  limbSwingDeg: 14
+  limbSwingFreq: 0.27
+  limbMinDescendants: 2
+  limbPhaseStepDeg: 60
+  headLeadYawDeg: 8
+  headLeadGain: 0.03
+  enablePerformanceCycle: 1
+  advanceDuration: 7
+  restDuration: 7
+  restLift: 4.5
+  restMotionScale: 0.5
+  restSpeedScale: 0.45
+  bodyBobAmp: 1.1
+  bodyBobFreq: 0.22
+  roarDuration: 1.2
+  roarSpineGain: 2.5
+  roarHeadRaiseDeg: 30
+  roarHeadLinks: 4
   straightenSpine: 1
   waveAmpRootGain: 1.3
-  waveAmpHeadGain: 0.3
+  waveAmpHeadGain: 0.55
+  hitRadius: 1.2
+  hitCoversWholeBody: 1
+  biteDamageFallback: 22
+  hitKnockback: 6
+  hitStunSeconds: 0.4
+  hitStopSeconds: 0.06
   breathMinRange: 5.5
   biteMaxRange: 7
   hoverDuration: 4.5
+  aerialLoop: 1
+  circleCooldownMin: 1.2
+  circleCooldownMax: 2
+  circleCenterFollow: 1.8
+  diveTellDuration: 0.35
+  diveDuration: 0.45
+  divePredictSeconds: 0.35
+  biteGroundHold: 0.12
+  sweepGroundDuration: 0.6
+  recoverDuration: 0.58
+  circleMoveSpeed: 6
+  swimSpeed: 8
+  swimTurnRate: 1.5
+  swimRadiusGain: 0.12
+  orbitAngularSpeedDeg: 40
+  orbitLateralAmp: 0
+  orbitLateralWaves: 3
+  pathWaveAmpDeg: 30
+  pathWaveCount: 3
+  diveSpeedMul: 2.6
+  diveMinInterval: 1.2
+  phase2AtRatio: 0.65
+  phase3AtRatio: 0.3
+  hoverHeightP1: 7
+  hoverHeightP2: 8
+  hoverHeightP3: 9
+  diveCooldownP1: 2.4
+  diveCooldownP2: 1.8
+  diveCooldownP3: 1.2
   _currentAttackName: '-'
   _tailSweepCount: 0
   _biteCount: 0
@@ -408,14 +460,13 @@ MonoBehaviour:
   _hoverCount: 0
   _spineLinksFound: 0
   _airborne: 0
-  bodySwayAmp: 1.6
-  bodySwayFreq: 0.45
-  limbSwingDeg: 14
-  limbSwingFreq: 0.45
-  limbMinDescendants: 2
-  limbPhaseStepDeg: 60
-  headLeadYawDeg: 8
-  headLeadGain: 0.03
+  _divePhaseName: '-'
+  _airborneRatio: 0
+  _phase: 1
+  _lastDiveEndTime: -99
+  liftSpeed: 14
+  strikeLift: 1.05
+  sweepLift: 0.65
 --- !u!4 &5493170584508413210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8379593388799904744, guid: 85f247e87b3926549b4b89cc4295f8d4,

@@ -1,0 +1,66 @@
+===== EnemyDragon 运行态 =====
+  spineLinkCount             = 0
+  driveStartIndex            = 2
+  _spineLinksFound           = 24
+  _airborne                  = True
+  _currentLift               = 3.6
+  _phase                     = 1
+  hoverAmplitudeDeg          = 16
+  hoverFrequency             = 0.45
+  hoverPhaseStepDeg          = 15
+  bodySwayAmp                = 1.6
+  limbSwingDeg               = 14
+  bodyLift                   = 0
+  _perfResting               = False
+  aerialLoop                 = True
+
+_modelRoot = Visual   localPosition = (-0.0868, 4.7000, 0.0000)   worldY = 4.750
+_modelRootBaseLocalPos = (0.00, 0.00, 0.00)
+
+_spine.Count = 24
+  节名: 
+    [00] drgon_03    [01] drgon_04    [02] drgon_05    [03] drgon_06
+    [04] drgon_07    [05] drgon_08    [06] drgon_09    [07] drgon_010
+    [08] drgon_011    [09] drgon_012    [10] drgon_013    [11] drgon_014
+    [12] drgon_015    [13] drgon_016    [14] drgon_017    [15] drgon_018
+    [16] drgon_019    [17] drgon_020    [18] drgon_021    [19] drgon_022
+    [20] drgon_023    [21] drgon_024    [22] drgon_025    [23] drgon_00
+
+
+===== 姿态采样（8 帧 × ~0.55 s，侧视角）=====
+帧 0  actorPos=(0.00, 0.05, 0.00)  VisualWorldY=4.750
+帧 1  actorPos=(0.01, 0.05, -0.41)  VisualWorldY=4.687
+帧 2  actorPos=(0.39, 0.05, -2.20)  VisualWorldY=4.522
+帧 3  actorPos=(1.15, 0.05, -3.93)  VisualWorldY=4.261
+帧 4  actorPos=(2.18, 0.05, -5.82)  VisualWorldY=3.887
+帧 5  actorPos=(3.12, 0.05, -8.01)  VisualWorldY=3.436
+帧 6  actorPos=(3.45, 0.05, -10.13)  VisualWorldY=3.060
+帧 7  actorPos=(3.16, 0.05, -12.08)  VisualWorldY=2.783
+
+===== 各节 localRotation 绕角（度）的帧间极差 =====
+  节             首帧    末帧    极差      判定
+  [00] drgon_03       180.00   168.02   13.89    ✓ 在动
+  [01] drgon_04       1.62     1.93     3.84     ✓ 在动
+  [02] drgon_05       1.62     1.76     3.88     ✓ 在动
+  [03] drgon_06       1.62     2.45     3.70     ✓ 在动
+  [04] drgon_07       1.62     3.32     3.40     ✓ 在动
+  [05] drgon_08       1.61     4.02     3.36     ✓ 在动
+  [06] drgon_09       1.62     4.46     3.12     ✓ 在动
+  [07] drgon_010      1.63     4.60     2.97     ✓ 在动
+  [08] drgon_011      1.61     4.44     2.85     ✓ 在动
+  [09] drgon_012      1.62     4.02     2.50     ✓ 在动
+  [10] drgon_013      1.62     3.40     2.47     ✓ 在动
+  [11] drgon_014      1.61     2.69     2.34     ✓ 在动
+  [12] drgon_015      1.62     2.04     1.98     ✓ 在动
+  [13] drgon_016      1.62     1.67     1.97     ✓ 在动
+  [14] drgon_017      1.62     1.74     1.86     ✓ 在动
+  [15] drgon_018      1.62     2.09     1.69     ✓ 在动
+  [16] drgon_019      1.62     2.46     1.54     ✓ 在动
+  [17] drgon_020      1.62     2.71     1.40     ✓ 在动
+  [18] drgon_021      7.37     7.73     0.37     ⚠ 静止
+  [19] drgon_022      11.23    11.55    0.33     ⚠ 静止
+  [20] drgon_023      4.80     5.55     0.75     ✓ 在动
+  [21] drgon_024      2.33     3.61     1.29     ✓ 在动
+  [22] drgon_025      48.65    50.11    2.46     ✓ 在动
+  [23] drgon_00       120.00   119.40   1.01     ✓ 在动
+  结论：在动的节数 = 22 / 24

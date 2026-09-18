@@ -1,0 +1,28 @@
+条目 [8] 敌人 墨徒（人形近战） / 待机
+actor = Showcase_Actor_8   worldPos=(2.41, 0.05, -0.87)
+
+渲染器数 = 11
+Animator: controller=Z_Orc.controller avatar=low-poly_orcAvatar enabled=True speed=1
+  片段(6): Object_4|ANM_ORC_Roar_Object_4 Object_4|ANM_RUN_Object_4 Object_4|ANM_ORC_LIGHT_ATTACK_Object_4 Object_4|ANM_DAMAGED_Object_4 Object_4|ANM_DEATH_Object_4 Object_4|ANM_ATTACK_CRIT_Object_4 
+
+===== 各渲染器 world bounds 位移（6 帧，约 2.0 s）=====
+名称                                 首帧位置                     总位移(m)   判定
+Box001_08 - Default_0              (2.47, 0.05, -1.04)            0.000      ⚠ 完全不动
+Object_7                           (2.28, 1.09, -0.86)            0.111      ✓ 跟随
+Object_9                           (2.49, 1.93, -1.03)            0.281      ✓ 跟随
+Object_11                          (2.27, 1.33, -1.07)            0.089      · 几乎不动
+Object_13                          (2.44, 1.02, -0.94)            0.087      · 几乎不动
+Object_15                          (2.18, 1.86, -0.96)            0.237      ✓ 跟随
+Object_17                          (2.60, 1.57, -1.43)            0.386      ✓ 跟随
+Object_19                          (2.49, 0.60, -1.26)            0.173      ✓ 跟随
+Object_21                          (1.95, 1.38, -0.31)            0.605      ✓ 跟随
+Object_23                          (2.19, 0.55, -0.74)            0.187      ✓ 跟随
+Object_25                          (2.11, 1.09, -0.90)            0.000      ⚠ 完全不动
+
+===== 关键骨骼世界位置（首帧 vs 末帧）=====
+  Visual                       pos=(2.410, 0.050, -0.873)   子=1
+  Model                        pos=(2.410, 1.757, -0.873)   子=12
+  Object_4                     pos=(2.462, 0.051, -1.037)   子=1
+  Axe_1_Dummy_089              pos=(2.122, 1.161, -0.868)   子=0
+  Bip001 R Hand_017            pos=(2.362, 2.486, -0.441)   子=6
+  Bip001 L Hand_037            pos=(1.527, 2.170, -0.418)   子=4
