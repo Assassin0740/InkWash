@@ -1,18 +1,26 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using InkWash.Roguelike;
 
 namespace InkWash.UI
 {
     /// <summary>
-    /// 升级三选一。用 IMDbGUI 而不是 uGUI Canvas，理由与 <see cref="InkWash.UI.InkStylePanel"/> 相同：
-    ///   1. 本工程没有 uGUI 场景资产，为三张卡引入一整套 Canvas/EventSystem 是重资产；
-    ///   2. 关键：**验收脚本要能驱动它**。uGUI 的按钮点击需要模拟 EventSystem 射线，
-    ///      在自动化环境里非常脆；IMGUI 只要暴露一个 <see cref="InjectChoice"/> 就完事了。
+    /// 升级三选一（UGUI 版，第三十四轮）。
+    ///
+    /// ★ 为什么从 IMGUI 迁到 UGUI（用户实测反馈「你的 UI 不是 UGUI」）：
+    ///   IMGUI 是即时模式——每帧重建控件、吃 OnGUI 消耗、缩放/布局/点击判定都自成一套，
+    ///   与 RunPresentation 的 UGUI 主菜单/结算/HUD 割裂。选卡是玩家停留最久的界面，
+    ///   必须同一套渲染与交互管线。迁移后光标解锁（Reward 状态）直接可用鼠标点卡。
+    ///
+    /// ★ 保留 <see cref="InjectChoice"/>：这是这个面板能被自动验收的**唯一入口**
+    ///   （第三十轮 S5 修复时已确立为一等公民接口，不是测试特权路径）。
     ///
     /// 暂停（Time.timeScale = 0）由 <see cref="RunManager"/> 负责，面板自己不碰 timeScale ——
     /// "谁改 timeScale"必须只有一个地方，否则顿帧（HitStop 也改）与暂停会互相覆盖。
+    /// 键盘 1/2/3 走 <see cref="Update"/>：timeScale=0 时 Update 照常跑（deltaTime=0 而已），
+    /// 暂停中照样能选。
     /// </summary>
     [DisallowMultipleComponent]
     public class SkillChoicePanel : MonoBehaviour
@@ -45,8 +53,23 @@ namespace InkWash.UI
         private Action<SkillData> _onChosen;
         private SkillInventory _inventory;
 
-        private GUIStyle _cardTitle, _cardSub, _cardBody, _hint, _hud;
-        private bool _stylesReady;
+        // ---- UGUI 结构（惰性构建：首次 Show 前建好）----
+        private Canvas _canvas;
+        private GameObject _panel;
+        private Text _title;
+        private Text _debug;
+        private readonly List<CardView> _cards = new List<CardView>();
+
+        private class CardView
+        {
+            public GameObject root;
+            public Image strip;
+            public Text title;
+            public Text sub;
+            public Text body;
+            public Text cap;
+            public Button pick;
+        }
 
         private void Awake()
         {
@@ -60,31 +83,154 @@ namespace InkWash.UI
             if (_inventory == null) _inventory = FindObjectOfType<SkillInventory>();
         }
 
-        private void BuildStyles()
+        // ==================================================================
+        //  UGUI 构建
+        // ==================================================================
+
+        private static Font UiFont
         {
-            _cardTitle = new GUIStyle(GUI.skin.label)
-            { fontSize = 21, alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };
-            _cardTitle.normal.textColor = inkColor;
-
-            _cardSub = new GUIStyle(GUI.skin.label)
-            { fontSize = 13, alignment = TextAnchor.MiddleCenter };
-            _cardSub.normal.textColor = new Color(0.35f, 0.35f, 0.35f);
-
-            _cardBody = new GUIStyle(GUI.skin.label)
-            { fontSize = 14, alignment = TextAnchor.UpperLeft, wordWrap = true };
-            _cardBody.normal.textColor = inkColor;
-
-            _hint = new GUIStyle(GUI.skin.label)
-            { fontSize = 15, alignment = TextAnchor.MiddleCenter };
-            _hint.normal.textColor = paperColor;
-
-            _hud = new GUIStyle(GUI.skin.label) { fontSize = 13, alignment = TextAnchor.UpperLeft };
-            _hud.normal.textColor = new Color(0.88f, 0.86f, 0.80f);
-            _stylesReady = true;
+            get { return Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); }
         }
+
+        /// <summary>独立 Canvas：sortingOrder 150 压过 RunPresentation(100) 的 HUD——选卡是模态界面。</summary>
+        private void EnsureCanvas()
+        {
+            if (_canvas != null) return;
+
+            var go = new GameObject("SkillChoiceCanvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            _canvas = go.GetComponent<Canvas>();
+            _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            _canvas.sortingOrder = 150;
+            var scaler = go.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920f, 1080f);
+            DontDestroyOnLoad(go);
+
+            // 压暗背景（墨色幕布）：raycastTarget=true 顺便挡掉背后 HUD 的误点
+            _panel = new GameObject("RewardPanel", typeof(Image));
+            var rt = (RectTransform)_panel.transform;
+            rt.SetParent(go.transform, false);
+            rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+            _panel.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.62f);
+            _panel.SetActive(false);
+
+            _title = NewText(_panel.transform, "Title", "领悟 · 择一", 30, paperColor, TextAnchor.MiddleCenter);
+            Stretch((RectTransform)_title.transform, 0.25f, 0.75f, 0.14f, 0.20f);
+
+            _debug = NewText(_panel.transform, "DebugLine", "", 13, new Color(0.88f, 0.86f, 0.80f, 0.85f), TextAnchor.UpperLeft);
+            Stretch((RectTransform)_debug.transform, 0.01f, 0.99f, 0.955f, 0.995f);
+
+            // 三张卡槽（位置固定，Show 时按数量填充/隐藏）
+            const float gap = 22f;
+            float cardW = 276f, cardH = 236f;
+            for (int i = 0; i < Mathf.Max(1, optionCount); i++)
+            {
+                float x0 = 0.5f + (i - (optionCount - 1) * 0.5f) * (cardW + gap) / 1920f;
+                _cards.Add(BuildCard(_panel.transform, i, x0 - cardW / 1920f / 2f, cardW / 1920f, cardH / 1080f));
+            }
+        }
+
+        private CardView BuildCard(Transform parent, int index, float xAnchor, float wAnchor, float hAnchor)
+        {
+            var v = new CardView();
+
+            var go = new GameObject("Card" + index, typeof(Image), typeof(Button));
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(parent, false);
+            rt.anchorMin = new Vector2(xAnchor, 0.5f - hAnchor / 2f);
+            rt.anchorMax = new Vector2(xAnchor + wAnchor, 0.5f + hAnchor / 2f);
+            rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+            go.GetComponent<Image>().color = new Color(paperColor.r, paperColor.g, paperColor.b, 0.97f);
+            var btn = go.GetComponent<Button>();
+            var colors = btn.colors;
+            colors.highlightedColor = new Color(1f, 1f, 1f, 0.18f);
+            colors.pressedColor = new Color(0f, 0f, 0f, 0.18f);
+            btn.colors = colors;
+            v.root = go;
+
+            // 稀有度色条（卡片顶部）
+            var stripGo = new GameObject("Strip", typeof(Image));
+            var stripRt = (RectTransform)stripGo.transform;
+            stripRt.SetParent(rt, false);
+            stripRt.anchorMin = new Vector2(0f, 1f); stripRt.anchorMax = new Vector2(1f, 1f);
+            stripRt.pivot = new Vector2(0.5f, 1f);
+            stripRt.sizeDelta = new Vector2(0f, 6f);
+            stripRt.anchoredPosition = Vector2.zero;
+            v.strip = stripGo.GetComponent<Image>();
+            v.strip.raycastTarget = false;
+
+            v.title = NewText(rt, "Name", "", 21, inkColor, TextAnchor.MiddleCenter);
+            Stretch((RectTransform)v.title.transform, 0.03f, 0.97f, 0.865f, 0.94f);
+
+            v.sub = NewText(rt, "Sub", "", 13, new Color(0.35f, 0.35f, 0.35f), TextAnchor.MiddleCenter);
+            Stretch((RectTransform)v.sub.transform, 0.03f, 0.97f, 0.795f, 0.855f);
+
+            v.body = NewText(rt, "Body", "", 14, inkColor, TextAnchor.UpperLeft);
+            var bodyRt = (RectTransform)v.body.transform;
+            Stretch(bodyRt, 0.06f, 0.94f, 0.30f, 0.78f);
+            v.body.horizontalOverflow = HorizontalWrapMode.Wrap;
+            v.body.verticalOverflow = VerticalWrapMode.Truncate;
+            v.body.rectTransform.sizeDelta = new Vector2(0f, 0f);
+
+            v.cap = NewText(rt, "Cap", "", 13, new Color(0.35f, 0.35f, 0.35f), TextAnchor.MiddleCenter);
+            Stretch((RectTransform)v.cap.transform, 0.03f, 0.97f, 0.135f, 0.195f);
+
+            var pickGo = new GameObject("Pick", typeof(Image), typeof(Button));
+            var pickRt = (RectTransform)pickGo.transform;
+            pickRt.SetParent(rt, false);
+            pickRt.anchorMin = new Vector2(0.11f, 0.04f); pickRt.anchorMax = new Vector2(0.89f, 0.115f);
+            pickRt.offsetMin = Vector2.zero; pickRt.offsetMax = Vector2.zero;
+            pickGo.GetComponent<Image>().color = inkColor;
+            var pb = pickGo.GetComponent<Button>();
+            var pc = pb.colors;
+            pc.highlightedColor = new Color(1f, 1f, 1f, 0.22f);
+            pc.pressedColor = new Color(0f, 0f, 0f, 0.30f);
+            pb.colors = pc;
+            v.pick = pb;
+
+            var pickLabel = NewText(pickRt, "Label", "", 14, new Color(0.94f, 0.92f, 0.86f), TextAnchor.MiddleCenter);
+            Stretch((RectTransform)pickLabel.transform, 0f, 1f, 0f, 1f);
+
+            int idx = index;
+            btn.onClick.AddListener(() => { if (_showing) Commit(idx); });
+            pb.onClick.AddListener(() => { if (_showing) Commit(idx); });
+            return v;
+        }
+
+        private static Text NewText(Transform parent, string name, string content, int size,
+            Color color, TextAnchor anchor)
+        {
+            var go = new GameObject(name, typeof(Text));
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(parent, false);
+            var t = go.GetComponent<Text>();
+            t.font = UiFont;
+            t.text = content;
+            t.fontSize = size;
+            t.color = color;
+            t.alignment = anchor;
+            t.horizontalOverflow = HorizontalWrapMode.Overflow;
+            t.raycastTarget = false;
+            return t;
+        }
+
+        private static void Stretch(RectTransform rt, float x0, float x1, float y0, float y1)
+        {
+            rt.anchorMin = new Vector2(x0, y0);
+            rt.anchorMax = new Vector2(x1, y1);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+        }
+
+        // ==================================================================
+        //  流程
+        // ==================================================================
 
         public void Show(List<SkillData> options, Action<SkillData> onChosen)
         {
+            EnsureCanvas();
+
             _options.Clear();
             if (options != null)
                 for (int i = 0; i < options.Count && i < optionCount; i++) _options.Add(options[i]);
@@ -94,6 +240,9 @@ namespace InkWash.UI
             _chosenIndex = -1;
             _chosenName = "（未选）";
             if (_showing) _showCount++;
+
+            RefreshCards();
+            if (_panel != null) _panel.SetActive(_showing);
         }
 
         public void Hide()
@@ -101,12 +250,12 @@ namespace InkWash.UI
             _showing = false;
             _options.Clear();
             _onChosen = null;
+            if (_panel != null) _panel.SetActive(false);
         }
 
         /// <summary>
         /// 注入一次选择（自动化验收用）。返回 false = 面板没开 / 下标越界。
-        ///
-        /// 这是这个面板能被自动验收的**唯一入口**：验收脚本不可能去点 IMGUI 按钮，
+        /// 这是这个面板能被自动验收的**唯一入口**：验收脚本不可能去点 UGUI 按钮，
         /// 所以"可编程选择"必须是一等公民接口，而不是测试时临时加的特权路径。
         /// </summary>
         public bool InjectChoice(int index)
@@ -136,80 +285,44 @@ namespace InkWash.UI
                 if (Input.GetKeyDown(keys[i])) { Commit(i); return; }
         }
 
-        private void OnGUI()
+        /// <summary>Show 时填充三张卡的内容（数量不足的槽隐藏）。</summary>
+        private void RefreshCards()
         {
-            if (!_showing) return;
-            if (!_stylesReady) BuildStyles();
-
-            // 压暗背景：让三张卡跳出来（墨色幕布）
-            var prev = GUI.color;
-            GUI.color = new Color(0f, 0f, 0f, 0.62f);
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
-            GUI.color = prev;
-
-            var head = new GUIStyle(GUI.skin.label) { fontSize = 26, alignment = TextAnchor.MiddleCenter };
-            head.normal.textColor = paperColor;
-            GUI.Label(new Rect(0f, Screen.height * 0.14f, Screen.width, 40f), "领悟 · 择一", head);
-
-            const float gap = 22f;
-            float cardW = Mathf.Min(276f, (Screen.width - gap * (optionCount + 1)) / optionCount);
-            float cardH = 236f;
-            float totalW = cardW * _options.Count + gap * (_options.Count - 1);
-            float x0 = (Screen.width - totalW) * 0.5f;
-            float y0 = Screen.height * 0.5f - cardH * 0.5f;
-
-            for (int i = 0; i < _options.Count; i++)
+            for (int i = 0; i < _cards.Count; i++)
             {
+                var v = _cards[i];
+                bool used = i < _options.Count && _options[i] != null;
+                v.root.SetActive(used);
+                if (!used) continue;
+
                 var s = _options[i];
-                if (s == null) continue;
-                var rect = new Rect(x0 + i * (cardW + gap), y0, cardW, cardH);
-
-                // 卡片底：宣纸色
-                var bg = new Color(paperColor.r, paperColor.g, paperColor.b, 0.97f);
-                var old = GUI.color;
-                GUI.color = bg;
-                GUI.DrawTexture(rect, Texture2D.whiteTexture);
-                GUI.color = old;
-
-                // 稀有度色条
-                var strip = new Color(s.RarityColor.r, s.RarityColor.g, s.RarityColor.b, 1f);
-                var oldC = GUI.color;
-                GUI.color = strip;
-                GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width, 5f), Texture2D.whiteTexture);
-                GUI.color = oldC;
-
-                GUI.Label(new Rect(rect.x + 8f, rect.y + 14f, rect.width - 16f, 30f), s.displayName, _cardTitle);
-
                 int stacks = _inventory != null ? _inventory.StacksOf(s) : 0;
-                string sub = s.RarityName + "　" + (stacks > 0 ? "已有 " + stacks + " 层" : "未获得");
-                GUI.Label(new Rect(rect.x + 8f, rect.y + 46f, rect.width - 16f, 20f), sub, _cardSub);
 
-                GUI.Label(new Rect(rect.x + 16f, rect.y + 76f, rect.width - 32f, 110f),
-                          s.BuildDescription(stacks), _cardBody);
-
-                string cap = stacks >= s.maxStacks ? "已满级" : "第 " + (stacks + 1) + " 层";
-                GUI.Label(new Rect(rect.x + 8f, rect.y + cardH - 46f, rect.width - 16f, 20f), cap, _cardSub);
-
-                if (GUI.Button(new Rect(rect.x + 30f, rect.y + cardH - 30f, rect.width - 60f, 26f), "选它（" + (i + 1) + "）"))
-                    Commit(i);
+                if (v.strip != null)
+                {
+                    var rc = s.RarityColor; rc.a = 1f;
+                    v.strip.color = rc;
+                }
+                if (v.title != null) v.title.text = s.displayName;
+                if (v.sub != null)
+                    v.sub.text = s.RarityName + "　" + (stacks > 0 ? "已有 " + stacks + " 层" : "未获得");
+                if (v.body != null) v.body.text = s.BuildDescription(stacks);
+                if (v.cap != null)
+                    v.cap.text = stacks >= s.maxStacks ? "已满级" : "第 " + (stacks + 1) + " 层";
+                if (v.pick != null)
+                {
+                    var lbl = v.pick.GetComponentInChildren<Text>();
+                    if (lbl != null) lbl.text = "选它（" + (i + 1) + "）";
+                }
             }
 
-            GUI.Label(new Rect(0f, y0 + cardH + 22f, Screen.width, 26f),
-                      "按 1 / 2 / 3 或点按钮选择", _hint);
-
-            DrawHud();
-        }
-
-        /// <summary>左上角常驻小字：让录屏里也能看到"当前几级、拿了什么"。</summary>
-        private void DrawHud()
-        {
-            var rm = RunManager.Instance;
-            var lv = _inventory != null ? _inventory.GetComponent<LevelSystem>() : null;
-            string line = lv != null ? lv.Describe() : "";
-            string owned = _inventory != null ? _inventory.Describe() : "";
-            if (line.Length > 0) GUI.Label(new Rect(14f, Screen.height - 46f, 640f, 20f), line, _hud);
-            if (owned.Length > 0) GUI.Label(new Rect(14f, Screen.height - 26f, 900f, 20f), owned, _hud);
-            if (rm != null) GUI.Label(new Rect(14f, 12f, 640f, 20f), rm.Describe(), _hud);
+            if (_debug != null)
+            {
+                var lv = _inventory != null ? _inventory.GetComponent<LevelSystem>() : null;
+                string line = lv != null ? lv.Describe() : "";
+                string owned = _inventory != null ? _inventory.Describe() : "";
+                _debug.text = line + (line.Length > 0 && owned.Length > 0 ? "　｜　" : "") + owned;
+            }
         }
     }
 }
