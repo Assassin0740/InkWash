@@ -3648,9 +3648,13 @@ namespace InkWash.Utils
             health.TakeDamage(lethal);
             yield return WaitUnscaled(0.2f);
             M5(sb, run.State == RunState.GameOver, "玩家死亡后进入结算（GameOver）", "实际 " + run.State);
-            M5(sb, Mathf.Abs(Time.timeScale - 1f) < 1e-4f, "结算不冻结时间（要能点「再来一局」）",
+            // ★ 第三十一轮口径变更：身陨即冻结（用户实测反馈"游戏也没有暂停"）。
+            //   旧口径"timeScale=1 为了点按钮"已被 UGUI 取代 —— UGUI 不依赖 timeScale。
+            M5(sb, Time.timeScale <= 0f, "结算冻结时间（身陨即暂停，UI 走 unscaled）",
                 "timeScale = " + F(Time.timeScale));
             health.ResetHealth();
+            // 死亡测试把 timeScale 冻结在 0 了，显式恢复 —— 后续 E4/E5 表现测试要 scaled 时间
+            Time.timeScale = 1f;
 
             // ==============================================================
             // ④ E4 墨晕扩散

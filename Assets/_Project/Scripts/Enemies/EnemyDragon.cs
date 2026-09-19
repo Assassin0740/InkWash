@@ -2277,11 +2277,18 @@ namespace InkWash.Enemies
 
             // 阶段推进（T7）
             UpdatePhase();
+
+            // ★ 第三十一轮：尸体坠地（死亡悬空 → 缓降贴地）
+            DeathSinkTick();
         }
 
         /// <summary>三阶段推进（策划案 §4）：越往后越"不落地"（更高、更急）。</summary>
         private void UpdatePhase()
         {
+            // ★★ 第三十一轮（用户实测："怪物死之后浮空了"）：死后 HealthRatio=0 ⇒ want=3
+            //   ⇒ _currentLift 被抬到 P3 最高档（5.2 m）+ BeginRoar —— 尸体悬在最高空上下漂！
+            //   死亡后必须停驱动，让 EndHover 置 0 的 _currentLift 平滑落回地面。
+            if (!IsAlive) return;
             if (!aerialLoop) return;
             float r = HealthRatio;
             int want = r > phase2AtRatio ? 1 : (r > phase3AtRatio ? 2 : 3);
@@ -3144,6 +3151,49 @@ namespace InkWash.Enemies
             // 死亡 ⇒ 全套关闭（设计文档 §三 最后一行）。烟让它自己散，不硬收。
             InkWash.Effects.DragonStormVfx.Shut();
             EndHover();
+            // 坠地表现改在 Update 里直驱（DeathSinkTick）—— 这里不用协程：
+            // 龙的生成路径多样（直接实例化时状态机可能不走完），协程不保证有机会启动；
+            // 而 Update 每帧必跑，用 `!IsAlive` 判据最稳。
+        }
+
+        [Header("尸体坠地（第三十一轮：空中击杀不再悬尸）")]
+        [Tooltip("坠地时长（秒）")]
+        public float deathSinkDuration = 1.6f;
+        private float _sinkTargetY = float.NaN;
+        private float _sinkStartY;
+        private float _sinkT;
+
+        /// <summary>
+        /// ★★ 尸体坠地（用户实测："怪物死之后浮空了"）：龙死于空中（盘旋/俯冲中被打死）
+        /// 时没有任何落地逻辑，尸体永远悬在半空。死亡后从 Update 每帧向真实地面缓降
+        /// （ease-in 加速，1.6 s）。Raycast 跳过龙自己的子碰撞体。
+        /// </summary>
+        private void DeathSinkTick()
+        {
+            if (IsAlive) return;
+            if (float.IsNaN(_sinkTargetY))
+            {
+                _sinkStartY = transform.position.y;
+                _sinkTargetY = _sinkStartY;
+                var hits = Physics.RaycastAll(transform.position + Vector3.up * 8f, Vector3.down, 200f,
+                                              Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+                float best = float.MinValue;
+                foreach (var h in hits)
+                {
+                    if (h.transform.IsChildOf(transform)) continue;   // 跳过龙自己的碰撞体
+                    if (h.point.y > best) best = h.point.y;
+                }
+                if (best > float.MinValue) _sinkTargetY = best;
+                _sinkT = 0f;
+                if (Mathf.Abs(_sinkStartY - _sinkTargetY) < 0.05f) return;   // 已贴地
+            }
+
+            if (transform.position.y <= _sinkTargetY + 0.05f) return;
+            _sinkT = Mathf.Min(1f, _sinkT + Time.deltaTime / Mathf.Max(0.1f, deathSinkDuration));
+            float k = _sinkT * _sinkT;                                        // ease-in：坠落加速感
+            var pp = transform.position;
+            pp.y = Mathf.Lerp(_sinkStartY, _sinkTargetY, k);
+            transform.position = pp;
         }
     }
 }

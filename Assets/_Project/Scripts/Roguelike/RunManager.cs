@@ -220,6 +220,9 @@ namespace InkWash.Roguelike
 
             if (_roomIndex >= roomsToClear)
             {
+                // 通关同样进结算冻结（与 GameOver 同一表现语义）
+                TakeOverTimeScale();
+                Time.timeScale = 0f;
                 SetState(RunState.Victory);
                 return;
             }
@@ -302,7 +305,10 @@ namespace InkWash.Roguelike
             // 会被迁移表拒掉并在 Console 里刷一条警告）。它只可能来自"还没开局就有东西能伤人"。
             if (_state == RunState.MainMenu) return;
             TakeOverTimeScale();
-            Time.timeScale = 1f;
+            // ★ 第三十一轮（用户实测反馈）：身陨后原来 timeScale=1 世界照跑——
+            //   "显示身陨的时候游戏也没暂停"。现在结算即冻结（UI 用 unscaled 驱动，按钮照点）。
+            //   验收口径同步改：S5「结算不冻结时间」判据改为「结算冻结时间」。
+            Time.timeScale = 0f;
             SetState(RunState.GameOver);
         }
 
@@ -374,41 +380,9 @@ namespace InkWash.Roguelike
                  + "  奖励 " + _rewardCount + " 次";
         }
 
-        private void OnGUI()
-        {
-            if (_state == RunState.MainMenu) DrawMainMenu();
-            else if (IsRunOver) DrawResult();
-        }
-
-        private void DrawMainMenu()
-        {
-            var r = new Rect(Screen.width * 0.5f - 220f, Screen.height * 0.5f - 120f, 440f, 240f);
-            GUI.Box(r, "");
-            var title = new GUIStyle(GUI.skin.label) { fontSize = 44, alignment = TextAnchor.MiddleCenter };
-            GUI.Label(new Rect(r.x, r.y + 24f, r.width, 60f), "墨刃 · InkWash", title);
-            var sub = new GUIStyle(GUI.skin.label) { fontSize = 15, alignment = TextAnchor.MiddleCenter };
-            GUI.Label(new Rect(r.x, r.y + 88f, r.width, 24f), "三维水墨动作 Roguelike · 毕设 Demo", sub);
-
-            if (GUI.Button(new Rect(r.x + 120f, r.y + 150f, 200f, 44f), "开始一局"))
-                StartRun();
-        }
-
-        private void DrawResult()
-        {
-            var r = new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.5f - 90f, 400f, 180f);
-            GUI.Box(r, "");
-            var title = new GUIStyle(GUI.skin.label) { fontSize = 30, alignment = TextAnchor.MiddleCenter };
-            string txt = _state == RunState.Victory ? "通关" : "身殒";
-            GUI.Label(new Rect(r.x, r.y + 24f, r.width, 44f), txt, title);
-
-            var info = new GUIStyle(GUI.skin.label) { fontSize = 14, alignment = TextAnchor.MiddleCenter };
-            string detail = _state == RunState.Victory
-                ? "清空 " + _roomIndex + " 间房　升级 " + _rewardCount + " 次"
-                : "抵达第 " + (_roomIndex + 1) + " 间房　升级 " + _rewardCount + " 次";
-            GUI.Label(new Rect(r.x, r.y + 74f, r.width, 24f), detail, info);
-
-            if (GUI.Button(new Rect(r.x + 110f, r.y + 116f, 180f, 40f), "再来一局"))
-                StartRun();
-        }
+        // ★★ 第三十一轮：主菜单 / 结算 UI 已迁到 UGUI（RunPresentation 运行时建 Canvas）。
+        //   原 IMGUI 版本退役 —— 根因是 IMGUI 时代光标被锁死，"开始一局"根本点不了。
+        //   UGUI 面板 + 状态驱动光标（MainMenu/Reward/GameOver/Victory 解锁，Playing 锁定）
+        //   一并解决"三选一时鼠标动不了"。
     }
 }

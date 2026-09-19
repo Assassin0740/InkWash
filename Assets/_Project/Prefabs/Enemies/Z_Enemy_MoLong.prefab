@@ -407,6 +407,7 @@ MonoBehaviour:
   fingerCurlStepDeg: 12
   fingerCurlWaveDeg: 12
   maxTurnRateDeg: 110
+  deathSinkDuration: 1.6
   poseBlendRate: 6
   headAlignLinks: 2
   headLockToBase: 1

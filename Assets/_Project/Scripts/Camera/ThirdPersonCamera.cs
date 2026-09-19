@@ -116,6 +116,13 @@ namespace InkWash.CameraRig
                 var go = GameObject.Find("Player");
                 if (go != null) target = go.transform;
             }
+
+            // ★ 第三十一轮（用户实测："摄像机会穿墙"）：避障 mask 留空 = 完全不做 SphereCast，
+            //   相机直接怼进墙里。场景实例如果没配 mask，这里兜底取"默认层减去玩家层"。
+            //   玩家层必须排除——SphereCast 从胸口枢轴出发，不排除的话第一击就打在玩家自己的胶囊上，
+            //   相机会被永久顶在 minDistance。
+            if (collisionMask.value == 0 && target != null)
+                collisionMask = Physics.DefaultRaycastLayers & ~(1 << target.gameObject.layer);
         }
 
         private void OnEnable()
@@ -126,7 +133,14 @@ namespace InkWash.CameraRig
                 _hasLastPos = true;
             }
             _pivot = ComputeAimPoint();
-            if (lockCursorOnStart) LockCursor(true);
+            // ★ 第三十一轮：初始锁定只允许发生在战斗中——场景启动时是主菜单，
+            //   无脑锁死光标会让 UGUI"开始一局"按钮点不了（用户实测反馈）。
+            //   注意 Awake 执行顺序不保证 Instance 已就位：**只有确认 Playing 才锁**，
+            //   否则宁可交给 RunPresentation 稍后按状态驱动（战斗开始时会锁定）。
+            if (lockCursorOnStart
+                && InkWash.Roguelike.RunManager.Instance != null
+                && InkWash.Roguelike.RunManager.Instance.State == InkWash.Roguelike.RunState.Playing)
+                LockCursor(true);
         }
 
         private void OnDisable()
@@ -290,6 +304,14 @@ namespace InkWash.CameraRig
         private void HandleCursor()
         {
             if (!lockCursorOnStart) return;
+
+            // ★ 第三十一轮：光标的加锁/解锁**统一由 RunPresentation 按游戏状态驱动**
+            //   （MainMenu/Reward/GameOver/Victory 解锁给 UI 点击，Playing 锁定）。
+            //   这里只保留"战斗中左键重新锁定"的自愈逻辑 —— 旧代码无状态判断，
+            //   主菜单里点"开始一局"的同一记左键会先把光标锁死，按钮反而点不中。
+            if (InkWash.Roguelike.RunManager.Instance != null
+                && InkWash.Roguelike.RunManager.Instance.State != InkWash.Roguelike.RunState.Playing)
+                return;
 
             if (Input.GetKeyDown(KeyCode.Escape)) LockCursor(false);
             else if (Input.GetMouseButtonDown(0) && Cursor.lockState != CursorLockMode.Locked) LockCursor(true);

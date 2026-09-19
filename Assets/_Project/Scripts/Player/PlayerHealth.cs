@@ -61,6 +61,13 @@ namespace InkWash.Player
         public event Action<DamageInfo> Damaged;
         /// <summary>死亡时抛出一次。</summary>
         public event Action Died;
+        /// <summary>
+        /// 复位到满血时抛出（表现层的"把尸体扶起来"钩子）。
+        /// 死亡倒地是表现层行为（RunPresentation 订阅 <see cref="Died"/> 做倒地），
+        /// 那么复活/重开就必须有对应的还原信号 —— <see cref="RunManager.ResetRunContents"/>
+        /// 与验收脚本的 <see cref="ResetHealth"/> 都走这里，一条通路全覆盖。
+        /// </summary>
+        public event Action Revived;
 
         // ---- IDamageable ----
         public bool IsAlive => _health > 0f;
@@ -118,9 +125,12 @@ namespace InkWash.Player
 
         public void ResetHealth()
         {
+            bool wasDead = _health <= 0f;
             _health = EffectiveMaxHealth;
             _lastMax = _health;
             _iFrameTimer = 0f;
+            // 从死亡状态复位 ⇒ 通知表现层还原倒地（内部逐订阅者隔离，防表现层异常带崩复位）
+            if (wasDead) SafeInvoke(Revived);
         }
 
         /// <summary>
