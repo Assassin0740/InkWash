@@ -164,6 +164,25 @@ namespace InkWash.Enemies
                  "乘 PerfMotionScale ⇒ 静默段同步收小。")]
         public float fingerCurlWaveDeg = 12f;
 
+        // ── 第三十二轮：受击 Flinch（程序化，无 Animator 也能动）──
+        //
+        // ★ 为什么龙必须走程序化：龙的动画是**逐帧绝对写入**的脊柱曲线（ApplySerpentineSpine），
+        //   `EnemyBase` 的 HashHit 触发器在这里**没有对应的动画状态**可播 ——
+        //   普通敌人 SetTrigger("Hit") 能播受击片段，龙则完全无感。
+        //   这正是用户说的「在攻击之后怪物没有受击动作」在 BOSS 身上的形态。
+        //
+        // ★ 注入点选在**曲线切向**而不是事后左乘：事后旋转（旧 ApplyHeadSteer 教训）
+        //   会把 sin 行波的形状揉歪；在切向上做朝命中方向的 Slerp 偏摆，
+        //   是"整条脖子往挨打的方向甩了一下再弹回来"，与行波天然叠加、无形状破坏。
+        [Tooltip("★ 受击偏摆强度（0~90）：切向朝命中方向 Slerp 的最大比例按此角换算。30 = 头段最多偏 1/3 朝命中方向。")]
+        public float flinchBendDeg = 30f;
+        [Tooltip("★ 受击恢复速率（/s）：强度从 1 线性归零的速度。2.2 ≈ 0.45 s 弹回。")]
+        public float flinchRecoverPerSec = 2.2f;
+        [Tooltip("包络：偏摆沿身长的头段增益（u=1 侧，脖子最明显）。")]
+        public float flinchHeadGain = 1f;
+        [Tooltip("包络：偏摆沿身长的根段增益（u=0 侧，尾部几乎不甩）。")]
+        public float flinchRootGain = 0.25f;
+
         // ── 第十八轮：头 / 尾 / 四肢的**姿态校正** ──
         //
         // ★★ 为什么需要这一组（`drg_rest` 实测，报告 Tools/reports/drg_rest.txt）：
@@ -2225,6 +2244,10 @@ namespace InkWash.Enemies
         {
             base.Update();
 
+            // 受击 Flinch 衰减（第三十二轮）：线性归零，配合切向 Slerp 就是"甩一下弹回来"。
+            if (_flinchPower > 0f)
+                _flinchPower = Mathf.Max(0f, _flinchPower - Time.deltaTime * flinchRecoverPerSec);
+
             // ★★ 关键修复：把"想飞多高"（`_currentLift`）每帧写进容器 localPosition.y。
             //
             //   为什么必须放在这里、而不能只留在 `AttackMovement` 里：
@@ -2534,6 +2557,26 @@ namespace InkWash.Enemies
         /// 正 = 头向下压（蓄势/扑咬），负 = 抬头。各姿态统一走本驱动 ⇒ 「都有蛇行的感觉」且**形状同源**。</param>
         /// <param name="extraRootGain">额外俯仰在链首（尾）的增益。</param>
         /// <param name="extraHeadGain">额外俯仰在链末（头）的增益。</param>
+        // ---- 受击 Flinch 状态 ----
+        [SerializeField] private float _flinchPower;          // 1 = 刚挨打，线性衰减到 0
+        [SerializeField] private Vector3 _flinchDir = Vector3.forward;   // 命中方向（世界系，水平归一）
+        /// <summary>当前受击强度（验收断言"挨打后确实甩了一下"用）。</summary>
+        public float FlinchPower => _flinchPower;
+
+        /// <summary>
+        /// 受击表现入口（第三十二轮）。基类在扣血后回调（TakeDamage → OnDamaged），
+        /// 这里记下命中方向并点亮强度；真正的骨骼偏摆在 <see cref="ApplySerpentineSpine"/> 里逐帧消费。
+        /// 死亡那一击也会进来 —— 无妨，死后脊柱停止驱动，摆一下也是尸体该有的余韵。
+        /// </summary>
+        protected override void OnDamaged(DamageInfo info)
+        {
+            Vector3 d = info.hitDirection;
+            d.y = 0f;
+            if (d.sqrMagnitude < 1e-6f) return;
+            _flinchDir = d.normalized;
+            _flinchPower = 1f;
+        }
+
         private void ApplySerpentineSpine(float ampScale, float phase, float extraPitchDeg = 0f,
                                           float extraRootGain = 1f, float extraHeadGain = 1f)
         {
@@ -2634,7 +2677,16 @@ namespace InkWash.Enemies
                     _spine[i].rotation = hw >= 1f ? qRel : Quaternion.Slerp(qAbs, qRel, hw);
                     continue;
                 }
-                Vector3 tLocal = invRoot * tan[i];
+                Vector3 tw = tan[i];
+                // ★ 受击 Flinch（第三十二轮）：切向朝命中方向 Slerp 一个随衰减收缩的偏摆。
+                //   包络沿 u：根段几乎不甩、头段甩满 —— "脖子挨了一记往旁边一歪"。
+                if (_flinchPower > 0.001f)
+                {
+                    float env = Mathf.Lerp(flinchRootGain, flinchHeadGain, uNode[i]);
+                    float ft = Mathf.Clamp01(_flinchPower * env * (flinchBendDeg / 90f));
+                    if (ft > 0f) tw = Vector3.Slerp(tw, _flinchDir, ft);
+                }
+                Vector3 tLocal = invRoot * tw;
                 Quaternion q = Quaternion.FromToRotation(_baseSegLocal[i], tLocal);
                 // ★★ 额外整身俯仰（第二十九轮）：在容器空间（root 局部 right）左乘，
                 //   与 ApplySpineOffsetsRaw 的 ex 同号同位（正 = 头向下压）。
@@ -2923,8 +2975,10 @@ namespace InkWash.Enemies
         ///    当时被归因成"冷却没走完"。反射式 API 的这个坑：**名字写错不报错，只是永远不生效**。）
         ///   顺序要求：调用方要**先** `ForceNextAttackForTest(招名)`、**再**调本方法 —— 因为
         ///   `Enter(Attack)` 会触发 `ChooseAttack()` 消费那个"下一招"标记。
+        ///   （基类后来也加了同名方法且实现相同；这里保留一份只为 `ActionShowcase` 的反射
+        ///    查找语义稳定，`new` 只是消 CS0108，不是行为分叉。）
         /// </summary>
-        public void ForceEnterAttackForTest() { Enter(EnemyState.Attack); }
+        public new void ForceEnterAttackForTest() { Enter(EnemyState.Attack); }
 
         /// <summary>验收专用：读当前是否在盘旋（`_airborne` 是私有字段）。</summary>
         public bool IsAirborneForTest => _airborne;

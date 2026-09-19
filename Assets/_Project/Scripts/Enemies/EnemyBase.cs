@@ -147,7 +147,9 @@ namespace InkWash.Enemies
             // 硬直（弹反会传更长的 hitStun，见 EnemyElite）
             float stun = (info.hitStun > 0f ? info.hitStun : 0.3f) * StunMultiplier(info);
             EnterHitStun(stun, info);
-            HitStop.Request(info.hitStop, 0.06f);
+            // scale 0.06→0.05（第三十二轮）：命中时长 0.085 s，配浅一点的倍率 ——
+            // 顿得久但不是完全定格，"卡肉"是肉卡在刀上拖了一下，不是卡死
+            HitStop.Request(info.hitStop, 0.05f);
             return true;
         }
 

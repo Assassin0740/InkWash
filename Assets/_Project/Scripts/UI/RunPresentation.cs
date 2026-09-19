@@ -1,4 +1,5 @@
 using System.Collections;
+using InkWash.Combat;
 using InkWash.Player;
 using InkWash.Roguelike;
 using UnityEngine;
@@ -38,6 +39,8 @@ namespace InkWash.UI
         private Text _roomText;
         private Text _resultTitle;
         private Text _resultDetail;
+        private Image _hitVignette;     // 受击墨溅闪屏
+        private float _hitFlash;
 
         // ---- 死亡倒地 ----
         private PlayerController _ctl;
@@ -71,6 +74,7 @@ namespace InkWash.UI
             {
                 _health.Died += OnPlayerDied;
                 _health.Revived += OnPlayerRevived;
+                _health.Damaged += OnPlayerDamaged;   // 受击 → 墨溅闪屏（第三十二轮）
                 _ctl = _health.controller;
                 if (_ctl != null) _anim = _ctl.GetComponentInChildren<Animator>();
             }
@@ -81,7 +85,12 @@ namespace InkWash.UI
         private void OnDestroy()
         {
             if (_run != null) _run.StateChanged -= OnStateChanged;
-            if (_health != null) { _health.Died -= OnPlayerDied; _health.Revived -= OnPlayerRevived; }
+            if (_health != null)
+            {
+                _health.Died -= OnPlayerDied;
+                _health.Revived -= OnPlayerRevived;
+                _health.Damaged -= OnPlayerDamaged;
+            }
             if (Instance == this) Instance = null;
         }
 
@@ -97,7 +106,24 @@ namespace InkWash.UI
             }
             if (_roomText != null && _run != null)
                 _roomText.text = "房间 " + Mathf.Min(_run.RoomIndex + 1, _run.roomsToClear) + " / " + _run.roomsToClear;
+
+            // 受击闪屏衰减：unscaled 时间 —— 顿帧/暂停期间也要正常退掉
+            if (_hitFlash > 0f)
+            {
+                _hitFlash = Mathf.Max(0f, _hitFlash - Time.unscaledDeltaTime * 3.2f);
+                if (_hitVignette != null)
+                    _hitVignette.color = new Color(0.32f, 0.06f, 0.05f, _hitFlash * 0.38f);
+            }
         }
+
+        /// <summary>
+        /// 受击墨溅闪屏（第三十二轮）：画面四缘涌上一层淡墨红再退掉。
+        /// 为什么不做在 PlayerHitFeedback 里：它挂在 Player prefab 上、生命周期跟局走，
+        /// 而 Canvas 在这里（DontDestroyOnLoad）；且 HUD 的构建/可见性本来就归这个类管。
+        /// </summary>
+        public void FlashDamage() { _hitFlash = 1f; }
+
+        private void OnPlayerDamaged(DamageInfo info) { FlashDamage(); }
 
         // ==================================================================
         //  状态 → 面板可见性 + 光标
@@ -279,6 +305,16 @@ namespace InkWash.UI
             _roomText = NewText(_hud.transform, "RoomText", "", 20,
                 new Color(0.15f, 0.13f, 0.11f, 0.9f), TextAnchor.UpperLeft);
             Stretch((RectTransform)_roomText.transform, 0.03f, 0.35f, 0.93f, 0.98f);
+
+            // 受击墨溅闪屏（全屏、alpha 0 待命、不挡射线 —— 挡了会吞主菜单/选卡的点击）
+            var vinGo = new GameObject("HitVignette", typeof(Image));
+            var vinRt = (RectTransform)vinGo.transform;
+            vinRt.SetParent(_hud.transform, false);
+            vinRt.anchorMin = Vector2.zero; vinRt.anchorMax = Vector2.one;
+            vinRt.offsetMin = Vector2.zero; vinRt.offsetMax = Vector2.zero;
+            _hitVignette = vinGo.GetComponent<Image>();
+            _hitVignette.color = new Color(0.32f, 0.06f, 0.05f, 0f);
+            _hitVignette.raycastTarget = false;
         }
 
         // ==================================================================

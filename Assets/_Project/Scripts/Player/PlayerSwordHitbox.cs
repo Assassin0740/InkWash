@@ -30,7 +30,16 @@ namespace InkWash.Player
         public float[] damage = { 16f, 20f, 32f };
         public float[] knockback = { 2.6f, 3.2f, 6.0f };
         public float[] hitStun = { 0.26f, 0.30f, 0.55f };
-        public float hitStopDuration = 0.055f;
+        [Tooltip("卡肉顿帧时长。0.055 太短（实测打龙像没打到），加长到接近 3 帧（60fps）")]
+        public float hitStopDuration = 0.085f;
+
+        [Header("命中反馈（打中敌人才给，挥空不给）")]
+        [Tooltip("命中震屏幅度（度级）")]
+        public float hitShakeAmplitude = 0.10f;
+        public float hitShakeDuration = 0.14f;
+        [Tooltip("命中 FOV 冲击（度）。视野瞬间被'推一下'再收回")]
+        public float hitFovPunch = 4.5f;
+        public float hitFovPunchDuration = 0.14f;
 
         [Header("判定体")]
         [Tooltip("判定半径（m）。挥砍是弧线，用胶囊扫线段近似")]
@@ -67,6 +76,16 @@ namespace InkWash.Player
         private Hitbox _hitbox;
         private float _windowTimer;
         private int _lastHitCount;
+        private InkWash.CameraRig.ThirdPersonCamera _camRig;
+
+        private InkWash.CameraRig.ThirdPersonCamera CameraRig
+        {
+            get
+            {
+                if (_camRig == null) _camRig = FindObjectOfType<InkWash.CameraRig.ThirdPersonCamera>();
+                return _camRig;
+            }
+        }
 
 
         public void ResetDiagnostics()
@@ -166,6 +185,19 @@ namespace InkWash.Player
                     // 不是"你没打中"。按实际掉血回血会让吸血在精英身上几乎失效，手感上是反直觉的。
                     float heal = _lastDamage * _newHitsLastFrame * stats.Lifesteal;
                     if (heal > 0f) { health.Heal(heal); _totalHealed += heal; }
+                }
+
+                // ★ 命中方反馈（第三十二轮）：此前只有"玩家被打"才震屏（PlayerHitFeedback），
+                //   "玩家打中"却什么都没有 —— 打人没手感，这正是用户说的"没有打击感"的另一半。
+                //   放在命中**增量**处（而不是 OnHitMoment）：只有真的打中了才震，挥空不骗反馈。
+                if (_newHitsLastFrame > 0)
+                {
+                    var rig = CameraRig;
+                    if (rig != null)
+                    {
+                        rig.Shake(hitShakeAmplitude, hitShakeDuration);
+                        rig.FovPunch(hitFovPunch, hitFovPunchDuration);
+                    }
                 }
             }
 

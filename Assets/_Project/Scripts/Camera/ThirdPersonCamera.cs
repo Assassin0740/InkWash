@@ -90,6 +90,9 @@ namespace InkWash.CameraRig
         private float _shakeTimer;
         private float _shakeDuration;
         private float _shakeAmplitude;
+        private float _fovPunch;         // 当前 FOV 冲击量（度）
+        private float _fovPunchTimer;
+        private float _fovPunchDur = 0.12f;
 
         /// <summary>当前实际距离（含避障收镜），供调试与验收使用。</summary>
         public float CurrentDistance => _curDistance;
@@ -99,6 +102,9 @@ namespace InkWash.CameraRig
 
         /// <summary>震屏是否正在进行（供自动化验收断言"打击反馈确实触发了"）。</summary>
         public bool IsShaking => _shakeTimer > 0f;
+
+        /// <summary>FOV 冲击是否正在进行（命中反馈断言用）。</summary>
+        public bool IsFovPunching => _fovPunchTimer > 0f;
 
         /// <summary>当前视角偏航（度），供验收读取。</summary>
         public float Yaw => yaw;
@@ -228,8 +234,23 @@ namespace InkWash.CameraRig
             float wantFov = baseFov + fovSpeedGain * speed01;
             _fov = Mathf.SmoothDamp(_fov, wantFov, ref _fovVel, fovDamp, Mathf.Infinity, dt);
 
+            // FOV 冲击：**叠加在 SmoothDamp 输出之后**。SmoothDamp 的目标平滑（fovDamp=0.15s）
+            // 会把 0.12s 的冲击削得只剩一角 —— 命中要的是"啪一下"，所以冲击项绕过平滑直写。
+            float punchTerm = 0f;
+            if (Time.timeScale <= 0f)
+            {
+                _fovPunchTimer = 0f; _fovPunch = 0f;
+            }
+            else if (_fovPunchTimer > 0f)
+            {
+                _fovPunchTimer -= Mathf.Max(Time.unscaledDeltaTime, 1e-5f);
+                float fall = _fovPunchDur > 0f ? Mathf.Clamp01(_fovPunchTimer / _fovPunchDur) : 0f;
+                punchTerm = _fovPunch * fall * fall;   // ease-out：鼓得快、收得缓
+                if (_fovPunchTimer <= 0f) _fovPunch = 0f;
+            }
+
             var cam = GetComponent<Camera>();
-            if (cam != null) cam.fieldOfView = _fov;
+            if (cam != null) cam.fieldOfView = _fov + punchTerm;
         }
 
         private Vector3 ComputeAimPoint()
@@ -259,6 +280,18 @@ namespace InkWash.CameraRig
         // ------------------------------------------------------------------
         // 对外接口
         // ------------------------------------------------------------------
+
+        /// <summary>
+        /// FOV 冲击：命中瞬间视野瞬间"呼吸"一下（先鼓后收），是命中反馈的一部分。
+        /// 与震屏同一条纪律：递减用 unscaledDeltaTime；timeScale &lt;= 0（奖励/结算暂停）时结清。
+        /// </summary>
+        public void FovPunch(float amountDeg, float duration)
+        {
+            if (amountDeg <= 0f) return;
+            _fovPunch = amountDeg;
+            _fovPunchDur = Mathf.Max(duration, 1e-4f);
+            _fovPunchTimer = _fovPunchDur;
+        }
 
         /// <summary>震屏（供打击反馈调用）。</summary>
         public void Shake(float amplitude, float duration)

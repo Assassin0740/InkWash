@@ -88,7 +88,12 @@ namespace InkWash.Player
             float scale = 1f;
             if (damageRef > 0f) scale = Mathf.Clamp(info.amount / damageRef, 0.5f, damageScaleMax);
 
-            if (cameraRig != null) cameraRig.Shake(shakeAmplitude * scale, shakeDuration);
+            if (cameraRig != null)
+            {
+                cameraRig.Shake(shakeAmplitude * scale, shakeDuration);
+                // 被打中的 FOV 冲击（第三十二轮）：挨打也要有"画面被撞了一下"的体感
+                cameraRig.FovPunch(3f * scale, 0.16f);
+            }
             if (_hurtHashValid && animator != null) animator.SetTrigger(_hurtHash);
         }
 

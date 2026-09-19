@@ -86,7 +86,7 @@ MonoBehaviour:
   - 0.26
   - 0.3
   - 0.55
-  hitStopDuration: 0.055
+  hitStopDuration: 0.085
   radius: 0.42
   window: 0.14
   stats: {fileID: 2517279585834350198}
