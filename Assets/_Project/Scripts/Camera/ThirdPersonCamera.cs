@@ -78,6 +78,22 @@ namespace InkWash.CameraRig
         [Tooltip("被遮挡时收镜的距离阻尼")]
         public float collisionDamp = 0.05f;
 
+        [Header("自动索敌（软锁辅助瞄准，第三十二轮）")]
+        [Tooltip("战斗中把视角缓慢拉向最近的敌人。速率有限 ⇒ 甩鼠标即可挣脱，不打断主动控制")]
+        public bool softLockEnabled = true;
+
+        [Tooltip("软锁最大索敌距离（米）")]
+        public float softLockRange = 14f;
+
+        [Tooltip("锥角（度）：敌人在相机朝向这个锥角内才参与软锁（背后不拉）")]
+        [Range(10f, 120f)] public float softLockConeDeg = 60f;
+
+        [Tooltip("yaw 修正速率上限（度/秒）。越大锁得越紧；鼠标手感优先级永远高于它")]
+        public float softLockRateDeg = 160f;
+
+        [Tooltip("鼠标 X 增量超过此值视为玩家主动转视角，本帧暂停软锁")]
+        public float softLockMouseGuard = 0.08f;
+
         // ---------------- 内部状态 ----------------
         private Vector3 _pivot;              // 平滑后的枢轴
         private Vector3 _pivotVel;
@@ -93,6 +109,8 @@ namespace InkWash.CameraRig
         private float _fovPunch;         // 当前 FOV 冲击量（度）
         private float _fovPunchTimer;
         private float _fovPunchDur = 0.12f;
+        private InkWash.Enemies.EnemyBase _softLockTarget;   // 软锁目标（缓存 0.2s，避免每帧 FindObjectsOfType 产生 GC）
+        private float _softLockScanTimer;
 
         /// <summary>当前实际距离（含避障收镜），供调试与验收使用。</summary>
         public float CurrentDistance => _curDistance;
@@ -111,6 +129,9 @@ namespace InkWash.CameraRig
 
         /// <summary>当前视角俯仰（度），供验收读取。</summary>
         public float Pitch => pitch;
+
+        /// <summary>当前软锁目标（无则 null），供验收断言"确实锁上了"。</summary>
+        public Transform SoftLockTarget => _softLockTarget != null ? _softLockTarget.transform : null;
 
         private void Awake()
         {
@@ -160,13 +181,88 @@ namespace InkWash.CameraRig
             if (!mouseLookEnabled) return;
 
             // 鼠标轴本身就是帧间增量，不再乘 deltaTime
-            yaw += Input.GetAxis("Mouse X") * yawSensitivity;
+            float mx = Input.GetAxis("Mouse X");
+            yaw += mx * yawSensitivity;
             pitch -= Input.GetAxis("Mouse Y") * pitchSensitivity;
             pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
 
             // 键盘兜底：没鼠标时也能转视角（也方便调试）
             if (Input.GetKey(KeyCode.Q)) yaw -= 90f * Time.deltaTime;
             if (Input.GetKey(KeyCode.E)) yaw += 90f * Time.deltaTime;
+
+            TickSoftLock(mx);
+        }
+
+        /// <summary>
+        /// 自动索敌（软锁辅助瞄准，第三十二轮）：战斗中把视角**缓慢**拉向最近的敌人。
+        ///
+        /// ★ 为什么是"有限速率的持续修正"而不是直接 snap：
+        ///   动作游戏的辅助瞄准必须满足两条——"想要的对准不用甩鼠标"和"想挣脱一甩就脱"。
+        ///   snap 给了前者毁掉后者（视角被抢走）；无限速率同理。
+        ///   160°/s 的修正速率 < 鼠标一格的角度增量，玩家任何时候甩鼠标都会立刻赢，
+        ///   而放着不动时视角自己滑向敌人 —— 两条都保住。
+        /// ★ 锥角判据用**相机 forward**而不是玩家 forward：玩家转向不带动相机（本类核心设计），
+        ///   玩家背对敌人但相机还看着它时不该把视角往回拉过身。
+        /// ★ 只在 Playing 生效：主菜单/选卡/结算时视图本来就该由玩家自己摆。
+        /// </summary>
+        private void TickSoftLock(float mouseX)
+        {
+            if (!softLockEnabled) return;
+            if (Time.timeScale <= 0f) return;
+            if (InkWash.Roguelike.RunManager.Instance != null
+                && InkWash.Roguelike.RunManager.Instance.State != InkWash.Roguelike.RunState.Playing)
+                return;
+            // 玩家在主动转视角（鼠标或 Q/E）⇒ 本帧让位
+            if (Mathf.Abs(mouseX) > softLockMouseGuard
+                || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E)) return;
+
+            _softLockScanTimer -= Time.deltaTime;
+            if (_softLockScanTimer <= 0f || (_softLockTarget != null && !_softLockTarget.IsAlive))
+            {
+                _softLockScanTimer = 0.2f;
+                _softLockTarget = FindSoftLockTarget();
+            }
+            if (_softLockTarget == null) return;
+
+            Vector3 aim = ComputeAimPoint();
+            Vector3 to = _softLockTarget.transform.position + Vector3.up * 1.2f - aim;
+            to.y = 0f;
+            if (to.sqrMagnitude < 1e-6f) return;
+
+            float want = Mathf.Atan2(to.x, to.z) * Mathf.Rad2Deg;   // 相机 forward 朝向敌人的 yaw
+            float diff = Mathf.DeltaAngle(yaw, want);
+            // 已基本对准（<2°）就不再消耗修正量，避免死区边缘来回抽搐
+            if (Mathf.Abs(diff) < 2f) return;
+            float step = softLockRateDeg * Time.deltaTime;
+            yaw += Mathf.Clamp(diff, -step, step);
+        }
+
+        /// <summary>
+        /// 软锁选目标：**活着** + 距离 < range + 在相机朝向锥角内，取距离最近者。
+        /// FindObjectsOfType 按 0.2 s 缓存节流（战斗里敌人 <12 只，扫描便宜但不能每帧 GC）。
+        /// </summary>
+        private InkWash.Enemies.EnemyBase FindSoftLockTarget()
+        {
+            if (target == null) return null;
+            Vector3 aim = ComputeAimPoint();
+            Vector3 fwd = transform.forward; fwd.y = 0f;
+            if (fwd.sqrMagnitude < 1e-6f) return null;
+            fwd.Normalize();
+
+            InkWash.Enemies.EnemyBase best = null;
+            float bestDist = softLockRange;
+            foreach (var e in Object.FindObjectsOfType<InkWash.Enemies.EnemyBase>())
+            {
+                if (!e.IsAlive || e.Transform == null) continue;
+                Vector3 d = e.Transform.position + Vector3.up * 1.2f - aim;
+                d.y = 0f;
+                float dist = d.magnitude;
+                if (dist < 0.5f || dist > bestDist) continue;
+                if (Vector3.Angle(fwd, d / dist) > softLockConeDeg * 0.5f) continue;
+                best = e;
+                bestDist = dist;
+            }
+            return best;
         }
 
         private void LateUpdate()
