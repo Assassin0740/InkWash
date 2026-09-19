@@ -403,6 +403,11 @@ MonoBehaviour:
   headAlignPitchDeg: -55.5
   headAlignYawDeg: 0
   headAlignRollDeg: 0
+  fingerCurlBaseDeg: 18
+  fingerCurlStepDeg: 12
+  fingerCurlWaveDeg: 12
+  maxTurnRateDeg: 110
+  poseBlendRate: 6
   headAlignLinks: 2
   headLockToBase: 1
   headLockUseRestPose: 1

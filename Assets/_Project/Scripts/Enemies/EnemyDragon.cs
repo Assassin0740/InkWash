@@ -155,6 +155,15 @@ namespace InkWash.Enemies
                  "尾巴绕容器 right 摆 ±25° 会让末端上下走 ±1.37 m ⇒「尾巴不在同一水平线上」（用户反馈）。")]
         public float limbTailAxisDot = 0.80f;
 
+        [Tooltip("★ 指骨静态卷曲（度）：每根指骨常驻的扣握角。0 = 笔直。用户：「手指部分没有卷曲的动作」。\n" +
+                 "正值 = 绕容器 right 把指尖往下（掌心内）卷；负值反卷。")]
+        public float fingerCurlBaseDeg = 18f;
+        [Tooltip("★ 指骨卷曲梯度（度/节深）：指尖比指根多卷这么多，卷出「抓握」的形状梯度。")]
+        public float fingerCurlStepDeg = 12f;
+        [Tooltip("★ 指骨动态卷曲幅度（度）：随主行波相位一张一合。悬停空中也有（相位一直走），\n" +
+                 "乘 PerfMotionScale ⇒ 静默段同步收小。")]
+        public float fingerCurlWaveDeg = 12f;
+
         // ── 第十八轮：头 / 尾 / 四肢的**姿态校正** ──
         //
         // ★★ 为什么需要这一组（`drg_rest` 实测，报告 Tools/reports/drg_rest.txt）：
@@ -426,6 +435,14 @@ namespace InkWash.Enemies
         /// 运行时据此算「这条腿要绕容器 up 转多少度才算往后」，与 `limbSweepBackDeg` 实时联动。</summary>
         private readonly List<Vector3> _limbBaseDirLocal = new List<Vector3>();
 
+        // ── 指骨链（第二十九轮：爪子末端的"手指"要有卷曲动作，用户：「手指部分没有卷曲的动作」）──
+        //   采集规则：对每条**被驱动的腿**，从每个叶子骨往回走到第一个分叉点为止，
+        //   这一段"叶子 → 分叉"的链就是一根指/爪尖 —— 大腿/小腿（分叉点以下）绝不会被卷。
+        private readonly List<Transform> _fingerBones = new List<Transform>();
+        private readonly List<int> _fingerDepth = new List<int>();
+        private readonly List<int> _fingerLimb = new List<int>();
+        private readonly List<Quaternion> _fingerBaseRel = new List<Quaternion>();
+
         // ── 尾巴链（第十八轮：尾巴不再是"刚性挂在脊柱[0] 上的分支"，而是可驱动的一条链）──
         private readonly List<Transform> _tailChain = new List<Transform>();
         private readonly List<Quaternion> _tailBaseRel = new List<Quaternion>();
@@ -532,6 +549,10 @@ namespace InkWash.Enemies
         public float swimSpeed = 8.0f;
         [Tooltip("转向速率。越大转得越急；小 = 大弧线悠然巡游")]
         public float swimTurnRate = 1.5f;
+        [Tooltip("★★ 航向角速度硬上限（°/s，第二十九轮）：所有朝向写入（巡游/盘旋/俯冲/面对玩家）\n" +
+                 "都经 LimitHeading 限幅 ⇒ **构造上不可能出现锐角瞬转**，转弯只能由身体的蛇行摆动\n" +
+                 "一段一段扫过去（用户：「不可以莫名其妙锐角转弯」）。乘数见各调用点。")]
+        public float maxTurnRateDeg = 110f;
         [Tooltip("半径偏差 → 向内/向外转向的增益（把龙拉回 hoverOrbitRadius）")]
         public float swimRadiusGain = 0.12f;
         [Tooltip("轨道角速度（°/s）。线速度 ≈ hoverOrbitRadius × 此值 × π/180")]
@@ -712,6 +733,8 @@ namespace InkWash.Enemies
         private readonly List<float> _segLen = new List<float>();
         // 每帧复用的切向缓存（**不复用就会每帧 new 数组 ⇒ 稳态产生 GC**，项目有"0 B GC"要求）
         private Vector3[] _serpTan;
+        // 每节在曲线上的参数 u（额外俯仰沿链取增益用；同样为 0 GC 复用）
+        private float[] _serpU;
 
         private DragonAttack _attack;
         private float _orbitAngle;
@@ -1118,6 +1141,62 @@ namespace InkWash.Enemies
 
             // ★ 第十八轮：把整条尾巴采出来（它从"刚性分支"升级为可驱动的链，见 ApplyTailLevel）
             CaptureTailChain(invRoot);
+
+            // ★ 第二十九轮：指骨链采集（叶子 → 第一个分叉点 = 一根指/爪尖），见字段区注释
+            CollectFingers();
+        }
+
+        /// <summary>
+        /// 采集每条被驱动腿的**指骨链**（第二十九轮）。
+        /// 判据：叶子骨（无子骨）往父链回溯，到「childCount &gt; 1 的分叉点」或肢根为止 ——
+        /// 这一段就是一根指/爪尖；大腿/小腿在分叉点以下，不会被卷进链里。
+        /// </summary>
+        private void CollectFingers()
+        {
+            _fingerBones.Clear();
+            _fingerDepth.Clear();
+            _fingerLimb.Clear();
+            _fingerBaseRel.Clear();
+
+            for (int k = 0; k < _limbRoots.Count; k++)
+            {
+                if (k >= _limbDriven.Count || !_limbDriven[k]) continue;
+                var root = _limbRoots[k];
+                if (root == null) continue;
+
+                // DFS 找叶子骨
+                var stack = new System.Collections.Generic.Stack<Transform>();
+                stack.Push(root);
+                while (stack.Count > 0)
+                {
+                    var cur = stack.Pop();
+                    if (cur == null) continue;
+                    if (cur.childCount == 0)
+                    {
+                        // 叶子：回溯到分叉点（或肢根），得到一根指的链
+                        var chain = new List<Transform>();
+                        var walk = cur;
+                        while (walk != null && walk != root)
+                        {
+                            chain.Add(walk);
+                            var par = walk.parent;
+                            if (par == null || par == root) break;
+                            if (par.childCount > 1) break;      // 分叉点以下不再属于这根指
+                            walk = par;
+                        }
+                        chain.Reverse();                        // 链序：指根 → 指尖
+                        for (int j = 0; j < chain.Count; j++)
+                        {
+                            _fingerBones.Add(chain[j]);
+                            _fingerDepth.Add(j + 1);            // 深度从 1 起（指根）
+                            _fingerLimb.Add(k);
+                            _fingerBaseRel.Add(chain[j].localRotation);
+                        }
+                        continue;
+                    }
+                    for (int c = 0; c < cur.childCount; c++) stack.Push(cur.GetChild(c));
+                }
+            }
         }
 
         /// <summary>
@@ -1272,6 +1351,38 @@ namespace InkWash.Enemies
                 b.localRotation = Quaternion.AngleAxis(sweep, axisUp)
                                 * Quaternion.AngleAxis(swing, axisRight)
                                 * _limbBaseRel[k];
+            }
+        }
+
+        /// <summary>
+        /// 指骨卷曲（第二十九轮）：给每根指骨叠「静态扣握 + 随行波一张一合」的卷曲。
+        ///
+        /// ★ 为什么独立于 ApplyLimbMotion：肢体摆动只驱动**肢根**一节，指骨链是它的后代 ——
+        ///   旧代码从未碰过它们 ⇒ 用户：「手指部分没有卷曲的动作，也没有在空中飘的时候的动作」。
+        /// ★ 卷曲轴与肢体划水同一约定：**容器 right 换算到各骨父节点空间**（绝不用骨骼局部轴），
+        ///   正角把指尖往掌心（下）卷；深度越深角越大（`fingerCurlStepDeg`）⇒ 卷出抓握梯度。
+        /// ★ 波动部分乘 `PerfMotionScale`、相位跟主行波 ⇒ 空中悬停也在动，静默段同步收小。
+        /// ★ 绝对写入（每帧从 `_fingerBaseRel` 重算）⇒ 无累积。
+        /// </summary>
+        private void ApplyFingerCurl(float phase)
+        {
+            if (_fingerBones.Count == 0) return;
+            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
+            float wave = fingerCurlWaveDeg * PerfMotionScale;
+
+            for (int j = 0; j < _fingerBones.Count; j++)
+            {
+                var b = _fingerBones[j];
+                if (b == null) continue;
+                float d = _fingerDepth[j];
+                // 相位：跟主行波 + 每节深 0.8 rad 的传播 + 每条肢错开（四爪不同步才不机械）
+                float ang = fingerCurlBaseDeg + d * fingerCurlStepDeg
+                          + wave * Mathf.Sin(phase + 0.8f * d + 1.7f * _fingerLimb[j]);
+                Transform par = b.parent;
+                Vector3 axis = par != null
+                    ? par.InverseTransformDirection(rootRot * Vector3.right)
+                    : Vector3.right;
+                b.localRotation = Quaternion.AngleAxis(ang, axis) * _fingerBaseRel[j];
             }
         }
 
@@ -1509,7 +1620,9 @@ namespace InkWash.Enemies
                     // ★ 只写一次 rotation。旧代码连写两遍（先切线、再"看玩家"），
                     //   两个 Slerp 抢同一个 transform.rotation ⇒ 身体朝向和实际前进方向不一致，
                     //   看着像"斜着飘"。
-                    transform.rotation = Quaternion.LookRotation(_swimDir, Vector3.up);
+                    // ★★ 第二十九轮：再过 LimitHeading 硬限幅 —— wantDir 突变（半径误差翻号等）
+                    //   时角速度仍被 maxTurnRateDeg 卡死，构造上杜绝锐角转弯。
+                    LimitHeading(_swimDir);
                 }
                 // 静默段把推进速度压下来（复现自带动画"趴下不动"）
                 MoveHorizontal(_swimDir * (swimSpeed * PerfSpeedScale) * Time.deltaTime);
@@ -1535,7 +1648,10 @@ namespace InkWash.Enemies
             float phase = 2f * Mathf.PI * swimWaveFreq * Time.time;
             // 静默段把波形压小（对应自带动画的"趴卧"段）；长啸期间脊骨幅度 ×2.5（策划案规格）
             float perf = PerfMotionScale * RoarSpineGain;
-            ApplySerpentineSpine(perf, phase);
+            // ★★ 第二十九轮：幅度也过 BlendPose —— 从俯冲段（diveSwimScale=0.85）切回巡游（1.0）
+            //   时幅度连续过渡，不「啪」地弹一下
+            var (perfS, perfP) = BlendPose(perf, 0f);
+            ApplySerpentineSpine(perfS, phase, perfP);
 
             // 「仰头」那一下叠在波形之上
             ApplyRoarHeadRaise();
@@ -1901,10 +2017,10 @@ namespace InkWash.Enemies
             // ★ 俯冲全程保持游动波（用户原话：「时时刻刻都要遵循这个道理」）
             ApplySwimWave(diveSwimScale);
 
-            // 朝向落点
+            // 朝向落点（★★ 第二十九轮：Slerp(8/s) → 硬限速 ×1.5 —— 俯冲允许比巡游急一点，
+            //   但同样不可能瞬转；进俯冲时与盘旋航向的夹角由限速平滑吃掉）
             if (Flat(delta).sqrMagnitude > 1e-4f)
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(Flat(delta).normalized, Vector3.up), 8f * Time.deltaTime);
+                LimitHeading(Flat(delta), 1.5f);
         }
 
         /// <summary>
@@ -1971,20 +2087,69 @@ namespace InkWash.Enemies
 
         [Tooltip("★ 俯冲 / 咬击 / 拉起时保留多少游动波（1 = 与高空巡游同幅）。")]
         public float diveSwimScale = 0.85f;
+        [Tooltip("★★ 姿态混合速率（1/s，第二十九轮）：幅度与整身俯仰的**时间低通**时间常数。\n" +
+                 "用户：「动作和动作之间用混合的那种」—— 相位切换时 26°→0°→−18° 这类目标跳变\n" +
+                 "经本速率指数趋近 ⇒ 画面上是连续过渡，不会「啪」地弹一下。越大过渡越快。")]
+        public float poseBlendRate = 6f;
+
+        // ── 姿态混合状态（低通）—— 所有姿态每帧恰好调用一次 BlendPose ⇒ 状态单一 ──
+        private float _poseScaleSmooth = -1f;
+        private float _posePitchSmooth;
+        private bool _poseSmoothInit;
+
+        /// <summary>行波相位：全游戏唯一节拍器。所有姿态共用 ⇒ 相位跨姿态连续。</summary>
+        private float SerpPhase() => 2f * Mathf.PI * swimWaveFreq * Time.time;
+
+        /// <summary>
+        /// 姿态量（幅度缩放、整身俯仰）的时间低通（第二十九轮）。
+        /// 目标值在姿态/相位切换处的跳变（如 Dive 末 26° → Strike 初 −biteAmp）经
+        /// `1 − exp(−rate·dt)` 指数趋近 ⇒ 连续混合，无跳变。
+        /// </summary>
+        private (float scale, float pitch) BlendPose(float targetScale, float targetPitch)
+        {
+            if (!_poseSmoothInit)
+            {
+                _poseScaleSmooth = targetScale;
+                _posePitchSmooth = targetPitch;
+                _poseSmoothInit = true;
+            }
+            else
+            {
+                float k = 1f - Mathf.Exp(-Mathf.Max(0.01f, poseBlendRate) * Time.deltaTime);
+                _poseScaleSmooth = Mathf.Lerp(_poseScaleSmooth, targetScale, k);
+                _posePitchSmooth = Mathf.Lerp(_posePitchSmooth, targetPitch, k);
+            }
+            return (_poseScaleSmooth, _posePitchSmooth);
+        }
+
+        /// <summary>
+        /// 航向限速（第二十九轮）：容器朝向朝目标方向转，但角速度被
+        /// `maxTurnRateDeg·mul` 硬限幅（`Quaternion.RotateTowards`）。
+        /// ★ 所有朝向写入的唯一通道 ⇒ 构造上杜绝「锐角瞬转」；
+        ///   转弯观感由身体的蛇行摆动一段段扫过去完成。
+        /// </summary>
+        private void LimitHeading(Vector3 wantDir, float mul = 1f)
+        {
+            Vector3 d = Flat(wantDir);
+            if (d.sqrMagnitude < 1e-6f) return;
+            var want = Quaternion.LookRotation(d.normalized, Vector3.up);
+            float maxStep = Mathf.Max(1f, maxTurnRateDeg * mul) * Time.deltaTime;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, want, maxStep);
+        }
 
         /// <summary>
         /// ★★ 把「游动波」单独抽出来，供俯冲 / 咬击 / 拉起复用。
-        /// 这是「时时刻刻沿 S 飞」的唯一落地点：只要相位用 `Time.time` 连续走，
-        /// 各相位之间切换时波形就是连续的，不会"啪"地弹一下。
+        /// 第二十九轮起**改道蛇形驱动器**（ApplySerpentineSpine）：旧实现走
+        /// ApplySpineOffsetsRaw（旋转偏转角驱动），形状与巡游的 sin 中心线不同源，
+        /// 姿态切换时身体形状会换一种摆法。现在所有姿态同源 ⇒ 「都要有这种蛇行的感觉」。
+        /// 幅度/俯仰经 BlendPose 低通 ⇒ 相位切换处连续混合。
         /// </summary>
         private void ApplySwimWave(float scale, float extraPitchDeg = 0f,
                                    float extraRootGain = 1f, float extraHeadGain = 1f)
         {
             if (_spine.Count == 0) return;
-            float phase = 2f * Mathf.PI * hoverFrequency * Time.time;
-            ApplySpineOffsetsRaw(hoverAmplitudeDeg * scale, hoverPitchAmplitudeDeg * scale, _spine.Count,
-                                 hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase,
-                                 extraPitchDeg, extraRootGain, extraHeadGain);
+            var (s, p) = BlendPose(scale, extraPitchDeg);
+            ApplySerpentineSpine(s, SerpPhase(), p, extraRootGain, extraHeadGain);
         }
 
         // ★ 这里曾有一个 `AddSpinePitch(deg, rootGain, headGain)` —— 它对每节 `rotation`
@@ -2000,11 +2165,10 @@ namespace InkWash.Enemies
         {
             _currentLift = sweepLift;
             PassThroughStep(1f);                 // 穿过：与撕咬共用俯冲段，同样继续滑出
-            float phase = 2f * Mathf.PI * sweepFrequency * (u * sweepGroundDuration);
-            // ★ 传 phase 而不是 sin(phase)：内部会再取一次 sin，两个正弦相乘会把振幅压扁
-            ApplySpineOffsetsRaw(sweepAmplitudeDeg, 0f, _spine.Count,
-                                 sweepPhaseStepDeg, 1f, 1f, phase);
-            transform.Rotate(Vector3.up, sweepYawAssist * Mathf.Sin(phase) * Time.deltaTime * 3f, Space.World);
+            // ★★ 第二十九轮：弃旋转偏转驱动（sweepAmplitudeDeg 那套），统一走蛇形驱动器
+            //   ⇒ 落地横扫时身体仍是同一条 sin 蛇形，只是贴得更低
+            ApplySerpentineSpine(BlendPose(1f, 0f).scale, SerpPhase());
+            transform.Rotate(Vector3.up, sweepYawAssist * Mathf.Sin(SerpPhase()) * Time.deltaTime * 3f, Space.World);
         }
 
         /// <summary>扫尾的最低高度（m）。扫尾是"落地招"，比撕咬更低，但不触地。</summary>
@@ -2037,26 +2201,13 @@ namespace InkWash.Enemies
             else if (u < 0.72f) rise = 1f;
             else rise = Mathf.SmoothStep(1f, 0f, (u - 0.72f) / 0.28f);
 
-            float pitch = -breathAmplitudeDeg * rise;
-            int start = Mathf.Max(0, _spine.Count - breathHeadLinks);
-            Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
-            // 头颈抬起：绕**容器 right** 俯仰（局部轴在拉直后不再指横轴）
-            for (int i = 0; i < _spine.Count; i++)
-            {
-                if (i < start) { _spine[i].localRotation = _baseRot[i]; continue; }
-                int k = i - start;
-                _spine[i].rotation = rootRot
-                    * Quaternion.AngleAxis(pitch * (1f + 0.2f * k), Vector3.right)
-                    * _baseRel[i];
-            }
-
-            float phase = 2f * Mathf.PI * breathFrequency * t;
-            float sway = 8f * rise * Mathf.Sin(phase);
-            // 尾段随吐息左右摆：绕**容器 up**（与蛇形同一"左右"约定）
-            for (int i = 0; i < Mathf.Min(_spine.Count, start); i++)
-                _spine[i].rotation = rootRot
-                    * Quaternion.AngleAxis(sway * (i / (float)Mathf.Max(1, start)), Vector3.up)
-                    * _baseRel[i];
+            // ★★ 第二十九轮：弃「前半身写基准 + 尾段独立摆」的旧写法 —— 那会把身体切成
+            //   两截不同的驱动，与巡游/俯冲的蛇形完全不同源。现在统一走蛇形驱动器：
+            //   身体 = 同一条 sin 中心线；「仰头吐息」作为额外整身俯仰叠加
+            //   （负 = 抬头，尾 0.15 → 头 1.25 的包络 ≈ 旧「头颈抬起」的观感）；
+            //   旧尾段 sway 也由蛇形波天然提供。
+            var (s, p) = BlendPose(PerfMotionScale, -breathAmplitudeDeg * rise);
+            ApplySerpentineSpine(s, SerpPhase(), p, 0.15f, 1.25f);
 
             FacePlayer(Time.deltaTime * 1.5f);
         }
@@ -2160,14 +2311,12 @@ namespace InkWash.Enemies
 
                 Vector3 tangent = new Vector3(Mathf.Cos(rad), 0f, -Mathf.Sin(rad));
                 if (tangent.sqrMagnitude > 1e-6f)
-                    transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.LookRotation(tangent, Vector3.up), 4f * Time.deltaTime);
+                    LimitHeading(tangent);   // ★★ 第二十九轮：Slerp(4/s) → 硬限速，衔接俯冲回位时不会瞬转
             }
 
-            float phase = 2f * Mathf.PI * hoverFrequency * t;
-            // ★ 同样：传相位，不传 sin 后的值
-            ApplySpineOffsetsRaw(hoverAmplitudeDeg, hoverPitchAmplitudeDeg, _spine.Count,
-                                 hoverPhaseStepDeg, waveAmpRootGain, waveAmpHeadGain, phase);
+            // ★★ 第二十九轮：弃 ApplySpineOffsetsRaw（旋转偏转驱动），与巡游同走蛇形驱动器
+            //   ⇒ 盘旋姿态 = 巡游姿态（用户：「按照目前移动的这个姿势去调整其他姿势」）
+            ApplySerpentineSpine(BlendPose(PerfMotionScale, 0f).scale, SerpPhase());
         }
 
         /// <summary>
@@ -2295,6 +2444,7 @@ namespace InkWash.Enemies
 
             // 四肢（脊柱之外的分支骨）跟着一起摆 —— 否则只有身子在动、爪子钉着不动
             ApplyLimbMotion(phase);
+            ApplyFingerCurl(phase);   // ★ 指骨卷曲（第二十九轮）：两条驱动路径都要有
         }
 
         // ==================================================================
@@ -2373,7 +2523,12 @@ namespace InkWash.Enemies
         /// </summary>
         /// <param name="ampScale">整体幅度缩放（静默段 / 长啸用；1 = 正常）</param>
         /// <param name="phase">行波相位（弧度）—— 由 <see cref="swimWaveFreq"/> 与 Time.time 决定</param>
-        private void ApplySerpentineSpine(float ampScale, float phase)
+        /// <param name="extraPitchDeg">★★ 额外整身俯仰（度，第二十九轮加）：与 ApplySpineOffsetsRaw 同号 ——
+        /// 正 = 头向下压（蓄势/扑咬），负 = 抬头。各姿态统一走本驱动 ⇒ 「都有蛇行的感觉」且**形状同源**。</param>
+        /// <param name="extraRootGain">额外俯仰在链首（尾）的增益。</param>
+        /// <param name="extraHeadGain">额外俯仰在链末（头）的增益。</param>
+        private void ApplySerpentineSpine(float ampScale, float phase, float extraPitchDeg = 0f,
+                                          float extraRootGain = 1f, float extraHeadGain = 1f)
         {
             int n = _spine.Count;
             if (n < 3) return;
@@ -2403,6 +2558,8 @@ namespace InkWash.Enemies
 
             if (_serpTan == null || _serpTan.Length < n) _serpTan = new Vector3[n];
             Vector3[] tan = _serpTan;
+            if (_serpU == null || _serpU.Length < n) _serpU = new float[n];
+            float[] uNode = _serpU;
 
             // ── 逐节在曲线上取值，得到每节的**目标段方向** ──
             // ★★ 自变量改成「**累计骨长比例**」，不用旧版的「弦长 = 骨长」反解。
@@ -2417,11 +2574,13 @@ namespace InkWash.Enemies
             {
                 acc += _segLen[i];
                 float uh = total > 1e-6f ? Mathf.Clamp01(acc / total) : 0f;
+                uNode[i] = uh;
                 Vector3 p = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, uh);
                 Vector3 d = p - prev;
                 tan[i] = d.sqrMagnitude > 1e-12f ? d.normalized : fwd;
                 prev = p;
             }
+            uNode[n - 1] = uNode[n - 2];
             tan[n - 1] = tan[n - 2];        // 末节没有下一节，沿用头段方向（头骨朝向仍要驱动）
 
             // ── 头部对齐（第十八轮）──
@@ -2470,6 +2629,13 @@ namespace InkWash.Enemies
                 }
                 Vector3 tLocal = invRoot * tan[i];
                 Quaternion q = Quaternion.FromToRotation(_baseSegLocal[i], tLocal);
+                // ★★ 额外整身俯仰（第二十九轮）：在容器空间（root 局部 right）左乘，
+                //   与 ApplySpineOffsetsRaw 的 ex 同号同位（正 = 头向下压）。
+                //   沿链用曲线 u 取增益 ⇒ 尾 rootGain → 头 headGain 的包络与旧驱动一致。
+                if (extraPitchDeg != 0f)
+                    q = Quaternion.AngleAxis(
+                            extraPitchDeg * Mathf.Lerp(extraRootGain, extraHeadGain, uNode[i]),
+                            Vector3.right) * q;
                 if (alignHead && i >= headFrom) q = headExtra * q;
                 _spine[i].rotation = rootRot * q * _baseRel[i];
             }
@@ -2477,6 +2643,7 @@ namespace InkWash.Enemies
             // ★ 把脊柱曲线的**同一组参数**交给尾巴 ⇒ 尾巴是这条曲线往 u<0 的延长，不是第二条波
             ApplyTailLevel(phase, amp, W, tg, total);
             ApplyLimbMotion(phase);
+            ApplyFingerCurl(phase);
         }
 
         /// <summary>头部对齐是否生效（三条角度全 0 或节数 ≤ 0 时视为关闭）。</summary>
