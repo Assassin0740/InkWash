@@ -142,6 +142,21 @@ namespace InkWash.Enemies
             InkWash.Effects.InkHitVfx.Spawn(info.hitPoint, info.hitDirection,
                 Mathf.Lerp(0.7f, 1.6f, Mathf.Clamp01(info.amount / Mathf.Max(1f, maxHealth))));
 
+            // ★ 地面墨渍（第三十八轮 B4）：墨花是动效、墨渍是痕迹 ——
+            //   命中点正下方贴一片会淡出的墨，战斗过的地方留下"打过"的记忆。
+            //   向下找地面：命中点可能悬空（打到头），墨渍必须落在地上。
+            {
+                var below = info.hitPoint + Vector3.up * 0.5f;
+                var hits = Physics.RaycastAll(below, Vector3.down, 12f,
+                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+                float best = float.PositiveInfinity;
+                foreach (var h in hits)
+                    if (!h.transform.IsChildOf(transform) && h.point.y < best) best = h.point.y;
+                if (best < float.PositiveInfinity)
+                    InkWash.Effects.InkStain.Spawn(new Vector3(info.hitPoint.x, best, info.hitPoint.z),
+                        Mathf.Lerp(0.7f, 1.5f, Mathf.Clamp01(info.amount / Mathf.Max(1f, maxHealth))));
+            }
+
             // ★ 受击材质闪白（第三十五轮）：动作层之外的另一层打击反馈。
             //   龙没有受击动画可播（程序化驱动）、骷髅的 Hit 片段很短 —— 闪白是
             //   不依赖动作系统的通用层，谁被打谁"白一下"。

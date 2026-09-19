@@ -133,10 +133,16 @@ namespace InkWash.Roguelike
             _stateEnterTime = Time.unscaledTime;
             if (playerHealth != null) _runStartPlayerPos = playerHealth.transform.position;
 
-            // 全局水墨后处理 + 氛围飘墨（第三十八轮：水墨符合度复盘）
+            // 全局水墨后处理 + 氛围飘墨 + 冲刺拖尾 + 墨渍池 + 门开启墨涡（第三十八/三十九轮）
             InkWash.Rendering.InkPostProcessing.Boot();
             if (FindObjectOfType<InkWash.Effects.AmbientInkMotes>() == null)
                 gameObject.AddComponent<InkWash.Effects.AmbientInkMotes>();
+            if (playerHealth != null && playerHealth.GetComponent<InkWash.Effects.DashInkTrail>() == null)
+                playerHealth.gameObject.AddComponent<InkWash.Effects.DashInkTrail>();
+            if (FindObjectOfType<InkWash.Effects.InkStain>() == null)
+                gameObject.AddComponent<InkWash.Effects.InkStain>();
+            if (GetComponent<InkWash.Effects.InkDoorVfx>() == null)
+                gameObject.AddComponent<InkWash.Effects.InkDoorVfx>();
         }
 
         private void OnEnable()
