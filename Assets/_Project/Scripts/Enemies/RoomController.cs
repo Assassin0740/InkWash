@@ -20,6 +20,11 @@ namespace InkWash.Enemies
         public float gateOpenDepth = 3.2f;
         public float gateOpenDuration = 1.0f;
 
+        [Header("过门判定（以撒式推进：清空后玩家走到门洞才算进下一间）")]
+        [Tooltip("玩家水平坐标离门中心小于该距离，视为「穿过门洞」。门体下沉后 x/z 不变，\n" +
+                 "所以直接用门 Transform 的水平坐标当门洞圆心 —— 不需要在场景里额外摆触发区（Main 场景是二进制序列化，摆不了）。")]
+        public float doorEnterRadius = 2.6f;
+
         [Header("诊断（只读）")]
         [SerializeField] private bool _isCleared;
         [SerializeField] private float _clearTime = -1f;
@@ -30,6 +35,27 @@ namespace InkWash.Enemies
         public float ClearTime => _clearTime;
         public float GateProgress => _gateProgress;
         public int OpenedGateCount => _openedGateCount;
+
+        /// <summary>
+        /// 玩家是否已走到任一门洞（以撒式推进的过门判定）。
+        /// 只比水平 xz 距离：门体下沉后 x/z 不变，下沉量不影响判定；
+        /// 多扇门时任一门洞都算（门全开了，走哪个方向都是"离开这间房"）。
+        /// </summary>
+        public bool IsPlayerAtDoor(Transform player)
+        {
+            if (!_isCleared || player == null) return false;
+            if (gates == null) return false;
+            Vector3 pp = player.position;
+            float rr = doorEnterRadius * doorEnterRadius;
+            for (int i = 0; i < gates.Length; i++)
+            {
+                if (gates[i] == null) continue;
+                Vector3 gp = gates[i].position;
+                float dx = pp.x - gp.x, dz = pp.z - gp.z;
+                if (dx * dx + dz * dz <= rr) return true;
+            }
+            return false;
+        }
 
         /// <summary>清空时抛一次（Sprint 5 的 Roguelike 流程会订阅它推进房间）。</summary>
         public event Action Cleared;

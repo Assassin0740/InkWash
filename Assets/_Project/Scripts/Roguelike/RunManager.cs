@@ -114,13 +114,24 @@ namespace InkWash.Roguelike
         }
 
         private float _nextRoomTimer = -1f;
+        private bool _awaitingDoorCross;      // 以撒式：清房后等玩家穿过门洞
+        private Vector3 _runStartPlayerPos;   // 本局开局时玩家的落点（过门/重开传送回这里）
         private System.Random _rng;
+
+        /// <summary>清空房间后抛（非最终房）——玩家该去穿门了。UI 用它显示提示。</summary>
+        public event Action DoorOpened;
+        /// <summary>玩家穿过门洞、房间正式推进前抛。UI 用它做过场淡入。</summary>
+        public event Action DoorCrossed;
+
+        /// <summary>当前是否在等玩家穿门（诊断/测试用）。</summary>
+        public bool AwaitingDoorCross => _awaitingDoorCross;
 
         private void Awake()
         {
             Instance = this;
             _rng = new System.Random(level != null ? 20260915 : 20260915);
             _stateEnterTime = Time.unscaledTime;
+            if (playerHealth != null) _runStartPlayerPos = playerHealth.transform.position;
         }
 
         private void OnEnable()
@@ -145,6 +156,18 @@ namespace InkWash.Roguelike
 
         private void Update()
         {
+            // ---- 以撒式推进：等玩家穿门（第三十三轮）----
+            // 清房后不再"倒计时自动传送"，而是开门等玩家自己走过去。
+            // ★ 过门判定只在战斗中做：Reward（timeScale=0、选卡中）不推进，
+            //   玩家反正被冻着也走不到门洞；与 _nextRoomTimer 的"Playing 才走"同一纪律。
+            if (_awaitingDoorCross)
+            {
+                if (_state != RunState.Playing) return;
+                if (room != null && playerHealth != null && room.IsPlayerAtDoor(playerHealth.transform))
+                    CrossDoor();
+                return;
+            }
+
             // 清完一间房 → 延迟后开下一间（或通关）。
             // ★ 倒计时只在战斗中走：Reward（timeScale=0、选卡中）不推进，等回到 Playing 再数
             //   —— 与 OnRoomCleared 的"无条件上膛"配套（见下）。
@@ -166,6 +189,9 @@ namespace InkWash.Roguelike
             ResetRunContents();
             SetState(RunState.Playing);
 
+            // 重开一局时玩家可能还瘫在上次倒地的地方 —— 送回开局落点
+            TeleportPlayerToRunStart();
+
             if (spawner != null)
             {
                 spawner.ResetForTest();
@@ -181,6 +207,7 @@ namespace InkWash.Roguelike
             _rewardCount = 0;
             _spawnedInThisRun = 0;
             _nextRoomTimer = -1f;
+            _awaitingDoorCross = false;
 
             if (inventory != null) inventory.ResetAll();
             if (level != null) level.ResetAll();
@@ -210,7 +237,47 @@ namespace InkWash.Roguelike
             //   _nextRoomTimer=-1 / room 0/3，且 Console 干净（又一个静默失败）。
             //   与 OnLeveledUp 的"门票留队列、等回到 Playing 再消耗"同一套纪律：
             //   这里**无条件**上膛，真正的倒数在 Update 里等回 Playing 再走。
-            _nextRoomTimer = Mathf.Max(0.01f, nextRoomDelay);
+            //
+            // ★★ 第三十三轮（以撒式）：非最终房不再倒计时自动推进 —— 开门等玩家穿过去。
+            //   最终房仍走短延迟直接通关（清完最后一间还要"走出去"没有意义，门后没有下一间）。
+            if (_roomIndex + 1 >= roomsToClear)
+            {
+                _nextRoomTimer = Mathf.Max(0.01f, nextRoomDelay);
+                return;
+            }
+
+            _nextRoomTimer = -1f;
+            _awaitingDoorCross = true;
+            try { DoorOpened?.Invoke(); }
+            catch (Exception e) { Debug.LogError("[RunManager] DoorOpened 订阅者抛异常（已隔离）：" + e); }
+        }
+
+        /// <summary>玩家穿过门洞（Update 判定命中）—— 过场、推进房间、把玩家送回新房间中心。</summary>
+        private void CrossDoor()
+        {
+            _awaitingDoorCross = false;
+            try { DoorCrossed?.Invoke(); }
+            catch (Exception e) { Debug.LogError("[RunManager] DoorCrossed 订阅者抛异常（已隔离）：" + e); }
+            AdvanceRoom();
+            TeleportPlayerToRunStart();
+        }
+
+        /// <summary>
+        /// 把玩家传回本局开局的落点（= "下一间房"的出生点）。
+        /// 直接改 transform：CharacterController 需要先禁用再启用，否则它可能把人拉回去。
+        /// 传送后相机的平滑枢轴必须同步贴过去，否则镜头会从旧位置长距离甩过来。
+        /// </summary>
+        private void TeleportPlayerToRunStart()
+        {
+            if (playerHealth == null) return;
+            var t = playerHealth.transform;
+            var cc = t.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            t.position = _runStartPlayerPos;
+            if (cc != null) cc.enabled = true;
+
+            if (cameraRig == null) cameraRig = UnityEngine.Object.FindObjectOfType<InkWash.CameraRig.ThirdPersonCamera>();
+            if (cameraRig != null) cameraRig.SnapFollow();
         }
 
         private void AdvanceRoom()
@@ -364,6 +431,7 @@ namespace InkWash.Roguelike
             _rewardCount = 0;
             _spawnedInThisRun = 0;
             _nextRoomTimer = -1f;
+            _awaitingDoorCross = false;
             _lastDrawnCount = 0;
             _rng = new System.Random(20260915);
         }

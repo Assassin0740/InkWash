@@ -42,6 +42,11 @@ namespace InkWash.UI
         private Image _hitVignette;     // 受击墨溅闪屏
         private float _hitFlash;
 
+        // ---- 以撒式过门：提示 + 过场淡入 ----
+        private Text _doorPrompt;       // "石门已开 —— 穿过门洞继续"
+        private Image _fadeImage;       // 过门瞬间的水墨黑场
+        private Coroutine _fadeRoutine;
+
         // ---- 死亡倒地 ----
         private PlayerController _ctl;
         private Animator _anim;
@@ -69,7 +74,12 @@ namespace InkWash.UI
                     ? _run.playerHealth
                     : FindObjectOfType<PlayerHealth>();
 
-            if (_run != null) _run.StateChanged += OnStateChanged;
+            if (_run != null)
+            {
+                _run.StateChanged += OnStateChanged;
+                _run.DoorOpened += OnDoorOpened;     // 以撒式过门（第三十三轮）
+                _run.DoorCrossed += OnDoorCrossed;
+            }
             if (_health != null)
             {
                 _health.Died += OnPlayerDied;
@@ -84,7 +94,12 @@ namespace InkWash.UI
 
         private void OnDestroy()
         {
-            if (_run != null) _run.StateChanged -= OnStateChanged;
+            if (_run != null)
+            {
+                _run.StateChanged -= OnStateChanged;
+                _run.DoorOpened -= OnDoorOpened;
+                _run.DoorCrossed -= OnDoorCrossed;
+            }
             if (_health != null)
             {
                 _health.Died -= OnPlayerDied;
@@ -126,6 +141,47 @@ namespace InkWash.UI
         private void OnPlayerDamaged(DamageInfo info) { FlashDamage(); }
 
         // ==================================================================
+        //  以撒式过门：提示 / 水墨转场
+        // ==================================================================
+
+        private void OnDoorOpened()
+        {
+            if (_doorPrompt != null) _doorPrompt.gameObject.SetActive(true);
+        }
+
+        /// <summary>过门黑场当前 alpha（验收读数口，不走运行时逻辑）。</summary>
+        public float DoorFadeAlphaForTest => _fadeImage != null ? _fadeImage.color.a : 0f;
+
+        private void OnDoorCrossed()
+        {
+            if (_doorPrompt != null) _doorPrompt.gameObject.SetActive(false);
+            if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
+            _fadeRoutine = StartCoroutine(DoorFadeRoutine());
+        }
+
+        /// <summary>穿门转场：墨色涌入盖住传送瞬间 → 玩家已在下一间房 → 墨色退去。全程 unscaled。</summary>
+        private IEnumerator DoorFadeRoutine()
+        {
+            if (_fadeImage == null) yield break;
+            float t = 0f;
+            while (t < 0.16f)   // 涌入
+            {
+                t += Time.unscaledDeltaTime;
+                _fadeImage.color = new Color(0.06f, 0.05f, 0.05f, Mathf.Clamp01(t / 0.16f) * 0.92f);
+                yield return null;
+            }
+            t = 0f;
+            while (t < 0.55f)   // 退去
+            {
+                t += Time.unscaledDeltaTime;
+                _fadeImage.color = new Color(0.06f, 0.05f, 0.05f, (1f - Mathf.Clamp01(t / 0.55f)) * 0.92f);
+                yield return null;
+            }
+            _fadeImage.color = new Color(0.06f, 0.05f, 0.05f, 0f);
+            _fadeRoutine = null;
+        }
+
+        // ==================================================================
         //  状态 → 面板可见性 + 光标
         // ==================================================================
 
@@ -136,6 +192,9 @@ namespace InkWash.UI
             if (_menuPanel != null) _menuPanel.SetActive(s == RunState.MainMenu);
             if (_resultPanel != null) _resultPanel.SetActive(s == RunState.GameOver || s == RunState.Victory);
             if (_hud != null) _hud.SetActive(s == RunState.Playing || s == RunState.Reward);
+            // 过门提示只在战斗界面有意义：死亡/通关时若还挂着就收掉
+            if (_doorPrompt != null && (s == RunState.GameOver || s == RunState.Victory))
+                _doorPrompt.gameObject.SetActive(false);
             if (_resultTitle != null && _run != null)
             {
                 _resultTitle.text = s == RunState.Victory ? "通　关" : "身　殒";
@@ -315,6 +374,22 @@ namespace InkWash.UI
             _hitVignette = vinGo.GetComponent<Image>();
             _hitVignette.color = new Color(0.32f, 0.06f, 0.05f, 0f);
             _hitVignette.raycastTarget = false;
+
+            // 以撒式过门提示（顶部居中）：清房开门时出现，穿门后收起
+            _doorPrompt = NewText(_hud.transform, "DoorPrompt", "石门已开 —— 穿过门洞继续", 26,
+                new Color(0.92f, 0.89f, 0.80f, 0.95f), TextAnchor.UpperCenter);
+            Stretch((RectTransform)_doorPrompt.transform, 0.2f, 0.8f, 0.80f, 0.90f);
+            _doorPrompt.gameObject.SetActive(false);
+
+            // 过门过场黑场（全屏、盖在一切之上、不挡射线）：门洞穿出的水墨转场
+            var fadeGo = new GameObject("DoorFade", typeof(Image));
+            var fadeRt = (RectTransform)fadeGo.transform;
+            fadeRt.SetParent(_hud.transform, false);
+            fadeRt.anchorMin = Vector2.zero; fadeRt.anchorMax = Vector2.one;
+            fadeRt.offsetMin = Vector2.zero; fadeRt.offsetMax = Vector2.zero;
+            _fadeImage = fadeGo.GetComponent<Image>();
+            _fadeImage.color = new Color(0.06f, 0.05f, 0.05f, 0f);
+            _fadeImage.raycastTarget = false;
         }
 
         // ==================================================================

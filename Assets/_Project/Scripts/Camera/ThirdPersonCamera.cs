@@ -265,6 +265,21 @@ namespace InkWash.CameraRig
             return best;
         }
 
+        /// <summary>
+        /// 让镜头立刻贴到目标当前位置（不再阻尼滑过去）。房间过门传送后调用：
+        /// 玩家从门洞被送回"下一间房"中心，平滑枢轴若还留在旧位置，镜头会横穿场景甩过来。
+        /// 速度历史一并清零 —— 否则传送瞬间算出一次天文数字的目标速度，
+        /// 提前量会把枢轴甩出屏幕外，FOV 也会猛地一缩。
+        /// </summary>
+        public void SnapFollow()
+        {
+            if (target == null) return;
+            _pivot = ComputeAimPoint();
+            _pivotVel = Vector3.zero;
+            _lastTargetPos = target.position;
+            _targetVel = Vector3.zero;
+        }
+
         private void LateUpdate()
         {
             if (target == null) return;
