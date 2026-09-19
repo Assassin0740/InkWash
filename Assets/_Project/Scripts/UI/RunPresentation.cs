@@ -47,6 +47,10 @@ namespace InkWash.UI
         private Image _fadeImage;       // 过门瞬间的水墨黑场
         private Coroutine _fadeRoutine;
 
+        // ---- 主动技能冷却（墨爆 R）----
+        private PlayerActiveSkill _skill;
+        private Text _skillText;
+
         // ---- 死亡倒地 ----
         private PlayerController _ctl;
         private Animator _anim;
@@ -73,6 +77,7 @@ namespace InkWash.UI
                 _health = _run != null && _run.playerHealth != null
                     ? _run.playerHealth
                     : FindObjectOfType<PlayerHealth>();
+            _skill = FindObjectOfType<PlayerActiveSkill>();   // 墨爆冷却读数（第三十四轮）
 
             if (_run != null)
             {
@@ -121,6 +126,22 @@ namespace InkWash.UI
             }
             if (_roomText != null && _run != null)
                 _roomText.text = "房间 " + Mathf.Min(_run.RoomIndex + 1, _run.roomsToClear) + " / " + _run.roomsToClear;
+
+            // 主动技能冷却读数（墨爆 R）：就绪高亮，冷却中灰显倒计时
+            if (_skillText != null)
+            {
+                if (_skill == null) _skill = FindObjectOfType<PlayerActiveSkill>();
+                if (_skill != null)
+                {
+                    _skillText.text = _skill.IsReady
+                        ? "墨爆 [R]  就绪"
+                        : "墨爆 [R]  " + _skill.CooldownLeft.ToString("F1") + "s";
+                    _skillText.color = _skill.IsReady
+                        ? new Color(0.95f, 0.93f, 0.88f, 0.95f)
+                        : new Color(0.95f, 0.93f, 0.88f, 0.35f);
+                }
+                else _skillText.text = "";
+            }
 
             // 受击闪屏衰减：unscaled 时间 —— 顿帧/暂停期间也要正常退掉
             if (_hitFlash > 0f)
@@ -390,6 +411,11 @@ namespace InkWash.UI
             _fadeImage = fadeGo.GetComponent<Image>();
             _fadeImage.color = new Color(0.06f, 0.05f, 0.05f, 0f);
             _fadeImage.raycastTarget = false;
+
+            // 主动技能冷却（血条正上方）：就绪高亮 / 冷却灰显倒计时
+            _skillText = NewText(_hud.transform, "SkillText", "", 15,
+                new Color(0.95f, 0.93f, 0.88f, 0.9f), TextAnchor.MiddleLeft);
+            Stretch((RectTransform)_skillText.transform, 0.03f, 0.26f, 0.098f, 0.128f);
         }
 
         // ==================================================================
