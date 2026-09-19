@@ -617,6 +617,15 @@ namespace InkWash.Enemies
                  "   ★ hg = 0 时吻部仍有约 −7.4° 的**静态**下俯 ⇒ 再用 `headAlignPitchDeg` 抬回来\n" +
                  "     （该尺子对值的斜率实测 ≈ 0.71 °/°，即想抬 7° 就把值往正向加约 10）。")]
         public float swimWaveHeadGain = 1.0f;
+        [Tooltip("★★ 竖直/水平振幅比（第三十九轮，修复「盘旋态竖直分量消失」）：\n" +
+                 "位置级蛇形曲线 SerpPoint 曾只有水平横向分量（origin + fwd + right·lat），\n" +
+                 "旧旋转级实现的 hoverPitchAmplitudeDeg（竖直占水平 46%）在新路径零消费 ⇒ 盘旋是平面扁片。\n" +
+                 "设计依据（hoverPitchAmplitudeDeg 注释）：垂直要占水平的 40~60%，0.45 = 16/35。\n" +
+                 "竖直项与水平项共用同一包络 env = sin(πu)·Lerp(tg, hg, u) ⇒ 头锁定段（headLockToBase）不受影响。")]
+        public float swimWaveVertRatio = 0.45f;
+        [Tooltip("★★ 竖直波相对水平波的相位差（度）。90° = 螺旋面（身体绕轴线螺旋推进，立体感最强）；\n" +
+                 "0° = 斜平面（仍是平面波，只是摆向倾斜）。默认 90°。")]
+        public float swimWaveVertPhaseDeg = 90f;
         [Tooltip("（已废弃，不再读取）旧包络指数 env = sin(πu)^n —— 两端归零 ⇒ 头和尾都不动。" +
                  "保留仅为序列化兼容，默认值与 prefab 同为 3")]
         public float swimWaveEnvPow = 3f;
@@ -2513,9 +2522,10 @@ namespace InkWash.Enemies
         //   调大 swimWaveCount 会线性抬高这个系数 —— 改参数后务必用 `drg_serp` 复测"无折返"。
 
         /// <summary>中心线上参数 u 处的点（世界空间）。u 在 [0,1] 上对应「尾→头」的整条身长。</summary>
-        private static Vector3 SerpPoint(Vector3 origin, Vector3 fwd, Vector3 right, float axialLen,
+        private static         Vector3 SerpPoint(Vector3 origin, Vector3 fwd, Vector3 right, float axialLen,
                                          float amp, float waveCount, float tailGain, float headGain,
-                                         float phase, float u)
+                                         float phase, float u,
+                                         float vertAmp = 0f, float vertPhase = 0f)
         {
             // ★★ 包络 = sin(πu) × 线性增益。指数**必须是 1**，这一条同时卡住了两个相反的约束：
             //
@@ -2538,7 +2548,12 @@ namespace InkWash.Enemies
             float uc = Mathf.Clamp01(u);
             float env = Mathf.Sin(Mathf.PI * uc) * Mathf.Lerp(tailGain, headGain, uc);
             float lat = amp * env * Mathf.Sin(2f * Mathf.PI * waveCount * u + phase);
-            return origin + fwd * (u * axialLen) + right * lat;
+            // ★★ 第三十九轮：竖直分量回归。旧实现（旋转级）有 hoverPitchAmplitudeDeg（竖直占水平 46%），
+            //   改位置级蛇形时丢成了纯平面波 ⇒ 用户观感「盘旋态竖直分量消失」。
+            //   竖直项共用同一包络 env（头尾包络一致，headLockToBase 的头段照旧锁定不受影响）；
+            //   vertPhase = 90° 时水平/竖直波相位正交，曲线绕轴线呈螺旋面（立体感最强）。
+            float vert = vertAmp * env * Mathf.Sin(2f * Mathf.PI * waveCount * u + phase + vertPhase);
+            return origin + fwd * (u * axialLen) + right * lat + Vector3.up * vert;
         }
 
         // ★ `SolveSerpU`（在曲线上按"弦长 = 骨长"反解 u）已删除：
@@ -2601,6 +2616,9 @@ namespace InkWash.Enemies
             float W = Mathf.Max(0.05f, swimWaveCount);
             float tg = swimWaveTailGain;
             float hg = swimWaveHeadGain;
+            // 第三十九轮：竖直分量（与水平同包络；随 ampScale 一起被静默段/俯冲混合缩放）
+            float vertAmp = swimWaveAmp * ampScale * swimWaveVertRatio;
+            float vertPhase = swimWaveVertPhaseDeg * Mathf.Deg2Rad;
 
             Quaternion rootRot = _modelRoot != null ? _modelRoot.rotation : transform.rotation;
             Quaternion invRoot = Quaternion.Inverse(rootRot);
@@ -2618,13 +2636,13 @@ namespace InkWash.Enemies
             //   现在 u = 累计骨长 / 总骨长，恰好铺满 [0, 1]：波形在整条身长上完整展开。
             //   （链的位置仍由父子链按骨长累积 ⇒ 身长恒为 Σ骨长，不受取点方式影响。）
             float acc = 0f;
-            Vector3 prev = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, 0f);
+            Vector3 prev = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, 0f, vertAmp, vertPhase);
             for (int i = 0; i + 1 < n; i++)
             {
                 acc += _segLen[i];
                 float uh = total > 1e-6f ? Mathf.Clamp01(acc / total) : 0f;
                 uNode[i] = uh;
-                Vector3 p = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, uh);
+                Vector3 p = SerpPoint(origin, fwd, right, total, amp, W, tg, hg, phase, uh, vertAmp, vertPhase);
                 Vector3 d = p - prev;
                 tan[i] = d.sqrMagnitude > 1e-12f ? d.normalized : fwd;
                 prev = p;

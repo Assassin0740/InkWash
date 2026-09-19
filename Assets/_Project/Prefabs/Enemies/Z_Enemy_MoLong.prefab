@@ -474,6 +474,8 @@ MonoBehaviour:
   swimWaveFreq: 0.45
   swimWaveTailGain: 1.15
   swimWaveHeadGain: 1
+  swimWaveVertRatio: 0.45
+  swimWaveVertPhaseDeg: 90
   swimWaveEnvPow: 3
   hoverStationary: 0
   hoverStationaryYawDeg: 0
