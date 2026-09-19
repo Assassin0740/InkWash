@@ -132,6 +132,11 @@ namespace InkWash.Roguelike
             _rng = new System.Random(level != null ? 20260915 : 20260915);
             _stateEnterTime = Time.unscaledTime;
             if (playerHealth != null) _runStartPlayerPos = playerHealth.transform.position;
+
+            // 全局水墨后处理 + 氛围飘墨（第三十八轮：水墨符合度复盘）
+            InkWash.Rendering.InkPostProcessing.Boot();
+            if (FindObjectOfType<InkWash.Effects.AmbientInkMotes>() == null)
+                gameObject.AddComponent<InkWash.Effects.AmbientInkMotes>();
         }
 
         private void OnEnable()

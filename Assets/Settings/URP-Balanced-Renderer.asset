@@ -17,7 +17,7 @@ MonoBehaviour:
     enabled: 1
     inkColor: {r: 0.1, g: 0.11, b: 0.14, a: 1}
     threshold: 0.35
-    strength: 0.55
+    strength: 0.42
     radius1: 3
     radius2: 9
     farWeight: 0.55

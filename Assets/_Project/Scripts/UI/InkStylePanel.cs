@@ -30,11 +30,11 @@ namespace InkWash.UI
         public Material inkMaterial;
 
         [Header("显示")]
-        public bool visible = true;
+        public bool visible = false;    // 第三十八轮：调试面板默认隐藏（F1 唤出），玩家画面不被占
         public KeyCode toggleKey = KeyCode.F1;
 
         [Header("状态（只读）")]
-        [SerializeField, Range(0, 4)] private int _stage = 3;
+        [SerializeField, Range(0, 4)] private int _stage = 4;   // 第三十八轮：出厂五层全开（含墨晕）
 
         // ---------------- 换材质：自注册表 ----------------
         private class Entry
@@ -58,7 +58,7 @@ namespace InkWash.UI
         private static readonly List<Family> Families = new List<Family>();
 
         private static readonly List<Entry> Entries = new List<Entry>();
-        private static int s_stage = 3;
+        private static int s_stage = 4;
 
         private Material _edit;
         private int _editFamily = -1;       // 当前编辑的是第几族（-1 = 没得编）
