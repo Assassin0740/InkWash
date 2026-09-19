@@ -145,9 +145,12 @@ namespace InkWash.Roguelike
 
         private void Update()
         {
-            // 清完一间房 → 延迟后开下一间（或通关）
+            // 清完一间房 → 延迟后开下一间（或通关）。
+            // ★ 倒计时只在战斗中走：Reward（timeScale=0、选卡中）不推进，等回到 Playing 再数
+            //   —— 与 OnRoomCleared 的"无条件上膛"配套（见下）。
             if (_nextRoomTimer > 0f)
             {
+                if (_state != RunState.Playing) return;
                 _nextRoomTimer -= Time.unscaledDeltaTime;
                 if (_nextRoomTimer <= 0f) AdvanceRoom();
             }
@@ -198,7 +201,15 @@ namespace InkWash.Roguelike
 
         private void OnRoomCleared()
         {
-            if (_state != RunState.Playing) return;
+            // ★★ 第三十轮实测修复：房间清空与升级奖励存在**同帧竞态**。
+            //   清完最后一波的那一刀如果正好触发升级，本回调到达时 _state 已是 Reward，
+            //   旧代码 `if (_state != Playing) return;` 把这张**一次性**的门票直接扔掉
+            //   —— RoomController._isCleared 已置 true，Cleared 不会再发第二次，
+            //   _nextRoomTimer 永远不会上膛 ⇒ 房间推进永久卡死。
+            //   实测（S5 验收 120 s 墙钟跑满）：12 只全清 / allClr=True / isCleared=True /
+            //   _nextRoomTimer=-1 / room 0/3，且 Console 干净（又一个静默失败）。
+            //   与 OnLeveledUp 的"门票留队列、等回到 Playing 再消耗"同一套纪律：
+            //   这里**无条件**上膛，真正的倒数在 Update 里等回 Playing 再走。
             _nextRoomTimer = Mathf.Max(0.01f, nextRoomDelay);
         }
 
