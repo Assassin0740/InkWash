@@ -580,6 +580,7 @@ namespace InkWash.Player
             _actionDir.Normalize();
 
             if (animator != null) animator.SetTrigger(HashDash);
+            InkWash.Audio.AudioManager.Play("Dash", 0.8f);
             if (DashStarted != null) DashStarted();
             return true;
         }
@@ -631,6 +632,7 @@ namespace InkWash.Player
             _atkSpeed = stats != null ? Mathf.Max(0.2f, stats.AttackSpeedMultiplier) : 1f;
 
             animator.SetTrigger(HashAttack1);
+            InkWash.Audio.AudioManager.Play(UnityEngine.Random.value < 0.5f ? "Swing_A" : "Swing_B", 0.85f);
             if (SwingStarted != null) SwingStarted(1);
             return true;
         }
@@ -645,6 +647,7 @@ namespace InkWash.Player
             _actionDir = ResolveAttackDir();
 
             if (animator != null) animator.SetTrigger(_comboStep == 2 ? HashAttack2 : HashAttack3);
+            InkWash.Audio.AudioManager.Play("Swing_A", 0.85f);
             if (SwingStarted != null) SwingStarted(_comboStep);
         }
 
@@ -695,6 +698,7 @@ namespace InkWash.Player
             _atkSpeed = stats != null ? Mathf.Max(0.2f, stats.AttackSpeedMultiplier) : 1f;
 
             animator.SetTrigger(HashAttack3);
+            InkWash.Audio.AudioManager.Play("Swing_Heavy", 0.95f);
             if (SwingStarted != null) SwingStarted(3);
         }
 

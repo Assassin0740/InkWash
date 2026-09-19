@@ -198,6 +198,10 @@ namespace InkWash.Player
                         rig.Shake(hitShakeAmplitude, hitShakeDuration);
                         rig.FovPunch(hitFovPunch, hitFovPunchDuration);
                     }
+                    // ★ 命中音（第三十七轮）：肉感优先——敌人是血肉之躯，Hit_Flesh
+                    //   比 Hit_Blade 的金属声更"砍到了"；音量按命中数微增（多杀更响）
+                    InkWash.Audio.AudioManager.Play("Hit_Flesh",
+                        Mathf.Min(1f, 0.8f + 0.1f * _newHitsLastFrame));
                 }
             }
 

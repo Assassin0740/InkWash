@@ -88,6 +88,8 @@ namespace InkWash.Player
             _cooldownLeft = cooldown;
             _castCount++;
             _lastHitCount = 0;
+            // ★ 施放音（第三十七轮）：重挥起手 + 低音高，"蓄力爆发"的第一声
+            InkWash.Audio.AudioManager.Play("Swing_Heavy", 1f, 0.85f, 0.9f);
 
             Vector3 c = transform.position + Vector3.up * 0.1f;
 

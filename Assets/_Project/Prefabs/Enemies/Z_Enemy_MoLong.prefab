@@ -411,7 +411,7 @@ MonoBehaviour:
   flinchHeadGain: 1
   flinchRootGain: 0.25
   maxTurnRateDeg: 110
-  deathSinkDuration: 1.6
+  deathSinkDuration: 0.9
   poseBlendRate: 6
   headAlignLinks: 2
   headLockToBase: 1

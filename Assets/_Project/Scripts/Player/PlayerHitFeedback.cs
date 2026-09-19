@@ -101,6 +101,42 @@ namespace InkWash.Player
             //   Flash 在没有渲染器时是安全空转，以后接上模型自动生效，不用回头改这里。
             if (_hitFlash == null) _hitFlash = HitFlash.Ensure(gameObject);
             _hitFlash.Flash(scale);
+
+            // ★ 受击后仰（第三十七轮）：本地动作库没有 CC 骨架的受击动画
+            //   （KayKit 的 Hit_A 是 Rig_Medium 骨架，无法重定向给 Feng）——
+            //   用程序化后仰代替：模型根绕 X 轴快速后仰 14° 再回弹（0.24s 正弦包络），
+            //   与闪白/顿帧/震屏叠加成完整受击反应。死亡那一击不后仰（倒地动画接管）。
+            if (health == null || health.Health > 0f) Recoil(scale);
+
+            // ★ 受击音（第三十七轮）：音高随机微降，"挨了一下"更沉
+            InkWash.Audio.AudioManager.Play("Hit_Flesh", 0.7f, 0.82f, 0.9f);
+        }
+
+        // ---- 受击后仰（程序化，第三十七轮）----
+        private Coroutine _recoilRoutine;
+
+        private void Recoil(float scale)
+        {
+            Transform t = animator != null ? animator.transform : transform;
+            if (t == null) return;
+            if (_recoilRoutine != null) StopCoroutine(_recoilRoutine);
+            _recoilRoutine = StartCoroutine(RecoilRoutine(t, scale));
+        }
+
+        private System.Collections.IEnumerator RecoilRoutine(Transform t, float scale)
+        {
+            Quaternion baseRot = t.localRotation;
+            const float dur = 0.24f;
+            float e = 0f;
+            while (e < 1f)
+            {
+                e = Mathf.Min(1f, e + Time.deltaTime / dur);
+                float k = Mathf.Sin(e * Mathf.PI);              // 0→1→0：后仰再回弹
+                t.localRotation = baseRot * Quaternion.Euler(-14f * Mathf.Clamp(scale, 0.5f, 2f) * k, 0f, 0f);
+                yield return null;
+            }
+            t.localRotation = baseRot;
+            _recoilRoutine = null;
         }
 
         private HitFlash _hitFlash;

@@ -95,6 +95,9 @@ namespace InkWash.UI
             }
 
             ApplyState(_run != null ? _run.State : RunState.MainMenu);
+
+            // ★ BGM（第三十七轮）：中国风曲循环——主菜单就开始放，音量在 AudioManager 里压低
+            InkWash.Audio.AudioManager.PlayBgm();
         }
 
         private void OnDestroy()
@@ -120,7 +123,16 @@ namespace InkWash.UI
             if (_health != null)
             {
                 float r = _health.HealthRatio;
-                if (_hpFill != null) _hpFill.fillAmount = r;
+                if (_hpFill != null)
+                {
+                    _hpFill.fillAmount = r;
+                    // ★ 濒危脉动（第三十七轮）：血量 < 30% 时朱砂色明暗脉动，
+                    //   用 unscaled 时间（选卡/结算暂停时脉动不冻结）
+                    _hpFill.color = r < 0.3f
+                        ? Color.Lerp(new Color(0.52f, 0.15f, 0.11f), new Color(0.80f, 0.12f, 0.08f),
+                            0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 6f))
+                        : new Color(0.52f, 0.15f, 0.11f);
+                }
                 if (_hpText != null)
                     _hpText.text = Mathf.CeilToInt(_health.Health) + " / " + Mathf.CeilToInt(_health.EffectiveMaxHealth);
             }
@@ -242,21 +254,52 @@ namespace InkWash.UI
             _fallRoutine = StartCoroutine(FallRoutine());
         }
 
-        /// <summary>程序化倒地：控住角色模型绕脚部枢轴倒向前方，0.6 s。用 unscaled 时间——结算已冻结 timeScale。</summary>
+        /// <summary>
+        /// 死亡表现（第三十七轮重构）：
+        /// ★ **死亡动画优先**——Player.controller 已接 Death.anim（Dead 触发器），
+        ///   有真实倒地动画就不该拧 transform：31 轮的"disable Animator + 绕脚部
+        ///   枢轴转 90°"会把骨骼停在死前姿势整体放倒，观感就是用户截图里的
+        ///   "碎在地上"。
+        /// ★ 程序化倒地只作为**无死亡动画时的兜底**（controller 没有 Dead 参数时）。
+        /// 用 unscaled 时间——结算已冻结 timeScale。
+        /// </summary>
         private IEnumerator FallRoutine()
         {
             if (_ctl == null) yield break;
             _ctl.enabled = false;
-            if (_anim != null) _anim.enabled = false;
 
             Transform t = _ctl.transform;
+
+            // ---- 路线 A：死亡动画（Player.controller 有 Dead 触发器且 Animator 可用）----
+            if (_anim != null && _anim.runtimeAnimatorController != null && HasTrigger(_anim, "Dead"))
+            {
+                // ★ 身陨暂停（timeScale=0）会把 Animator 一起冻住 —— 死亡动画切
+                //   UnscaledTime 模式，暂停中照播；复活时恢复 Normal。
+                _anim.enabled = true;
+                _anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+                _anim.SetTrigger(HashDeadAnim);
+                // 等动画把人放倒（Death.anim 约 1.2 s）；期间不碰 transform
+                float guard = 0f;
+                while (guard < 2.5f) { guard += Time.unscaledDeltaTime; yield return null; }
+                _fallRoutine = null;
+                yield break;
+            }
+
+            // ---- 路线 B：程序化倒地兜底 ----
+            if (_anim != null) _anim.enabled = false;
+            _usedProceduralFall = true;
             _standingRot = t.rotation;
 
             Vector3 facing = t.forward; facing.y = 0f;
             if (facing.sqrMagnitude < 1e-6f) facing = Vector3.forward;
             facing.Normalize();
-            // 身体 up 轴（脊柱）放倒到朝向方向 ⇒ 人躺在地上、头朝原来的面向
+            // 身体 up 轴（脊柱）放倒到朝向方向 ⇒ 人躺在地上、头朝原来的面向。
+            // ★ 第三十七轮：枢轴在脚部，转 90° 后身体平面贴地——但骨骼若停在
+            //   T-pose/跑姿，四肢会插进地面。抬高半个身位兜底，视觉上"瘫倒"
+            //   而不是"切进地里"。
             Quaternion target = Quaternion.FromToRotation(Vector3.up, facing) * _standingRot;
+            Vector3 pos0 = t.position;
+            Vector3 pos1 = pos0 + Vector3.up * 0.25f;
 
             const float dur = 0.6f;
             float t01 = 0f;
@@ -265,20 +308,44 @@ namespace InkWash.UI
                 t01 = Mathf.Min(1f, t01 + Time.unscaledDeltaTime / dur);
                 float e = 1f - (1f - t01) * (1f - t01);        // ease-out：先快后慢，像失去力气
                 t.rotation = Quaternion.Slerp(_standingRot, target, e);
+                t.position = Vector3.Lerp(pos0, pos1, e);
                 yield return null;
             }
             _fallRoutine = null;
+        }
+
+        private static readonly int HashDeadAnim = Animator.StringToHash("Dead");
+
+        /// <summary>controller 是否真的存在该 Trigger 参数（不存在 SetTrigger 会刷警告）。</summary>
+        private static bool HasTrigger(Animator a, string name)
+        {
+            if (a.runtimeAnimatorController == null) return false;
+            foreach (var p in a.parameters)
+                if (p.type == AnimatorControllerParameterType.Trigger && p.name == name) return true;
+            return false;
         }
 
         private void OnPlayerRevived()
         {
             if (_fallRoutine != null) { StopCoroutine(_fallRoutine); _fallRoutine = null; }
             if (_ctl == null) return;
-            _ctl.transform.rotation = _standingRot;
-            if (_anim != null) _anim.enabled = true;
+            // ★ 只有程序化倒地（路线 B）才动过 transform —— 动画路线的复活
+            //   不需要也不应该拧回旋转（_standingRot 可能是陈旧值）。
+            if (_usedProceduralFall)
+            {
+                _ctl.transform.rotation = _standingRot;
+                _usedProceduralFall = false;
+            }
+            if (_anim != null)
+            {
+                _anim.updateMode = AnimatorUpdateMode.Normal;   // 死亡动画用的 UnscaledTime 恢复回来
+                _anim.enabled = true;
+            }
             _ctl.enabled = true;
             _falling = false;
         }
+
+        private bool _usedProceduralFall;
 
         // ==================================================================
         //  UGUI 构建（运行时）
@@ -328,6 +395,7 @@ namespace InkWash.UI
 
         private void OnStartClicked()
         {
+            InkWash.Audio.AudioManager.Play("UI_Click", 0.9f);
             if (_run != null) _run.StartRun();
         }
 
@@ -359,26 +427,38 @@ namespace InkWash.UI
             rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
             rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
 
-            // 血条（左下）：底 + 填充 + 数字
+            // 血条（左下）：宣纸底 + 朱砂填充 + 墨描边（第三十七轮美化）
+            //   ★ 之前是两块纯色矩形，用户评"很粗糙"。水墨 HUD 的语言：
+            //   纸（底）— 朱砂（血）— 墨（框），条形用**程序化笔触 sprite**
+            //   （SDF 圆角条 + 噪声扰边 + 左端笔锋收尖），不再是完美矩形。
             var bgGo = new GameObject("HpBg", typeof(Image));
             var bgRt = (RectTransform)bgGo.transform;
             bgRt.SetParent(_hud.transform, false);
-            bgRt.anchorMin = new Vector2(0.03f, 0.05f); bgRt.anchorMax = new Vector2(0.26f, 0.095f);
+            bgRt.anchorMin = new Vector2(0.03f, 0.05f); bgRt.anchorMax = new Vector2(0.26f, 0.10f);
             bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
-            bgGo.GetComponent<Image>().color = new Color(0.10f, 0.09f, 0.08f, 0.75f);
+            var bgImg = bgGo.GetComponent<Image>();
+            bgImg.sprite = BrushBarSprite;
+            bgImg.color = new Color(0.955f, 0.945f, 0.915f, 0.92f);   // 宣纸
+
+            var outline = bgGo.AddComponent<Outline>();
+            outline.effectColor = new Color(0.10f, 0.09f, 0.08f, 0.95f);  // 墨框
+            outline.effectDistance = new Vector2(2f, -2f);
 
             var fillGo = new GameObject("HpFill", typeof(Image));
             var fillRt = (RectTransform)fillGo.transform;
             fillRt.SetParent(bgRt, false);
-            fillRt.anchorMin = new Vector2(0.012f, 0.12f); fillRt.anchorMax = new Vector2(0.988f, 0.88f);
-            fillRt.offsetMin = Vector2.zero; fillRt.offsetMax = Vector2.zero;
+            fillRt.anchorMin = Vector2.zero; fillRt.anchorMax = Vector2.one;
+            fillRt.offsetMin = new Vector2(6f, 5f); fillRt.offsetMax = new Vector2(-6f, -5f);
             _hpFill = fillGo.GetComponent<Image>();
-            _hpFill.color = new Color(0.16f, 0.14f, 0.13f);
+            _hpFill.sprite = BrushBarSprite;
+            _hpFill.color = new Color(0.52f, 0.15f, 0.11f);           // 朱砂（血）
             _hpFill.type = Image.Type.Filled;
             _hpFill.fillMethod = Image.FillMethod.Horizontal;
             _hpFill.fillAmount = 1f;
+            _hpFill.raycastTarget = false;
+            bgImg.raycastTarget = false;
 
-            _hpText = NewText(bgRt, "HpText", "", 15, new Color(0.95f, 0.93f, 0.88f), TextAnchor.MiddleCenter);
+            _hpText = NewText(bgRt, "HpText", "", 15, new Color(0.98f, 0.96f, 0.90f), TextAnchor.MiddleCenter);
             Stretch((RectTransform)_hpText.transform, 0f, 1f, -0.2f, 1.2f);
 
             // 房间进度（左上）
@@ -421,6 +501,49 @@ namespace InkWash.UI
         // ==================================================================
         //  UGUI 小工厂
         // ==================================================================
+
+        private static Sprite _brushBar;
+
+        /// <summary>
+        /// 程序化笔触条 sprite（256×48，一次生成静态缓存）：
+        /// 圆角条 SDF + 上下边缘值噪声扰动 + 左端笔锋收尖 + 右端顿笔。
+        /// 给血条用——水墨 HUD 里不该有完美矩形，"毛笔画出来的条"才有纸感。
+        /// </summary>
+        private static Sprite BrushBarSprite
+        {
+            get
+            {
+                if (_brushBar != null) return _brushBar;
+                const int w = 256, h = 48;
+                var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+                var rng = new System.Random(20260919);
+                float nT = 0f, nB = 0f;
+                var top = new float[w]; var bot = new float[w];
+                for (int x = 0; x < w; x++)
+                {
+                    nT = Mathf.Lerp(nT, (float)rng.NextDouble(), 0.18f);   // 平滑随机：毛糙但不锯齿
+                    nB = Mathf.Lerp(nB, (float)rng.NextDouble(), 0.18f);
+                    top[x] = h * 0.5f - 7f - nT * 7f;
+                    bot[x] = h * 0.5f + 7f + nB * 7f;
+                }
+                var px = new Color32[w * h];
+                for (int x = 0; x < w; x++)
+                {
+                    float taper = Mathf.SmoothStep(0f, 1f, x / (w * 0.14f));  // 左端起笔收尖
+                    for (int y = 0; y < h; y++)
+                    {
+                        float inside = (y > top[x] && y < bot[x]) ? 1f : 0f;
+                        px[y * w + x] = new Color32(255, 255, 255, (byte)(inside * taper * 255f));
+                    }
+                }
+                tex.SetPixels32(px);
+                tex.Apply();
+                _brushBar = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f,
+                    0, SpriteMeshType.FullRect, new Vector4(16f, 16f, 16f, 16f));
+                _brushBar.name = "BrushBar";
+                return _brushBar;
+            }
+        }
 
         private static GameObject NewPanel(Transform parent, string name, Color color)
         {

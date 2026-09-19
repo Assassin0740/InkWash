@@ -369,22 +369,48 @@ namespace InkWash.CameraRig
             return target != null ? target.position + pivotOffset : transform.position;
         }
 
-        /// <summary>距离：先按避障收镜，再平滑，避免贴墙时相机穿墙。</summary>
+        /// <summary>
+        /// 距离：先按避障收镜，再平滑。
+        /// ★ 第三十七轮（用户实测"还是会穿墙"）两道补丁：
+        ///   ① 收镜**不再平滑**——旧逻辑收/放都用 damp，快速转身时 1~2 帧的平滑窗口
+        ///     足够让镜头扫穿墙角（墙有 collider、mask 也对，纯粹是"来不及收"）；
+        ///     遮挡时直接 snap 到安全距离，只有放镜才平滑。
+        ///   ② **相机已在墙内**的检测——SphereCast 从 pivot 打向相机方向，若相机
+        ///     已经在墙另一侧，起点在墙内就永远打不到那面墙。用 pivot→相机当前位置
+        ///     的 Linecast 兜住这种情况，命中立即按遮挡点收。
+        /// </summary>
         private float ResolveDistance(Vector3 pivot, Vector3 back, float dt)
         {
             float want = distance;
+            bool blocked = false;
 
             if (collisionMask.value != 0)
             {
                 RaycastHit hit;
                 if (Physics.SphereCast(pivot, collisionRadius, back, out hit, distance,
                         collisionMask, QueryTriggerInteraction.Ignore))
+                {
                     want = Mathf.Clamp(hit.distance - collisionRadius * 0.5f, minDistance, distance);
+                    blocked = true;
+                }
+
+                // 相机已经在墙另一侧（Linecast 从 pivot 到当前相机位置，被墙挡住）
+                Vector3 camNow = pivot + back * _curDistance;
+                if (Physics.Linecast(pivot, camNow, out hit, collisionMask, QueryTriggerInteraction.Ignore))
+                {
+                    float d = Mathf.Clamp(hit.distance - collisionRadius * 0.5f, minDistance, distance);
+                    if (d < want) { want = d; blocked = true; }
+                }
             }
 
-            // 收镜要快（避免穿墙），放镜要慢（避免顿挫）
-            float damp = want < _curDistance ? collisionDamp : 0.25f;
-            _curDistance = Mathf.Lerp(_curDistance, want, 1f - Mathf.Exp(-dt / Mathf.Max(damp, 1e-4f)));
+            // ★ 遮挡时立即收（穿墙的本质是收镜被平滑拖延）；放镜才平滑（避免顿挫）
+            if (blocked && want < _curDistance)
+                _curDistance = want;
+            else
+            {
+                float damp = 0.25f;
+                _curDistance = Mathf.Lerp(_curDistance, want, 1f - Mathf.Exp(-dt / Mathf.Max(damp, 1e-4f)));
+            }
             return _curDistance;
         }
 
@@ -455,11 +481,35 @@ namespace InkWash.CameraRig
             //   主菜单里点"开始一局"的同一记左键会先把光标锁死，按钮反而点不中。
             if (InkWash.Roguelike.RunManager.Instance != null
                 && InkWash.Roguelike.RunManager.Instance.State != InkWash.Roguelike.RunState.Playing)
+            {
+                // ★ 第三十七轮（用户实测："UI 界面点一下后被抢走鼠标"）：状态离开 Playing
+                //   的**同一帧**要立刻作废宽限期 —— 回 Playing 后的那次点击属于 UI 操作的
+                //   余波（EventSystem 与本 Update 的执行顺序不保证，可能同帧完成
+                //   "点击→State=Playing"），若不重置，进入 Playing 的头 0.5 s 里
+                //   这记旧点击仍会触发下面的锁定。
+                _playGraceUntil = -1f;
                 return;
+            }
+
+            // 回 Playing 后的 0.5 s 宽限：UI 点击的余波不锁光标
+            if (_playGraceUntil < 0f) _playGraceUntil = Time.unscaledTime + 0.5f;
 
             if (Input.GetKeyDown(KeyCode.Escape)) LockCursor(false);
-            else if (Input.GetMouseButtonDown(0) && Cursor.lockState != CursorLockMode.Locked) LockCursor(true);
+            else if (Input.GetMouseButtonDown(0)
+                     && Time.unscaledTime > _playGraceUntil
+                     && !EventSystemIsOverUi()
+                     && Cursor.lockState != CursorLockMode.Locked) LockCursor(true);
         }
+
+        /// <summary>鼠标是否悬在 UGUI 上（选卡/结算面板点空白不抢光标）。无 EventSystem 时恒 false。</summary>
+        private static bool EventSystemIsOverUi()
+        {
+            var es = UnityEngine.EventSystems.EventSystem.current;
+            return es != null && es.IsPointerOverGameObject();
+        }
+
+        /// <summary>进入 Playing 的宽限截止时刻（<0 = 不在宽限）。</summary>
+        private float _playGraceUntil = -1f;
 
         private static void LockCursor(bool locked)
         {

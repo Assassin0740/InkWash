@@ -395,7 +395,44 @@ namespace InkWash.Enemies
         protected virtual void TickDead()
         {
             StopAgent();
+            DeathSinkTick();
             if (destroyAfterDeath > 0f && _stateTime >= destroyAfterDeath) Destroy(gameObject);
+        }
+
+        // ---- ★ 第三十七轮：尸体验尸坠地兜底 ----
+        //   用户的"怪物死后浮空"不止发生在龙身上：普通怪死亡瞬间可能正被击退
+        //   打飞在空中（EnterHitStun 的 _knockVelocity 位移不贴地），NavMeshAgent
+        //   在 Die() 里被禁用后没有任何东西把它拉回地面 —— Death_A 动画照播、
+        //   整具尸体却悬在半空。与龙的 DeathSinkTick 同一套兜底：死亡后从 Update
+        //   每帧向真实地面缓降（ease-in），动画该播照播。
+        [Header("尸体验尸坠地（第三十七轮）")]
+        [Tooltip("坠地时长（秒）。0=禁用")]
+        public float deathSinkDuration = 0.9f;
+        private float _corpseSinkTargetY = float.NaN;
+
+        private void DeathSinkTick()
+        {
+            if (deathSinkDuration <= 0f) return;
+            if (float.IsNaN(_corpseSinkTargetY))
+            {
+                float startY = transform.position.y;
+                float best = float.MinValue;
+                var hits = Physics.RaycastAll(transform.position + Vector3.up * 6f, Vector3.down, 60f,
+                                              Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+                foreach (var h in hits)
+                {
+                    if (h.transform.IsChildOf(transform)) continue;     // 跳过自己的碰撞体
+                    if (h.point.y > best) best = h.point.y;
+                }
+                _corpseSinkTargetY = best > float.MinValue + 1f ? best : startY;
+                if (_corpseSinkTargetY >= startY - 0.01f) return;       // 本来就贴地，不用坠
+            }
+
+            float t = Mathf.Clamp01(_stateTime / deathSinkDuration);
+            float e = t * t;                                            // ease-in：越坠越快
+            var p = transform.position;
+            p.y = Mathf.Lerp(transform.position.y, _corpseSinkTargetY, e * 0.22f + 0.03f);
+            transform.position = p;
         }
 
         /// <summary>攻击判定出现的瞬间。近战开 Hitbox 窗口，远程在这里生成墨弹。</summary>
