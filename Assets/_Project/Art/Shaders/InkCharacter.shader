@@ -58,6 +58,13 @@ Shader "InkWash/InkCharacter"
         _HueKeep ("固有色保留（0=纯墨、1=各部位本色全显）", Range(0, 1)) = 0
         _HueSat ("固有色饱和度（1=贴图原样、0=灰）", Range(0, 1)) = 1
 
+        // ---- ★ 受击闪白（打击反馈的材质层）----
+        // 由 HitFlash 组件经 MaterialPropertyBlock 驱动（敌人共用一份材质，
+        // 绝不能实例化材质去改 —— MPB 是逐渲染器覆盖，不碰共享资产）。
+        // 闪向 _InkLight（纸白）而不是纯白：墨阶体系里"最亮"就是纸白，
+        // 突然闪纯白会跳出调色板，纸白则像"这一笔被提亮了"，仍是水墨语言。
+        _HitFlash ("受击闪白（0=正常、1=全亮纸白）", Range(0, 1)) = 0
+
         // ---- ★ 参照《大神》：**几何轮廓**（反向外扩壳），不是屏幕空间细线 ----
         // 为什么必须走几何：屏幕空间等宽细线本质是"边缘检测"，改来改去都是制图描边。
         // 几何壳能做三件屏幕空间做不到的事：
@@ -167,6 +174,7 @@ Shader "InkWash/InkCharacter"
                 half   _ChromaKeep;
                 half   _HueKeep;
                 half   _HueSat;
+                half   _HitFlash;
                 float4 _BrushTex_ST;
                 half   _BrushScale;
                 half   _BrushStrength;
@@ -517,6 +525,11 @@ Shader "InkWash/InkCharacter"
                 // 只给"亮部"加高光：暗部加高光会变成塑料
                 color += specStep * _SpecStrength * smoothstep(0.55h, 1.0h, ramp) * _InkLight.rgb;
 
+                // ---- ★ 受击闪白：整段提亮到纸白（HitFlash 组件经 MPB 驱动）----
+                // 放在 rim/spec 之后、雾之前：闪白要盖过一切着色细节（包括轮廓墨），
+                // 但仍吃雾（远处的受击不该凭空刺出来）。
+                color = lerp(color, _InkLight.rgb, saturate(_HitFlash));
+
                 color = MixFog(color, input.fogFactor);
                 return half4(color, 1.0h);
             }
@@ -554,6 +567,7 @@ Shader "InkWash/InkCharacter"
                 half   _ChromaKeep;
                 half   _HueKeep;
                 half   _HueSat;
+                half   _HitFlash;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale; half _GrainAmp; half _StrokeScale; half _StrokeStretch; half _StrokeAmp;
                 half   _MottleScale;
@@ -675,6 +689,7 @@ Shader "InkWash/InkCharacter"
                 half   _ChromaKeep;
                 half   _HueKeep;
                 half   _HueSat;
+                half   _HitFlash;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale;
                 half   _GrainAmp;
@@ -753,6 +768,7 @@ Shader "InkWash/InkCharacter"
                 half   _ChromaKeep;
                 half   _HueKeep;
                 half   _HueSat;
+                half   _HitFlash;
                 float4 _BrushTex_ST; half _BrushScale; half _BrushStrength; half _BrushUvFromWorld;
                 half   _GrainScale;
                 half   _GrainAmp;

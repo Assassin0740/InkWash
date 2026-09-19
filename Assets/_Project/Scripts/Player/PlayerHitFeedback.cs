@@ -95,7 +95,15 @@ namespace InkWash.Player
                 cameraRig.FovPunch(3f * scale, 0.16f);
             }
             if (_hurtHashValid && animator != null) animator.SetTrigger(_hurtHash);
+
+            // ★ 受击材质闪白（第三十五轮）：玩家也吃同一个水墨 shader，被打也要"白一下"。
+            //   玩家的 SkinnedMeshRenderer 此前实测为 0（表现层不依赖模型的注释见类头）——
+            //   Flash 在没有渲染器时是安全空转，以后接上模型自动生效，不用回头改这里。
+            if (_hitFlash == null) _hitFlash = HitFlash.Ensure(gameObject);
+            _hitFlash.Flash(scale);
         }
+
+        private HitFlash _hitFlash;
 
         /// <summary>验收用：把计数清零。</summary>
         public void ResetDiagnostics() { HitCount = 0; }

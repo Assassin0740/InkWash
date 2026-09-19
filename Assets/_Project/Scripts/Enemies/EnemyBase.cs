@@ -142,6 +142,16 @@ namespace InkWash.Enemies
             InkWash.Effects.InkHitVfx.Spawn(info.hitPoint, info.hitDirection,
                 Mathf.Lerp(0.7f, 1.6f, Mathf.Clamp01(info.amount / Mathf.Max(1f, maxHealth))));
 
+            // ★ 受击材质闪白（第三十五轮）：动作层之外的另一层打击反馈。
+            //   龙没有受击动画可播（程序化驱动）、骷髅的 Hit 片段很短 —— 闪白是
+            //   不依赖动作系统的通用层，谁被打谁"白一下"。
+            //   ★ 强度以常数为主、相对伤害只做微调（0.65~1.0）：试过
+            //   "rel*0.8+0.2"（下限 0.2）—— 对高血量怪（如 _health=620 的精英）
+            //   轻击的闪白几乎不可见；闪白的意义是"打到了"这个布尔信号，
+            //   强弱本来就不该由血量口径决定。
+            if (_hitFlash == null) _hitFlash = InkWash.Combat.HitFlash.Ensure(gameObject);
+            _hitFlash.Flash(0.65f + 0.35f * Mathf.Clamp01(info.amount / Mathf.Max(1f, maxHealth)));
+
             if (_health <= 0f) { Die(); return true; }
 
             // 硬直（弹反会传更长的 hitStun，见 EnemyElite）
@@ -173,6 +183,7 @@ namespace InkWash.Enemies
         protected Animator _anim;
         protected Collider _collider;
         protected Hitbox _hitbox;
+        protected InkWash.Combat.HitFlash _hitFlash;
 
         protected Vector3 _knockVelocity;
         protected float _knockTimer;
