@@ -81,7 +81,33 @@ namespace InkWash.Player
             TryCast();
         }
 
-        /// <summary>施放（也供验收脚本直调）。冷却中返回 false。</summary>
+                [Header("动画（可选）")]
+        [Tooltip("玩家 Animator。留空自动取子级。")]
+        public Animator animator;
+
+        private int _castHash;
+        private bool _castHashValid;
+
+        /// <summary>控制器里存在 Cast 触发器才发（无则静默跳过）。
+        /// ★ 哨兵不能用 -1/正负判断——Animator.StringToHash 完全可能返回负数，
+        ///   必须用 bool 标记「哈希已解析且存在」。</summary>
+        private void TriggerCastAnim()
+        {
+            if (animator == null) animator = GetComponentInChildren<Animator>();
+            if (animator == null || animator.runtimeAnimatorController == null) return;
+            if (!_castHashResolved)
+            {
+                _castHashResolved = true;
+                foreach (var p in animator.parameters)
+                    if (p.type == AnimatorControllerParameterType.Trigger && p.name == "Cast")
+                    { _castHash = Animator.StringToHash("Cast"); _castHashValid = true; break; }
+            }
+            if (_castHashValid) animator.SetTrigger(_castHash);
+        }
+
+        private bool _castHashResolved;
+
+/// <summary>施放（也供验收脚本直调）。冷却中返回 false。</summary>
         public bool TryCast()
         {
             if (_cooldownLeft > 0f) return false;
@@ -90,6 +116,11 @@ namespace InkWash.Player
             _lastHitCount = 0;
             // ★ 施放音（第三十七轮）：重挥起手 + 低音高，"蓄力爆发"的第一声
             InkWash.Audio.AudioManager.Play("Swing_Heavy", 1f, 0.85f, 0.9f);
+
+            // ★ 施法动画（第四十二轮）：Mixamo casting 重定向接入 Cast 态——
+            //   触发器只在控制器真实存在时才 SetTrigger（与 PlayerHitFeedback 同款守卫），
+            //   控制器没有该参数时静默跳过，不刷警告。
+            TriggerCastAnim();
 
             Vector3 c = transform.position + Vector3.up * 0.1f;
 
