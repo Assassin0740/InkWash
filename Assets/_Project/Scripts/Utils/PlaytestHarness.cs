@@ -87,9 +87,10 @@ namespace InkWash.Utils
         private static readonly string[] kBaseStateNames =
         {
             // 顺序即优先级。S2.1 起走路状态改名为 Walk（旧名 Move / Run 保留兼容，方便读历史报告）。
+            // v43 起连击直连拓扑：AtkNRec 后摇状态已删除（旧名保留兼容，读历史报告用）。
             // 漏掉新名字会让所有"走的是哪个状态"的断言看到 Other —— 那是最容易被误读成"功能坏了"的假失败。
             "Idle", "Walk", "Run", "Move", "Dash",
-            "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3"
+            "Atk1", "Atk2", "Atk3"
         };
 
         // ==================================================================
@@ -336,7 +337,7 @@ namespace InkWash.Utils
 
             var ctl = ctx.ctl;
             var anim = ctx.anim;
-            string[] names = { "Idle", "Walk", "Run", "Move", "Dash", "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3" };
+            string[] names = { "Idle", "Walk", "Run", "Move", "Dash", "Atk1", "Atk2", "Atk3" };
 
             sb.AppendLine("======================================================================");
             sb.AppendLine("取消窗口诊断（单次攻击 -> 后摇）");
@@ -906,8 +907,8 @@ namespace InkWash.Utils
             sb.AppendLine();
             sb.AppendLine("-- 问题 2「后摇太长 / 后摇里再按会凭空位移」：取消窗口 --");
             if (one != null)
-                check("[D 单段挥砍] 挥砍后进入后摇状态 Atk1Rec",
-                    one.animStates.Contains("Atk1Rec"), one.animStates);
+                check("[D 单段挥砍] 挥砍进入主攻击状态 Atk1（v43 直连拓扑）",
+                    one.animStates.Contains("Atk1"), one.animStates);
             if (one != null)
                 check("[D 单段挥砍] 后摇中开放取消窗口", one.sawCancelWindow,
                     one.sawCancelWindow ? "首次开启于 t=" + F(one.cancelWindowFirstT) + "s" : "未开启");
@@ -1626,7 +1627,7 @@ namespace InkWash.Utils
         }
 
         /// <summary>当前是否处于某个攻击状态。用于把「事件型指标」的采样窗口裁到事件边界。</summary>
-        private static readonly string[] AttackStates = { "Atk1", "Atk1Rec", "Atk2", "Atk2Rec", "Atk3" };
+        private static readonly string[] AttackStates = { "Atk1", "Atk2", "Atk3" };
 
         private static bool IsAttackState(Animator anim)
         {
