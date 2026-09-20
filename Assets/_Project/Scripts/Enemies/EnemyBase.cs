@@ -255,7 +255,35 @@ namespace InkWash.Enemies
             // 报告里会出现「距玩家 0.000 m」这种一眼看去像 bug 的假数字
             // （诊断字段一旦会撒谎，就会浪费一整轮排查）。
             UpdateDistance();
+            AttachLoosePropsToHands();
             Enter(EnemyState.Spawning);
+        }
+
+        /// <summary>
+        /// 第四十一轮：静态武器网格跟手 —— 攻击可读性修复。
+        ///
+        /// 实测证据（v41e 连拍）：MoGuai 的斧头是**静态 MeshRenderer**（FBX 里叫
+        /// 'Box001_08 - Default_0'，挂在 'Model' 节点下），不跟随手骨 ⇒ 挥击时
+        /// 手走了、斧头留在原地，玩家看到的就是「没有挥斧头」。
+        /// 修法：把这类"挂在模型根附近的静态武器"重挂到手骨下（SetParent(..., true)
+        /// 保持世界位姿 ⇒ 待机两手持握的对位不变，挥击时跟着手走）。
+        /// 守卫收紧到 Box001 前缀 + Model 父节点，避免误抓其他敌人的挂件。
+        /// </summary>
+        private void AttachLoosePropsToHands()
+        {
+            if (_anim == null) return;
+            foreach (var mr in GetComponentsInChildren<MeshRenderer>(true))
+            {
+                if (!mr.name.StartsWith("Box001")) continue;
+                if (mr.transform.parent == null || !mr.transform.parent.name.Contains("Model")) continue;
+                if (mr.transform.parent.name.Contains("Hand")) continue;   // 已跟手，幂等
+                Transform hand = _anim.GetBoneTransform(HumanBodyBones.RightHand);
+                if (hand == null)
+                    foreach (var t in GetComponentsInChildren<Transform>(true))
+                        if (t.name.Contains("R Hand")) { hand = t; break; }
+                if (hand == null) continue;
+                mr.transform.SetParent(hand, true);
+            }
         }
 
         protected virtual void Update()
