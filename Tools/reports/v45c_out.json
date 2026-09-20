@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "message": "Command executed successfully",
+  "data": {
+    "success": true,
+    "message": "C# script executed successfully.\nresult: BEFORE anyState: 2\r\n   -> Hit\r\n   -> Cast\r\ncreated AnyState->Death\r\nAFTER anyState (顺序=优先级):\r\n   -> Death [d0.15 Dead ]\r\n   -> Hit [d0.06 Hit ]\r\n   -> Cast [d0.05 Cast ]\r\nDeath out-edges: 0\r\n",
+    "data": {
+      "result": "BEFORE anyState: 2\r\n   -> Hit\r\n   -> Cast\r\ncreated AnyState->Death\r\nAFTER anyState (顺序=优先级):\r\n   -> Death [d0.15 Dead ]\r\n   -> Hit [d0.06 Hit ]\r\n   -> Cast [d0.05 Cast ]\r\nDeath out-edges: 0\r\n",
+      "return_type": "System.String",
+      "elapsed_ms": 566,
+      "session_status": "oneshot",
+      "logs": [],
+      "log_count": 0
+    }
+  }
+}

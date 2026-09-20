@@ -907,8 +907,8 @@ namespace InkWash.Utils
             sb.AppendLine();
             sb.AppendLine("-- 问题 2「后摇太长 / 后摇里再按会凭空位移」：取消窗口 --");
             if (one != null)
-                check("[D 单段挥砍] 挥砍进入主攻击状态 Atk1（v43 直连拓扑）",
-                    one.animStates.Contains("Atk1"), one.animStates);
+                check("[D 单段挥砍] 挥砍后进入后摇状态 Atk1Rec",
+                    one.animStates.Contains("Atk1Rec"), one.animStates);
             if (one != null)
                 check("[D 单段挥砍] 后摇中开放取消窗口", one.sawCancelWindow,
                     one.sawCancelWindow ? "首次开启于 t=" + F(one.cancelWindowFirstT) + "s" : "未开启");

@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "message": "C# script executed successfully.",
+  "data": {
+    "result": null,
+    "return_type": null,
+    "elapsed_ms": 43609,
+    "session_status": "oneshot",
+    "logs": [
+      "[Log] [v45h]\n[走路 ref=0.91] state=Walk 帧=98 支撑帧=3 滑步=0.09m/s 身体=1.25 倍率=1.37 滑步/身速=0.07\r\n[走路 ref=0.75] state=Walk 帧=99 支撑帧=5 滑步=0.27m/s 身体=1.25 倍率=1.67 滑步/身速=0.21\r\n[跑步 ref=3.92] state=Run 帧=102 支撑帧=8 滑步=3.06m/s 身体=1.45 倍率=0.79 滑步/身速=2.1\r\n[跑步 ref=4.12] state=Run 帧=102 支撑帧=8 滑步=2.88m/s 身体=0 倍率=0.6 滑步/身速=-1\r\n[跑步 ref=4.53] state=Run 帧=100 支撑帧=8 滑步=2.93m/s 身体=0 倍率=0.6 滑步/身速=-1\r\n"
+    ],
+    "log_count": 1
+  }
+}

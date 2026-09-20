@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "message": "C# script executed successfully.",
+  "data": {
+    "result": null,
+    "return_type": null,
+    "elapsed_ms": 38590,
+    "session_status": "oneshot",
+    "logs": [
+      "[Warning] [WeaponHandPose] 左手卷曲方向可能反了：握拳度 2.09 > 2.1（五指张开≈2.2 / 握拳≈1.2）。查 MeasureSign 实测符号与指链解析。",
+      "[Warning] [WeaponHandPose] 左手卷曲方向可能反了：握拳度 2.05 > 2.1（五指张开≈2.2 / 握拳≈1.2）。查 MeasureSign 实测符号与指链解析。",
+      "[Warning] [WeaponHandPose] 左手卷曲方向可能反了：握拳度 2.05 > 2.1（五指张开≈2.2 / 握拳≈1.2）。查 MeasureSign 实测符号与指链解析。",
+      "[Log] [v45d]\n[走路] state=Walk 着地帧=61 滑步均值=1.08m/s 峰值=4.38 身体速度=1.25 动画倍率=0.77\r\n[跑步] state=Run 着地帧=0 滑步均值=-1m/s 峰值=0 身体速度=4 动画倍率=0.88\r\n[三连击] 0.02 Walk/c1 | 0.10 Atk1/c1 | 0.43 Atk1Rec/c1 | 0.63 Atk1Rec/c2 | 0.69 Atk2/c2 | 1.12 Atk2Rec/c2 | 1.28 Atk2Rec/c3 | 1.32 Atk3/c3 | 2.61 Idle/c3 | 2.62 Idle/c0 | \r\n[三连击] 见到第二段=True 见到第三段=True → PASS\r\n[死亡] 死前状态=Run → 死后状态=Hit → FAIL\r\n"
+    ],
+    "log_count": 4
+  }
+}

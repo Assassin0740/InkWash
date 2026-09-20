@@ -87,20 +87,31 @@ namespace InkWash.Player
         // 着地帧量它的水平后移速度。**不要用网格最低点** —— 真人比例模型走路时脚掌会
         // 「脚跟→脚尖」滚动，最低点在着地相内部平移了约一个脚掌长（0.25m），速度会虚高一倍
         // （v1 用网格最低点把 Feng Walk 量成 2.25 m/s，实际 0.91）。
-        [Tooltip("走路片段（Feng 自带 Walk）自身的地面速度参考值（米/秒）。\n" +
-                 "Tools/cs/q_refspeed2.cs 脚踝法实测 0.91（步频 1.50、单步 0.61m）。")]
+        //
+        // ⚠ v45 重新标定（Tools/cs/v45f_treadmill.cs）：
+        //   参考速度的正确含义是「**跑步机速度**」—— 支撑脚相对身体向后蹬的速度，
+        //   **不是** hips 的根位移速度。因为 applyRootMotion=false，根位移会被丢弃，
+        //   真正决定脚步节奏的是脚相对身体的位移。推导：
+        //     脚世界速度 = 身体速度 v − k·v_t  （k = 播放倍率 = v / refSpeed）
+        //     不滑步 ⇒ 脚世界速度 = 0 ⇒ refSpeed = v_t。
+        //
+        //   42 轮换 Mixamo 后只是把片段换了、参考值没换；而 Mixamo 走路的 v_t 只有
+        //   0.37 m/s（老 Feng 片段 0.75）—— 它是**小碎步**，配 1.25 m/s 需要 3.4× 播放，
+        //   正是项目早先批判过的「竞走级小碎步」。所以 v45 把走路片段换回 Feng_Walk_Loop。
+        [Tooltip("走路片段（Feng_Walk_Loop）的跑步机速度（米/秒）。\n" +
+                 "v45f 实测 0.75，历史脚踝法标定 0.91（本项目长期验收值），沿用 0.91。")]
         public float walkRefSpeed = 0.91f;
 
-        [Tooltip("跑步片段（Kevin Iglesias Run01_Forward）自身的地面速度参考值（米/秒）。\n" +
-                 "脚踝法实测 4.12（步频 3.33、单步 1.24m）。取这个值 → 倍率 4.0/4.12 = 0.97×。")]
-        public float runRefSpeed = 4.12f;
+        [Tooltip("跑步片段（Mixamo run）的跑步机速度（米/秒）。\n" +
+                 "v45f 实测 3.92（老 KI 跑步为 4.21，同量级）。倍率 4.0/3.92 = 1.02×。")]
+        public float runRefSpeed = 3.92f;
 
         [Tooltip("播放速度下限，防止慢走时腿部僵住")]
         public float motionSpeedMin = 0.6f;
 
         [Tooltip("播放速度上限，防止高速时腿部抽帧。\n" +
                  "取值必须 ≥ max(walkSpeed/walkRefSpeed, runSpeed/runRefSpeed)，否则会被截断而产生残余滑步。\n" +
-                 "当前：走路 1.25/0.91 = 1.37，跑步 4.0/4.12 = 0.97，上限取 2.2 留足余量。")]
+                 "当前：走路 1.25/1.62 = 0.77，跑步 4.0/4.53 = 0.88，上限取 2.2 留足余量。")]
         public float motionSpeedMax = 2.2f;
 
         [Header("冲刺 / 闪避")]
@@ -128,21 +139,23 @@ namespace InkWash.Player
         [Tooltip("各段位移持续时长（秒）。随攻击提速同步按 1.25 缩：距离不变、加速度更干脆")]
         public float[] comboLungeDuration = { 0.176f, 0.192f, 0.336f };
 
-        [Tooltip("各段挥砍动作总时长（秒）＝ 片段长度 ÷ 状态速度（Mixamo 直连方案：\n" +
-                 "主片段自带收势，不再有独立 Rec 状态）。\n" +
-                 "A slash(5) 1.37s×0.88exit / 1.25 ≈ 1.10\n" +
-                 "B slash(3) 1.57s×0.88exit / 1.25 ≈ 1.26\n" +
-                 "C attack(4) 1.00s×0.72exit / 1.00 = 1.00（终段刻意降到 1.0 速，留出重量感）")]
-        public float[] comboSwingDuration = { 1.10f, 1.26f, 1.00f };
+        [Tooltip("各段挥砍动作总时长（秒），与 Player.controller 里的状态时长一致。\n" +
+                 "Quaternius UAL2 的剑术片段是「斩击 + 收招」两段式，控制器里对应\n" +
+                 "AtkN 与 AtkNRec 两个状态，所以这里的总时长 =\n" +
+                 "主段 × exitTime / 主段speed + 收招段 × exitTime / 收招speed（speed 见 Player.controller）：\n" +
+                 "A 0.433×0.95/1.25 + 0.967×0.85/1.70 = 0.813\n" +
+                 "B 0.533×0.95/1.25 + 1.033×0.85/1.70 = 0.922\n" +
+                 "C 2.000×0.72/1.25 = 1.152\n" +
+                 "（收招段 speed 由 1.40 提到 1.70 —— 收招占一轮连击 60%+，是「廉价感」的直接来源）")]
+        public float[] comboSwingDuration = { 0.813f, 0.922f, 1.152f };
 
-        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近、略提前。\n" +
-                 "v43 Mixamo 直连后按采样帧重标定（接触点 nt≈0.35/0.40/0.45）：\n" +
-                 "A 0.35×1.37/1.25 ≈ 0.38 / B 0.40×1.57/1.25 ≈ 0.50 / C 0.45×1.00/1.00 = 0.45")]
-        public float[] comboHitTime = { 0.38f, 0.50f, 0.45f };
+        [Tooltip("各段的命中时刻（秒）—— 用于触发刀光与震屏。取值 = 剑尖世界速度峰值附近、略提前：\n" +
+                 "A 0.279s / B 0.258s / C 0.656s（Tools/cs/q_atktiming.cs 标定）\n" +
+                 "攻击提速后按「峰值时刻 ÷ 主段 speed」重算、沿用原有的绝对提前量 → 0.19 / 0.19 / 0.48")]
+        public float[] comboHitTime = { 0.19f, 0.19f, 0.48f };
 
-        [Tooltip("各段取消窗口起点（**主片段**的归一化时间）—— Mixamo 片段后段本身就是收势，\n" +
-                 "窗口开在挥砍接触之后的跟随段：0.55 / 0.55 / 0.50")]
-        public float[] comboRecCancelStart = { 0.55f, 0.55f, 0.50f };
+        [Tooltip("各段后摇的取消窗口起点（归一化时间），与动画状态机的 exitTime 对应")]
+        public float[] comboRecCancelStart = { 0.3f, 0.3f, 0.45f };
 
         [Tooltip("连击输入的缓冲时间（秒）—— 提前按下也算数")]
         public float attackInputBuffer = 0.25f;
@@ -758,13 +771,20 @@ namespace InkWash.Player
         // ==================================================================
 
         /// <summary>
-        /// 判据必须是「**当前这一段自己的**主攻击状态」，不能只看"是不是某个攻击态"。
-        /// 否则升段（AdvanceCombo）之后动画还没切过去，读到的仍是上一段的 Atk1，
+        /// 判据必须是「**当前这一段自己的后摇状态**」，不能只看"是不是某个攻击态"。
+        /// 否则升段（AdvanceCombo）之后动画还没切过去，读到的仍是上一段的 Atk1Rec，
         /// 窗口就一直开着 —— 连打会让逻辑段位一路跑到动画前面（第 2/3 段的前冲在半途被截断），
         /// 而动画还停在上一段。这就是"两套时间口径漂移"。
         ///
-        /// v43 Mixamo 直连后不再有 AtkNRec 后摇状态：主片段后段本身就是收势，
-        /// 窗口直接开在主片段的归一化时间上（comboRecCancelStart）。
+        /// v44 攻击链回滚到 Quaternius「主段 + Rec 收招」拓扑后，窗口重新开在
+        /// **后摇状态** AtkNRec 的归一化时间上（comboRecCancelStart）。
+        ///
+        /// ⚠ v44 实测故障（用户报"动作衔接很奇怪"的直接成因之一）：
+        ///   回滚时只把时间数值改回老标定，**状态名没跟着从 Atk1 改回 Atk1Rec**，
+        ///   于是后摇期间 `IsName("Atk1")` 恒 false → 窗口恒关 → 第二刀进了
+        ///   `_attackQueued` 缓冲却永远等不到兑现（TickAttack 的兑现条件也读同一个窗口），
+        ///   表现为「第二刀整个丢失，等回 Idle 再按又从第一刀重来」。
+        ///   教训：时间口径是"数值 + 状态名"**一组**，回滚必须成对回退。
         /// </summary>
         private bool EvaluateCancelWindow()
         {
@@ -776,8 +796,8 @@ namespace InkWash.Player
 
             switch (_comboStep)
             {
-                case 1: return st.IsName("Atk1") && nt >= comboRecCancelStart[0];
-                case 2: return st.IsName("Atk2") && nt >= comboRecCancelStart[1];
+                case 1: return st.IsName("Atk1Rec") && nt >= comboRecCancelStart[0];
+                case 2: return st.IsName("Atk2Rec") && nt >= comboRecCancelStart[1];
                 case 3: return st.IsName("Atk3") && nt >= comboRecCancelStart[2];
             }
             return false;
@@ -791,15 +811,15 @@ namespace InkWash.Player
 
         /// <summary>
         /// 状态机**是否已经在离开这一段连击** —— 即当前处于一次过渡中，且过渡目标
-        /// 不再是攻击状态（典型就是 AtkN→Idle 的收势退出混合）。
+        /// 不再是攻击状态（典型就是 Atk1Rec→Idle 的后摇退出混合）。
         ///
-        /// 为什么必须单独判这个（历史实测故障，v43 直连拓扑下同样成立）：
+        /// 为什么必须单独判这个（本轮实测故障）：
         ///   `GetCurrentAnimatorStateInfo` 在一次过渡**完成之前**一直返回**源状态**，
-        ///   所以「当前是 Atk1」这句话在整个退出混合期间（0.16 归一化 ≈ 0.2s）都成立。
-        ///   而取消窗口判据是 `Atk1 && normalizedTime >= 0.55`，于是窗口在退出混合期间
+        ///   所以「当前是 Atk1Rec」这句话在整个退出混合期间（0.16 归一化 ≈ 0.2s）都成立。
+        ///   而取消窗口判据是 `Atk1Rec && normalizedTime >= 0.3`，于是窗口在退出混合期间
         ///   仍报"开"—— 逻辑以为能接第二段，实际上状态机已经在往外走了。
         ///   对照实验（Tools/reports/a_retrigger2.txt 变体C）：
-        ///     第 103 帧按下 → 段位涨到 2，但动画 18 帧内一直是旧状态，最终掉回 Idle，
+        ///     第 103 帧按下 → 段位涨到 2，但动画 18 帧内一直是 Atk1Rec，最终掉回 Idle，
         ///     整段第二刀**完全没有出现**。用户原话：「没有立刻继续执行攻击动作」。
         /// </summary>
         private bool IsLeavingAttack()
@@ -810,7 +830,9 @@ namespace InkWash.Player
 
         private static bool IsAttackStateName(AnimatorStateInfo st)
         {
-            return st.IsName("Atk1") || st.IsName("Atk2") || st.IsName("Atk3");
+            return st.IsName("Atk1") || st.IsName("Atk1Rec")
+                || st.IsName("Atk2") || st.IsName("Atk2Rec")
+                || st.IsName("Atk3");
         }
 
         // ==================================================================
@@ -954,7 +976,7 @@ namespace InkWash.Player
             _dashCooldownTimer = 0f;
 
             // 光复位脚本的阶段是不够的：Animator 自己的状态机（触发器 + 状态）还在演上一段攻击，
-            // 会继续吐 Atk2 之类的状态出来，让取消窗口判定读到"上一个动作的残留"。
+            // 会继续吐 Atk2Rec 之类的状态出来，让取消窗口判定读到"上一个动作的残留"。
             // 所以这里连动画状态一起复位。
             if (animator != null)
             {

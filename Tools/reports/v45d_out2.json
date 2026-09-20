@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "message": "C# script executed successfully.",
+  "data": {
+    "result": null,
+    "return_type": null,
+    "elapsed_ms": 38534,
+    "session_status": "oneshot",
+    "logs": [
+      "[Log] [v45d]\n[走路] state=Walk 总帧=98 着地帧=53(阈值y<0.48) 滑步均值=0.78m/s 峰值=4.07 身体速度=1.25 动画倍率=0.77 理论脚步速度=1.25m/s\r\n[跑步] state=Run 总帧=86 着地帧=31(阈值y<0.31) 滑步均值=2.84m/s 峰值=12.16 身体速度=3.63 动画倍率=0.87 理论脚步速度=3.95m/s\r\n[三连击] 0.02 Walk/c1 | 0.10 Atk1/c1 | 0.43 Atk1Rec/c1 | 0.63 Atk1Rec/c2 | 0.70 Atk2/c2 | 1.13 Atk2Rec/c2 | 1.27 Atk2Rec/c3 | 1.33 Atk3/c3 | 2.63 Idle/c3 | 2.64 Idle/c0 | \r\n[三连击] 见到第二段=True 见到第三段=True → PASS\r\n[死亡] 死前状态=Run → 死后状态=Death → PASS（跑步中也能播死亡动画）\r\n"
+    ],
+    "log_count": 1
+  }
+}

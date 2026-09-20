@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "message": "Command executed successfully",
+  "data": {
+    "success": true,
+    "message": "C# script executed successfully.\nresult: Walk before: mixamo.com\r\nWalk after : Feng_Walk_Loop\r\n--- 现状核对 ---\r\nIdle = mixamo.com\r\nWalk = Feng_Walk_Loop\r\nRun = mixamo.com\r\n",
+    "data": {
+      "result": "Walk before: mixamo.com\r\nWalk after : Feng_Walk_Loop\r\n--- 现状核对 ---\r\nIdle = mixamo.com\r\nWalk = Feng_Walk_Loop\r\nRun = mixamo.com\r\n",
+      "return_type": "System.String",
+      "elapsed_ms": 515,
+      "session_status": "oneshot",
+      "logs": [],
+      "log_count": 0
+    }
+  }
+}

@@ -243,7 +243,7 @@ MonoBehaviour:
   deceleration: 34
   turnSpeedDeg: 900
   walkRefSpeed: 0.91
-  runRefSpeed: 4.12
+  runRefSpeed: 3.92
   motionSpeedMin: 0.6
   motionSpeedMax: 2.2
   dashSpeed: 11.7

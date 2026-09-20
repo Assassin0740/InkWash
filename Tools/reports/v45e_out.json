@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "message": "Command executed successfully",
+  "data": {
+    "success": true,
+    "message": "C# script executed successfully.\nresult: state | 身体速度 | 支撑相脚速均值 | 脚速/身速 | 支撑帧/总帧\r\nWalk   |   1.62 m/s |     1.27 m/s |     0.78 | 70/240\r\nRun    |   4.54 m/s |     0.77 m/s |     0.17 | 53/240\r\n",
+    "data": {
+      "result": "state | 身体速度 | 支撑相脚速均值 | 脚速/身速 | 支撑帧/总帧\r\nWalk   |   1.62 m/s |     1.27 m/s |     0.78 | 70/240\r\nRun    |   4.54 m/s |     0.77 m/s |     0.17 | 53/240\r\n",
+      "return_type": "System.String",
+      "elapsed_ms": 769,
+      "session_status": "oneshot",
+      "logs": [],
+      "log_count": 0
+    }
+  }
+}

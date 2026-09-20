@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "message": "Command executed successfully",
+  "data": {
+    "success": true,
+    "message": "C# script executed successfully.\nresult: state | speed | clip | len | dur=len/speed | 烘焙地速(m/s) | 净位移(m)\r\nIdle      |      1 | mixamo.com                 |   3.6s |   3.6s |   0.06 |  0.01\r\nWalk      |      1 | mixamo.com                 |   1.1s |   1.1s |   1.62 |  1.78\r\nRun       |      1 | mixamo.com                 |   0.7s |   0.7s |   4.53 |  3.17\r\nDash      |  2.667 | mixamo.com                 |  1.47s |  0.55s |   2.18 |  3.16\r\nAtk1      |   1.25 | Armature|Sword_Regular_A   |  0.43s |  0.35s |   1.05 |  0.14\r\nAtk2      |   1.25 | Armature|Sword_Regular_B   |  0.53s |  0.43s |    0.5 |  0.06\r\nAtk3      |   1.25 | Armature|Sword_Regular_C   |     2s |   1.6s |   0.52 |  0.08\r\nDeath     |      1 | mixamo.com                 |   2.3s |   2.3s |   0.59 |  1.27\r\nHit       |      1 | mixamo.com                 |   0.7s |   0.7s |    0.2 |     0\r\nCast      |  3.708 | mixamo.com                 |  2.97s |   0.8s |   0.24 |     0\r\nAtk1Rec   |    1.7 | Armature|Sword_Regular_A_Rec |  0.97s |  0.57s |   0.33 |  0.14\r\nAtk2Rec   |    1.7 | Armature|Sword_Regular_B_Rec |  1.03s |  0.61s |   0.17 |  0.09\r\n",
+    "data": {
+      "result": "state | speed | clip | len | dur=len/speed | 烘焙地速(m/s) | 净位移(m)\r\nIdle      |      1 | mixamo.com                 |   3.6s |   3.6s |   0.06 |  0.01\r\nWalk      |      1 | mixamo.com                 |   1.1s |   1.1s |   1.62 |  1.78\r\nRun       |      1 | mixamo.com                 |   0.7s |   0.7s |   4.53 |  3.17\r\nDash      |  2.667 | mixamo.com                 |  1.47s |  0.55s |   2.18 |  3.16\r\nAtk1      |   1.25 | Armature|Sword_Regular_A   |  0.43s |  0.35s |   1.05 |  0.14\r\nAtk2      |   1.25 | Armature|Sword_Regular_B   |  0.53s |  0.43s |    0.5 |  0.06\r\nAtk3      |   1.25 | Armature|Sword_Regular_C   |     2s |   1.6s |   0.52 |  0.08\r\nDeath     |      1 | mixamo.com                 |   2.3s |   2.3s |   0.59 |  1.27\r\nHit       |      1 | mixamo.com                 |   0.7s |   0.7s |    0.2 |     0\r\nCast      |  3.708 | mixamo.com                 |  2.97s |   0.8s |   0.24 |     0\r\nAtk1Rec   |    1.7 | Armature|Sword_Regular_A_Rec |  0.97s |  0.57s |   0.33 |  0.14\r\nAtk2Rec   |    1.7 | Armature|Sword_Regular_B_Rec |  1.03s |  0.61s |   0.17 |  0.09\r\n",
+      "return_type": "System.String",
+      "elapsed_ms": 865,
+      "session_status": "oneshot",
+      "logs": [],
+      "log_count": 0
+    }
+  }
+}

@@ -278,6 +278,14 @@ namespace InkWash.UI
                 _anim.enabled = true;
                 _anim.updateMode = AnimatorUpdateMode.UnscaledTime;
                 _anim.SetTrigger(HashDeadAnim);
+
+                // ★ v45 实测故障：致死那一击会**同时**挂上 Hit 触发器（受击表现），
+                //   AnyState->Hit 的过渡一旦先启动，后来才设的 Dead 就再也挤不进去
+                //   （AnyState 转移在过渡进行中默认不打断），实测死后停在 Hit 状态、
+                //   死亡动画根本没播。这里双管齐下：清掉 Hit 触发器 + 用 CrossFade
+                //   直接切 Death 状态（CrossFade 无视条件与进行中的过渡）。
+                _anim.ResetTrigger(HashHitAnim);
+                _anim.CrossFade(HashDeathState, 0.12f, 0, 0f);
                 // 等动画把人放倒（Death.anim 约 1.2 s）；期间不碰 transform
                 float guard = 0f;
                 while (guard < 2.5f) { guard += Time.unscaledDeltaTime; yield return null; }
@@ -315,6 +323,8 @@ namespace InkWash.UI
         }
 
         private static readonly int HashDeadAnim = Animator.StringToHash("Dead");
+        private static readonly int HashHitAnim = Animator.StringToHash("Hit");
+        private static readonly int HashDeathState = Animator.StringToHash("Death");
 
         /// <summary>controller 是否真的存在该 Trigger 参数（不存在 SetTrigger 会刷警告）。</summary>
         private static bool HasTrigger(Animator a, string name)
