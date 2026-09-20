@@ -67,17 +67,24 @@ namespace InkWash.Player
             if (animator == null && health != null) animator = health.GetComponentInChildren<Animator>();
 
             // 只在控制器真实存在该 Trigger 时才启用 —— 否则 SetTrigger 会刷 "parameter does not exist"
+            // 第四十二轮：prefab 序列化的是旧名 "Hurt"，控制器新触发器叫 "Hit"——
+            // 两个候选按序匹配（序列化值优先，不存在则回退），避免「改了控制器还要改 prefab」。
             _hurtHashValid = false;
             if (animator == null || animator.runtimeAnimatorController == null) return;
             if (string.IsNullOrEmpty(hurtTrigger)) return;
-            foreach (var p in animator.parameters)
+            string[] candidates = hurtTrigger == "Hit" ? new[] { "Hit" } : new[] { hurtTrigger, "Hit" };
+            foreach (var cand in candidates)
             {
-                if (p.type == AnimatorControllerParameterType.Trigger && p.name == hurtTrigger)
+                foreach (var p in animator.parameters)
                 {
-                    _hurtHash = Animator.StringToHash(hurtTrigger);
-                    _hurtHashValid = true;
-                    break;
+                    if (p.type == AnimatorControllerParameterType.Trigger && p.name == cand)
+                    {
+                        _hurtHash = Animator.StringToHash(cand);
+                        _hurtHashValid = true;
+                        break;
+                    }
                 }
+                if (_hurtHashValid) break;
             }
         }
 
@@ -102,11 +109,10 @@ namespace InkWash.Player
             if (_hitFlash == null) _hitFlash = HitFlash.Ensure(gameObject);
             _hitFlash.Flash(scale);
 
-            // ★ 受击后仰（第三十七轮）：本地动作库没有 CC 骨架的受击动画
-            //   （KayKit 的 Hit_A 是 Rig_Medium 骨架，无法重定向给 Feng）——
-            //   用程序化后仰代替：模型根绕 X 轴快速后仰 14° 再回弹（0.24s 正弦包络），
-            //   与闪白/顿帧/震屏叠加成完整受击反应。死亡那一击不后仰（倒地动画接管）。
-            if (health == null || health.Health > 0f) Recoil(scale);
+            // ★ 受击后仰（程序化兜底，第三十七轮）：第四十二轮起控制器有了真受击动画
+            //   （Mixamo impact → Hit 态），触发器接通时动画接管，程序化后仰只在
+            //   「控制器没有受击触发器」的场合兜底，避免两套动作叠加打架。
+            if ((health == null || health.Health > 0f) && !_hurtHashValid) Recoil(scale);
 
             // ★ 受击音（第三十七轮）：音高随机微降，"挨了一下"更沉
             InkWash.Audio.AudioManager.Play("Hit_Flesh", 0.7f, 0.82f, 0.9f);
