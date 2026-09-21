@@ -1,0 +1,191 @@
+StylizedNatureMegaKit 源机器 md5 清单
+（解压前可对目标侧同名文件核验；一致则只需替换 .meta）
+
+ac24b5556be15883aa76a0c74cb68748         172  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity).meta
+117799e8809b875ae02b0aef6b17f810       84060  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common.fbx
+752d751e626e23d8af55c74232021181        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common.fbx.meta
+5a5be174634b240f82dc6d159b03f0f1      115532  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common_Flowers.fbx
+15c125accc03f1d4878d5b9dbcc6e710        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Bush_Common_Flowers.fbx.meta
+a38d4e24f14ca6c0cab4ae73b63135f5       32860  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Clover_1.fbx
+d5c09b9b6767c8bcb4f682567edcfe16        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Clover_1.fbx.meta
+46512e2868718d543b1f5e47df1f5af8       40604  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Clover_2.fbx
+7365798e8cc9d3c26ad5f1fdce7fc196        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Clover_2.fbx.meta
+12282baf775fffb86caa3dc1e00a7dce      374492  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_1.fbx
+d43d7370782f2ff75dcbe4ab091d5099        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_1.fbx.meta
+88a21a1a8c59dad1279f960d759f4bdc      330636  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_2.fbx
+2caac46d38b1e205aa65876b8a9f73e8        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_2.fbx.meta
+01564963194e3bca6e595a6df6d89aec      238860  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_3.fbx
+3e0a3423c069ca9729acced64ca2c7e5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_3.fbx.meta
+e84c3e457644e121217185672aa9ed49      240748  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_4.fbx
+6abb986b4de3544589c99530030d9b26        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_4.fbx.meta
+4312d083d978a27734f31c8f507cc4cc      211404  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_5.fbx
+64f66c14ca9af6b38ee7df13b5b0e98a        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/CommonTree_5.fbx.meta
+b3e6128f10777a6fe583f15618ff7ddc      324540  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_1.fbx
+df77d1007600e235848d95499c190cc5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_1.fbx.meta
+83f081b546111f42c8c4ea689124bb0b      343756  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_2.fbx
+60b39d8f33cf3a72eb454b779256597c        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_2.fbx.meta
+4b0e1a2abfbce71c4a279a5c576d92ed      302604  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_3.fbx
+c9dfe73e1774d84342a6faa9aeb1b736        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_3.fbx.meta
+a9625dadd95e6864803bda29f66f79b0      297452  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_4.fbx
+4593491f8f62273d0680af7dae706cf9        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_4.fbx.meta
+f5ab028b4fa704d12e1aa06d1058395f      295068  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_5.fbx
+d55aecfda772d218f17f58bbf7b0ca21        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/DeadTree_5.fbx.meta
+e736b6a4a08d1893aaafec4967ff7087       32060  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Fern_1.fbx
+5266bd082ee3073783911637cd92fa29        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Fern_1.fbx.meta
+b0859c4ebf99429dbd7c12510732d3b5       49308  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_3_Group.fbx
+f9a2bea5b66a952d3a770d3c887a8540        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_3_Group.fbx.meta
+9cb487a1edd0a9a01127f4cfd503a769       33084  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_3_Single.fbx
+56c9a32a97fad193c5f1b81aad1361f5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_3_Single.fbx.meta
+baf29e0eccd234b6b15d982d065c9733       80108  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_4_Group.fbx
+e8cc6deb9718d061d002f4bf82c10490        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_4_Group.fbx.meta
+bb18c5c5ba80382e876fed459d7acf71       45452  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_4_Single.fbx
+ee231d235e6f900863f464f28089f377        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Flower_4_Single.fbx.meta
+e864a957bc44acc16517dabd552ca297       26060  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Common_Short.fbx
+a2559e0f2e704a4b93134fce7741a755        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Common_Short.fbx.meta
+a9a46bdb4240cc3570bcff06a30b6089       32892  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Common_Tall.fbx
+10843049cfc2c6ece444a110e492065b        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Common_Tall.fbx.meta
+41a38fa169438197f131d04297dc5b8c       41084  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Wispy_Short.fbx
+0c4e2da2f94f624350fe8147cf06ba4b        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Wispy_Short.fbx.meta
+9396cef85d71bce236fe267319b583f3       44524  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Wispy_Tall.fbx
+de35cecdaf0ee82c24d8dedde4984697        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Grass_Wispy_Tall.fbx.meta
+d20933c1de2f7395c84f5ce071631ff5       43180  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Mushroom_Common.fbx
+29253fea3e45cf614b77517bb090ba33        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Mushroom_Common.fbx.meta
+9b49886b49f2a40413874343bed2ed64      108956  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Mushroom_Laetiporus.fbx
+a0c29dfa65e14281b940d6059933bbca        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Mushroom_Laetiporus.fbx.meta
+b2c982de7cd103761e6df3fbf15ba60c       23372  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_1.fbx
+377e33368c055aa7959d0170ed6d2c1a        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_1.fbx.meta
+e4c8fc5440332b4451680108f3815c8d       22540  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_2.fbx
+b1147edc6cc7e5219675dafd786a8db6        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_2.fbx.meta
+63745318e3617401fc051d09250e3130       22988  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_3.fbx
+2be1a7fd3c47f4cb3b12c8af1df7d412        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_3.fbx.meta
+b4124b40fd0b4915894725e8a20b0efd       23084  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_4.fbx
+70cfc283d49e0885a11fb04a22d3a83d        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_4.fbx.meta
+bc694c90dbd23ac2dfe6715d61c16e02       22828  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_5.fbx
+f3b1c0093db94e5de3d4687874f6d27f        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Round_5.fbx.meta
+1bb7da9c76c1f675bac3010da65f92e3       21628  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_1.fbx
+93d860ec7b6d8948b3f093d4232893e8        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_1.fbx.meta
+3c29d358cf89f47dc0420c1915e624dd       20812  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_2.fbx
+2ab3182f90707f21a384def045aa1dd3        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_2.fbx.meta
+f60838231f1163ed4cd2cdb596fc20a7       19996  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_3.fbx
+73b121ed9e60cc0027843f72d2ac5bea        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_3.fbx.meta
+78604b46a5c067c73f6ff0a0661e40de       19996  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_4.fbx
+882b757fe10181498d7fad34b8835099        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_4.fbx.meta
+ddd7ef560946efd4acf1e6d0e04f3ea0       20700  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_5.fbx
+fd6736f00b1d089445687150dc270a33        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_5.fbx.meta
+c8116e7f3da52618b4c13f5c82c26506       20412  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_6.fbx
+9a866e8c65e30b153ce58c4539a14d02        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pebble_Square_6.fbx.meta
+6307176dabfbb65a0b3c9be99060c879       19532  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_1.fbx
+283ac6627f2296019367c806b6593ed6        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_1.fbx.meta
+e5e38d724b7f27002fa66c64ad34906e       19644  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_2.fbx
+96aa6a6e00a43999e1a0d89d6a99f340        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_2.fbx.meta
+95de967a07464434bad68cc66826ce00       19676  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_3.fbx
+d41871c1d65f291145c8ef1b9c2f366c        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_3.fbx.meta
+9e3b4013b12fec6a62a3108c4ff155c7       20092  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_4.fbx
+360312c9227b12d291edebe6bf88e22b        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_4.fbx.meta
+aea26d983aa223714e6d45b80e079cf9       19676  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_5.fbx
+c87db44db8eb3f297c41ea3f9746b0e5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Petal_5.fbx.meta
+95fb534b45343420185204bbbfd2d8e5      225404  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_1.fbx
+daf0fcfcd45a9bf7d802f0ce692d2531        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_1.fbx.meta
+90697f25775aa02b51fc5a73d33fa8a5      208028  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_2.fbx
+46217c7716b7639b5233875db699c66e        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_2.fbx.meta
+7f0f5b12c3d5ab8ce81c3ff8e7177130      267548  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_3.fbx
+8f08713a57f5252cd9173d449b2f15f5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_3.fbx.meta
+bf589cb7d011640bede62b31f121ca5c      200924  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_4.fbx
+34500dced4504bbc43fec547b0fc7417        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_4.fbx.meta
+dc2af210c23927dcab09ebc7e1afbd05      113868  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_5.fbx
+e18ddee8517013fdc915cb12b6c0b654        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Pine_5.fbx.meta
+ca031adfaa4bc7175601b788e6eafe73       24396  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_1.fbx
+95d3248348baecdb971d54ef7990b78c        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_1.fbx.meta
+810feceea0b80037fe0e3f93e41740ff       34508  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_1_Big.fbx
+68b8ae8fcd00ae630bfc38ee462caee8        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_1_Big.fbx.meta
+c206832bb75e8f228674f05fd06b5854       21212  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_7.fbx
+7068f2b49c0d237dc703ee5bbc847d22        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_7.fbx.meta
+ae9ee9fdf8ace9ac0ba8465ce655db8c       24284  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_7_Big.fbx
+0c073096be1b2653a343081449c138b5        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Plant_7_Big.fbx.meta
+016969de3825b94f993704c71b7f974f       46988  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_1.fbx
+de6aca075b391887d7d309fdd7539802        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_1.fbx.meta
+6ea42079e5b7acc6b71fca164ef6860d       49788  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_2.fbx
+603269af980f167e257e7155f85caafb        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_2.fbx.meta
+0ef40b55fdb8770436bc0ecf032cad88       47180  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_3.fbx
+987e22eab1b9b0ed429e8bdbfe1bdf8b        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Small_3.fbx.meta
+c83a70fdfbd76258871fa2e5d9b8272d       78268  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Thin.fbx
+7d0b263d17dba532c85b65f3932d60d6        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Thin.fbx.meta
+4b3970cc9090e55f9b4c11930fa7950c      109308  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Wide.fbx
+62c030f93e347ef9396e78ec3439ee43        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Round_Wide.fbx.meta
+446d7e846e4b42079e66cc792f27431e       40476  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_1.fbx
+1c7661f99fc358ce6dc40ef9fe370826        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_1.fbx.meta
+7e39669e699c6dbde7f7a8c836005282       33900  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_2.fbx
+d7075f7114968e9a5c738263d9435646        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_2.fbx.meta
+17f3e4a7bba8f95ee6de568fc01e4fba       34460  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_3.fbx
+54a343f8daccb8e4aeca0969b376b3e6        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Small_3.fbx.meta
+2a64528da7d8056020ebaee5d9376725       65852  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Thin.fbx
+edf3fbe359a5b30829a5a3c37a99601e        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Thin.fbx.meta
+40c5560c8f463c08df1fc8c3409b8b74       76604  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Wide.fbx
+472b18f9278649eb5f4c7024aa4b1807        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/RockPath_Square_Wide.fbx.meta
+29de8c8ad65d54e3bbb11731d8539a00       30700  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_1.fbx
+b5e8e890f1b6f5318c5b4ae68e2c81d0        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_1.fbx.meta
+3c1dea60ebfbdb560f4033bb4a1cef84       27276  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_2.fbx
+5d272fca6bcf40fa9cfd883168e333d4        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_2.fbx.meta
+9bb35d91da486ccf3ea0130aec559d73       37324  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_3.fbx
+39bf505d59c3bc2545287fc4135381f2        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/Rock_Medium_3.fbx.meta
+93b11a74d9ae876ea4bb8146720376b5      539292  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_1.fbx
+c6bd7444ee494525e68fd58b293db05c        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_1.fbx.meta
+1b4860ef5bd73f09af90104ee29ce495      517228  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_2.fbx
+59ea634f7561f26248f04565e995d6bf        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_2.fbx.meta
+216cb40ed8c736ad2dd37d902fd12ef6      573196  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_3.fbx
+3599233dd7e1e6717b456b055e327a24        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_3.fbx.meta
+2cc96f0f251976c655109bd8a58c4bb4      551052  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_4.fbx
+ea0d0526cb8a5caf66b932f662b17f1d        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_4.fbx.meta
+8f9d697ae2fc64f8d0808451a7213e8c      582284  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_5.fbx
+7c0ac256021fdc9159d8d9ccfa39ef42        2830  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/FBX (Unity)/TwistedTree_5.fbx.meta
+285430dcd42c2200da48b30eba646862         852  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/License_Standard.txt
+e95290cbe84d6ba941e08bef4dd1a701         158  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/License_Standard.txt.meta
+c0d7dba59252d266a6a60fe18316a511      598487  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_1.jpg
+7ed63eb17dea1c844628a7ae81e987b5        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_1.jpg.meta
+5761829dcddbddf0e5facdd57df8f7b1      679539  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_2.jpg
+e6bfbe2f1e1b45cfb9b0ef61e9e0858d        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_2.jpg.meta
+8c6c50516891db0fb4c6dc171113b4fd      440967  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_3.jpg
+a1ea959a898de80b1742088202c9fa10        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_3.jpg.meta
+c9da42f53961dd9325e30a9eb20dcbaa      796873  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_4.jpg
+3463d26e4d7847fca55be3b1a3cd3217        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Preview_4.jpg.meta
+f4537088968b30375a02c3740e0edded         172  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures.meta
+465cb57590fe9fdccdd122368bc2ea17     4228870  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_DeadTree.png
+6536156b056521e5096d764c86377c30        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_DeadTree.png.meta
+a40bc2c9d62774a7a7c481d4f84f9961     5728199  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_DeadTree_Normal.png
+fc93fde1ecced67f68474c5cd43faa9a        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_DeadTree_Normal.png.meta
+59f6e2874a87035eea5089fac7d810c8     3894788  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_NormalTree.png
+83eaf0d53270561914dc88c7a8c4d209        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_NormalTree.png.meta
+c85a0bd0e451b16dcadbdceb366ebfc1     4384496  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_NormalTree_Normal.png
+9e606ee645f03bc94d2508c610012f3b        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_NormalTree_Normal.png.meta
+09ec73e2b09d2ce735075d4bb613dd7a     4630805  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_TwistedTree.png
+681e7e6aa3b42755d013902af88b27f9        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_TwistedTree.png.meta
+a40bc2c9d62774a7a7c481d4f84f9961     5728199  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_TwistedTree_Normal.png
+2869cf82ffdb7bd572686ded01a8d6e0        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Bark_TwistedTree_Normal.png.meta
+bbdbf2071e3c54bb6e0508c595e7b734      444609  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Flowers.png
+c5d136c8d02a8939237a99bcf3d8d4c3        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Flowers.png.meta
+3a25be4d18b7199a1671f825fbf01104       33605  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Grass.png
+5862a603f52bc529d3751d9d15cfe467        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Grass.png.meta
+ad7a68f1a9977a6673187ce681d10479       71747  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaf_Pine.png
+c7cc0392385954c12183b956907bface        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaf_Pine.png.meta
+8905d00249da052adc37f5504bd19c0a       70055  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaf_Pine_C.png
+1848870f65b56a3fed8ae2921635a5d7        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaf_Pine_C.png.meta
+3003dbc8643e5d4a7d51d9d7fd9d1477     2586432  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves.png
+038ab0b1ad459fb06319772e49f45764        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves.png.meta
+927e22c9ca417a0071db4e6850fca3ff       59613  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_GiantPine_C.png
+d87021d5948a2a15f563d43d634b4ffa        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_GiantPine_C.png.meta
+ea1801b387f05618e48c7fca22e5a4fd      158772  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_NormalTree.png
+02f8e2e26da89360500a9fbf588bd434        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_NormalTree.png.meta
+4761d9780e45a5ae95d02b0138a467c4      158796  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_NormalTree_C.png
+b08e55ef8d6da480f66ea8691aadae86        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_NormalTree_C.png.meta
+1bce434158032b6b77aeb948c0e7cd2d       69611  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_TwistedTree.png
+5e32594cbab44280051fc9dcdd6432db        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_TwistedTree.png.meta
+d97ec3308cc6d22d4a85cef33c34deee       70353  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_TwistedTree_C.png
+7cfc4acf1c48440319017b205a27feb4        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Leaves_TwistedTree_C.png.meta
+59cdd01fe19fb0ebd2430b85b5c0c6ea     1208660  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Mushrooms.png
+bcf367fe286952d94c3016d0383d005e        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Mushrooms.png.meta
+deaeff6ad7246807601cab8221183aad      811732  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/PathRocks_Diffuse.png
+47a8bcba47b2290a50c2b35ab6f36258        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/PathRocks_Diffuse.png.meta
+810a322988aea7e6e87f4d34078e2a78     2095731  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Rocks_Desert_Diffuse.png
+caf64bdbd4c09afbf2af2c144c3047c2        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Rocks_Desert_Diffuse.png.meta
+2d111c33d4f7866d73bdb6fdcfecf02a     2517398  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Rocks_Diffuse.png
+a82a8215c680224de125822827268467        2948  Assets/ThirdParty/Quaternius/StylizedNatureMegaKit/Textures/Rocks_Diffuse.png.meta
